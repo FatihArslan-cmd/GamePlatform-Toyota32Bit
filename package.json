@@ -25,7 +25,8 @@
       "**/react-native-skottie",
       "**/react-native-reanimated",
       "**/@react-native-community/blur",
-      "**/react-native-gesture-handler"
+      "**/react-native-gesture-handler",
+      "**/@shopify/react-native-skia"
 
     ]
   },
