@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import PageItem from './PageItem';
@@ -7,31 +7,50 @@ import { useNavigation } from '@react-navigation/native';
 
 const AdvancedPagerView = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const translateAnim = useRef(new Animated.Value(0)).current;
+  const animValues = useRef(
+    pages.map(() => ({
+      scaleAnim: new Animated.Value(1),
+      translateAnim: new Animated.Value(0),
+    }))
+  ).current;
   const navigation = useNavigation();
 
   const handlePageChange = (event) => {
-    setCurrentPage(event.nativeEvent.position);
+    const newPage = event.nativeEvent.position;
+    setCurrentPage(newPage);
 
+    // Sadece yeni sayfayı animasyonla
     Animated.sequence([
-      Animated.timing(scaleAnim, {
+      Animated.timing(animValues[newPage].scaleAnim, {
         toValue: 1.9,
         duration: 90,
         useNativeDriver: true,
       }),
-      Animated.timing(scaleAnim, {
+      Animated.timing(animValues[newPage].scaleAnim, {
         toValue: 1,
         duration: 150,
         useNativeDriver: true,
       }),
-      Animated.spring(translateAnim, {
+      Animated.spring(animValues[newPage].translateAnim, {
         toValue: 0,
         friction: 3,
         useNativeDriver: true,
       }),
     ]).start();
   };
+
+  const renderPage = useCallback(
+    (page, index) => (
+      <PageItem
+        key={index}
+        page={page}
+        scaleAnim={animValues[index].scaleAnim}
+        translateAnim={animValues[index].translateAnim}
+        navigation={navigation}
+      />
+    ),
+    [navigation, animValues]
+  );
 
   return (
     <View style={styles.container}>
@@ -41,15 +60,7 @@ const AdvancedPagerView = () => {
         onPageSelected={handlePageChange}
         transitionStyle="scroll"
       >
-        {pages.map((page, index) => (
-          <PageItem
-            key={index}
-            page={page}
-            scaleAnim={scaleAnim}
-            translateAnim={translateAnim}
-            navigation={navigation} // Burada navigation'ı geçiriyoruz
-           />
-        ))}
+        {pages.map(renderPage)}
       </PagerView>
       <View style={styles.indicatorContainer}>
         {pages.map((_, index) => (

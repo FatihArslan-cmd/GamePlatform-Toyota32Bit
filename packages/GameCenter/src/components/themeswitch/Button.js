@@ -34,8 +34,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
-    marginHorizontal: 30,
+    
     padding: 20,
     borderRadius: 20,
   },

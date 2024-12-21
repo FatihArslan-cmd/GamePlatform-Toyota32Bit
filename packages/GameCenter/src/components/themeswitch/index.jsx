@@ -1,8 +1,8 @@
 import React from 'react'
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import Setting from './themeswitch/setting';
-const App = () => {
+import Setting from './setting';
+const ThemeSwitch = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
     <SafeAreaProvider>
@@ -12,4 +12,4 @@ const App = () => {
   )
 }
 
-export default App
+export default ThemeSwitch

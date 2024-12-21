@@ -1,8 +1,10 @@
+
 const pages = [
     {
         image: require('../../../locales/icon.png'), // require kullanarak yerel resmi belirtin
         title: 'Game Center',
       subtitle: 'Explore exciting games and level up your experience.',
+      themeSwitch: true,
     },
     {
       icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoamHk5CCpM2HxP8ZNBJY07WDf59KLzF46cw&s',
