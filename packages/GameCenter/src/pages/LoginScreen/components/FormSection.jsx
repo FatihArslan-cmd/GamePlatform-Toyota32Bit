@@ -5,7 +5,7 @@ import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
 import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
 
-const FormSection = ({ onLoginPress, scaleAnim, onSignupPress }) => {
+const FormSection = ({ onLoginPress, scaleAnim, onSignupPress, onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +46,7 @@ const FormSection = ({ onLoginPress, scaleAnim, onSignupPress }) => {
         </>
       ) : (
         <ForgotPasswordSection
-          onSendCode={() => console.log('Send code pressed')}
+          onSendCode={onSendCode}
           onBackToLogin={() => setIsForgotPassword(false)}
         />
       )}

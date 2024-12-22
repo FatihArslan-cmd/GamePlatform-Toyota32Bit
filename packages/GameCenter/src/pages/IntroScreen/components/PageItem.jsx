@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Animated, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
-import ThemeSwitch from '../../../components/themeswitch';
+
 const PageItem = ({ page, scaleAnim, translateAnim ,navigation}) => (
   <LinearGradient
     colors={['#1a1b2e', '#2d0a3e', '#1a1b2e']}

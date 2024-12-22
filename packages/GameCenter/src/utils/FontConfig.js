@@ -18,6 +18,18 @@ const fontConfig = {
       fontFamily: 'SQR721B',
       fontWeight: 'normal',
     },
+    thin: {
+      fontFamily: 'Poppins-Black',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'Poppins-Bold',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'Poppins-SemiBold',
+      fontWeight: 'normal',
+    },
   },
   ios: {
     regular: {
