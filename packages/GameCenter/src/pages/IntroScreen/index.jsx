@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import AdvancedPagerView from './components/AdvancedPagerView'
-const index = () => {
+const Index = () => {
   return (
     <>
     <AdvancedPagerView />
@@ -9,4 +9,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index

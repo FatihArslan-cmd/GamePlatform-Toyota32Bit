@@ -34,7 +34,6 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
-    
     padding: 20,
     borderRadius: 20,
   },

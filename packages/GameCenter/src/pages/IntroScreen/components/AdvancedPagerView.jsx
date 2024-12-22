@@ -19,7 +19,6 @@ const AdvancedPagerView = () => {
     const newPage = event.nativeEvent.position;
     setCurrentPage(newPage);
 
-    // Sadece yeni sayfayı animasyonla
     Animated.sequence([
       Animated.timing(animValues[newPage].scaleAnim, {
         toValue: 1.9,
