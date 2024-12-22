@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet,Animated } from 'react-native';
-import ForgotPasswordModal from './components/ForgotPasswordModal'; // Dosya yolunuza göre düzenleyin
 import FormSection from './components/FormSection'; // Dosya yolunuza göre düzenleyin
 import LogoSection from './components/LogoSection'; // Dosya yolunuza göre düzenleyin
 import LinearGradient from 'react-native-linear-gradient';
@@ -36,14 +35,12 @@ const LoginScreen = () => {
     end={{ x: 1, y: 1 }}
     style={styles.container}
   >   
-   <LogoSection />
+      <LogoSection />
       <FormSection
         onLoginPress={handleLoginPress}
         onSignupPress={handleSignupPress}
-        onForgotPasswordPress={handleForgotPasswordPress}
         scaleAnim={scaleAnim}
       />
-      <ForgotPasswordModal visible={modalVisible} onDismiss={handleModalDismiss} />
       </LinearGradient>   
       </>
       );
