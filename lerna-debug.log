@@ -1,0 +1,22 @@
+0 silly argv {
+0 silly argv   _: [ 'clean' ],
+0 silly argv   lernaVersion: '8.1.9',
+0 silly argv   '$0': 'C:\\Program Files\\nodejs\\node_modules\\lerna\\dist\\cli.js'
+0 silly argv }
+1 notice cli v8.1.9
+2 verbose packageConfigs Explicit "packages" configuration found in lerna.json. Resolving packages using the configured glob(s): ["packages/*"]
+3 verbose rootPath C:\GamePlatformToyota32bit
+4 info versioning independent
+5 error JSONError: Expected double-quoted property name in JSON at position 424 while parsing '{  "name": "GameCenter",  "version": "' in packages\GameCenter\package.json
+5 error
+5 error [0m [90m 15 |[39m     [32m"@react-navigation/native"[39m[33m:[39m [32m"^7.0.14"[39m[33m,[39m
+5 error  [90m 16 |[39m     [32m"@react-navigation/native-stack"[39m[33m:[39m [32m"^7.2.0"[39m[33m,[39m
+5 error [31m[1m>[22m[39m[90m 17 |[39m   [90m//  "@shopify/react-native-skia": "^1.7.6",[39m
+5 error  [90m    |[39m   [31m[1m^[22m[39m
+5 error  [90m 18 |[39m     [32m"axios"[39m[33m:[39m [32m"^1.7.9"[39m[33m,[39m
+5 error  [90m 19 |[39m     [32m"react"[39m[33m:[39m [32m"18.3.1"[39m[33m,[39m
+5 error  [90m 20 |[39m     [32m"react-native"[39m[33m:[39m [32m"0.76.5"[39m[33m,[39m[0m
+5 error
+5 error     at parseJson (C:\GamePlatformToyota32bit\node_modules\parse-json\index.js:29:21)
+5 error     at parse (C:\GamePlatformToyota32bit\node_modules\load-json-file\index.js:15:9)
+5 error     at module.exports (C:\GamePlatformToyota32bit\node_modules\load-json-file\index.js:18:47)
