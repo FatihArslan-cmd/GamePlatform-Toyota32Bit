@@ -9,7 +9,7 @@ const ForgotPasswordSection = ({ onSendCode, onBackToLogin, countdown }) => (
       onPress={onSendCode}
       style={styles.loginButton}
       labelStyle={styles.buttonLabel}
-      disabled={countdown > 0} // Disable button during countdown
+      disabled={countdown > 0} 
     >
       {countdown > 0 ? `Retry in ${countdown}s` : 'Send Code'}
     </Button>

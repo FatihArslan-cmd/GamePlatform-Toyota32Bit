@@ -1,21 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Animated, Text } from 'react-native';
+import { StyleSheet, View, Animated } from 'react-native';
 import InputField from './FormSectionItem/InputField';
 import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
 import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
+import BioModal from './ModalItem/BioModal';
+import BioModalContent from './ModalItem/BioModalContent'; // Yeni içerik bileşeni
+import { Text } from 'react-native-paper';
 
-const FormSection = ({ onLoginPress, scaleAnim, onSignupPress, onSendCode }) => {
+const FormSection = ({ onSignupPress, onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false); // Modal visibility state
 
   // Animation values
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
+
+  const handleLoginPress = () => {
+    if (rememberMe) {
+      setModalVisible(true);
+    } else {
+      console.log('Login without Remember Me');
+    }
+  };
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -39,15 +51,13 @@ const FormSection = ({ onLoginPress, scaleAnim, onSignupPress, onSendCode }) => 
     ]).start();
   };
 
-  // Start the countdown when "Send Code" is pressed
   const handleSendCodeWithCountdown = () => {
     if (countdown === 0) {
-      setCountdown(30); // Set countdown to 30 seconds
+      setCountdown(30);
       onSendCode();
     }
   };
 
-  // Countdown effect
   useEffect(() => {
     let timer;
     if (countdown > 0) {
@@ -55,7 +65,7 @@ const FormSection = ({ onLoginPress, scaleAnim, onSignupPress, onSendCode }) => 
         setCountdown((prev) => prev - 1);
       }, 1000);
     }
-    return () => clearTimeout(timer); // Clear timeout on unmount
+    return () => clearTimeout(timer);
   }, [countdown]);
 
   return (
@@ -102,8 +112,8 @@ const FormSection = ({ onLoginPress, scaleAnim, onSignupPress, onSendCode }) => 
               setIsForgotPassword={() => handleForgotPasswordToggle(true)}
             />
             <ActionButtons
-              scaleAnim={scaleAnim}
-              onLoginPress={onLoginPress}
+              scaleAnim={1}
+              onLoginPress={handleLoginPress}
               onSignupPress={onSignupPress}
             />
           </>
@@ -115,6 +125,10 @@ const FormSection = ({ onLoginPress, scaleAnim, onSignupPress, onSendCode }) => 
           />
         )}
       </Animated.View>
+
+      <BioModal visible={isModalVisible} onDismiss={() => setModalVisible(false)}>
+        <BioModalContent/>
+      </BioModal>
     </View>
   );
 };

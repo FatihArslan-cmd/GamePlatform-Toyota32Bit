@@ -12,7 +12,7 @@ const InputField = ({
   style,
 }) => (
   <TextInput
-    mode="outlined"
+    mode="flat"
     label={label}
     value={value}
     onChangeText={onChangeText}
