@@ -13,7 +13,6 @@ export const fetchAndStoreGames = async () => {
             // Save the data as a JSON string
             storage.set('games', JSON.stringify(data));
 
-            console.log('Data successfully saved:', data);
         } else {
             console.error('API request failed with status:', response.status);
         }

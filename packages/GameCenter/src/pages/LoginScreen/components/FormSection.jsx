@@ -8,8 +8,9 @@ import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent'; 
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
+import { BlurView } from '@react-native-community/blur';
 
-const FormSection = ({ onSignupPress, onSendCode }) => {
+const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -17,23 +18,26 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isBlurring, setIsBlurring] = useState(false); // Bulanıklık durumu
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
   const handleLoginPress = async () => {
+    setIsBlurring(true); // Bulanıklığı etkinleştir
     if (rememberMe) {
-        setModalVisible(true);
+      setModalVisible(true);
     } else {
-        try {
-            await fetchAndStoreGames(); 
-            navigation.navigate('Home');
-        } catch (error) {
-          console.error('Error Details:', error.toJSON());
-        }
+      try {
+        await fetchAndStoreGames(); 
+        navigation.navigate('Home', { toastshow: true }); // Değer gönderiliyor
+      } catch (error) {
+        console.error('Error Details:', error.toJSON());
+      } finally {
+        setIsBlurring(false); // İşlem tamamlandıktan sonra bulanıklığı kaldır
+      }
     }
-};
-
+  };
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -76,6 +80,14 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
 
   return (
     <View style={styles.formContainer}>
+      {isBlurring && (
+        <BlurView
+          style={styles.absolute}
+          blurType="dark"
+          blurAmount={10}
+        />
+      )}
+
       <InputField
         label="Email / Username"
         value={email}
@@ -120,7 +132,6 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
             <ActionButtons
               scaleAnim={1}
               onLoginPress={handleLoginPress}
-              onSignupPress={onSignupPress}
             />
           </>
         ) : (
@@ -155,6 +166,14 @@ const styles = StyleSheet.create({
   },
   animatedContainer: {
     width: '100%',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10, // Blur'ın diğer içerikleri geçmesini sağla
   },
 });
 

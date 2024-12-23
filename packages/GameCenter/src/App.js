@@ -7,7 +7,7 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
       <FormProvider>
-      <Navigation />
+        <Navigation />
       </FormProvider>
     </PaperProvider>
   )
