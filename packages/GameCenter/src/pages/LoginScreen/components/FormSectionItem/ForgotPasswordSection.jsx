@@ -1,16 +1,17 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const ForgotPasswordSection = ({ onSendCode, onBackToLogin }) => (
+const ForgotPasswordSection = ({ onSendCode, onBackToLogin, countdown }) => (
   <>
     <Button
       mode="contained"
       onPress={onSendCode}
       style={styles.loginButton}
       labelStyle={styles.buttonLabel}
+      disabled={countdown > 0} // Disable button during countdown
     >
-      Send Code
+      {countdown > 0 ? `Retry in ${countdown}s` : 'Send Code'}
     </Button>
 
     <Button
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
     paddingVertical: 8,
     borderRadius: 30,
+    left: 25,
   },
   buttonLabel: {
     fontSize: 16,
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
     borderColor: '#8a2be2',
     borderRadius: 30,
     borderWidth: 2,
+    left: 25,
   },
   signupButtonLabel: {
     color: '#8a2be2',
