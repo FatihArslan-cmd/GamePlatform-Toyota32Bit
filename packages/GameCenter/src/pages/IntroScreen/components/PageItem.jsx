@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Animated, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
-
-const PageItem = ({ page, scaleAnim, translateAnim ,navigation}) => (
+import { Divider } from 'react-native-paper';
+const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
   <LinearGradient
     colors={['#1a1b2e', '#2d0a3e', '#1a1b2e']}
     locations={[0, 0.5, 1]}
@@ -31,6 +31,10 @@ const PageItem = ({ page, scaleAnim, translateAnim ,navigation}) => (
         style={[styles.image, { borderColor: '#8a2be250' }]}
       />
       <Text style={styles.title}>{page.title}</Text>
+      <View style={styles.dividerContainer}>
+        <Divider style={styles.divider} />
+      </View>
+
       <Text style={styles.subtitle}>{page.subtitle}</Text>
    
       {page.button && (
@@ -62,6 +66,18 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
+  dividerContainer: {
+    width: '100%',
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  divider: {
+    height: 2,
+    backgroundColor: '#8a2be2',
+    width: '100%',
+    elevation: 4,
+    boxShadow:'0 0 10px #8a2be2',
+  },
   title: {
     fontSize: 28,
     marginTop: 20,
@@ -70,7 +86,15 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     textShadowColor: '#8a2be2',
     textShadowRadius: 10,
-    fontFamily:'RussoOne-Regular'
+    fontFamily: 'RussoOne-Regular',
+  },
+  divider: {
+    width: '40%', // Yüzde 50 genişlik
+    height: 1, // Divider kalınlığı
+    backgroundColor: '#8a2be2', // Divider rengi
+    marginVertical: 10, // Divider üst-alt boşluğu
+    borderRadius: 1, // Divider kenar yuvarlatması
+    boxShadow:'0 0 10px #8a2be2',
   },
   subtitle: {
     fontSize: 16,
@@ -79,8 +103,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 20,
     lineHeight: 24,
-    fontFamily:'RussoOne-Regular'
-
+    fontFamily: 'RussoOne-Regular',
   },
   startButton: {
     marginTop: 30,
@@ -91,8 +114,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   startButtonContent: { flexDirection: 'row', alignItems: 'center' },
-  startButtonText: { color: '#fff', fontSize: 16, letterSpacing: 1,    fontFamily:'RussoOne-Regular'
-  },
+  startButtonText: { color: '#fff', fontSize: 16, letterSpacing: 1, fontFamily: 'RussoOne-Regular' },
   buttonIcon: { marginLeft: 8 },
 });
 
