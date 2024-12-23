@@ -5,19 +5,10 @@ import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
-
 const LoginScreen = () => {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
-
   const { currentToast, showToast, hideToast } = useToast();
 
-  const handleLoginPress = () => {
-    console.log('Login pressed');
-  };
-
-  const handleSignupPress = () => {
-    console.log('Signup pressed');
-  };
 
   const handleSendCode = () => {
     showToast('success', 'Verification code sent!');
@@ -29,7 +20,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <>
+      <>
       <LinearGradient
         colors={['#1a1b2e', '#2d0a3e', '#1a1b2e']}
         locations={[0, 0.5, 1]}
@@ -39,8 +30,6 @@ const LoginScreen = () => {
       >
         <LogoSection />
         <FormSection
-          onLoginPress={handleLoginPress}
-          onSignupPress={handleSignupPress}
           onSendCode={handleSendCode}
           scaleAnim={scaleAnim}
         />
@@ -53,7 +42,8 @@ const LoginScreen = () => {
           onHide={hideToast}
         />
       )}
-    </>
+      </>
+    
   );
 };
 

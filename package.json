@@ -28,7 +28,10 @@
       "**/react-native-gesture-handler",
       "**/@shopify/react-native-skia",
       "**/react-native-reanimated",
-      "**/react-native-mmkv"
+      "**/react-native-mmkv",
+      "**/react-native-fast-image",
+      "**/@shopify/flash-list"
+
     ]
   },
   "dependencies": {},

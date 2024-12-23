@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const ActionButtons = ({ scaleAnim, onLoginPress, onSignupPress }) => (
+const ActionButtons = ({ scaleAnim, onLoginPress }) => (
   <>
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
       <Button
@@ -17,7 +17,6 @@ const ActionButtons = ({ scaleAnim, onLoginPress, onSignupPress }) => (
 
     <Button
       mode="outlined"
-      onPress={onSignupPress}
       style={styles.signupButton}
       labelStyle={styles.signupButtonLabel}
     >

@@ -1,24 +1,21 @@
-// Navigation.js
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { storage } from '../utils/storage.js';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
-
+import HomeScreen from '../pages/HomeScreen/index.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const [isIntroSeen, setIsIntroSeen] = useState(null);
 
   useEffect(() => {
-    // Check if the intro screen has been shown
     const hasSeenIntro = storage.getBoolean('hasSeenIntro');
     setIsIntroSeen(hasSeenIntro ?? false); // Default to false if not set
   }, []);
 
   if (isIntroSeen === null) {
-    // Prevent navigation rendering until the value is fetched
     return null;
   }
 
@@ -45,6 +42,8 @@ export default function Navigation() {
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

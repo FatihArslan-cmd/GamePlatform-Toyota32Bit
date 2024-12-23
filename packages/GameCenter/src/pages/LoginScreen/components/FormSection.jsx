@@ -6,6 +6,8 @@ import ActionButtons from './FormSectionItem/ActionButtons';
 import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
 import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent'; 
+import { useNavigation } from '@react-navigation/native';
+import { fetchAndStoreGames } from '../../../utils/api';
 
 const FormSection = ({ onSignupPress, onSendCode }) => {
   const [email, setEmail] = useState('');
@@ -15,17 +17,23 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
-  const handleLoginPress = () => {
+  const handleLoginPress = async () => {
     if (rememberMe) {
-      setModalVisible(true);
+        setModalVisible(true);
     } else {
-      console.log('Login without Remember Me');
+        try {
+            await fetchAndStoreGames(); 
+            navigation.navigate('Home');
+        } catch (error) {
+          console.error('Error Details:', error.toJSON());
+        }
     }
-  };
+};
+
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
