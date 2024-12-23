@@ -3,14 +3,13 @@ import { StyleSheet, View, Animated, Dimensions } from 'react-native';
 import { Modal, Portal, Button } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 
-const BioModal = ({ visible, onDismiss, children }) => {
+const CustomModal = ({ visible, onDismiss, children }) => {
   const slideAnim = new Animated.Value(0);
   const fadeAnim = new Animated.Value(0);
   const { height } = Dimensions.get('window');
 
   useEffect(() => {
     if (visible) {
-      // Reset animations when modal becomes visible
       slideAnim.setValue(height);
       fadeAnim.setValue(0);
       
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
     borderColor: '#8a2be2',
     borderRadius: 30,
     borderWidth: 2,
-    marginTop: 20,
   },
   closeButtonLabel: {
     color: '#8a2be2',
@@ -118,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BioModal;
+export default CustomModal;

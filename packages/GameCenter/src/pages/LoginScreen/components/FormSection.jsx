@@ -1,118 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
-import InputField from './FormSectionItem/InputField';
+import { View, Animated, StyleSheet } from 'react-native';
+import InputSection from './FormSectionItem/InputSection';
 import OptionsSection from './FormSectionItem/OptionsSection';
-import ActionButtons from './FormSectionItem/ActionButtons';
+import ActionButtonsSection from './FormSectionItem/ActionButtonsSection';
 import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
-import BioModal from './ModalItem/BioModal';
-import BioModalContent from './ModalItem/BioModalContent'; // Yeni içerik bileşeni
-import { Text } from 'react-native-paper';
+import CustomModal from '../../../components/CustomModal';
+import BioModalContent from './ModalItem/BioModalContent';
+import useFormState from './hooks/useFormState';
 
 const FormSection = ({ onSignupPress, onSendCode }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [countdown, setCountdown] = useState(0);
-  const [isModalVisible, setModalVisible] = useState(false); // Modal visibility state
-
-  // Animation values
-  const slideAnim = useRef(new Animated.Value(0)).current;
-  const opacityAnim = useRef(new Animated.Value(1)).current;
-
-  const handleLoginPress = () => {
-    if (rememberMe) {
-      setModalVisible(true);
-    } else {
-      console.log('Login without Remember Me');
-    }
-  };
-
-  const handleForgotPasswordToggle = (showForgot) => {
-    Animated.parallel([
-      Animated.timing(slideAnim, {
-        toValue: showForgot ? 1 : 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacityAnim, {
-        toValue: 0,
-        duration: 150,
-        useNativeDriver: true,
-      }).start(() => {
-        setIsForgotPassword(showForgot);
-        Animated.timing(opacityAnim, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: true,
-        }).start();
-      }),
-    ]).start();
-  };
-
-  const handleSendCodeWithCountdown = () => {
-    if (countdown === 0) {
-      setCountdown(30);
-      onSendCode();
-    }
-  };
-
-  useEffect(() => {
-    let timer;
-    if (countdown > 0) {
-      timer = setTimeout(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [countdown]);
+  const {
+    email, password, showPassword, rememberMe, isForgotPassword,
+    countdown, isModalVisible, slideAnim, opacityAnim,
+    setEmail, setPassword, setShowPassword, setRememberMe, setModalVisible, handleForgotPasswordToggle,
+    handleSendCodeWithCountdown, handleLoginPress,
+  } = useFormState(onSendCode);
 
   return (
     <View style={styles.formContainer}>
-      <InputField
-        label="Email / Username"
-        value={email}
-        onChangeText={setEmail}
-        leftIcon="account-circle"
-        style={styles.input}
+      <InputSection 
+        email={email} 
+        password={password} 
+        setEmail={setEmail} 
+        setPassword={setPassword} 
+        showPassword={showPassword}
+        setShowPassword={setShowPassword} 
       />
-
-      <Animated.View
-        style={[
-          styles.animatedContainer,
-          {
-            transform: [
-              {
-                translateX: slideAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, -30],
-                }),
-              },
-            ],
-            opacity: opacityAnim,
-          },
-        ]}
-      >
+      
+      <Animated.View style={[styles.animatedContainer, {
+        transform: [{ translateX: slideAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -30] }) }],
+        opacity: opacityAnim,
+      }]}>
         {!isForgotPassword ? (
           <>
-            <InputField
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              leftIcon="shield-key"
-              rightIcon={showPassword ? 'eye-off' : 'eye'}
-              onRightIconPress={() => setShowPassword(!showPassword)}
-              style={styles.input}
-            />
             <OptionsSection
               rememberMe={rememberMe}
               setRememberMe={setRememberMe}
               setIsForgotPassword={() => handleForgotPasswordToggle(true)}
             />
-            <ActionButtons
-              scaleAnim={1}
+            <ActionButtonsSection
               onLoginPress={handleLoginPress}
               onSignupPress={onSignupPress}
             />
@@ -126,9 +52,9 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
         )}
       </Animated.View>
 
-      <BioModal visible={isModalVisible} onDismiss={() => setModalVisible(false)}>
-        <BioModalContent/>
-      </BioModal>
+      <CustomModal visible={isModalVisible} onDismiss={() => setModalVisible(false)}>
+        <BioModalContent />
+      </CustomModal>
     </View>
   );
 };
@@ -141,11 +67,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#8a2be230',
     overflow: 'hidden',
-  },
-  input: {
-    marginBottom: 15,
-    backgroundColor: '#ffffff10',
-    fontFamily: 'RussoOne-Regular',
   },
   animatedContainer: {
     width: '100%',
