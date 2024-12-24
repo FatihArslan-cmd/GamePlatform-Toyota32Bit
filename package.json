@@ -30,7 +30,8 @@
       "**/react-native-reanimated",
       "**/react-native-mmkv",
       "**/react-native-fast-image",
-      "**/@shopify/flash-list"
+      "**/@shopify/flash-list",
+      "**/@bam.tech/react-native-image-resizer"
 
     ]
   },
