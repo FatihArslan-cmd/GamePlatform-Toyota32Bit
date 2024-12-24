@@ -22,17 +22,25 @@ const HomeScreen = () => {
     }
   }, [route.params?.toastshow]);
 
-  useEffect(() => {
-    const storedGames = getGamesFromStorage();
-    if (storedGames) {
-      setGames(storedGames);
-    }
+ useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const storedGames = await getGamesFromStorage(); // Async çağrı
+        console.log('Stored games:', storedGames);
+        setGames(storedGames.results); // Eğer API'den dönen veriler "results" altındaysa
+      } catch (error) {
+        console.error('Error fetching games:', error);
+      }
+    };
+
+    fetchGames();
   }, []);
 
   return (
     <View style={styles.container}>
       <AppBarExample />
-      <FeaturedGames games={games} />
+      
+      <FeaturedGames  games={games} />
       {currentToast && (
         <ToastMessage
           type={currentToast.type}

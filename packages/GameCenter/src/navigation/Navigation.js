@@ -24,7 +24,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Home' : 'Home'}
+        initialRouteName={isIntroSeen ? 'Login' : 'Login'}
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',

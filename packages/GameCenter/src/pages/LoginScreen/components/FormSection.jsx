@@ -8,8 +8,7 @@ import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent'; 
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
-import { BlurView } from '@react-native-community/blur';
-
+import { clearGamesFromStorage } from '../../../utils/api';
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +28,7 @@ const FormSection = ({ onSendCode }) => {
       setModalVisible(true);
     } else {
       try {
+        await clearGamesFromStorage(); 
         await fetchAndStoreGames(); 
         navigation.navigate('Home', { toastshow: true }); // Değer gönderiliyor
       } catch (error) {
