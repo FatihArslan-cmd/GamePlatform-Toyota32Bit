@@ -1,44 +1,82 @@
-import React, { useEffect } from 'react';
-import { Animated, StyleSheet } from 'react-native';
-import { Appbar, TextInput } from 'react-native-paper';
+import React, { useCallback, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Appbar, Menu, Divider } from 'react-native-paper';
+import { BlurView } from '@react-native-community/blur';
 
-const AnimatedHeader = ({ scrollY }) => {
-  const translateY = scrollY.interpolate({
-    inputRange: [0, 200], // Scroll değerine göre
-    outputRange: [-100, 0], // Header yukarıdan aşağıya kayar
-    extrapolate: 'clamp',
-  });
+const AppBarExample = React.memo(() => {
+  const [visible, setVisible] = useState(false);
+
+  const handleSearchPress = useCallback(() => {
+    console.log('Arama düğmesine basıldı');
+  }, []);
+
+  const openMenu = useCallback(() => setVisible(true), []);
+  const closeMenu = useCallback(() => setVisible(false), []);
 
   return (
-    <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
-      <Appbar.Header style={styles.appbar}>
-        <TextInput
-          mode="outlined"
-          placeholder="Search games..."
-          style={styles.searchInput}
-        />
-      </Appbar.Header>
-    </Animated.View>
+    <View style={styles.container}>
+      <BlurView
+        style={styles.blurContainer}
+        blurType="light"
+        blurAmount={2}
+        reducedTransparencyFallbackColor="white"
+      >
+        <Appbar.Header style={styles.appbar}>
+          <Appbar.Action 
+            icon="magnify" 
+            onPress={handleSearchPress} 
+            color="gray" 
+          />
+          <Appbar.Content 
+            title="GameCenter" 
+            titleStyle={styles.title}
+          />
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={
+              <Appbar.Action 
+                icon="dots-vertical" 
+                onPress={openMenu} 
+                color="gray" 
+              />
+            }
+            style={styles.menu}
+          >
+            <Menu.Item onPress={() => {}} title="Settings"             titleStyle={styles.title}
+ />
+            <Divider />
+            <Menu.Item onPress={() => {}} title="Help & Display"             titleStyle={styles.title}
+ />
+          </Menu>
+        </Appbar.Header>
+      </BlurView>
+    </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
-  header: {
+  container: {
+    zIndex: 1,
+  },
+  blurContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 10,
   },
   appbar: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    elevation: 4,
+    backgroundColor: 'transparent',
+    elevation: 0,
   },
-  searchInput: {
-    flex: 1,
-    margin: 10,
-    backgroundColor: 'white',
+  title: {
+    color: 'black',
+    fontFamily: 'Orbitron-VariableFont_wght', // Font set to SQR721B
+    textAlign: 'center',
+  },
+  menu: {
+    marginTop: 40, 
   },
 });
 
-export default AnimatedHeader;
+export default AppBarExample;

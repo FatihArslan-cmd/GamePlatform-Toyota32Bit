@@ -80,13 +80,7 @@ const FormSection = ({ onSendCode }) => {
 
   return (
     <View style={styles.formContainer}>
-      {isBlurring && (
-        <BlurView
-          style={styles.absolute}
-          blurType="dark"
-          blurAmount={10}
-        />
-      )}
+    
 
       <InputField
         label="Email / Username"

@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     alignSelf: 'center',
     width: '90%',
+    zIndex: 1000,
   },
   content: {
     flexDirection: "row",

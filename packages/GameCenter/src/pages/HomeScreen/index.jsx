@@ -5,6 +5,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useRoute, useNavigation } from '@react-navigation/native';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
+import AppBarExample from './components/Header';
 const HomeScreen = () => {
     const { currentToast, showToast, hideToast } = useToast();
 const navigation = useNavigation();
@@ -33,12 +34,16 @@ const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
+      <AppBarExample />
+
       <FlashList
         data={games}
         renderItem={renderGame}
         keyExtractor={(item, index) => index.toString()} 
         estimatedItemSize={50} // Recommended for performance
+        
       />
+
        {currentToast && (
         <ToastMessage
           type={currentToast.type}

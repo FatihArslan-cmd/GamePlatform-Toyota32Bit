@@ -5,6 +5,8 @@ import { storage } from '../utils/storage.js';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import HomeScreen from '../pages/HomeScreen/index.jsx';
+import CustomHeader from './CustomHeader.jsx';// Yeni bileşen
+
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -12,7 +14,7 @@ export default function Navigation() {
 
   useEffect(() => {
     const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-    setIsIntroSeen(hasSeenIntro ?? false); // Default to false if not set
+    setIsIntroSeen(hasSeenIntro ?? false); // Varsayılan false
   }, []);
 
   if (isIntroSeen === null) {
@@ -22,7 +24,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Login' : 'Intro'}
+        initialRouteName={isIntroSeen ? 'Home' : 'Home'}
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -32,19 +34,27 @@ export default function Navigation() {
           name="Intro"
           component={AdvancedPagerView}
           options={{
-            // Save when the intro screen is finished
             headerShown: false,
           }}
           listeners={{
             focus: () => {
-              storage.set('hasSeenIntro', true); // Mark intro as seen
+              storage.set('hasSeenIntro', true); // Intro işaretlendi
             },
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{
-        }} />
-
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={({ navigation }) => ({
+            headerShown: false,
+            ...CustomHeader({
+              onSearchPress: () => {
+                console.log('Search icon pressed');
+              },
+            }),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

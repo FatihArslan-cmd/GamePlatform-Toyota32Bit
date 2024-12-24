@@ -1,33 +1,32 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
-
-export default function CustomHeader() {
-  return (
-    <BlurView
-      style={styles.blurContainer}
-      blurType="light"
-      blurAmount={10}
-      reducedTransparencyFallbackColor="white"
-    >
-      <Text style={styles.headerTitle}>Home</Text>
-    </BlurView>
-  );
+import { View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Text } from 'react-native-paper';
+export default function CustomHeader({ onSearchPress }) {
+  return {
+    headerLeft: () => (
+      <Icon
+        name="search"
+        size={22}
+        color="#5f6368"
+        style={{ marginLeft: 16 }}
+        onPress={onSearchPress}
+      />
+    ),
+    headerTitle: () => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Icon name="game-controller" size={24} color="#000" />
+        <Text style={{ fontSize: 18, marginLeft: 8,fontFamily:'Anton-Regular' }}>GameCenter</Text>
+      </View>
+    ),
+    headerRight: () => (
+      <Icon
+        name="ellipsis-vertical"
+        size={22}
+        color="#5f6368"
+        style={{ marginRight: 16 }}
+      />
+    ),
+    headerTitleAlign: 'center',
+  };
 }
-
-const styles = StyleSheet.create({
-  blurContainer: {
-    width: '100%',
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 0,
-    zIndex: 1,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-});
