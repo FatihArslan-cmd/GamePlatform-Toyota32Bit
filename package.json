@@ -15,11 +15,10 @@
       "**/react-native-paper",
       "**/react-native-safe-area-context",
       "**/react-native-vector-icons",
-      "**/@react-native-async-storage/async-storage",
       "**/@react-navigation/native",
       "**/@react-navigation/native-stack",
       "**/@shopify/react-native-skia",
-      "**/axios",
+      "**/axios",    
       "**/react-native-fast-image",
       "**/react-native-linear-gradient",
       "**/react-native-skottie",
@@ -31,9 +30,7 @@
       "**/react-native-mmkv",
       "**/react-native-fast-image",
       "**/@shopify/flash-list",
-      "**/react-native-image-crop-picker",
-      "**/react-native-image-colors"
-
+      "**/react-native-palette"
 
     ]
   },

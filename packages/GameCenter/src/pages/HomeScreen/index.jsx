@@ -1,4 +1,4 @@
-import { View, StyleSheet,ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import useToast from '../../components/ToastMessage/hooks/useToast';
 import AppBarExample from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
 import MiniGamesBlock from './components/MiniGames';
+
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
@@ -22,7 +23,7 @@ const HomeScreen = () => {
     }
   }, [route.params?.toastshow]);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchGames = async () => {
       try {
         const storedGames = await getGamesFromStorage(); // Async çağrı
@@ -37,10 +38,12 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <AppBarExample />
-      <FeaturedGames games={games} />
-      <MiniGamesBlock games={games} />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <FeaturedGames games={games} />
+        <MiniGamesBlock games={games} />
+      </ScrollView>
       {currentToast && (
         <ToastMessage
           type={currentToast.type}
@@ -48,7 +51,7 @@ const HomeScreen = () => {
           onHide={hideToast}
         />
       )}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -56,6 +59,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  },
+  scrollContent: {
+    paddingTop: 32, 
   },
 });
 

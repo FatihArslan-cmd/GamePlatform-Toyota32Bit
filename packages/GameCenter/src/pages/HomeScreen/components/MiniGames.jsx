@@ -1,63 +1,134 @@
-import React from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import React, { memo } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Card, Text, Divider, Surface } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import { LinearGradient } from 'react-native-linear-gradient';
 
-const MiniGamesBlock = ({ games }) => {
-  // Flatten the array of tags from the games data
-  const tags = games.flatMap(game => game.tags?.slice(0, 20) || []);
+const cardColors = [
+  '#FF6B6B', '#4ECDC4', '#96C93D', '#5F2C82', '#667EEA',
+  '#00B4DB', '#FF512F', '#4776E6', '#00B09B', '#FDC830'
+];
 
-  // Extract only the first 20 tags
-  const displayedTags = tags.slice(0, 33);
+const GameItem = memo(({ item, color }) => (
+  <Surface style={[styles.surface, { backgroundColor: color }]} elevation={4}>
+    <Card style={styles.card}>
+      <FastImage
+        source={{ uri: item.image_background }}
+        style={styles.cardCover}
+      />
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.8)']}
+        style={styles.gradient}
+      />
+      <Card.Title
+        title={item.name}
+        titleStyle={styles.cardTitle}
+        titleNumberOfLines={2}
+      />
+    </Card>
+  </Surface>
+));
+
+const MiniGamesBlock = memo(({ games }) => {
+  const tags = games.flatMap(game => game.tags?.slice(0, 44) || []);
+  const displayedTags = tags.slice(0, 20);
+
+  const topRow = displayedTags.filter((_, i) => i % 2 === 0);
+  const bottomRow = displayedTags.filter((_, i) => i % 2 === 1);
+
+  const renderGameItem = (item, index) => (
+    <GameItem
+      key={index}
+      item={item}
+      color={cardColors[index % cardColors.length]}
+    />
+  );
 
   return (
-    <>
-    <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign:'center' }}>Mini Games</Text>
-    <ScrollView horizontal style={styles.container}>
-      {displayedTags.map((tag, index) => (
-        <View key={index} style={styles.block}>
-          <FastImage
-            source={{ uri: tag.image_background }}
-            style={styles.image}
-          />
-          <Text style={styles.gameName} numberOfLines={1}>
-            {tag.name}
-          </Text>
+    <View style={styles.wrapper}>
+      <Text style={styles.title}>Mini Games</Text>
+      <Divider style={styles.divider} />
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContainer}
+      >
+        <View style={styles.rowsContainer}>
+          <View style={styles.row}>
+            {topRow.map((item, index) => renderGameItem(item, index))}
+          </View>
+          <View style={styles.row}>
+            {bottomRow.map((item, index) =>
+              renderGameItem(item, index + topRow.length)
+            )}
+          </View>
         </View>
-      ))}
-    </ScrollView>
-    </>
+      </ScrollView>
+    </View>
   );
-};
+});
+
+const BLOCK_WIDTH = 150;
+const BLOCK_HEIGHT = 180;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginVertical: 16,
+  wrapper: {
+    backgroundColor: '#f8f9fa',
+    paddingVertical: 20,
   },
-  block: {
-    width: 120, // Adjust size of each block
-    marginHorizontal: 8,
-    alignItems: 'center',
+  title: {
+    textAlign: 'center',
+    marginBottom: 8,
+    fontSize: 20,
+  },
+  divider: {
+    height: 3,
+    borderRadius: 1,
+    width: '100%',
+    marginVertical: 10,
+  },
+  scrollContainer: {
+    paddingHorizontal: 20,
+  },
+  rowsContainer: {
+    gap: 16,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  surface: {
+    borderRadius: 16,
+    padding: 2,
+  },
+  card: {
+    width: BLOCK_WIDTH,
+    height: BLOCK_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#fff',
-    elevation: 4, // Add shadow for modern UI
   },
-  image: {
-    width: '100%',
-    height: 100, // Adjust height for larger blocks
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+  cardCover: {
+    height: '100%',
+    borderRadius: 12,
   },
-  gameName: {
-    marginTop: 8,
-    paddingHorizontal: 4,
-    fontSize: 14, // Modern font size
-    fontWeight: '500', // Bold font for better emphasis
+  gradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '60%',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  cardTitle: {
+    position: 'absolute',
+    bottom: 0,
+    color: 'white',
+    fontSize: 14,
+    lineHeight: 18,
     textAlign: 'center',
-    color: '#333',
+    paddingHorizontal: 8,
+    paddingBottom: 30,
   },
 });
 

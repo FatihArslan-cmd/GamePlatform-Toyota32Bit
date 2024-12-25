@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions, Text as RNText } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import FastImage from 'react-native-fast-image';
-import { Text, Title } from 'react-native-paper';
+import { Text, Title, Chip,Divider } from 'react-native-paper';
+import { LinearGradient } from 'react-native-linear-gradient';
 import getFormattedDate from '../../../utils/getFormattedDate';
 
 const FeaturedGames = React.memo(({ games }) => {
@@ -24,41 +25,73 @@ const FeaturedGames = React.memo(({ games }) => {
     }
   }, [games.length, handlePageChange]);
 
+  const renderPaginationDots = () => {
+    return (
+      <View style={styles.paginationContainer}>
+        {games.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.paginationDot,
+              index === currentPage && styles.paginationDotActive,
+            ]}
+          />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 50 }} />
-      <Title style={styles.sectionTitle}>Top Games</Title>
-      <Text style={styles.dateText}>{getFormattedDate()}</Text>
+      <View style={{marginTop:35}}></View>
+      <View style={styles.headerContainer}>
+        <Title style={styles.sectionTitle}>Top Rated Games</Title>
+        <Text style={styles.dateText}>{getFormattedDate()}</Text>
+      </View>
+         <Divider style={styles.divider}  />
       {games.length > 0 ? (
-        <PagerView
-          ref={pagerRef}
-          style={styles.pager}
-          initialPage={0}
-          onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
-        >
-          {games.map((item) => (
-            <View key={item.id} style={styles.page}>
-              <FastImage
-                source={{ uri: item.background_image }}
-                style={styles.image}
-              />
-              <View style={styles.infoContainer}>
-                <View style={styles.infoOverlay}>
-                  <RNText style={styles.gameTitle}>{item.name}</RNText>
-                  <View style={styles.statsContainer}>
-                    <RNText style={styles.infoText}>Rating: {item.rating}</RNText>
-                    <RNText style={styles.infoText}>
-                      Ratings Count: {item.ratings_count}
-                    </RNText>
-                    <RNText style={styles.infoText}>
-                      Updated: {item.updated}
-                    </RNText>
-                  </View>
+        <View style={styles.carouselContainer}>
+          <PagerView
+            ref={pagerRef}
+            style={styles.pager}
+            initialPage={0}
+            onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
+          >
+            {games.map((item) => (
+              <View key={item.id} style={styles.page}>
+                <View style={styles.cardContainer}>
+                  <FastImage
+                    source={{ uri: item.background_image }}
+                    style={styles.image}
+                  />
+                  <LinearGradient
+                    colors={['rgba(0,0,0,0.7)', 'transparent']}
+                    style={styles.gradient}
+                  >
+                    <View style={styles.infoContainer}>
+                      <RNText style={styles.gameTitle}>{item.name}</RNText>
+                      <View style={styles.statsContainer}>
+                        <Chip 
+                          style={styles.chip} 
+                          textStyle={styles.chipText}
+                        >
+                          ★ {item.rating}
+                        </Chip>
+                        <Chip 
+                          style={styles.chip} 
+                          textStyle={styles.chipText}
+                        >
+                          {item.ratings_count} ratings
+                        </Chip>
+                      </View>
+                    </View>
+                  </LinearGradient>
                 </View>
               </View>
-            </View>
-          ))}
-        </PagerView>
+            ))}
+          </PagerView>
+          {renderPaginationDots()}
+        </View>
       ) : (
         <Text style={styles.noDataText}>No games available</Text>
       )}
@@ -69,62 +102,113 @@ const FeaturedGames = React.memo(({ games }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  headerContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  divider: {
+    height: 3,
+    borderRadius: 1,
+    width: '100%',
+    marginVertical:10
+  },
+  sectionTitle: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#1a1a1a',
+    letterSpacing: -0.5,
+  },
+  dateText: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
+  carouselContainer: {
+    height: Dimensions.get('window').height * 0.55,
+    position: 'relative',
   },
   pager: {
     flex: 1,
-    width: '100%',
-    height: Dimensions.get('window').height * 0.6,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginLeft: 16,
-    color: '#1a1a1a',
-  },
-  dateText: {
-    fontSize: 16,
-    marginLeft: 16,
-    marginBottom: 20,
-    color: '#555',
   },
   page: {
-    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  cardContainer: {
+    borderRadius: 24,
+    overflow: 'hidden',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
   },
   image: {
-    width: '90%',
-    height: 400,
-    borderRadius: 20,
+    width: '100%',
+    height: '100%',
+    borderRadius: 24,
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '40%',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
   },
   infoContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: '8%',
-    width: '84%',
-  },
-  infoOverlay: {
-    backgroundColor: 'rgba(32, 32, 32, 0.85)',
-    borderRadius: 12,
-    padding: 16,
-    backdropFilter: 'blur(10px)',
+    padding: 20,
   },
   gameTitle: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 12,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
   },
   statsContainer: {
-    gap: 4,
+    flexDirection: 'row',
+    gap: 8,
   },
-  infoText: {
-    color: '#e0e0e0',
-    fontSize: 14,
+  chip: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 20,
+  },
+  chipText: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    gap: 8,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  paginationDotActive: {
+    backgroundColor: '#fff',
+    width: 24,
   },
   noDataText: {
     fontSize: 16,
-    color: 'gray',
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 
