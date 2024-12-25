@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -26,9 +26,9 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const storedGames = await getGamesFromStorage(); // Async çağrı
+        const storedGames = await getGamesFromStorage();
         console.log('Stored games:', storedGames);
-        setGames(storedGames.results); // Eğer API'den dönen veriler "results" altındaysa
+        setGames(storedGames.results);
       } catch (error) {
         console.error('Error fetching games:', error);
       }
@@ -37,8 +37,11 @@ const HomeScreen = () => {
     fetchGames();
   }, []);
 
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
+      <StatusBar translucent backgroundColor="transparent" />
+
       <AppBarExample />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <FeaturedGames games={games} />
@@ -58,10 +61,9 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
   },
   scrollContent: {
-    paddingTop: 32, 
+    paddingTop: 52,
   },
 });
 

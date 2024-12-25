@@ -30,7 +30,8 @@
       "**/react-native-mmkv",
       "**/react-native-fast-image",
       "**/@shopify/flash-list",
-      "**/react-native-palette"
+      "**/react-content-loader",
+      "**/react-native-svg"
 
     ]
   },

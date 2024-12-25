@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { memo, useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { Card, Text, Divider, Surface } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { LinearGradient } from 'react-native-linear-gradient';
-
+import MyLoader from '../../../components/SkeletonPlaceHolder/MiniGamesPlaceHolder';
 const cardColors = [
   '#FF6B6B', '#4ECDC4', '#96C93D', '#5F2C82', '#667EEA',
   '#00B4DB', '#FF512F', '#4776E6', '#00B09B', '#FDC830'
@@ -30,6 +30,14 @@ const GameItem = memo(({ item, color }) => (
 ));
 
 const MiniGamesBlock = memo(({ games }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulating data loading delay
+    const timeout = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const tags = games.flatMap(game => game.tags?.slice(0, 44) || []);
   const displayedTags = tags.slice(0, 20);
 
@@ -48,22 +56,26 @@ const MiniGamesBlock = memo(({ games }) => {
     <View style={styles.wrapper}>
       <Text style={styles.title}>Mini Games</Text>
       <Divider style={styles.divider} />
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-      >
-        <View style={styles.rowsContainer}>
-          <View style={styles.row}>
-            {topRow.map((item, index) => renderGameItem(item, index))}
+      {isLoading ? (
+       <MyLoader />
+      ) : (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+        >
+          <View style={styles.rowsContainer}>
+            <View style={styles.row}>
+              {topRow.map((item, index) => renderGameItem(item, index))}
+            </View>
+            <View style={styles.row}>
+              {bottomRow.map((item, index) =>
+                renderGameItem(item, index + topRow.length)
+              )}
+            </View>
           </View>
-          <View style={styles.row}>
-            {bottomRow.map((item, index) =>
-              renderGameItem(item, index + topRow.length)
-            )}
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 });
@@ -129,6 +141,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 8,
     paddingBottom: 30,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 200,
+  },
+  loadingText: {
+    marginTop: 8,
+    fontSize: 16,
+    color: '#4ECDC4',
   },
 });
 

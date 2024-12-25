@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions, Text as RNText } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import FastImage from 'react-native-fast-image';
-import { Text, Title, Chip,Divider } from 'react-native-paper';
+import { Text, Title, Chip, Divider } from 'react-native-paper';
 import { LinearGradient } from 'react-native-linear-gradient';
 import getFormattedDate from '../../../utils/getFormattedDate';
+import TopRatedImagePlaceHolder from '../../../components/SkeletonPlaceHolder/TopRatedImagePlaceHolder';
 
 const FeaturedGames = React.memo(({ games }) => {
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handlePageChange = useCallback(() => {
     setCurrentPage((prevPage) => {
@@ -43,12 +45,12 @@ const FeaturedGames = React.memo(({ games }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{marginTop:35}}></View>
+      <View style={{ marginTop: 35 }}></View>
       <View style={styles.headerContainer}>
         <Title style={styles.sectionTitle}>Top Rated Games</Title>
         <Text style={styles.dateText}>{getFormattedDate()}</Text>
       </View>
-         <Divider style={styles.divider}  />
+      <Divider style={styles.divider} />
       {games.length > 0 ? (
         <View style={styles.carouselContainer}>
           <PagerView
@@ -63,6 +65,7 @@ const FeaturedGames = React.memo(({ games }) => {
                   <FastImage
                     source={{ uri: item.background_image }}
                     style={styles.image}
+                    onLoad={() => setImageLoaded(true)}
                   />
                   <LinearGradient
                     colors={['rgba(0,0,0,0.7)', 'transparent']}
@@ -71,16 +74,10 @@ const FeaturedGames = React.memo(({ games }) => {
                     <View style={styles.infoContainer}>
                       <RNText style={styles.gameTitle}>{item.name}</RNText>
                       <View style={styles.statsContainer}>
-                        <Chip 
-                          style={styles.chip} 
-                          textStyle={styles.chipText}
-                        >
+                        <Chip style={styles.chip} textStyle={styles.chipText}>
                           ★ {item.rating}
                         </Chip>
-                        <Chip 
-                          style={styles.chip} 
-                          textStyle={styles.chipText}
-                        >
+                        <Chip style={styles.chip} textStyle={styles.chipText}>
                           {item.ratings_count} ratings
                         </Chip>
                       </View>
@@ -93,7 +90,7 @@ const FeaturedGames = React.memo(({ games }) => {
           {renderPaginationDots()}
         </View>
       ) : (
-        <Text style={styles.noDataText}>No games available</Text>
+        <TopRatedImagePlaceHolder />
       )}
     </View>
   );
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
     height: 3,
     borderRadius: 1,
     width: '100%',
-    marginVertical:10
+    marginVertical: 10,
   },
   sectionTitle: {
     fontSize: 28,
@@ -135,7 +132,6 @@ const styles = StyleSheet.create({
   },
   page: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
   },
   cardContainer: {
     borderRadius: 24,
