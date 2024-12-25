@@ -31,7 +31,9 @@
       "**/react-native-mmkv",
       "**/react-native-fast-image",
       "**/@shopify/flash-list",
-      "**/@bam.tech/react-native-image-resizer"
+      "**/react-native-image-crop-picker",
+      "**/react-native-image-colors"
+
 
     ]
   },

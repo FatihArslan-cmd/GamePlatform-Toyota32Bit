@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -6,7 +6,7 @@ import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
 import AppBarExample from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
-
+import MiniGamesBlock from './components/MiniGames';
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
@@ -37,10 +37,10 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <AppBarExample />
-      
-      <FeaturedGames  games={games} />
+      <FeaturedGames games={games} />
+      <MiniGamesBlock games={games} />
       {currentToast && (
         <ToastMessage
           type={currentToast.type}
@@ -48,7 +48,7 @@ const HomeScreen = () => {
           onHide={hideToast}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
