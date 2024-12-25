@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Card, Text, Divider, Surface } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { LinearGradient } from 'react-native-linear-gradient';

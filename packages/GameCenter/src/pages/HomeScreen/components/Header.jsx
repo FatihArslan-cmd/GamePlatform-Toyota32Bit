@@ -25,11 +25,11 @@ const AppBarExample = React.memo(() => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <>
       <BlurView
         style={styles.blurContainer}
         blurType="light"
-        blurAmount={2}
+        blurAmount={5}
         reducedTransparencyFallbackColor="white"
       >
         <Appbar.Header style={styles.appbar}>
@@ -81,7 +81,7 @@ const AppBarExample = React.memo(() => {
           )}
         </Appbar.Header>
       </BlurView>
-    </View>
+    </>
   );
 });
 
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    zIndex: 1,
   },
   appbar: {
     backgroundColor: 'transparent',

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
+import { View, StyleSheet, ScrollView, StatusBar, Animated } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -7,11 +7,14 @@ import useToast from '../../components/ToastMessage/hooks/useToast';
 import AppBarExample from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
 import MiniGamesBlock from './components/MiniGames';
+import FromTheCreator from './components/FromTheCreator';
 
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
   const [games, setGames] = useState([]);
+  const [showAppBar, setShowAppBar] = useState(true); // AppBar görünürlüğü
+  const scrollY = new Animated.Value(0); // Scroll değeri
   const route = useRoute();
 
   useEffect(() => {
@@ -37,16 +40,30 @@ const HomeScreen = () => {
     fetchGames();
   }, []);
 
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    {
+      useNativeDriver: false,
+      listener: (event) => {
+        const offsetY = event.nativeEvent.contentOffset.y;
+        setShowAppBar(offsetY < 200); // 100 birimden fazla scroll yapıldığında AppBar gizlenir
+      },
+    }
+  );
 
   return (
     <View style={[styles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
-
-      <AppBarExample />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      {showAppBar && <AppBarExample />}
+      <Animated.ScrollView
+        contentContainerStyle={styles.scrollContent}
+        onScroll={handleScroll}
+        scrollEventThrottle={16} // Daha akıcı scroll işlemi için
+      >
         <FeaturedGames games={games} />
         <MiniGamesBlock games={games} />
-      </ScrollView>
+        <FromTheCreator />
+      </Animated.ScrollView>
       {currentToast && (
         <ToastMessage
           type={currentToast.type}

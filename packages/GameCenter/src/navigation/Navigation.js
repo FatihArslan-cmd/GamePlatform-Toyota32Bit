@@ -4,8 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { storage } from '../utils/storage.js';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
-import HomeScreen from '../pages/HomeScreen/index.jsx';
-import CustomHeader from './CustomHeader.jsx';// Yeni bileşen
+import TabNavigator from './TabBarNavigator.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,13 +17,13 @@ export default function Navigation() {
   }, []);
 
   if (isIntroSeen === null) {
-    return null;
+    return null; // İlk yüklemede boş bir ekran göster
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Home' : 'Intro'}
+        initialRouteName={isIntroSeen ? 'Login' : 'Login'} // İlk ekranı belirleyin
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -43,19 +42,8 @@ export default function Navigation() {
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={({ navigation }) => ({
-            headerShown: false,
-            ...CustomHeader({
-              onSearchPress: () => {
-                console.log('Search icon pressed');
-              },
-            }),
-          })}
-        />
-      </Stack.Navigator>
+        <Stack.Screen name="Tabs" component={TabNavigator} />
+        </Stack.Navigator>
     </NavigationContainer>
   );
 }

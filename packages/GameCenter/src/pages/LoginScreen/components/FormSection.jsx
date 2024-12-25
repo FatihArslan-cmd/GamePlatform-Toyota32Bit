@@ -30,7 +30,7 @@ const FormSection = ({ onSendCode }) => {
       try {
         await clearGamesFromStorage(); 
         await fetchAndStoreGames(); 
-        navigation.navigate('Home', { toastshow: true }); // Değer gönderiliyor
+        navigation.navigate('Tabs', { toastshow: true }); // Değer gönderiliyor
       } catch (error) {
         console.error('Error Details:', error.toJSON());
       } finally {
