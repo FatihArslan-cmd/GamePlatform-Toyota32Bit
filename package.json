@@ -6,7 +6,9 @@
     "start:bingo": "cd packages/Bingo && react-native run-android --port=8083"
   },
   "workspaces": {
-    "packages": ["packages/*"],
+    "packages": [
+      "packages/*"
+    ],
     "nohoist": [
       "**/react",
       "**/react-native",
@@ -18,7 +20,7 @@
       "**/@react-navigation/native",
       "**/@react-navigation/native-stack",
       "**/@shopify/react-native-skia",
-      "**/axios",    
+      "**/axios",
       "**/react-native-fast-image",
       "**/react-native-linear-gradient",
       "**/lottie-react-native",
@@ -34,11 +36,10 @@
       "**/react-native-svg",
       "**/@react-navigation/material-top-tabs",
       "**/react-native-nitro-modules",
-      "**/react-native-nitro-palette" 
-
+      "**/react-native-nitro-palette",
+      "**/@react-native-community/datetimepicker"
     ]
   },
-  "dependencies": {},
   "devDependencies": {
     "lerna": "^8.1.9"
   }

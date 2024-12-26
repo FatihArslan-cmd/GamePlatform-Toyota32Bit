@@ -2,11 +2,13 @@ import React, { useCallback, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Appbar, Menu, Divider, TextInput } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
+import CreateLobbyModal from './CreateLobbyModal';
 
 const AppBarExample = React.memo(() => {
-  const [visible, setVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
 
   const handleSearchPress = useCallback(() => {
     setSearchMode(true);
@@ -17,11 +19,16 @@ const AppBarExample = React.memo(() => {
     setSearchQuery('');
   }, []);
 
-  const openMenu = useCallback(() => setVisible(true), []);
-  const closeMenu = useCallback(() => setVisible(false), []);
+  const openMenu = useCallback(() => setMenuVisible(true), []);
+  const closeMenu = useCallback(() => setMenuVisible(false), []);
 
   const handleSearchChange = useCallback((query) => {
     setSearchQuery(query);
+  }, []);
+
+  const handleCreateLobby = useCallback(() => {
+    closeMenu();
+    setLobbyModalVisible(true);
   }, []);
 
   return (
@@ -62,7 +69,7 @@ const AppBarExample = React.memo(() => {
                 titleStyle={styles.title}
               />
               <Menu
-                visible={visible}
+                visible={menuVisible}
                 onDismiss={closeMenu}
                 anchor={
                   <Appbar.Action
@@ -76,11 +83,22 @@ const AppBarExample = React.memo(() => {
                 <Menu.Item onPress={() => {}} title="Settings" titleStyle={styles.title} />
                 <Divider />
                 <Menu.Item onPress={() => {}} title="Help & Display" titleStyle={styles.title} />
+                <Divider />
+                <Menu.Item 
+                  onPress={handleCreateLobby}
+                  title="Create Lobby" 
+                  titleStyle={styles.title} 
+                />
               </Menu>
             </>
           )}
         </Appbar.Header>
       </BlurView>
+
+      <CreateLobbyModal 
+        visible={lobbyModalVisible}
+        onDismiss={() => setLobbyModalVisible(false)}
+      />
     </>
   );
 });
