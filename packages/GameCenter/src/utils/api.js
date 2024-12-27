@@ -28,6 +28,12 @@ export const getGamesFromStorage = () => {
     return data ? JSON.parse(data) : [];
 };
 
+
 export const clearGamesFromStorage = () => {
-    storage.delete('games');
+    if (storage.contains('games')) {
+        storage.delete('games');
+        console.log('Games successfully cleared from storage.');
+    } else {
+        console.log('No games found in storage to clear.');
+    }
 };

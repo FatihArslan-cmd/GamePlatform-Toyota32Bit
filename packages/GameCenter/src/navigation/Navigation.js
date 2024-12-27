@@ -22,7 +22,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Intro' : 'Intro'} // İlk ekranı belirleyin
+        initialRouteName={isIntroSeen ? 'Tabs' : 'Tabs'} // İlk ekranı belirleyin
         screenOptions={{
           headerShown: false,
           animation: 'none', // Disable default animation

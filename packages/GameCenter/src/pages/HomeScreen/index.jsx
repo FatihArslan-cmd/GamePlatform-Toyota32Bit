@@ -37,30 +37,18 @@ const HomeScreen = () => {
     }
   }, [route.params?.toastshow]);
 
-  const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    {
-      useNativeDriver: false,
-      listener: (event) => {
-        const offsetY = event.nativeEvent.contentOffset.y;
-        setShowAppBar(offsetY < 200); // Hide AppBar after 200 units of scroll
-      },
-    }
-  );
+
 
   return (
     <View style={[styles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
       {showAppBar && <AppBarExample />}
-      <Animated.ScrollView
-        contentContainerStyle={styles.scrollContent}
-        onScroll={handleScroll}
-        scrollEventThrottle={16} // Smoother scroll
+      <ScrollView
       >
         <FeaturedGames games={games} />
         <MiniGamesBlock games={games} />
         <FromTheCreator />
-      </Animated.ScrollView>
+      </ScrollView>
       {currentToast && (
         <ToastMessage
           type={currentToast.type}
