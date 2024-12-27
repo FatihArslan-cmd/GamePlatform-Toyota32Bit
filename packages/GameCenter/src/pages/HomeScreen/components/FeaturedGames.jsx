@@ -45,7 +45,7 @@ const FeaturedGames = React.memo(({ games }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 35 }}></View>
+      <View style={{ marginTop: 85 }}></View>
       <View style={styles.headerContainer}>
         <Title style={styles.sectionTitle}>Top Rated Games</Title>
         <Text style={styles.dateText}>{getFormattedDate()}</Text>

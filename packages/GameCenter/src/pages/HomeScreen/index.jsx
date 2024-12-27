@@ -1,10 +1,16 @@
-import { View, StyleSheet, ScrollView, StatusBar, Animated } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef,useMemo } from 'react';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+  Animated,
+} from 'react-native';
 import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
-import AppBarExample from './components/Header';
+import Header from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
 import MiniGamesBlock from './components/MiniGames';
 import FromTheCreator from './components/FromTheCreator';
@@ -13,21 +19,30 @@ const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
   const [games, setGames] = useState([]);
-  const [showAppBar, setShowAppBar] = useState(true); // AppBar visibility
-  const scrollY = new Animated.Value(0); // Scroll value
+  const [appBarHeight, setAppBarHeight] = useState(0); // Dinamik yükseklik
+  const scrollY = useRef(new Animated.Value(0)).current; // Scroll değeri
   const route = useRoute();
 
-  // Fetch games from local storage on mount
+  // AppBar'ın görünürlüğünü belirleyen animasyonlu değer
+  const appBarTranslateY = useMemo(() => 
+    scrollY.interpolate({
+      inputRange: [0, 500],
+      outputRange: [0, -appBarHeight],
+      extrapolate: 'clamp',
+    }), [scrollY, appBarHeight]
+  );
+
+  // Oyunları yerel depolamadan yükle
   useEffect(() => {
     const loadGames = async () => {
       const storedGames = getGamesFromStorage();
-      setGames(storedGames.results || []); // Update the state with games
+      setGames(storedGames.results || []);
     };
 
     loadGames();
   }, []);
 
-  // Show toast on successful login
+  // Başarılı girişte toast göster
   useEffect(() => {
     if (route.params?.toastshow) {
       setTimeout(() => {
@@ -37,13 +52,28 @@ const HomeScreen = () => {
     }
   }, [route.params?.toastshow]);
 
-
-
   return (
     <View style={[styles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
-      {showAppBar && <AppBarExample />}
+      {/* AppBar'ı animasyonlu bir View ile sar */}
+      <Animated.View
+        style={[
+          styles.appBar,
+          { transform: [{ translateY: appBarTranslateY }] },
+        ]}
+        onLayout={(event) => {
+          // AppBar'ın yüksekliğini ölç
+          setAppBarHeight(event.nativeEvent.layout.height);
+        }}
+      >
+        <Header />
+      </Animated.View>
       <ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16} // Scroll optimizasyonu
       >
         <FeaturedGames games={games} />
         <MiniGamesBlock games={games} />
@@ -64,8 +94,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollContent: {
-    paddingTop: 52,
+  appBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    backgroundColor: 'white', // AppBar arka plan rengi
+    elevation: 4, // Android için gölge
   },
 });
 

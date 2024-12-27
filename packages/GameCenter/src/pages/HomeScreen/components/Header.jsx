@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { Appbar, Menu, Divider, TextInput, IconButton } from 'react-native-paper';
 import CreateLobbyModal from './CreateLobbyModal/CreateLobbyModal';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-
-const AppBarExample = React.memo(() => {
+import WavyLine from '../../../components/WavyLine';
+const Header = React.memo(() => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,17 +76,22 @@ const AppBarExample = React.memo(() => {
             />
           </>
         ) : (
+          
           <>
-            <Appbar.Content
-              title="GameCenter"
-              titleStyle={styles.title}
-            />
-            <View style={styles.rightActions}>
-              <Appbar.Action
+             <Appbar.Action
                 icon="magnify"
                 onPress={handleSearchPress}
                 color="gray"
               />
+            <WavyLine width={200} height={30} />
+           
+            <Appbar.Content
+              title="GameCenter"
+              titleStyle={styles.title}
+            />
+              <WavyLine width={200} height={30} />
+
+            <View style={styles.rightActions}>
               <Menu
                 visible={menuVisible}
                 onDismiss={closeMenu}
@@ -164,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: 40,
+    height: 30,
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 0,
@@ -174,4 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppBarExample;
+export default Header;
