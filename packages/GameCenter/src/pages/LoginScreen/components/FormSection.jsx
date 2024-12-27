@@ -26,6 +26,8 @@ const FormSection = ({ onSendCode }) => {
       setModalVisible(true);
     } else {
       try {
+        await clearGamesFromStorage();
+        await fetchAndStoreGames();
         navigation.navigate('Tabs', { toastshow: true }); // Değer gönderiliyor
       } catch (error) {
         console.error('Error Details:', error.toJSON());

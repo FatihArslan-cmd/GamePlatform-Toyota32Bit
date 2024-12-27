@@ -88,6 +88,7 @@ const AppBarExample = React.memo(() => {
   title="Create Lobby"
   titleStyle={styles.title}
 />
+<Menu.Item onPress={() => {}} title="Active Lobbies" titleStyle={styles.title} />
 
               </Menu>
             </>

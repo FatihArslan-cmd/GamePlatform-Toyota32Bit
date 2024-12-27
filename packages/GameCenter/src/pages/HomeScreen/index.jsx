@@ -8,15 +8,26 @@ import AppBarExample from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
 import MiniGamesBlock from './components/MiniGames';
 import FromTheCreator from './components/FromTheCreator';
-import { fetchAndStoreGames } from '../../utils/api';
+
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
   const [games, setGames] = useState([]);
-  const [showAppBar, setShowAppBar] = useState(true); // AppBar görünürlüğü
-  const scrollY = new Animated.Value(0); // Scroll değeri
+  const [showAppBar, setShowAppBar] = useState(true); // AppBar visibility
+  const scrollY = new Animated.Value(0); // Scroll value
   const route = useRoute();
 
+  // Fetch games from local storage on mount
+  useEffect(() => {
+    const loadGames = async () => {
+      const storedGames = getGamesFromStorage();
+      setGames(storedGames.results || []); // Update the state with games
+    };
+
+    loadGames();
+  }, []);
+
+  // Show toast on successful login
   useEffect(() => {
     if (route.params?.toastshow) {
       setTimeout(() => {
@@ -26,27 +37,13 @@ const HomeScreen = () => {
     }
   }, [route.params?.toastshow]);
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const storedGames = await fetchAndStoreGames();
-        console.log('Stored games:', storedGames);
-        setGames(storedGames.results);
-      } catch (error) {
-        console.error('Error fetching games:', error);
-      }
-    };
-
-    fetchGames();
-  }, []);
-
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
     {
       useNativeDriver: false,
       listener: (event) => {
         const offsetY = event.nativeEvent.contentOffset.y;
-        setShowAppBar(offsetY < 200); // 100 birimden fazla scroll yapıldığında AppBar gizlenir
+        setShowAppBar(offsetY < 200); // Hide AppBar after 200 units of scroll
       },
     }
   );
@@ -58,7 +55,7 @@ const HomeScreen = () => {
       <Animated.ScrollView
         contentContainerStyle={styles.scrollContent}
         onScroll={handleScroll}
-        scrollEventThrottle={16} // Daha akıcı scroll işlemi için
+        scrollEventThrottle={16} // Smoother scroll
       >
         <FeaturedGames games={games} />
         <MiniGamesBlock games={games} />

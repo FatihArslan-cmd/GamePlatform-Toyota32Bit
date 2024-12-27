@@ -4,6 +4,16 @@ import { TextInput } from 'react-native-paper';
 
 const GameSelector = ({ game, onGameChange }) => {
   return (
+    <>
+    <TextInput
+      label="Lobby Name"
+      mode="outlined"
+      value={game}
+      onChangeText={onGameChange}
+      placeholder="Lobby Name"
+      left={<TextInput.Icon icon="gamepad-variant" />}
+      style={styles.input}
+    />
     <TextInput
       label="Select Game"
       mode="outlined"
@@ -13,6 +23,7 @@ const GameSelector = ({ game, onGameChange }) => {
       left={<TextInput.Icon icon="gamepad-variant" />}
       style={styles.input}
     />
+    </>
   );
 };
 

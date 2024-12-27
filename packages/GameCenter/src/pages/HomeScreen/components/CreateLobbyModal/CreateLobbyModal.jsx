@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, HelperText } from 'react-native-paper';
 import BottomSheet from '../../../../components/BottomSheet';
 import LobbyTypeSelector from './LobbyTypeSelector';
-import DateTimeSelector from './DateTimeSelector';
+import CustomDateTimeSelector from './DateTimeSelector';
 import GameSelector from './GameSelector';
 import PasswordInput from './PasswordInput';
 import InvitationLink from './InvitationLink';
@@ -12,10 +12,7 @@ import useToast from '../../../../components/ToastMessage/hooks/useToast';
 
 const CreateLobbyModal = ({ visible, onDismiss, height }) => {
   const [lobbyType, setLobbyType] = useState('normal');
-  const [showStartPicker, setShowStartPicker] = useState(false);
-  const [showEndPicker, setShowEndPicker] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+ 
   const [game, setGame] = useState('');
   const [password, setPassword] = useState('');
   const [invitationLink, setInvitationLink] = useState('');
@@ -24,20 +21,6 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
   const { currentToast, showToast, hideToast } = useToast();
 
 
-  const onDateChange = (type, selectedDate) => {
-    if (selectedDate) {
-        if (type === 'start') {
-            setStartDate(selectedDate);
-            onShowStartPicker(false);
-        } else if (type === 'end') {
-            setEndDate(selectedDate);
-            onShowEndPicker(false);
-        }
-    } else {
-        if (type === 'start') onShowStartPicker(false);
-        if (type === 'end') onShowEndPicker(false);
-    }
-};
 
 
   const toggleLobbyType = useCallback(() => {
@@ -46,25 +29,19 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
 
   const handleSave = useCallback(() => {
     if (lobbyType === 'event') {
-      if (endDate <= startDate) {
-        setError('End time must be after start time');
-        return;
-      }
+     
     }
     setError('');
     const code = Math.random().toString(36).substr(2, 10).toUpperCase();
     setInvitationLink(`https://gamecenter.com/invite/${code}`);
     showToast('success', 'Lobby created successfully!');
-  }, [lobbyType, startDate, endDate]);
+  }, [lobbyType]);
 
   const handleCopy = useCallback(() => {
-    // Implement copy to clipboard functionality
   }, [invitationLink]);
 
   const resetLobby = useCallback(() => {
     setLobbyType('normal');
-    setStartDate(new Date());
-    setEndDate(new Date());
     setGame('');
     setPassword('');
     setInvitationLink('');
@@ -76,7 +53,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
       visible={visible}
       onDismiss={onDismiss}
       title="Create Lobby"
-      height={height}
+      height="80%"
       backgroundColor="white"
     >
       <View style={styles.container}>
@@ -88,14 +65,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
             />
 
             {lobbyType === 'event' && (
-              <DateTimeSelector
-                showStartPicker={showStartPicker}
-                showEndPicker={showEndPicker}
-                startDate={startDate}
-                endDate={endDate}
-                onShowStartPicker={setShowStartPicker}
-                onShowEndPicker={setShowEndPicker}
-                onDateChange={onDateChange}
+              <CustomDateTimeSelector
               />
             )}
 
