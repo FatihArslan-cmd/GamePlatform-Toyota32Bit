@@ -1,215 +1,238 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, TextInput, Text, Switch, SegmentedButtons, List, Modal, Portal, IconButton } from 'react-native-paper';
-import CustomModal from '../../../components/CustomModal';
+import { StyleSheet, View, Platform } from 'react-native';
+import { TextInput, Button, Text, HelperText, Chip, IconButton } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import BottomSheet from '..../../../components/BottomSheet'
 
-const GAME_LIST = [
-  { id: '1', title: 'Game 1' },
-  { id: '2', title: 'Game 2' },
-  { id: '3', title: 'Game 3' },
-];
-
-const TimeInput = ({ label, value, onChange }) => (
-  <View style={styles.timeContainer}>
-    <Text style={styles.timeLabel}>{label}</Text>
-    <View style={styles.timeInputContainer}>
-      <IconButton icon="minus" size={20} onPress={() => onChange(Math.max(0, value - 1))} />
-      <Text style={styles.timeValue}>{value.toString().padStart(2, '0')}</Text>
-      <IconButton icon="plus" size={20} onPress={() => onChange(Math.min(23, value + 1))} />
-    </View>
-  </View>
-);
-
-const CreateLobbyModal = ({ visible, onDismiss }) => {
-  const [eventType, setEventType] = useState('normal');
-  const [startHour, setStartHour] = useState(12);
-  const [endHour, setEndHour] = useState(13);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+const CreateLobbyModal = ({ visible, onDismiss, height }) => {
+  const [lobbyType, setLobbyType] = useState('normal');
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [game, setGame] = useState('');
   const [password, setPassword] = useState('');
-  const [hasPassword, setHasPassword] = useState(false);
-  const [selectedGame, setSelectedGame] = useState(null);
-  const [showGameList, setShowGameList] = useState(false);
+  const [invitationLink, setInvitationLink] = useState('');
+  const [error, setError] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const generateInviteCode = () => Math.random().toString(36).substring(2, 12).toUpperCase();
+  const handleDateChange = useCallback((type, selectedDate) => {
+    const currentDate = selectedDate || (type === 'start' ? startDate : endDate);
+    if (type === 'start') {
+      setShowStartPicker(Platform.OS === 'ios');
+      setStartDate(currentDate);
+    } else {
+      setShowEndPicker(Platform.OS === 'ios');
+      setEndDate(currentDate);
+    }
+  }, [startDate, endDate]);
+
+  const toggleLobbyType = useCallback(() => {
+    setLobbyType(current => current === 'normal' ? 'event' : 'normal');
+  }, []);
 
   const handleSave = useCallback(() => {
-    const inviteCode = generateInviteCode();
-    console.log({ eventType, startDate, endDate, startHour, endHour, password, selectedGame, inviteCode });
-    onDismiss();
-  }, [eventType, startDate, endDate, startHour, endHour, password, selectedGame]);
+    if (lobbyType === 'event') {
+      if (endDate <= startDate) {
+        setError('End time must be after start time');
+        return;
+      }
+    }
+    setError('');
+    const code = Math.random().toString(36).substr(2, 10).toUpperCase();
+    setInvitationLink(`https://gamecenter.com/invite/${code}`);
+  }, [lobbyType, startDate, endDate]);
+
+  const renderDateTimePicker = (type) => {
+    const show = type === 'start' ? showStartPicker : showEndPicker;
+    const date = type === 'start' ? startDate : endDate;
+    
+    if (!show && Platform.OS === 'android') return null;
+    
+    return (
+      <DateTimePicker
+        value={date}
+        mode="datetime"
+        is24Hour={true}
+        display="default"
+        onChange={(event, selectedDate) => handleDateChange(type, selectedDate)}
+        minimumDate={type === 'end' ? startDate : new Date()}
+        style={styles.dateTimePicker}
+      />
+    );
+  };
 
   return (
-    <CustomModal visible={visible} onDismiss={onDismiss}>
+    <BottomSheet
+      visible={visible}
+      onDismiss={onDismiss}
+      title="Create Lobby"
+      height={height}
+      backgroundColor="white"
+    >
       <View style={styles.container}>
-        <Text style={styles.title}>Create New Lobby</Text>
-        
-        <SegmentedButtons
-          value={eventType}
-          onValueChange={setEventType}
-          buttons={[
-            { value: 'normal', label: 'Normal' },
-            { value: 'event', label: 'Event' },
-          ]}
-          style={styles.segmentedButton}
-        />
-
-        {eventType === 'event' && (
-          <>
-            <View style={styles.dateInputContainer}>
-              <TextInput
-                mode="outlined"
-                label="Start Date (DD/MM/YYYY)"
-                value={startDate}
-                onChangeText={setStartDate}
-                style={styles.dateInput}
-                placeholder="DD/MM/YYYY"
-              />
-              <TextInput
-                mode="outlined"
-                label="End Date (DD/MM/YYYY)"
-                value={endDate}
-                onChangeText={setEndDate}
-                style={styles.dateInput}
-                placeholder="DD/MM/YYYY"
-              />
-            </View>
-            <View style={styles.timeInputContainer}>
-              <TimeInput label="Start Time (hour)" value={startHour} onChange={setStartHour} />
-              <TimeInput label="End Time (hour)" value={endHour} onChange={setEndHour} />
-            </View>
-          </>
-        )}
-
-        <List.Item
-          title="Password Protection"
-          right={() => (
-            <Switch
-              value={hasPassword}
-              onValueChange={setHasPassword}
-              color="#8a2be2"
-            />
-          )}
-        />
-
-        {hasPassword && (
-          <TextInput
-            mode="outlined"
-            label="Lobby Password"
-            value={password}
-            onChangeText={setPassword}
-            style={styles.input}
-            secureTextEntry
-          />
-        )}
-
-        <Button
-          mode="outlined"
-          onPress={() => setShowGameList(true)}
-          style={styles.gameButton}
-        >
-          {selectedGame ? `Selected: ${selectedGame.title}` : 'Select Game'}
-        </Button>
-
-        <Portal>
-          <Modal
-            visible={showGameList}
-            onDismiss={() => setShowGameList(false)}
-            contentContainerStyle={styles.gameListContainer}
+        <View style={styles.lobbyTypeContainer}>
+          <Text style={styles.label}>Lobby Type</Text>
+          <Button
+            mode={lobbyType === 'normal' ? 'contained' : 'outlined'}
+            onPress={toggleLobbyType}
+            style={styles.typeButton}
           >
-            {GAME_LIST.map((game) => (
-              <List.Item
-                key={game.id}
-                title={game.title}
-                onPress={() => {
-                  setSelectedGame(game);
-                  setShowGameList(false);
-                }}
-                right={(props) =>
-                  selectedGame?.id === game.id && (
-                    <List.Icon {...props} icon="check" />
-                  )
-                }
-              />
-            ))}
-          </Modal>
-        </Portal>
+            {lobbyType === 'normal' ? '🎮 Normal' : '📅 Event'}
+          </Button>
+        </View>
 
+        {lobbyType === 'event' && (
+          <View style={styles.dateTimeContainer}>
+            <View style={styles.dateTimeField}>
+              <Text style={styles.dateTimeLabel}>Start Time</Text>
+              <Button
+                mode="outlined"
+                onPress={() => setShowStartPicker(true)}
+                icon="clock-outline"
+                style={styles.dateTimeButton}
+              >
+                {startDate.toLocaleString()}
+              </Button>
+              {renderDateTimePicker('start')}
+            </View>
+
+            <View style={styles.dateTimeField}>
+              <Text style={styles.dateTimeLabel}>End Time</Text>
+              <Button
+                mode="outlined"
+                onPress={() => setShowEndPicker(true)}
+                icon="clock-outline"
+                style={styles.dateTimeButton}
+              >
+                {endDate.toLocaleString()}
+              </Button>
+              {renderDateTimePicker('end')}
+            </View>
+          </View>
+        )}
+
+        {/* Game Selection with Autocomplete-like field */}
+        <TextInput
+          label="Select Game"
+          mode="outlined"
+          value={game}
+          onChangeText={setGame}
+          placeholder="Search for a game..."
+          left={<TextInput.Icon icon="gamepad-variant" />}
+          style={styles.input}
+        />
+
+        {/* Password Field with Toggle */}
+        <TextInput
+          label="Lobby Password (Optional)"
+          mode="outlined"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!isPasswordVisible}
+          right={
+            <TextInput.Icon
+              icon={isPasswordVisible ? "eye-off" : "eye"}
+              onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            />
+          }
+          style={styles.input}
+        />
+
+        {/* Error Message */}
+        {error ? (
+          <HelperText type="error" visible={!!error}>
+            {error}
+          </HelperText>
+        ) : null}
+
+        {/* Create Button */}
         <Button
           mode="contained"
           onPress={handleSave}
-          style={styles.saveButton}
-          labelStyle={styles.saveButtonLabel}
+          style={styles.createButton}
+          contentStyle={styles.createButtonContent}
+          icon="plus-circle"
         >
           Create Lobby
         </Button>
+
+        {/* Invitation Link with Copy Feature */}
+        {invitationLink && (
+          <View style={styles.linkContainer}>
+            <Chip
+              mode="outlined"
+              icon="link"
+              style={styles.chip}
+              onPress={() => {/* Implement copy to clipboard */}}
+            >
+              {invitationLink}
+            </Chip>
+            <IconButton
+              icon="content-copy"
+              size={20}
+              onPress={() => {/* Implement copy to clipboard */}}
+            />
+          </View>
+        )}
       </View>
-    </CustomModal>
+    </BottomSheet>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 16,
-    gap: 16,
   },
-  title: {
-    fontSize: 24,
-    fontFamily: 'Orbitron-VariableFont_wght',
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 16,
+  lobbyTypeContainer: {
+    marginBottom: 20,
   },
-  segmentedButton: {
-    marginBottom: 16,
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
   },
-  dateInputContainer: {
-    gap: 8,
-  },
-  dateInput: {
-    backgroundColor: 'transparent',
-  },
-  timeInputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 16,
+  typeButton: {
     marginTop: 8,
   },
-  timeContainer: {
-    flex: 1,
-    alignItems: 'center',
+  dateTimeContainer: {
+    marginBottom: 20,
   },
-  timeLabel: {
-    color: '#fff',
+  dateTimeField: {
+    marginBottom: 16,
+  },
+  dateTimeLabel: {
+    fontSize: 14,
+    fontWeight: '500',
     marginBottom: 4,
   },
-  timeValue: {
-    color: '#fff',
-    fontSize: 18,
-    fontFamily: 'Orbitron-VariableFont_wght',
+  dateTimeButton: {
+    width: '100%',
+    marginTop: 4,
+  },
+  dateTimePicker: {
+    width: '100%',
   },
   input: {
-    backgroundColor: 'transparent',
+    marginBottom: 16,
+    backgroundColor: 'white',
   },
-  gameButton: {
-    borderColor: '#8a2be2',
-    marginVertical: 8,
+  createButton: {
+    marginTop: 24,
+    paddingVertical: 8,
   },
-  gameListContainer: {
-    backgroundColor: '#121212',
-    padding: 16,
-    margin: 16,
-    borderRadius: 8,
+  createButtonContent: {
+    height: 48,
   },
-  saveButton: {
-    backgroundColor: '#8a2be2',
+  linkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 16,
-    borderRadius: 30,
   },
-  saveButtonLabel: {
-    fontSize: 16,
-    fontFamily: 'Orbitron-VariableFont_wght',
-    letterSpacing: 1,
+  chip: {
+    flex: 1,
+    marginRight: 8,
   },
 });
 

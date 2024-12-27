@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import {  StyleSheet } from 'react-native';
 import { Appbar, Menu, Divider, TextInput } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 import CreateLobbyModal from './CreateLobbyModal';
@@ -26,10 +26,6 @@ const AppBarExample = React.memo(() => {
     setSearchQuery(query);
   }, []);
 
-  const handleCreateLobby = useCallback(() => {
-    closeMenu();
-    setLobbyModalVisible(true);
-  }, []);
 
   return (
     <>
@@ -84,20 +80,25 @@ const AppBarExample = React.memo(() => {
                 <Divider />
                 <Menu.Item onPress={() => {}} title="Help & Display" titleStyle={styles.title} />
                 <Divider />
-                <Menu.Item 
-                  onPress={handleCreateLobby}
-                  title="Create Lobby" 
-                  titleStyle={styles.title} 
-                />
+                <Menu.Item
+  onPress={() => {
+    closeMenu(); // Close the menu
+    setLobbyModalVisible(true); // Open the lobby modal
+  }}
+  title="Create Lobby"
+  titleStyle={styles.title}
+/>
+
               </Menu>
             </>
           )}
         </Appbar.Header>
       </BlurView>
-
-      <CreateLobbyModal 
+      <CreateLobbyModal
         visible={lobbyModalVisible}
         onDismiss={() => setLobbyModalVisible(false)}
+        height="50%"
+
       />
     </>
   );

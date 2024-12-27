@@ -27,8 +27,6 @@
     "react-native-gesture-handler": "^2.21.2",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-mmkv": "^3.2.0",
-    "react-native-nitro-modules": "^0.20.1",
-    "react-native-nitro-palette": "^1.1.0",
     "react-native-pager-view": "^6.6.1",
     "react-native-paper": "^5.12.5",
     "react-native-reanimated": "^3.16.6",
