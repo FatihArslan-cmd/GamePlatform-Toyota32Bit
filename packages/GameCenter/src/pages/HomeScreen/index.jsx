@@ -8,7 +8,7 @@ import AppBarExample from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
 import MiniGamesBlock from './components/MiniGames';
 import FromTheCreator from './components/FromTheCreator';
-
+import { fetchAndStoreGames } from '../../utils/api';
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
@@ -29,7 +29,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const storedGames = await getGamesFromStorage();
+        const storedGames = await fetchAndStoreGames();
         console.log('Stored games:', storedGames);
         setGames(storedGames.results);
       } catch (error) {

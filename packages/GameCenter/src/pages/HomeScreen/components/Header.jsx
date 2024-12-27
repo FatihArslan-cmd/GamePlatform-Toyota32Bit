@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import {  StyleSheet } from 'react-native';
 import { Appbar, Menu, Divider, TextInput } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
-import CreateLobbyModal from './CreateLobbyModal';
+import CreateLobbyModal from './CreateLobbyModal/CreateLobbyModal';
 
 const AppBarExample = React.memo(() => {
   const [menuVisible, setMenuVisible] = useState(false);

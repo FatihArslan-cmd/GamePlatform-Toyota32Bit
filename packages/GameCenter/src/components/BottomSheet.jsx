@@ -195,17 +195,15 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-    textAlign: 'center',
   },
   title: {
     fontSize: 18,
-    textAlign: 'center',
   },
   content: {
     flex: 1,

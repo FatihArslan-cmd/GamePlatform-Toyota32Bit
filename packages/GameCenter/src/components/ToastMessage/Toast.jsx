@@ -214,7 +214,7 @@ const getIconName = (type) => {
 const styles = StyleSheet.create({
   toastContainer: {
     position: "absolute",
-    top: 20,
+    top: 35,
     left: 20,
     right: 20,
     borderRadius: 12,

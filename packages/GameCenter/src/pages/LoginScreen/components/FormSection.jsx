@@ -17,25 +17,19 @@ const FormSection = ({ onSendCode }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isBlurring, setIsBlurring] = useState(false); // Bulanıklık durumu
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
   const handleLoginPress = async () => {
-    setIsBlurring(true); // Bulanıklığı etkinleştir
     if (rememberMe) {
       setModalVisible(true);
     } else {
       try {
-        await clearGamesFromStorage(); 
-        await fetchAndStoreGames(); 
         navigation.navigate('Tabs', { toastshow: true }); // Değer gönderiliyor
       } catch (error) {
         console.error('Error Details:', error.toJSON());
-      } finally {
-        setIsBlurring(false); // İşlem tamamlandıktan sonra bulanıklığı kaldır
-      }
+      } 
     }
   };
 

@@ -5,7 +5,6 @@ import { storage } from '../utils/storage.js';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
-import { ExploreDetails } from '../pages/HomeScreen/components/FromTheCreator.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
