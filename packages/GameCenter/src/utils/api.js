@@ -5,7 +5,7 @@ import { storage } from './storage';
 export const fetchAndStoreGames = async () => {
     try {
         // Send GET request to the API
-        const response = await axios.get('https://gamerpower.com/api/giveaways');
+        const response = await axios.get('https://rawg.io/api/games?token&key=3617c23566704a0590d99135fcd3491f');
         
         if (response.status === 200) {
             const data = response.data;
@@ -13,7 +13,6 @@ export const fetchAndStoreGames = async () => {
             // Save the data as a JSON string
             storage.set('games', JSON.stringify(data));
 
-            console.log('Data successfully saved:', data);
         } else {
             console.error('API request failed with status:', response.status);
         }
@@ -24,6 +23,17 @@ export const fetchAndStoreGames = async () => {
 
 // Function to retrieve data from MMKV storage
 export const getGamesFromStorage = () => {
-    const data = storage.getString('games'); // Ensure the key is 'games' as stored by fetchAndStoreGames
+    const data = storage.getString('games');
+
     return data ? JSON.parse(data) : [];
-  };
+};
+
+
+export const clearGamesFromStorage = () => {
+    if (storage.contains('games')) {
+        storage.delete('games');
+        console.log('Games successfully cleared from storage.');
+    } else {
+        console.log('No games found in storage to clear.');
+    }
+};

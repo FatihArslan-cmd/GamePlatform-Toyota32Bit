@@ -8,8 +8,8 @@ import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent'; 
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
-
-const FormSection = ({ onSignupPress, onSendCode }) => {
+import { clearGamesFromStorage } from '../../../utils/api';
+const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -23,17 +23,17 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
 
   const handleLoginPress = async () => {
     if (rememberMe) {
-        setModalVisible(true);
+      setModalVisible(true);
     } else {
-        try {
-            await fetchAndStoreGames(); 
-            navigation.navigate('Home');
-        } catch (error) {
-          console.error('Error Details:', error.toJSON());
-        }
+      try {
+        await clearGamesFromStorage();
+        await fetchAndStoreGames();
+        navigation.navigate('Tabs', { toastshow: true }); // Değer gönderiliyor
+      } catch (error) {
+        console.error('Error Details:', error.toJSON());
+      } 
     }
-};
-
+  };
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -76,6 +76,8 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
 
   return (
     <View style={styles.formContainer}>
+    
+
       <InputField
         label="Email / Username"
         value={email}
@@ -120,7 +122,6 @@ const FormSection = ({ onSignupPress, onSendCode }) => {
             <ActionButtons
               scaleAnim={1}
               onLoginPress={handleLoginPress}
-              onSignupPress={onSignupPress}
             />
           </>
         ) : (
@@ -155,6 +156,14 @@ const styles = StyleSheet.create({
   },
   animatedContainer: {
     width: '100%',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10, // Blur'ın diğer içerikleri geçmesini sağla
   },
 });
 

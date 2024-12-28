@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View, Animated,StatusBar } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import PageItem from './PageItem';
 import pages from './pages';
@@ -53,6 +53,7 @@ const AdvancedPagerView = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar translucent backgroundColor="transparent" />
       <PagerView
         style={styles.pagerView}
         initialPage={0}

@@ -214,7 +214,7 @@ const getIconName = (type) => {
 const styles = StyleSheet.create({
   toastContainer: {
     position: "absolute",
-    top: 20,
+    top: 35,
     left: 20,
     right: 20,
     borderRadius: 12,
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     alignSelf: 'center',
     width: '90%',
+    zIndex: 1000,
   },
   content: {
     flexDirection: "row",

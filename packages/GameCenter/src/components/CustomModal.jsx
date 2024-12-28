@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Animated, Dimensions } from 'react-native';
 import { Modal, Portal, Button } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 

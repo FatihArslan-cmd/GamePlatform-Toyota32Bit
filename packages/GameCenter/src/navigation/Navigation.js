@@ -4,7 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { storage } from '../utils/storage.js';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
-import HomeScreen from '../pages/HomeScreen/index.jsx';
+import TabNavigator from './TabBarNavigator.jsx';
+import GameDetails from '../pages/HomeScreen/components/GameDetails/index.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -12,39 +13,45 @@ export default function Navigation() {
 
   useEffect(() => {
     const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-    setIsIntroSeen(hasSeenIntro ?? false); // Default to false if not set
+    setIsIntroSeen(hasSeenIntro ?? false); // Varsayılan false
   }, []);
 
   if (isIntroSeen === null) {
-    return null;
+    return null; // İlk yüklemede boş bir ekran göster
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Login' : 'Intro'}
+        initialRouteName={isIntroSeen ? 'Tabs' : 'Tabs'} // İlk ekranı belirleyin
         screenOptions={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: 'none',
         }}
       >
         <Stack.Screen
           name="Intro"
           component={AdvancedPagerView}
           options={{
-            // Save when the intro screen is finished
             headerShown: false,
           }}
           listeners={{
             focus: () => {
-              storage.set('hasSeenIntro', true); // Mark intro as seen
+              storage.set('hasSeenIntro', true); // Intro işaretlendi
             },
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-
-      </Stack.Navigator>
+        <Stack.Screen name="Tabs" component={TabNavigator} />
+        <Stack.Screen
+          name="GameDetails"
+          component={GameDetails}
+          options={{
+            presentation: 'transparentModal', // Arka plan için transparan görünüm
+            animation: 'fade', // Sadece fade animasyonu
+          }}
+        />
+        </Stack.Navigator>
     </NavigationContainer>
   );
 }
