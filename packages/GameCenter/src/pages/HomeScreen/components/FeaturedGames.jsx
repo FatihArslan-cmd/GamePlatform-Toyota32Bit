@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, StyleSheet, Dimensions, Text as RNText } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import FastImage from 'react-native-fast-image';
-import { Text, Title, Chip, Divider } from 'react-native-paper';
+import { Text, Chip, Divider } from 'react-native-paper';
 import { LinearGradient } from 'react-native-linear-gradient';
 import getFormattedDate from '../../../utils/getFormattedDate';
 import TopRatedImagePlaceHolder from '../../../components/SkeletonPlaceHolder/TopRatedImagePlaceHolder';
-
+import GradientText from '../../../components/GrandientText';
 const FeaturedGames = React.memo(({ games }) => {
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -47,7 +47,7 @@ const FeaturedGames = React.memo(({ games }) => {
     <View style={styles.container}>
       <View style={{ marginTop: 85 }}></View>
       <View style={styles.headerContainer}>
-        <Title style={styles.sectionTitle}>Top Rated Games</Title>
+        <Text style={styles.sectionTitle}>Top Rated Games</Text>
         <Text style={styles.dateText}>{getFormattedDate()}</Text>
       </View>
       <Divider style={styles.divider} />
@@ -72,7 +72,7 @@ const FeaturedGames = React.memo(({ games }) => {
                     style={styles.gradient}
                   >
                     <View style={styles.infoContainer}>
-                      <RNText style={styles.gameTitle}>{item.name}</RNText>
+                      <Text style={styles.gameTitle}>{item.name}</Text>
                       <View style={styles.statsContainer}>
                         <Chip style={styles.chip} textStyle={styles.chipText}>
                           ★ {item.rating}
@@ -114,14 +114,17 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 28,
-    fontWeight: '800',
     color: '#1a1a1a',
     letterSpacing: -0.5,
+    fontFamily: 'Orbitron-VariableFont_wght',
+
   },
   dateText: {
     fontSize: 14,
     color: '#666',
     marginTop: 4,
+    fontFamily: 'Orbitron-VariableFont_wght',
+
   },
   carouselContainer: {
     height: Dimensions.get('window').height * 0.55,

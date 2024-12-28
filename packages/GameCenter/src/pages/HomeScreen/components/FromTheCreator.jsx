@@ -3,8 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Card, Divider, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import gameData from './GameDetails/gameData.json';
+import imageAssets from './GameDetails/imageAssets';
+
 const FromTheCreator = () => {
   const navigation = useNavigation();
+
+  const getImageSource = (imageName) => {
+    return imageAssets[imageName] || null;
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>From the Creator</Text>
@@ -12,8 +20,7 @@ const FromTheCreator = () => {
       <Card style={styles.card}>
         <FastImage
           style={styles.imageBackground}
-          imageStyle={styles.image}
-          source={require('../../../locales/gameImages/unnamed.png')} // Adjust asset path
+          source={getImageSource(gameData.imageSource)} // Use dynamic mapping
         >
           <View style={styles.overlay} />
         </FastImage>
@@ -25,8 +32,15 @@ const FromTheCreator = () => {
             mode="contained"
             style={styles.button}
             labelStyle={styles.buttonText}
-            onPress={() => navigation.navigate('GameDetails')
-          } 
+            onPress={() =>
+              navigation.navigate('GameDetails', {
+                title: gameData.title,
+                instructions: gameData.instructions,
+                imageSource: getImageSource(gameData.imageSource),
+                buttonText: gameData.buttonText,
+                onButtonPress: () => console.log(gameData.onButtonPress),
+              })
+            }
           >
             Explore Now
           </Button>
@@ -43,9 +57,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333333',
+    fontSize: 28,
+    fontFamily: 'Orbitron-VariableFont_wght',
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -65,9 +78,6 @@ const styles = StyleSheet.create({
   imageBackground: {
     width: '100%',
     height: 220,
-  },
-  image: {
-    resizeMode: 'cover',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

@@ -91,7 +91,9 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     marginBottom: 8,
-    fontSize: 20,
+    fontSize: 28,
+    fontFamily: 'Orbitron-VariableFont_wght',
+
   },
   divider: {
     height: 3,

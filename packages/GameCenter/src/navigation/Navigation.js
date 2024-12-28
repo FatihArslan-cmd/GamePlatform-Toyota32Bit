@@ -5,7 +5,7 @@ import { storage } from '../utils/storage.js';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
-import GameDetails from '../pages/HomeScreen/components/GameDetails/index.jsx';
+import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -26,7 +26,7 @@ export default function Navigation() {
         initialRouteName={isIntroSeen ? 'Tabs' : 'Tabs'} // İlk ekranı belirleyin
         screenOptions={{
           headerShown: false,
-          animation: 'none',
+          animation: 'slide_from_right',
         }}
       >
         <Stack.Screen

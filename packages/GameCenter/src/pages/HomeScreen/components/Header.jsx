@@ -4,6 +4,7 @@ import { Appbar, Menu, Divider, TextInput, IconButton } from 'react-native-paper
 import CreateLobbyModal from './CreateLobbyModal/CreateLobbyModal';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import WavyLine from '../../../components/WavyLine';
+import GrandientText from '../../../components/GrandientText';
 const Header = React.memo(() => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [searchMode, setSearchMode] = useState(false);
@@ -83,13 +84,17 @@ const Header = React.memo(() => {
                 onPress={handleSearchPress}
                 color="gray"
               />
-            <WavyLine width={200} height={30} />
-           
-            <Appbar.Content
-              title="GameCenter"
-              titleStyle={styles.title}
-            />
-              <WavyLine width={200} height={30} />
+           <WavyLine color='#4A00E0' width={200} height={30} />
+
+<GrandientText
+  text="Game Center"
+  colors={['#4A00E0', '#FF8C00']} // Yoğun Mor, Altın, Turuncu
+  textStyle={{ fontSize: 28 }}
+  gradientDirection="horizontal"
+/>
+
+<WavyLine color='#FF8C00' width={200} height={30} />
+
 
             <View style={styles.rightActions}>
               <Menu
