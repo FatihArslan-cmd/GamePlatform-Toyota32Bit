@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { Button, Surface, Title } from 'react-native-paper';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { Button,Text, Surface, Title } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSequence, withDelay, Easing } from 'react-native-reanimated';
 import BackButton from '../../../../components/BackIcon';

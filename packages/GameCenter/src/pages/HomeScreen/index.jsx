@@ -23,7 +23,6 @@ const HomeScreen = () => {
   const scrollY = useRef(new Animated.Value(0)).current; // Scroll değeri
   const route = useRoute();
 
-  // AppBar'ın görünürlüğünü belirleyen animasyonlu değer
   const appBarTranslateY = useMemo(() => 
     scrollY.interpolate({
       inputRange: [0, 500],
@@ -32,7 +31,6 @@ const HomeScreen = () => {
     }), [scrollY, appBarHeight]
   );
 
-  // Oyunları yerel depolamadan yükle
   useEffect(() => {
     const loadGames = async () => {
       const storedGames = getGamesFromStorage();
@@ -42,7 +40,6 @@ const HomeScreen = () => {
     loadGames();
   }, []);
 
-  // Başarılı girişte toast göster
   useEffect(() => {
     if (route.params?.toastshow) {
       setTimeout(() => {
