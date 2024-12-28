@@ -4,8 +4,10 @@ import { Surface, Text, IconButton, useTheme, TouchableRipple } from 'react-nati
 import LottieView from 'lottie-react-native';
 import ToastMessage from '../../../../components/ToastMessage/Toast';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
+import Clipboard from '@react-native-clipboard/clipboard';
 
-const InvitationLink = ({ invitationLink, onCopy }) => {
+
+const InvitationLink = ({invitationLink}) => {
   const [copied, setCopied] = useState(false);
   const [animation] = useState(new Animated.Value(0));
   const { currentToast, showToast, hideToast } = useToast();
@@ -14,6 +16,7 @@ const InvitationLink = ({ invitationLink, onCopy }) => {
 
   const handleCopy = async () => {
     if (!invitationLink) return;
+    Clipboard.setString(invitationLink);
 
     setCopied(true);
     showToast('success', 'Link copied to clipboard!');

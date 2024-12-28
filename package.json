@@ -35,7 +35,10 @@
       "**/react-content-loader",
       "**/react-native-svg",
       "**/@react-navigation/material-top-tabs",
-      "**/@react-native-community/datetimepicker"
+      "**/@react-native-community/datetimepicker",
+      "**/@react-native-clipboard/clipboard",
+      "**/@react-native-masked-view/masked-view"
+
     ]
   },
   "devDependencies": {

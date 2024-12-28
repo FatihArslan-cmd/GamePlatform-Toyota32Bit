@@ -1,21 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Card, Divider, Button } from 'react-native-paper';
-
+import { useNavigation } from '@react-navigation/native';
 const FromTheCreator = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>From the Creator</Text>
       <Divider style={styles.divider} />
       <Card style={styles.card}>
-        <ImageBackground
+        <FastImage
           style={styles.imageBackground}
           imageStyle={styles.image}
           source={require('../../../locales/gameImages/unnamed.png')} // Adjust asset path
         >
           <View style={styles.overlay} />
-        </ImageBackground>
+        </FastImage>
         <Card.Content style={styles.cardContent}>
           <Text style={styles.description}>
             Welcome to this amazing application! Explore and enjoy your experience.
@@ -24,7 +25,8 @@ const FromTheCreator = () => {
             mode="contained"
             style={styles.button}
             labelStyle={styles.buttonText}
-            onPress={() => console.log('Explore button pressed!')}
+            onPress={() => navigation.navigate('GameDetails')
+          } 
           >
             Explore Now
           </Button>

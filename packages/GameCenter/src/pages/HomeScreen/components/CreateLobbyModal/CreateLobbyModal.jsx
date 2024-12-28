@@ -12,7 +12,6 @@ import useToast from '../../../../components/ToastMessage/hooks/useToast';
 
 const CreateLobbyModal = ({ visible, onDismiss, height }) => {
   const [lobbyType, setLobbyType] = useState('normal');
- 
   const [game, setGame] = useState('');
   const [password, setPassword] = useState('');
   const [invitationLink, setInvitationLink] = useState('');
@@ -20,16 +19,13 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { currentToast, showToast, hideToast } = useToast();
 
-
-
-
   const toggleLobbyType = useCallback(() => {
-    setLobbyType(current => current === 'normal' ? 'event' : 'normal');
+    setLobbyType(current => (current === 'normal' ? 'event' : 'normal'));
   }, []);
 
   const handleSave = useCallback(() => {
     if (lobbyType === 'event') {
-     
+      // Additional logic for 'event' type if needed
     }
     setError('');
     const code = Math.random().toString(36).substr(2, 10).toUpperCase();
@@ -37,8 +33,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
     showToast('success', 'Lobby created successfully!');
   }, [lobbyType]);
 
-  const handleCopy = useCallback(() => {
-  }, [invitationLink]);
+
 
   const resetLobby = useCallback(() => {
     setLobbyType('normal');
@@ -53,26 +48,17 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
       visible={visible}
       onDismiss={onDismiss}
       title="Create Lobby"
-      height="80%"
+      height="60%"
       backgroundColor="white"
     >
       <View style={styles.container}>
         {!invitationLink ? (
           <>
-            <LobbyTypeSelector 
-              lobbyType={lobbyType} 
-              onToggle={toggleLobbyType} 
-            />
+            <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} />
 
-            {lobbyType === 'event' && (
-              <CustomDateTimeSelector
-              />
-            )}
+            {lobbyType === 'event' && <CustomDateTimeSelector />}
 
-            <GameSelector 
-              game={game} 
-              onGameChange={setGame} 
-            />
+            <GameSelector game={game} onGameChange={setGame} />
 
             <PasswordInput
               password={password}
@@ -86,26 +72,23 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
                 {error}
               </HelperText>
             ) : null}
-               <Button
-          mode="contained"
-          onPress={handleSave}
-          style={[
-            styles.createButton,
-            invitationLink && styles.createButtonWithLink
-          ]}
-          contentStyle={styles.createButtonContent}
-          icon="plus-circle"
-        >
-          Create Lobby
-        </Button>
+
+            <Button
+              mode="contained"
+              onPress={handleSave}
+              style={[
+                styles.createButton,
+                invitationLink && styles.createButtonWithLink,
+              ]}
+              contentStyle={styles.createButtonContent}
+              icon="plus-circle"
+            >
+              Create Lobby
+            </Button>
           </>
         ) : (
-          // Show success view with invitation link
           <View style={styles.successContainer}>
-            <InvitationLink 
-              invitationLink={invitationLink} 
-              onCopy={handleCopy} 
-            />
+            <InvitationLink invitationLink={invitationLink}/>
             <Button
               mode="outlined"
               onPress={resetLobby}
@@ -116,8 +99,6 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
             </Button>
           </View>
         )}
-
-
       </View>
       {currentToast && (
         <ToastMessage
@@ -146,7 +127,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   createButtonWithLink: {
-    marginTop: 16, // Less margin when showing with link
+    marginTop: 16,
   },
   createButtonContent: {
     height: 48,

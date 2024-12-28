@@ -76,16 +76,17 @@ const BottomSheet = React.memo(({
       slideAnim.setValue(screenHeight);
       fadeAnim.setValue(0);
       panY.setValue(0);
+  
       Animated.parallel([
         Animated.spring(slideAnim, {
           toValue: 0,
-          tension: 50,
-          friction: 7,
+          tension: 1, 
+          friction: 10, 
           useNativeDriver: true,
         }),
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 300,
+          duration: 1000, // Daha yavaş bir görünüm animasyonu
           useNativeDriver: true,
         }),
       ]).start();
@@ -104,6 +105,7 @@ const BottomSheet = React.memo(({
       ]).start();
     }
   }, [visible, slideAnim, fadeAnim, screenHeight, panY]);
+  
 
   const backdropOpacity = useMemo(() => panY.interpolate({
     inputRange: [-defaultHeight * 0.3, 0, screenHeight * 0.2],

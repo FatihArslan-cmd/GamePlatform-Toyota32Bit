@@ -55,14 +55,12 @@ const HomeScreen = () => {
   return (
     <View style={[styles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
-      {/* AppBar'ı animasyonlu bir View ile sar */}
       <Animated.View
         style={[
           styles.appBar,
           { transform: [{ translateY: appBarTranslateY }] },
         ]}
         onLayout={(event) => {
-          // AppBar'ın yüksekliğini ölç
           setAppBarHeight(event.nativeEvent.layout.height);
         }}
       >
@@ -73,7 +71,7 @@ const HomeScreen = () => {
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false }
         )}
-        scrollEventThrottle={16} // Scroll optimizasyonu
+        scrollEventThrottle={16}
       >
         <FeaturedGames games={games} />
         <MiniGamesBlock games={games} />
