@@ -21,7 +21,6 @@ export const fetchAndStoreGames = async () => {
     }
 };
 
-// Function to retrieve data from MMKV storage
 export const getGamesFromStorage = () => {
     const data = storage.getString('games');
 

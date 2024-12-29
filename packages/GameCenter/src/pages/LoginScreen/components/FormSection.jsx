@@ -9,6 +9,8 @@ import BioModalContent from './ModalItem/BioModalContent';
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
 import { clearGamesFromStorage } from '../../../utils/api';
+import { login } from '../../../shared/states/api';// Import the login function
+
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,21 +19,23 @@ const FormSection = ({ onSendCode }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState(''); // Error state to show error messages
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
   const handleLoginPress = async () => {
-    if (rememberMe) {
-      setModalVisible(true);
-    } else {
-      try {
-        await clearGamesFromStorage();
-        await fetchAndStoreGames();
-        navigation.navigate('Tabs', { toastshow: true }); // Değer gönderiliyor
-      } catch (error) {
-        console.error('Error Details:', error.toJSON());
-      } 
+    try {
+      if (rememberMe) {
+        setModalVisible(true);
+      } else {
+        // Attempt to log in
+        await login(email, password); // Use the login function
+        navigation.navigate('Tabs', { toastshow: true });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error.message || 'An error occurred during login');
     }
   };
 
@@ -76,7 +80,6 @@ const FormSection = ({ onSendCode }) => {
 
   return (
     <View style={styles.formContainer}>
-    
 
       <InputField
         label="Email / Username"
@@ -134,7 +137,7 @@ const FormSection = ({ onSendCode }) => {
       </Animated.View>
 
       <CustomModal visible={isModalVisible} onDismiss={() => setModalVisible(false)}>
-        <BioModalContent/>
+        <BioModalContent />
       </CustomModal>
     </View>
   );
@@ -157,13 +160,15 @@ const styles = StyleSheet.create({
   animatedContainer: {
     width: '100%',
   },
-  absolute: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 10, // Blur'ın diğer içerikleri geçmesini sağla
+  errorContainer: {
+    marginBottom: 15,
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  errorText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

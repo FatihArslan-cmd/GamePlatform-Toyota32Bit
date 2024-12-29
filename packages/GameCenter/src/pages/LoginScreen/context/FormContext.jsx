@@ -1,8 +1,9 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useRef } from 'react';
+import { Animated, Linking } from 'react-native';
 
-export const FormContext = createContext();
+const FormSectionContext = createContext();
 
-export const FormProvider = ({ children }) => {
+export const FormSectionProvider = ({ children }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -11,25 +12,40 @@ export const FormProvider = ({ children }) => {
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const handleSendCodeWithCountdown = (onSendCode) => {
-    if (countdown === 0) {
-      setCountdown(30);
-      onSendCode();
-    }
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const opacityAnim = useRef(new Animated.Value(1)).current;
+
+  const handleForgotPasswordToggle = (showForgot) => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: showForgot ? 1 : 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: true,
+      }).start(() => {
+        setIsForgotPassword(showForgot);
+        Animated.timing(opacityAnim, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+      }),
+    ]).start();
   };
 
-  useEffect(() => {
-    let timer;
-    if (countdown > 0) {
-      timer = setTimeout(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [countdown]);
+  const handleSendCode = (showToast) => {
+    showToast('success', 'Verification code sent!');
+    setTimeout(() => {
+      Linking.openURL('https://gmail.app.goo.gl');
+    }, 2000);
+  };
 
   return (
-    <FormContext.Provider
+    <FormSectionContext.Provider
       value={{
         email,
         setEmail,
@@ -45,10 +61,15 @@ export const FormProvider = ({ children }) => {
         setCountdown,
         isModalVisible,
         setModalVisible,
-        handleSendCodeWithCountdown,
+        slideAnim,
+        opacityAnim,
+        handleForgotPasswordToggle,
+        handleSendCode,
       }}
     >
       {children}
-    </FormContext.Provider>
+    </FormSectionContext.Provider>
   );
 };
+
+export const useFormSection = () => useContext(FormSectionContext);

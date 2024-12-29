@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 import { Button, ActivityIndicator } from 'react-native-paper';
 
 const ActionButtons = ({ scaleAnim, onLoginPress }) => {
@@ -8,7 +8,6 @@ const ActionButtons = ({ scaleAnim, onLoginPress }) => {
   const handleStartGamePress = async () => {
     setIsLoading(true); // Start the loading state
     try {
-      // Call the onLoginPress function if provided
       if (onLoginPress) {
         await onLoginPress();
       }

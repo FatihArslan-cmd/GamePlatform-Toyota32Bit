@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { storage } from '../utils/storage.js';
+import { storage } from '../utils/storage';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
@@ -10,20 +10,24 @@ const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const [isIntroSeen, setIsIntroSeen] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  
 
   useEffect(() => {
     const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-    setIsIntroSeen(hasSeenIntro ?? false); // Varsayılan false
+    setIsIntroSeen(hasSeenIntro ?? false); 
+
+    const token = storage.getString('token');  
+    setIsLoggedIn(!!token);  
   }, []);
 
   if (isIntroSeen === null) {
-    return null; // İlk yüklemede boş bir ekran göster
+    return null;
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Tabs' : 'Tabs'} // İlk ekranı belirleyin
+        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}  // Giriş yapmamışsa Login ekranına git
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -51,7 +55,7 @@ export default function Navigation() {
             animation: 'fade', // Sadece fade animasyonu
           }}
         />
-        </Stack.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
