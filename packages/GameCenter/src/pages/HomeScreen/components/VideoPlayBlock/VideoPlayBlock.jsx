@@ -1,36 +1,36 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, memo, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Text } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import games from './games';
 import VideoPlayItems from './VideoPlayItems';
-
-const { width } = Dimensions.get('window');
-const CARD_SPACING = 10;
-const CARD_WIDTH = (width - CARD_SPACING * 3) / 2.1;
+import { useIsFocused } from '@react-navigation/native';
 
 const VideoPlayBlock = memo(() => {
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    FastImage.preload(games.map(game => ({ uri: game.imageUri })));
-  }, []);
+    if (isFocused) {
+      FastImage.preload(games.map((game) => ({ uri: game.imageUri })));
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Upcoming Games</Text>
-            <LinearGradient
-              colors={['#4A00E0', '#FF8C00']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.divider}
-            />
+      <LinearGradient
+        colors={['#4A00E0', '#FF8C00']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.divider}
+      />
       <View style={styles.gridContainer}>
         {games.map((game, index) => (
-          <VideoPlayItems 
-            key={game.title} 
-            title={game.title} 
-            imageUri={game.imageUri} 
+          <VideoPlayItems
+            key={game.title}
+            title={game.title}
+            imageUri={isFocused ? game.imageUri : null} // Eğer görünür değilse FastImage kaldırılır
             index={index}
           />
         ))}
@@ -62,4 +62,5 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 });
+
 export default VideoPlayBlock;

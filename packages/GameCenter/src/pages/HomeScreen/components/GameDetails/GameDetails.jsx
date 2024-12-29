@@ -59,10 +59,12 @@ export default function GameDetails() {
         style={styles.gradient}
       >
         <BackButton style={styles.backButton} color="white" size={32} />
+        
         <Animated.Image
           source={imageSource}
           style={[styles.image, animatedImageStyle]}
         />
+        
         <Animated.View style={[styles.contentWrapper, animatedContentStyle]}>
           <Surface style={styles.infoContainer}>
             <Title style={styles.title}>{title}</Title>
