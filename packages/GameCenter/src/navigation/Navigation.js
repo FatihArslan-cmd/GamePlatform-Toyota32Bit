@@ -27,7 +27,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}  // Giriş yapmamışsa Login ekranına git
+        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Login' : 'Login') : 'Intro'}  // Giriş yapmamışsa Login ekranına git
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',

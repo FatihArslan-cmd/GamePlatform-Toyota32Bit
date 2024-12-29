@@ -15,6 +15,8 @@ import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBig
 import MiniGamesBlock from './components/MiniGames';
 import FromTheCreator from './components/FromTheCreator';
 import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
+import useDisableBackButton from './hooks/useDisableBackButton';
+
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
@@ -49,6 +51,8 @@ const HomeScreen = () => {
       navigation.setParams({ toastshow: false });
     }
   }, [route.params?.toastshow]);
+
+  useDisableBackButton();
 
   return (
     <View style={[styles.container]}>
