@@ -1,9 +1,12 @@
 const express = require('express');
+const { login } = require('../controller/authController');
+const authenticate = require('../middleware/authenticate');
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  req.session.views = (req.session.views || 0) + 1;
-  res.json({ message: 'Hello from Express!', views: req.session.views });
+router.post('/login', login);
+router.get('/protected', authenticate, (req, res) => {
+  res.json({ message: 'Access granted', user: req.user });
 });
 
 module.exports = router;

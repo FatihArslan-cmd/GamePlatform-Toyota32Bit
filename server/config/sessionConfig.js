@@ -4,7 +4,7 @@ const MemoryStore = session.MemoryStore;
 const sessionStore = new MemoryStore();
 
 const sessionConfig = session({
-  secret: 'your-secret-key',
+  secret: 'mysecretkeythatnooneshouldfindout',
   resave: false,
   saveUninitialized: true,
   store: sessionStore,
