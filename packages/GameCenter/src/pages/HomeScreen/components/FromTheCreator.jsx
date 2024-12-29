@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 5,
     backgroundColor: '#FFFFFF',
-    overflow: 'hidden',
   },
   imageBackground: {
     width: '100%',
@@ -103,6 +102,8 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 16,
     textAlign: 'center',
+    fontFamily: 'Orbitron-VariableFont_wght',
+
   },
   gradientButton: {
     borderRadius: 24,
