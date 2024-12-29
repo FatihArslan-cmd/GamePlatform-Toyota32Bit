@@ -34,6 +34,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadGames = async () => {
       const storedGames = getGamesFromStorage();
+      console.log(storedGames)
       setGames(storedGames.results || []);
     };
 
