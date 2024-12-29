@@ -14,7 +14,7 @@ import Header from './components/Header';
 import FeaturedGames from './components/FeaturedGames';
 import MiniGamesBlock from './components/MiniGames';
 import FromTheCreator from './components/FromTheCreator';
-
+import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
   const navigation = useNavigation();
@@ -73,6 +73,7 @@ const HomeScreen = () => {
         <FeaturedGames games={games} />
         <MiniGamesBlock games={games} />
         <FromTheCreator />
+        <VideoPlayBlock/>
       </ScrollView>
       {currentToast && (
         <ToastMessage
