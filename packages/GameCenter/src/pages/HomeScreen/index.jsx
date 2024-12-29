@@ -11,7 +11,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
 import Header from './components/Header';
-import FeaturedGames from './components/FeaturedGames';
+import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
 import MiniGamesBlock from './components/MiniGames';
 import FromTheCreator from './components/FromTheCreator';
 import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
@@ -70,7 +70,7 @@ const HomeScreen = () => {
         )}
         scrollEventThrottle={16}
       >
-        <FeaturedGames games={games} />
+        <UpperBigAnimatedImages games={games} />
         <MiniGamesBlock games={games} />
         <FromTheCreator />
         <VideoPlayBlock/>
