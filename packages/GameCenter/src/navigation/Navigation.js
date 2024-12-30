@@ -7,6 +7,7 @@ import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
 import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
 import SettingScreen from '../pages/SettingsScreen/index.jsx';
+import BootSplash from 'react-native-bootsplash';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,12 +16,19 @@ export default function Navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-    setIsIntroSeen(hasSeenIntro ?? false);
-
-    const token = storage.getString('token');
-    setIsLoggedIn(!!token);
+    async function initializeApp() {
+      const hasSeenIntro = storage.getBoolean('hasSeenIntro');
+      setIsIntroSeen(hasSeenIntro ?? false);
+  
+      const token = storage.getString('token');
+      setIsLoggedIn(!!token);
+  
+      await BootSplash.hide();
+    }
+  
+    initializeApp();
   }, []);
+  
 
   if (isIntroSeen === null) {
     return null; // You can return a loading state here while checking the stored values
