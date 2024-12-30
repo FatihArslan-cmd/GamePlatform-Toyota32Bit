@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Animated,Linking } from 'react-native';
 import FormSection from './components/FormSection';
 import LogoSection from './components/LogoSection';

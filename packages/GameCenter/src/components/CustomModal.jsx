@@ -1,19 +1,42 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Animated, Dimensions } from 'react-native';
+import React, { useEffect, useRef, useCallback, memo } from 'react';
+import { StyleSheet, Animated, Dimensions, Text, View } from 'react-native';
 import { Modal, Portal, Button } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 
-const CustomModal = ({ visible, onDismiss, children }) => {
-  const slideAnim = new Animated.Value(0);
-  const fadeAnim = new Animated.Value(0);
+const CustomModal = memo(({ visible, onDismiss, children, title, text }) => {
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const blurFadeAnim = useRef(new Animated.Value(0)).current;
   const { height } = Dimensions.get('window');
+
+  const handleDismiss = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: height,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(blurFadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      onDismiss();
+    });
+  }, [height, slideAnim, fadeAnim, blurFadeAnim, onDismiss]);
 
   useEffect(() => {
     if (visible) {
       slideAnim.setValue(height);
       fadeAnim.setValue(0);
-      
-      // Start animations
+      blurFadeAnim.setValue(0);
+
       Animated.parallel([
         Animated.spring(slideAnim, {
           toValue: 0,
@@ -26,34 +49,21 @@ const CustomModal = ({ visible, onDismiss, children }) => {
           duration: 300,
           useNativeDriver: true,
         }),
+        Animated.timing(blurFadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
       ]).start();
     }
-  }, [visible]);
+  }, [visible, height, slideAnim, fadeAnim, blurFadeAnim]);
 
-  const handleDismiss = () => {
-    Animated.parallel([
-      Animated.timing(slideAnim, {
-        toValue: height,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      onDismiss();
-    });
-  };
+  if (!visible) return null;
 
   return (
     <Portal>
-      {visible && (
-        <BlurView
-          blurType="dark"
-          blurAmount={2}
-          style={StyleSheet.absoluteFill}>
+      <Animated.View style={[StyleSheet.absoluteFill, { opacity: blurFadeAnim }]}>
+        <BlurView blurType="dark" blurAmount={2} style={StyleSheet.absoluteFill}>
           <Modal
             visible={visible}
             onDismiss={handleDismiss}
@@ -66,14 +76,18 @@ const CustomModal = ({ visible, onDismiss, children }) => {
                 styles.content,
                 {
                   opacity: fadeAnim,
-                  transform: [{
-                    scale: fadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0.9, 1],
-                    }),
-                  }],
+                  transform: [
+                    {
+                      scale: fadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.9, 1],
+                      }),
+                    },
+                  ],
                 },
               ]}>
+              {title && <Text style={styles.title}>{title}</Text>}
+              {text && <Text style={styles.text}>{text}</Text>}
               {children}
               <Button
                 mode="outlined"
@@ -85,10 +99,10 @@ const CustomModal = ({ visible, onDismiss, children }) => {
             </Animated.View>
           </Modal>
         </BlurView>
-      )}
+      </Animated.View>
     </Portal>
   );
-};
+});
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -103,10 +117,26 @@ const styles = StyleSheet.create({
   content: {
     width: '100%',
   },
+  title: {
+    fontSize: 24,
+    color: '#ffffff',
+    fontFamily: 'Orbitron-VariableFont_wght',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  text: {
+    fontSize: 16,
+    color: '#d3d3d3',
+    fontFamily: 'Orbitron-VariableFont_wght',
+    marginBottom: 20,
+    textAlign: 'center',
+    marginVertical: 30,
+  },
   closeButton: {
     borderColor: '#8a2be2',
     borderRadius: 30,
     borderWidth: 2,
+    marginTop: 30,
   },
   closeButtonLabel: {
     color: '#8a2be2',

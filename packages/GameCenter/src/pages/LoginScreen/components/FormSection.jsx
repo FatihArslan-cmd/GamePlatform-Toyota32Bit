@@ -5,11 +5,11 @@ import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
 import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
 import CustomModal from '../../../components/CustomModal';
-import BioModalContent from './ModalItem/BioModalContent'; 
+import BioModalContent from './ModalItem/BioModalContent';
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
 import { clearGamesFromStorage } from '../../../utils/api';
-import { login } from '../../../shared/states/api';// Import the login function
+import { login } from '../../../shared/states/api';
 
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
@@ -19,7 +19,8 @@ const FormSection = ({ onSendCode }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [error, setError] = useState(''); // Error state to show error messages
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
@@ -29,13 +30,12 @@ const FormSection = ({ onSendCode }) => {
       if (rememberMe) {
         setModalVisible(true);
       } else {
-        // Attempt to log in
-        await login(email, password); // Use the login function
+        await login(email, password);
         navigation.navigate('Tabs', { toastshow: true });
       }
     } catch (error) {
-      console.error('Login error:', error);
-      setError(error.message || 'An error occurred during login');
+      setErrorMessage(error.message || 'An error occurred during login');
+      setErrorModalVisible(true);
     }
   };
 
@@ -80,7 +80,6 @@ const FormSection = ({ onSendCode }) => {
 
   return (
     <View style={styles.formContainer}>
-
       <InputField
         label="Email / Username"
         value={email}
@@ -122,10 +121,7 @@ const FormSection = ({ onSendCode }) => {
               setRememberMe={setRememberMe}
               setIsForgotPassword={() => handleForgotPasswordToggle(true)}
             />
-            <ActionButtons
-              scaleAnim={1}
-              onLoginPress={handleLoginPress}
-            />
+            <ActionButtons scaleAnim={1} onLoginPress={handleLoginPress} />
           </>
         ) : (
           <ForgotPasswordSection
@@ -136,9 +132,19 @@ const FormSection = ({ onSendCode }) => {
         )}
       </Animated.View>
 
-      <CustomModal visible={isModalVisible} onDismiss={() => setModalVisible(false)}>
+      <CustomModal
+        visible={isModalVisible}
+        onDismiss={() => setModalVisible(false)}
+      >
         <BioModalContent />
       </CustomModal>
+
+      <CustomModal
+        visible={errorModalVisible}
+        onDismiss={() => setErrorModalVisible(false)}
+        title="Login Error"
+        text={errorMessage}
+      />
     </View>
   );
 };
@@ -159,16 +165,6 @@ const styles = StyleSheet.create({
   },
   animatedContainer: {
     width: '100%',
-  },
-  errorContainer: {
-    marginBottom: 15,
-    backgroundColor: 'red',
-    padding: 10,
-    borderRadius: 5,
-  },
-  errorText: {
-    color: 'white',
-    textAlign: 'center',
   },
 });
 
