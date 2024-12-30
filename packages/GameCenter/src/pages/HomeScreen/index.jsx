@@ -36,7 +36,6 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadGames = async () => {
       const storedGames = getGamesFromStorage();
-      console.log(storedGames)
       setGames(storedGames.results || []);
     };
 
@@ -44,13 +43,8 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (route.params?.toastshow) {
-      setTimeout(() => {
-        showToast('success', 'Successfully logged in!');
-      }, 750);
-      navigation.setParams({ toastshow: false });
-    }
-  }, [route.params?.toastshow]);
+  showToast('success', 'Successfully logged in!');
+  }, []);
 
   useDisableBackButton();
 

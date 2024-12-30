@@ -3,7 +3,16 @@ import { StyleSheet, Animated, Dimensions, View } from 'react-native';
 import { Modal, Portal, Button, Text } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 
-const CustomModal = memo(({ visible, onDismiss, onConfirm, children, title, text, showConfirmButton = false }) => {
+const CustomModal = memo(({ 
+  visible,
+  onDismiss,
+   onConfirm,
+    children,
+     title,
+      text,
+      confirmText = 'Confirm',
+       showConfirmButton = false
+       }) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const blurFadeAnim = useRef(new Animated.Value(0)).current;
@@ -98,14 +107,13 @@ const CustomModal = memo(({ visible, onDismiss, onConfirm, children, title, text
                   Cancel
                 </Button>
 
-                {/* Conditionally render the Confirm button */}
                 {showConfirmButton && (
                   <Button
                     mode="contained"
                     onPress={onConfirm}
                     style={styles.confirmButton}
                     labelStyle={styles.confirmButtonLabel}>
-                    Confirm
+                    {confirmText}
                   </Button>
                 )}
               </View>

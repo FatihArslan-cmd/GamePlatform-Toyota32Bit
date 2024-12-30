@@ -28,10 +28,11 @@ const FormSection = ({ onSendCode }) => {
   const handleLoginPress = async () => {
     try {
       if (rememberMe) {
+        await login(email, password);
         setModalVisible(true);
       } else {
         await login(email, password);
-        navigation.navigate('Tabs', { toastshow: true });
+        navigation.navigate('Tabs');
       }
     } catch (error) {
       setErrorMessage(error.message || 'An error occurred during login');
@@ -142,6 +143,8 @@ const FormSection = ({ onSendCode }) => {
       <CustomModal
         visible={isModalVisible}
         onDismiss={() => setModalVisible(false)}
+        confirmText="Allow"
+        showConfirmButton ='true'
       >
         <BioModalContent />
       </CustomModal>

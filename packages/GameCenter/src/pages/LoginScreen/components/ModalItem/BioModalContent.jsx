@@ -21,10 +21,10 @@ const BioModalContent = ({ onPermissionsChange }) => {
 
   return (
     <View style={styles.container}>
-      <Title style={styles.title}>İzinler</Title>
+      <Title style={styles.title}>Permissions</Title>
 
       <PermissionItem
-        title="Touch ID / Face ID kullanımına izin ver"
+        title="Allow Touch ID / Face ID usage"
         icon="fingerprint"
         permission="biometric"
         isChecked={permissions.biometric}
@@ -32,7 +32,7 @@ const BioModalContent = ({ onPermissionsChange }) => {
       />
 
       <PermissionItem
-        title="NFC kullanımına izin ver"
+        title="Allow NFC usage"
         icon="nfc"
         permission="nfc"
         isChecked={permissions.nfc}
@@ -40,21 +40,13 @@ const BioModalContent = ({ onPermissionsChange }) => {
       />
 
       <PermissionItem
-        title="Barkod okuyucu kullanımına izin ver"
+        title="Allow barcode scanner usage"
         icon="barcode-scan"
         permission="barcode"
         isChecked={permissions.barcode}
         onToggle={handlePermissionChange}
       />
 
-      <Button
-        mode="contained"
-        onPress={() => onPermissionsChange?.(permissions)}
-        style={styles.loginButton}
-        labelStyle={styles.buttonLabel}
-      >
-        İzinleri Kaydet
-      </Button>
     </View>
   );
 };

@@ -49,7 +49,7 @@ const saveToken = (token) => {
 };
 
 // Token alma fonksiyonu (MMKV)
-const getToken = () => {
+export const getToken = () => {
   return storage.getString('token'); // MMKV'den token'i alıyoruz
 };
 
