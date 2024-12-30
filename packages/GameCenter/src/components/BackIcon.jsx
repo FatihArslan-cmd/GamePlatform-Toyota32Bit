@@ -16,11 +16,9 @@ const BackButton = ({ color = '#000', size }) => {
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(-20);
 
-  // Adjust size dynamically if not provided or override with tablet size
   const adjustedSize = size || (isTablet() ? 32 : 24);
 
   useEffect(() => {
-    // Trigger animation on mount
     opacity.value = withTiming(1, {
       duration: 500,
       easing: Easing.out(Easing.ease),

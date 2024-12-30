@@ -43,7 +43,7 @@ const MiniGamesBlock = memo(({ games }) => {
       <Text style={styles.title}>Mini Games</Text>
       <Divider style={styles.divider} />
       {isLoading ? (
-        <MyLoader /> // Orijinal Placeholder burada
+        <MyLoader />
       ) : (
         <View style={styles.scrollWrapper}>
           {canScrollLeft && <ScrollArrow direction="left" onPress={() => scroll('left')} />}

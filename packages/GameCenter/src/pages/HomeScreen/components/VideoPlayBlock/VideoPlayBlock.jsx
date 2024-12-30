@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import games from './games';
 import VideoPlayItems from './VideoPlayItems';
 import { useIsFocused } from '@react-navigation/native';
-
+import GradientDivider from '../../../../components/GradientDivider';
 const VideoPlayBlock = memo(() => {
   const isFocused = useIsFocused();
 
@@ -19,12 +19,8 @@ const VideoPlayBlock = memo(() => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Upcoming Games</Text>
-      <LinearGradient
-        colors={['#4A00E0', '#FF8C00']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.divider}
-      />
+      <GradientDivider/>
+      <View style={{marginVertical:10}}/>
       <View style={styles.gridContainer}>
         {games.map((game, index) => (
           <VideoPlayItems

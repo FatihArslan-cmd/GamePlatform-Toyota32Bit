@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useCallback, memo } from 'react';
-import { StyleSheet, Animated, Dimensions, Text, View } from 'react-native';
-import { Modal, Portal, Button } from 'react-native-paper';
+import { StyleSheet, Animated, Dimensions, View } from 'react-native';
+import { Modal, Portal, Button, Text } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 
-const CustomModal = memo(({ visible, onDismiss, children, title, text }) => {
+const CustomModal = memo(({ visible, onDismiss, onConfirm, children, title, text, showConfirmButton = false }) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const blurFadeAnim = useRef(new Animated.Value(0)).current;
@@ -89,13 +89,26 @@ const CustomModal = memo(({ visible, onDismiss, children, title, text }) => {
               {title && <Text style={styles.title}>{title}</Text>}
               {text && <Text style={styles.text}>{text}</Text>}
               {children}
-              <Button
-                mode="outlined"
-                onPress={handleDismiss}
-                style={styles.closeButton}
-                labelStyle={styles.closeButtonLabel}>
-                Close
-              </Button>
+              <View style={styles.buttonContainer}>
+                <Button
+                  mode="outlined"
+                  onPress={handleDismiss}
+                  style={styles.closeButton}
+                  labelStyle={styles.closeButtonLabel}>
+                  Cancel
+                </Button>
+
+                {/* Conditionally render the Confirm button */}
+                {showConfirmButton && (
+                  <Button
+                    mode="contained"
+                    onPress={onConfirm}
+                    style={styles.confirmButton}
+                    labelStyle={styles.confirmButtonLabel}>
+                    Confirm
+                  </Button>
+                )}
+              </View>
             </Animated.View>
           </Modal>
         </BlurView>
@@ -132,14 +145,32 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 30,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
   closeButton: {
     borderColor: '#8a2be2',
     borderRadius: 30,
     borderWidth: 2,
-    marginTop: 30,
+    flex: 1,
+    marginRight: 10,
   },
   closeButtonLabel: {
     color: '#8a2be2',
+    fontSize: 16,
+    fontFamily: 'Orbitron-VariableFont_wght',
+    letterSpacing: 1,
+  },
+  confirmButton: {
+    backgroundColor: '#228b22',
+    borderRadius: 30,
+    flex: 1,
+    marginLeft: 10,
+  },
+  confirmButtonLabel: {
+    color: '#ffffff',
     fontSize: 16,
     fontFamily: 'Orbitron-VariableFont_wght',
     letterSpacing: 1,

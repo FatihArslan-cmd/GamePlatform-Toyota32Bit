@@ -7,28 +7,29 @@ import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
 import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
 import SettingScreen from '../pages/SettingsScreen/index.jsx';
+
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const [isIntroSeen, setIsIntroSeen] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-    setIsIntroSeen(hasSeenIntro ?? false); 
+    setIsIntroSeen(hasSeenIntro ?? false);
 
-    const token = storage.getString('token');  
-    setIsLoggedIn(!!token);  
+    const token = storage.getString('token');
+    setIsLoggedIn(!!token);
   }, []);
 
   if (isIntroSeen === null) {
-    return null;
+    return null; // You can return a loading state here while checking the stored values
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Tabs') : 'Intro'}  // Giriş yapmamışsa Login ekranına git
+        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'} // Use 'Login' screen if not logged in
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -42,19 +43,25 @@ export default function Navigation() {
           }}
           listeners={{
             focus: () => {
-              storage.set('hasSeenIntro', true); // Intro işaretlendi
+              storage.set('hasSeenIntro', true);
             },
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Tabs" component={TabNavigator} />
-        <Stack.Screen name="Settings" component={SettingScreen} />
+        <Stack.Screen
+          name="Settings"
+          component={SettingScreen}
+          options={{
+            animation: 'slide_from_left',
+          }}
+        />
         <Stack.Screen
           name="GameDetails"
           component={GameDetails}
           options={{
             presentation: 'transparentModal',
-            animation: 'fade', 
+            animation: 'fade',
           }}
         />
       </Stack.Navigator>

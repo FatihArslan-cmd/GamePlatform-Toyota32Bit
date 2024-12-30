@@ -1,28 +1,61 @@
 import React, { memo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { Card, Surface } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
+import Animated, { 
+  useAnimatedStyle, 
+  useSharedValue, 
+  withSpring,
+} from 'react-native-reanimated';
 
-const GameItem = memo(({ item, color }) => (
-  <Surface style={[styles.surface, { backgroundColor: color }]} elevation={4}>
-    <Card style={styles.card}>
-      <FastImage
-        source={{ uri: item.image_background }}
-        style={styles.cardCover}
-      />
-      <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.8)']}
-        style={styles.gradient}
-      />
-      <Card.Title
-        title={item.name}
-        titleStyle={styles.cardTitle}
-        titleNumberOfLines={2}
-      />
-    </Card>
-  </Surface>
-));
+const AnimatedSurface = Animated.createAnimatedComponent(Surface);
+
+const GameItem = memo(({ item, color, onPress }) => {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    };
+  });
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.95, {
+      damping: 15,
+      stiffness: 120,
+    });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, {
+      damping: 15,
+      stiffness: 120,
+    });
+  };
+
+  return (
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress}>
+      <AnimatedSurface style={[styles.surface, { backgroundColor: color }, animatedStyle]} elevation={4}>
+        <Card style={styles.card}>
+          <FastImage
+            source={{ uri: item.image_background }}
+            style={styles.cardCover}
+          />
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.8)']}
+            style={styles.gradient}
+          />
+          <Card.Title
+            title={item.name}
+            titleStyle={styles.cardTitle}
+            titleNumberOfLines={2}
+          />
+        </Card>
+      </AnimatedSurface>
+    </Pressable>
+  );
+});
 
 const styles = StyleSheet.create({
   surface: {

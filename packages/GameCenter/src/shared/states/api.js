@@ -56,6 +56,7 @@ const getToken = () => {
 // Token silme fonksiyonu (Logout için kullanılabilir)
 export const removeToken = () => {
   storage.delete('token'); // MMKV'den token'i siliyoruz
+  console.log(storage.getString('token')); // Should be null or undefined after logout
 };
 
 export default api;
