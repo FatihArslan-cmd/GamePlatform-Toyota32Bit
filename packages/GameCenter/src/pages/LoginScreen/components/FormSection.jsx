@@ -62,11 +62,18 @@ const FormSection = ({ onSendCode }) => {
   };
 
   const handleSendCodeWithCountdown = () => {
+    if (!email.trim()) {
+      setErrorMessage('Email field cannot be empty');
+      setErrorModalVisible(true);
+      return;
+    }
+  
     if (countdown === 0) {
       setCountdown(30);
       onSendCode();
     }
   };
+  
 
   useEffect(() => {
     let timer;

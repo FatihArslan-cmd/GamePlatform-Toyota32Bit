@@ -1,11 +1,11 @@
 const session = require('express-session');
+require('dotenv').config();
 
 const MemoryStore = session.MemoryStore;
 const sessionStore = new MemoryStore();
 
 const sessionConfig = session({
-  secret: 'mysecretkeythatnooneshouldfindout',
-  resave: false,
+  secret: process.env.SESSION_SECRET,
   saveUninitialized: true,
   store: sessionStore,
 });

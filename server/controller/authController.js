@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { sessionStore } = require('../config/sessionConfig');
+require('dotenv').config();
 
-const SECRET_KEY = 'your-jwt-secret-key';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const login = (req, res) => {
   try {
