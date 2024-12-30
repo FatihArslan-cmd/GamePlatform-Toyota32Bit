@@ -6,6 +6,7 @@ import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
 import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
+import SettingScreen from '../pages/SettingsScreen/index.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -27,7 +28,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Login' : 'Login') : 'Intro'}  // Giriş yapmamışsa Login ekranına git
+        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Tabs') : 'Intro'}  // Giriş yapmamışsa Login ekranına git
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -47,12 +48,13 @@ export default function Navigation() {
         />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Tabs" component={TabNavigator} />
+        <Stack.Screen name="Settings" component={SettingScreen} />
         <Stack.Screen
           name="GameDetails"
           component={GameDetails}
           options={{
-            presentation: 'transparentModal', // Arka plan için transparan görünüm
-            animation: 'fade', // Sadece fade animasyonu
+            presentation: 'transparentModal',
+            animation: 'fade', 
           }}
         />
       </Stack.Navigator>

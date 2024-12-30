@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Button,Text, Surface, Title } from 'react-native-paper';
+import { Button, Text, Surface, Title } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSequence, withDelay, Easing } from 'react-native-reanimated';
 import BackButton from '../../../../components/BackIcon';
@@ -9,14 +9,18 @@ import { useRoute } from '@react-navigation/native';
 const { height, width } = Dimensions.get('window');
 
 export default function GameDetails() {
-    const route = useRoute();
-    const {
-      title,
-      instructions,
-      imageSource,
-      buttonText,
-      onButtonPress,
-    } = route.params;
+  const route = useRoute();
+  const {
+    title,
+    instructions, // Ensure this is either an array or convert it later.
+    imageSource,
+    buttonText,
+    onButtonPress,
+  } = route.params;
+
+  // Convert instructions to an array if it's a string
+  const formattedInstructions = Array.isArray(instructions) ? instructions : [instructions];
+
   const translateY = useSharedValue(height - 275);
   const scale = useSharedValue(1);
   const contentTranslateY = useSharedValue(100);
@@ -34,11 +38,13 @@ export default function GameDetails() {
       withTiming(2, { duration: 300, easing: Easing.bounce })
     );
 
-    contentTranslateY.value = withDelay(800, 
+    contentTranslateY.value = withDelay(
+      800,
       withTiming(0, { duration: 600, easing: Easing.out(Easing.quad) })
     );
 
-    contentOpacity.value = withDelay(800, 
+    contentOpacity.value = withDelay(
+      800,
       withTiming(1, { duration: 600, easing: Easing.bezier(0.4, 0, 0.2, 1) })
     );
   }, []);
@@ -69,7 +75,7 @@ export default function GameDetails() {
           <Surface style={styles.infoContainer}>
             <Title style={styles.title}>{title}</Title>
             <View style={styles.instructionContainer}>
-              {instructions.map((instruction, index) => (
+              {formattedInstructions.map((instruction, index) => (
                 <View key={index} style={styles.instructionItem}>
                   <Text style={styles.instructionNumber}>{index + 1}</Text>
                   <Text style={styles.instructionText}>{instruction}</Text>

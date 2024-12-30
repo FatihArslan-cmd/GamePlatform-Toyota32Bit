@@ -10,10 +10,10 @@ import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
-import MiniGamesBlock from './components/MiniGames';
-import FromTheCreator from './components/FromTheCreator';
+import MiniGamesBlock from './components/MiniGames/MiniGames';
+import FromTheCreator from './components/FromTheCreator/FromTheCreator';
 import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 import useDisableBackButton from './hooks/useDisableBackButton';
 
