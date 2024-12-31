@@ -42,6 +42,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible 
         title="Create Lobby"
         titleStyle={styles.menuItemText}
       />
+      <Divider />
       <Menu.Item
         onPress={() => {}}
         title="Active Lobbies"
