@@ -32,6 +32,8 @@ const FormSection = ({ onSendCode }) => {
         setModalVisible(true);
       } else {
         await login(email, password);
+         clearGamesFromStorage();
+         await fetchAndStoreGames();
         navigation.navigate('Tabs');
       }
     } catch (error) {

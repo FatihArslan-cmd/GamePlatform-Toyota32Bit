@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Animated,Linking } from 'react-native';
+import { StyleSheet, Animated,Linking,StatusBar } from 'react-native';
 import FormSection from './components/FormSection';
 import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,6 +20,7 @@ const LoginScreen = () => {
 
   return (
       <>
+     <StatusBar translucent backgroundColor="transparent" />
       <LinearGradient
         colors={['#1a1b2e', '#2d0a3e', '#1a1b2e']}
         locations={[0, 0.5, 1]}

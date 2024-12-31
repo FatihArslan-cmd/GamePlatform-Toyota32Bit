@@ -19,11 +19,9 @@ import useDisableBackButton from './hooks/useDisableBackButton';
 
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
-  const navigation = useNavigation();
   const [games, setGames] = useState([]);
   const [appBarHeight, setAppBarHeight] = useState(0); // Dinamik yükseklik
   const scrollY = useRef(new Animated.Value(0)).current; // Scroll değeri
-  const route = useRoute();
 
   const appBarTranslateY = useMemo(() => 
     scrollY.interpolate({

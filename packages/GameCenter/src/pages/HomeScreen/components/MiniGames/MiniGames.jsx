@@ -81,7 +81,7 @@ const MiniGamesBlock = memo(({ games }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#ffffff',
     paddingVertical: 20,
   },
   title: {

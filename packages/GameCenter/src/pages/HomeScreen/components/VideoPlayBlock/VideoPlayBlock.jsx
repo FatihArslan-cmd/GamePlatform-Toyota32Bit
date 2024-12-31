@@ -38,7 +38,7 @@ const VideoPlayBlock = memo(() => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
   },
   divider: {
     height: 4,

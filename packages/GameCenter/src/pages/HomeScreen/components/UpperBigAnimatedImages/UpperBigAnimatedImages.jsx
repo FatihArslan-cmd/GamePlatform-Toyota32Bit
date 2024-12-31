@@ -52,7 +52,7 @@ const FeaturedGames = React.memo(({ games }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
   },
   carouselContainer: {
     height: Dimensions.get('window').height * 0.55,

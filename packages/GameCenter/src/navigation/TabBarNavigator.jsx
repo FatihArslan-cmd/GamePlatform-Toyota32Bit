@@ -117,7 +117,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
   );
 
   return (
-    <View style={[styles.tabBar, { backgroundColor: '#FAF9F6' }]}>
+    <View style={[styles.tabBar, { backgroundColor: '#ffffff' }]}>
       <AnimatedSvg
         width={110}
         height={60}
@@ -165,7 +165,7 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: '#FAF9F6',
+    backgroundColor: '#ffffff',
   },
   activeBackground: {
     position: 'absolute',
