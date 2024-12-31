@@ -23,7 +23,9 @@ export default function Navigation() {
       const token = storage.getString('token');
       setIsLoggedIn(!!token);
   
-      await BootSplash.hide();
+      setTimeout(() => {
+        BootSplash.hide({ fade: true });
+      }, 175); 
     }
   
     initializeApp();
