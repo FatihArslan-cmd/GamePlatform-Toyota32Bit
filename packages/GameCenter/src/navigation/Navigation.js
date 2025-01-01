@@ -1,32 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { storage } from '../utils/storage.js';
+import { storage } from '../utils/storage';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
-import GameDetails from '../pages/HomeScreen/components/GameDetails/index.jsx';
+import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
+import SettingScreen from '../pages/SettingsScreen/index.jsx';
+import BootSplash from 'react-native-bootsplash';
+
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const [isIntroSeen, setIsIntroSeen] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-    setIsIntroSeen(hasSeenIntro ?? false); // Varsayılan false
+    async function initializeApp() {
+      const hasSeenIntro = storage.getBoolean('hasSeenIntro');
+      setIsIntroSeen(hasSeenIntro ?? false);
+  
+      const token = storage.getString('token');
+      setIsLoggedIn(!!token);
+  
+      setTimeout(() => {
+        BootSplash.hide({ fade: true });
+      }, 175); 
+    }
+  
+    initializeApp();
   }, []);
+  
 
   if (isIntroSeen === null) {
-    return null; // İlk yüklemede boş bir ekran göster
+    return null; // You can return a loading state here while checking the stored values
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? 'Tabs' : 'Tabs'} // İlk ekranı belirleyin
+        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'} // Use 'Login' screen if not logged in
         screenOptions={{
           headerShown: false,
-          animation: 'none',
+          animation: 'slide_from_right',
         }}
       >
         <Stack.Screen
@@ -37,21 +53,28 @@ export default function Navigation() {
           }}
           listeners={{
             focus: () => {
-              storage.set('hasSeenIntro', true); // Intro işaretlendi
+              storage.set('hasSeenIntro', true);
             },
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Tabs" component={TabNavigator} />
         <Stack.Screen
+          name="Settings"
+          component={SettingScreen}
+          options={{
+            animation: 'slide_from_left',
+          }}
+        />
+        <Stack.Screen
           name="GameDetails"
           component={GameDetails}
           options={{
-            presentation: 'transparentModal', // Arka plan için transparan görünüm
-            animation: 'fade', // Sadece fade animasyonu
+            presentation: 'transparentModal',
+            animation: 'fade',
           }}
         />
-        </Stack.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

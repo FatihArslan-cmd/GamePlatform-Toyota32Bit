@@ -5,10 +5,12 @@ import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
 import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
 import CustomModal from '../../../components/CustomModal';
-import BioModalContent from './ModalItem/BioModalContent'; 
+import BioModalContent from './ModalItem/BioModalContent';
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
 import { clearGamesFromStorage } from '../../../utils/api';
+import { login } from '../../../shared/states/api';
+
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,21 +19,26 @@ const FormSection = ({ onSendCode }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
   const handleLoginPress = async () => {
-    if (rememberMe) {
-      setModalVisible(true);
-    } else {
-      try {
-        await clearGamesFromStorage();
-        await fetchAndStoreGames();
-        navigation.navigate('Tabs', { toastshow: true }); // Değer gönderiliyor
-      } catch (error) {
-        console.error('Error Details:', error.toJSON());
-      } 
+    try {
+      if (rememberMe) {
+        await login(email, password);
+        setModalVisible(true);
+      } else {
+        await login(email, password);
+         clearGamesFromStorage();
+         await fetchAndStoreGames();
+        navigation.navigate('Tabs');
+      }
+    } catch (error) {
+      setErrorMessage(error.message || 'An error occurred during login');
+      setErrorModalVisible(true);
     }
   };
 
@@ -58,11 +65,18 @@ const FormSection = ({ onSendCode }) => {
   };
 
   const handleSendCodeWithCountdown = () => {
+    if (!email.trim()) {
+      setErrorMessage('Email field cannot be empty');
+      setErrorModalVisible(true);
+      return;
+    }
+  
     if (countdown === 0) {
       setCountdown(30);
       onSendCode();
     }
   };
+  
 
   useEffect(() => {
     let timer;
@@ -76,8 +90,6 @@ const FormSection = ({ onSendCode }) => {
 
   return (
     <View style={styles.formContainer}>
-    
-
       <InputField
         label="Email / Username"
         value={email}
@@ -119,10 +131,7 @@ const FormSection = ({ onSendCode }) => {
               setRememberMe={setRememberMe}
               setIsForgotPassword={() => handleForgotPasswordToggle(true)}
             />
-            <ActionButtons
-              scaleAnim={1}
-              onLoginPress={handleLoginPress}
-            />
+            <ActionButtons scaleAnim={1} onLoginPress={handleLoginPress} />
           </>
         ) : (
           <ForgotPasswordSection
@@ -133,9 +142,21 @@ const FormSection = ({ onSendCode }) => {
         )}
       </Animated.View>
 
-      <CustomModal visible={isModalVisible} onDismiss={() => setModalVisible(false)}>
-        <BioModalContent/>
+      <CustomModal
+        visible={isModalVisible}
+        onDismiss={() => setModalVisible(false)}
+        confirmText="Allow"
+        showConfirmButton ='true'
+      >
+        <BioModalContent />
       </CustomModal>
+
+      <CustomModal
+        visible={errorModalVisible}
+        onDismiss={() => setErrorModalVisible(false)}
+        title="Login Error"
+        text={errorMessage}
+      />
     </View>
   );
 };
@@ -156,14 +177,6 @@ const styles = StyleSheet.create({
   },
   animatedContainer: {
     width: '100%',
-  },
-  absolute: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 10, // Blur'ın diğer içerikleri geçmesini sağla
   },
 });
 

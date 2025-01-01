@@ -26,6 +26,8 @@
 		3834238A022E4065BC5E8B8F /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = FDD0B70921EF48A19F5F4AFC /* OFL.txt */; };
 		18E75E0D2EC9431FAB279DC2 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 895A2A2932B34FBFB226680E /* README.txt */; };
 		A28B0BFD738D4D91A5517D04 /* SQR721B.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 58A651549F2F40B1AA548F46 /* SQR721B.TTF */; };
+		91A34DFB0CBD43FEBBF041FA /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79171A6B6EE640C1A41DC919 /* BootSplash.storyboard */; };
+		D3DABA76E71B409DA8A49291 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEAAFB076394A1E9E6A74DF /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		FDD0B70921EF48A19F5F4AFC /* OFL.txt */ = {isa = PBXFileReference; name = "OFL.txt"; path = "../src/locales/fonts/Anton/OFL.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		895A2A2932B34FBFB226680E /* README.txt */ = {isa = PBXFileReference; name = "README.txt"; path = "../src/locales/fonts/Orbitron/README.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		58A651549F2F40B1AA548F46 /* SQR721B.TTF */ = {isa = PBXFileReference; name = "SQR721B.TTF"; path = "../src/locales/fonts/SQR721B.TTF"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		79171A6B6EE640C1A41DC919 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "GameCenter/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5DEAAFB076394A1E9E6A74DF /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "GameCenter/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,8 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				79171A6B6EE640C1A41DC919 /* BootSplash.storyboard */,
+				5DEAAFB076394A1E9E6A74DF /* Colors.xcassets */,
 			);
 			name = GameCenter;
 			sourceTree = "<group>";
@@ -302,6 +308,8 @@
 				3834238A022E4065BC5E8B8F /* OFL.txt in Resources */,
 				18E75E0D2EC9431FAB279DC2 /* README.txt in Resources */,
 				A28B0BFD738D4D91A5517D04 /* SQR721B.TTF in Resources */,
+				91A34DFB0CBD43FEBBF041FA /* BootSplash.storyboard in Resources */,
+				D3DABA76E71B409DA8A49291 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

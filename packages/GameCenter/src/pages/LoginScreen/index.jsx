@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
-import { StyleSheet, Animated,Linking } from 'react-native';
+import React from 'react';
+import { StyleSheet, Animated,Linking,StatusBar } from 'react-native';
 import FormSection from './components/FormSection';
 import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
-import { fetchAndStoreGames } from '../../utils/api';
-
 const LoginScreen = () => {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const { currentToast, showToast, hideToast } = useToast();
-
-
-
 
   const handleSendCode = () => {
     showToast('success', 'Verification code sent!');
@@ -25,6 +20,7 @@ const LoginScreen = () => {
 
   return (
       <>
+     <StatusBar translucent backgroundColor="transparent" />
       <LinearGradient
         colors={['#1a1b2e', '#2d0a3e', '#1a1b2e']}
         locations={[0, 0.5, 1]}

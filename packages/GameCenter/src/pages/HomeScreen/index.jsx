@@ -10,20 +10,19 @@ import { getGamesFromStorage } from '../../utils/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
-import Header from './components/Header';
-import FeaturedGames from './components/FeaturedGames';
-import MiniGamesBlock from './components/MiniGames';
-import FromTheCreator from './components/FromTheCreator';
+import Header from './components/Header/Header';
+import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
+import MiniGamesBlock from './components/MiniGames/MiniGames';
+import FromTheCreator from './components/FromTheCreator/FromTheCreator';
+import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
+import useDisableBackButton from './hooks/useDisableBackButton';
 
 const HomeScreen = () => {
   const { currentToast, showToast, hideToast } = useToast();
-  const navigation = useNavigation();
   const [games, setGames] = useState([]);
   const [appBarHeight, setAppBarHeight] = useState(0); // Dinamik yükseklik
   const scrollY = useRef(new Animated.Value(0)).current; // Scroll değeri
-  const route = useRoute();
 
-  // AppBar'ın görünürlüğünü belirleyen animasyonlu değer
   const appBarTranslateY = useMemo(() => 
     scrollY.interpolate({
       inputRange: [0, 500],
@@ -32,7 +31,6 @@ const HomeScreen = () => {
     }), [scrollY, appBarHeight]
   );
 
-  // Oyunları yerel depolamadan yükle
   useEffect(() => {
     const loadGames = async () => {
       const storedGames = getGamesFromStorage();
@@ -42,15 +40,11 @@ const HomeScreen = () => {
     loadGames();
   }, []);
 
-  // Başarılı girişte toast göster
   useEffect(() => {
-    if (route.params?.toastshow) {
-      setTimeout(() => {
-        showToast('success', 'Successfully logged in!');
-      }, 750);
-      navigation.setParams({ toastshow: false });
-    }
-  }, [route.params?.toastshow]);
+  showToast('success', 'Successfully logged in!');
+  }, []);
+
+  useDisableBackButton();
 
   return (
     <View style={[styles.container]}>
@@ -73,9 +67,10 @@ const HomeScreen = () => {
         )}
         scrollEventThrottle={16}
       >
-        <FeaturedGames games={games} />
+        <UpperBigAnimatedImages games={games} />
         <MiniGamesBlock games={games} />
         <FromTheCreator />
+        <VideoPlayBlock/>
       </ScrollView>
       {currentToast && (
         <ToastMessage

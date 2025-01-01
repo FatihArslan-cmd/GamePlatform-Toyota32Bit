@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import FastImage from 'react-native-fast-image';
 const LogoSection = () => {
   return (
     <View style={styles.logoContainer}>
-      <Icon name="gamepad-variant" size={80} color="#8a2be2" />
-      <Text style={styles.welcomeText}>GAME CENTER</Text>
+      <FastImage
+        source={require('../../../locales/icon.png')}
+        style={{ width: 175, height: 175 }}
+        ></FastImage>
       <Text style={styles.subtitleText}>Enter your realm</Text>
     </View>
   );
