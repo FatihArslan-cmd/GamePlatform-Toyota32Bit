@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Orbitron-VariableFont_wght',
     fontSize: 28,
-    fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitle: {

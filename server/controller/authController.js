@@ -8,6 +8,8 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY; // Refresh token için farklı bir secret key
 const HMAC_SECRET = process.env.HMAC_SECRET;
 
+// Uygulamada cookie-parser'ı kullanmanız gerekiyor
+// Örneğin: app.use(cookieParser());
 
 // Login işlemi
 const login = (req, res) => {
@@ -22,9 +24,11 @@ const login = (req, res) => {
     if (username === 'fatih' && password === '123456') {
       const userId = 123;
 
-      const accessToken = jwt.sign({ id: userId }, SECRET_KEY); // No expiresIn specified
+      // Access token (1 saat geçerli)
+      const accessToken = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' });
 
-      const refreshToken = jwt.sign({ id: userId }, REFRESH_SECRET_KEY); // No expiresIn specified
+      // Refresh token (7 gün geçerli)
+      const refreshToken = jwt.sign({ id: userId }, REFRESH_SECRET_KEY, { expiresIn: '29d' });
 
       // Kullanıcı bilgilerini hashle
       const userInfo = JSON.stringify({ id: userId });
