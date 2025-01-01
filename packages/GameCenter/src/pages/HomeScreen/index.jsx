@@ -7,7 +7,6 @@ import {
   Animated,
 } from 'react-native';
 import { getGamesFromStorage } from '../../utils/api';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
 import Header from './components/Header/Header';

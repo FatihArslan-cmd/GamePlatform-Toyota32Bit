@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
 import { clearGamesFromStorage } from '../../../utils/api';
 import { login } from '../../../shared/states/api';
-
+import LoadingFullScreen from '../../../components/LoadingFullScreen';
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +23,8 @@ const FormSection = ({ onSendCode }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
-  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const opacityAnim = useRef(new Animated.Value(1)).current; 
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
 
   const handleLoginPress = async () => {
     try {
@@ -32,15 +33,34 @@ const FormSection = ({ onSendCode }) => {
         setModalVisible(true);
       } else {
         await login(email, password);
-         clearGamesFromStorage();
-         await fetchAndStoreGames();
-        navigation.navigate('Tabs');
+        await handlePostLoginActions();
       }
     } catch (error) {
       setErrorMessage(error.message || 'An error occurred during login');
       setErrorModalVisible(true);
     }
   };
+  
+  const handlePostLoginActions = async () => {
+    setIsLoading(true);
+  
+    const startTime = Date.now(); // Başlangıç zamanı
+  
+    clearGamesFromStorage(); // Oyunları temizle
+    await fetchAndStoreGames(); // Oyunları çek ve sakla
+  
+    const elapsedTime = Date.now() - startTime; // Geçen süre
+    const minimumDelay = 2500; // Minimum bekleme süresi (ms)
+  
+    if (elapsedTime < minimumDelay) {
+      await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsedTime));
+    }
+  
+    navigation.navigate('Tabs'); // Yönlendirme
+    setIsLoading(false);
+  };
+  
+  
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -70,13 +90,12 @@ const FormSection = ({ onSendCode }) => {
       setErrorModalVisible(true);
       return;
     }
-  
+
     if (countdown === 0) {
       setCountdown(30);
       onSendCode();
     }
   };
-  
 
   useEffect(() => {
     let timer;
@@ -87,6 +106,10 @@ const FormSection = ({ onSendCode }) => {
     }
     return () => clearTimeout(timer);
   }, [countdown]);
+
+  if (isLoading) {
+    return <LoadingFullScreen />; // Render loading screen during loading
+  }
 
   return (
     <View style={styles.formContainer}>
@@ -146,7 +169,8 @@ const FormSection = ({ onSendCode }) => {
         visible={isModalVisible}
         onDismiss={() => setModalVisible(false)}
         confirmText="Allow"
-        showConfirmButton ='true'
+        showConfirmButton="true"
+        onConfirm={() => { setModalVisible(false); handlePostLoginActions(); }}
       >
         <BioModalContent />
       </CustomModal>
@@ -160,6 +184,7 @@ const FormSection = ({ onSendCode }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   formContainer: {

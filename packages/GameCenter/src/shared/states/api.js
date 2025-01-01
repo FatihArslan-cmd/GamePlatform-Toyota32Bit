@@ -21,19 +21,32 @@ api.interceptors.request.use(
   }
 );
 
-// Giriş yapma fonksiyonu
 export const login = async (username, password) => {
   try {
     const response = await api.post('/login', { username, password });
-    const { token } = response.data;
-    saveToken(token); // Token'i MMKV'ye kaydet
+    const { accessToken } = response.data;
+
+    if (!accessToken) {
+      throw new Error('Access token missing in response');
+    }
+
+    saveToken(accessToken); // Save the access token
     return response.data;
   } catch (error) {
+    console.log('Login error:', error);
     throw error.response?.data || { message: 'An error occurred' };
   }
 };
 
-// Korunan veri alma fonksiyonu
+const saveToken = (token) => {
+  if (!token || typeof token !== 'string') {
+    console.error('Invalid token:', token);
+    throw new Error('Token must be a non-empty string');
+  }
+  storage.set('token', token); // Save token in MMKV
+};
+
+
 export const getProtectedData = async () => {
   try {
     const response = await api.get('/protected');
@@ -43,10 +56,8 @@ export const getProtectedData = async () => {
   }
 };
 
-// Token kaydetme fonksiyonu (MMKV)
-const saveToken = (token) => {
-  storage.set('token', token); // Token'i MMKV'ye kaydediyoruz
-};
+
+
 
 // Token alma fonksiyonu (MMKV)
 export const getToken = () => {
@@ -58,5 +69,25 @@ export const removeToken = () => {
   storage.delete('token'); // MMKV'den token'i siliyoruz
   console.log(storage.getString('token')); // Should be null or undefined after logout
 };
+
+
+export const refreshAccessToken = async () => {
+  try {
+    const response = await api.post('/refresh-token');
+    const { accessToken } = response.data;
+
+    if (!accessToken) {
+      throw new Error('Access token missing in response');
+    }
+
+    saveToken(accessToken); // Yeni token'ı kaydedin
+    return accessToken;
+  } catch (error) {
+    console.error('Token refresh error:', error);
+    throw error.response?.data || { message: 'An error occurred' };
+  }
+};
+
+
 
 export default api;

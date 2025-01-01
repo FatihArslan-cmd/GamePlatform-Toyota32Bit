@@ -19,18 +19,17 @@ export default function Navigation() {
     async function initializeApp() {
       const hasSeenIntro = storage.getBoolean('hasSeenIntro');
       setIsIntroSeen(hasSeenIntro ?? false);
-  
+
       const token = storage.getString('token');
       setIsLoggedIn(!!token);
-  
+
       setTimeout(() => {
         BootSplash.hide({ fade: true });
-      }, 175); 
+      }, 175);
     }
-  
+
     initializeApp();
   }, []);
-  
 
   if (isIntroSeen === null) {
     return null; // You can return a loading state here while checking the stored values
@@ -39,7 +38,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'} // Use 'Login' screen if not logged in
+        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
@@ -58,7 +57,13 @@ export default function Navigation() {
           }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Tabs" component={TabNavigator} />
+        <Stack.Screen
+          name="Tabs"
+          component={TabNavigator}
+          options={{
+            animation: 'fade',
+          }}
+        />
         <Stack.Screen
           name="Settings"
           component={SettingScreen}
