@@ -12,8 +12,11 @@ const GameCard = ({ game }) => {
     <View style={styles.page}>
       <View style={styles.cardContainer}>
         <FastImage
-          source={{ uri: game.background_image }}
+          source={{ uri: game.background_image,
+            priority: FastImage.priority.high,
+           }}
           style={styles.image}
+          
           onLoad={() => setImageLoaded(true)}
         />
         <LinearGradient

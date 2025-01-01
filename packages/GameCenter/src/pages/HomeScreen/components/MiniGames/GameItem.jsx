@@ -39,7 +39,9 @@ const GameItem = memo(({ item, color, onPress }) => {
       <AnimatedSurface style={[styles.surface, { backgroundColor: color }, animatedStyle]} elevation={4}>
         <Card style={styles.card}>
           <FastImage
-            source={{ uri: item.image_background }}
+            source={{ uri: item.image_background,
+              priority: FastImage.priority.high,
+             }}
             style={styles.cardCover}
           />
           <LinearGradient

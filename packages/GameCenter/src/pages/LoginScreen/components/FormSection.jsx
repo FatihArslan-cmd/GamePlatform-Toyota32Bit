@@ -10,7 +10,6 @@ import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
 import { login } from '../../../shared/states/api';
 import LoadingFullScreen from '../../../components/LoadingFullScreen';
-import SavedUserSection from './FormSectionItem/SavedUserSection';
 
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
@@ -57,8 +56,13 @@ const FormSection = ({ onSendCode }) => {
     }
   
     navigation.navigate('Tabs');
-    setIsLoading(false);
+  
+    // setTimeout to delay setting isLoading to false by 1 second after navigation
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 50);
   };
+  
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -108,7 +112,7 @@ const FormSection = ({ onSendCode }) => {
   if (isLoading) {
     return <LoadingFullScreen />;
   }
-
+  
   return (
     <View style={styles.formContainer}>
       <InputField
