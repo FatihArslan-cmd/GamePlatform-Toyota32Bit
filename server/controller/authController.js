@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { sessionStore } = require('../config/sessionConfig');
-const cookieParser = require('cookie-parser'); // Import cookie-parser
 require('dotenv').config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -53,6 +52,7 @@ const login = (req, res) => {
         res.status(200).json({
           message: 'Login successful',
           accessToken,
+          refreshToken,
           encryptedInfo: hashedInfo,
         });
       });
@@ -66,39 +66,44 @@ const login = (req, res) => {
 };
 
 const refreshAccessToken = (req, res) => {
-  // Refresh token'ı cookie'den al
-  const refreshToken = req.cookies.refreshToken;
+  const { refreshToken } = req.body; // İstemciden refresh token alın
 
   if (!refreshToken) {
-    return res.status(401).json({ message: 'Refresh token not found' });
+    return res.status(401).json({ message: 'Refresh token is required' });
   }
 
+  // Refresh token'ı doğrula
   jwt.verify(refreshToken, REFRESH_SECRET_KEY, (err, decoded) => {
     if (err) {
       console.error('Invalid refresh token:', err);
-      return res.status(401).json({ message: 'Invalid refresh token' });
+      return res.status(401).json({ message: 'Invalid or expired refresh token' });
     }
 
     const userId = decoded.id;
 
+    // Session'da refresh token'ı kontrol et
     sessionStore.get(userId, (err, storedRefreshToken) => {
       if (err) {
-        console.error('Error getting session:', err);
+        console.error('Error fetching session:', err);
         return res.status(500).json({ message: 'Internal server error' });
       }
 
       if (!storedRefreshToken || storedRefreshToken !== refreshToken) {
         console.log('Stored refresh token:', storedRefreshToken);
         console.log('Received refresh token:', refreshToken);
-        return res.status(401).json({ message: 'Refresh token expired or invalid' });
+        return res.status(401).json({ message: 'Refresh token does not match or expired' });
       }
 
-      // Yeni access token oluştur
+      // Yeni bir access token oluştur
       const newAccessToken = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' });
 
-      res.status(200).json({ accessToken: newAccessToken });
+      res.status(200).json({
+        message: 'Access token refreshed successfully',
+        accessToken: newAccessToken,
+      });
     });
   });
 };
+
 
 module.exports = { login, refreshAccessToken };

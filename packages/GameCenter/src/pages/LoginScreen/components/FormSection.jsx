@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View, Animated, Text } from 'react-native';
 import InputField from './FormSectionItem/InputField';
 import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
@@ -8,9 +8,10 @@ import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent';
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
-import { clearGamesFromStorage } from '../../../utils/api';
 import { login } from '../../../shared/states/api';
 import LoadingFullScreen from '../../../components/LoadingFullScreen';
+import SavedUserSection from './FormSectionItem/SavedUserSection';
+
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,10 +30,10 @@ const FormSection = ({ onSendCode }) => {
   const handleLoginPress = async () => {
     try {
       if (rememberMe) {
-        await login(email, password);
+        await login(email, password, rememberMe);
         setModalVisible(true);
       } else {
-        await login(email, password);
+        await login(email, password, rememberMe);
         await handlePostLoginActions();
       }
     } catch (error) {
@@ -44,23 +45,20 @@ const FormSection = ({ onSendCode }) => {
   const handlePostLoginActions = async () => {
     setIsLoading(true);
   
-    const startTime = Date.now(); // Başlangıç zamanı
+    const startTime = Date.now();
   
-    clearGamesFromStorage(); // Oyunları temizle
-    await fetchAndStoreGames(); // Oyunları çek ve sakla
+    await fetchAndStoreGames();
   
-    const elapsedTime = Date.now() - startTime; // Geçen süre
-    const minimumDelay = 2500; // Minimum bekleme süresi (ms)
+    const elapsedTime = Date.now() - startTime;
+    const minimumDelay = 2500;
   
     if (elapsedTime < minimumDelay) {
       await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsedTime));
     }
   
-    navigation.navigate('Tabs'); // Yönlendirme
+    navigation.navigate('Tabs');
     setIsLoading(false);
   };
-  
-  
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -108,7 +106,7 @@ const FormSection = ({ onSendCode }) => {
   }, [countdown]);
 
   if (isLoading) {
-    return <LoadingFullScreen />; // Render loading screen during loading
+    return <LoadingFullScreen />;
   }
 
   return (
@@ -185,7 +183,6 @@ const FormSection = ({ onSendCode }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   formContainer: {
     backgroundColor: '#ffffff08',
@@ -202,6 +199,15 @@ const styles = StyleSheet.create({
   },
   animatedContainer: {
     width: '100%',
+  },
+  profileImageContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
 });
 

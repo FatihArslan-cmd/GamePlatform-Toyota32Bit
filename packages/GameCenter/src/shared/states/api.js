@@ -46,7 +46,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const newAccessToken = await refreshAccessToken();
+        const newAccessToken = await refreshAccessToken(getRefreshToken());
         processQueue(null, newAccessToken);
         return api(originalRequest);
       } catch (refreshError) {
@@ -74,16 +74,21 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-export const login = async (username, password) => {
+export const login = async (username, password, rememberMe=false) => {
   try {
     const response = await api.post('/login', { username, password });
-    const { accessToken } = response.data;
+    const { accessToken, refreshToken } = response.data;
 
     if (!accessToken) {
       throw new Error('Access token missing in response');
     }
 
-    saveToken(accessToken); // Save the access token
+    saveToken(accessToken);
+
+    if (rememberMe) {
+      saveRefreshToken(refreshToken);
+    }
+
     return response.data;
   } catch (error) {
     console.log('Login error:', error);
@@ -96,7 +101,16 @@ const saveToken = (token) => {
     console.error('Invalid token:', token);
     throw new Error('Token must be a non-empty string');
   }
-  storage.set('token', token); // Save token in MMKV
+  storage.set('token', token); 
+};
+export const getRefreshToken = () => storage.getString('refreshToken');
+
+export const saveRefreshToken = (refreshAccessToken) => {
+  if (!refreshAccessToken || typeof refreshAccessToken !== 'string') {
+    console.error('Invalid token:', refreshAccessToken);
+    throw new Error('Token must be a non-empty string');
+  }
+  storage.set('refreshToken', refreshAccessToken); // Save token in MMKV
 };
 
 
@@ -124,22 +138,22 @@ export const removeToken = () => {
 };
 
 
-export const refreshAccessToken = async () => {
+export const refreshAccessToken = async (refreshToken) => {
   try {
-    const response = await api.post('/refresh-token');
-    const { accessToken } = response.data;
+    const response = await axios.post('/refresh-token', {
+      refreshToken, // Body'de refresh token gönderiliyor
+    });
 
-    if (!accessToken) {
-      throw new Error('Access token missing in response');
-    }
+    const { accessToken } = response.data; // Yeni access token'ı al
 
     saveToken(accessToken); // Yeni token'ı kaydet
     return accessToken;
   } catch (error) {
     console.error('Token refresh error:', error);
-    throw error.response?.data || { message: 'An error occurred' };
+    throw error.response?.data || { message: 'An error occurred' }; // Hata mesajını döndür
   }
 };
+
 
 
 

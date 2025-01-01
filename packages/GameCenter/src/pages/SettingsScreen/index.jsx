@@ -5,11 +5,22 @@ import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../components/CustomModal';
 import { removeToken } from '../../shared/states/api';
 import BackButton from '../../components/BackIcon';
+import { storage } from '../../utils/storage';
 const SettingScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
-
+  const getToken = () => {
+    const token = storage.getString('token'); // MMKV'den token alınıyor
+    console.log('Token1:', token);
+    if (!token) {
+      console.warn('No token found in storage');
+    }
+    console.log('Token2:', token);
+    return token;
+  };
+  
   const handleLogout = () => {
+    getToken();
     removeToken(); // Delete the token
     navigation.reset({
       index: 0,

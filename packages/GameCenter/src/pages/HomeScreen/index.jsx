@@ -40,7 +40,10 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-  showToast('success', 'Successfully logged in!');
+    const timer = setTimeout(() => {
+      showToast('success', 'Successfully logged in!');
+    }, 600);
+    return () => clearTimeout(timer);
   }, []);
 
   useDisableBackButton();
