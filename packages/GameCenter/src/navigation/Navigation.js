@@ -8,12 +8,14 @@ import TabNavigator from './TabBarNavigator.jsx';
 import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
 import SettingScreen from '../pages/SettingsScreen/index.jsx';
 import BootSplash from 'react-native-bootsplash';
+import { Animated } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const [isIntroSeen, setIsIntroSeen] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const scaleAnim = useState(new Animated.Value(10.0))[0];
 
   useEffect(() => {
     async function initializeApp() {
@@ -24,7 +26,13 @@ export default function Navigation() {
       setIsLoggedIn(!!token);
 
       setTimeout(() => {
-        BootSplash.hide({ fade: true });
+        BootSplash.hide({ fade: true }).then(() => {
+          Animated.timing(scaleAnim, {
+            toValue: 1,
+            duration: 350,
+            useNativeDriver: true,
+          }).start();
+        });
       }, 175);
     }
 
@@ -32,54 +40,56 @@ export default function Navigation() {
   }, []);
 
   if (isIntroSeen === null) {
-    return null; // You can return a loading state here while checking the stored values
+    return null; // Return a loading state or placeholder if necessary
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
-        screenOptions={{
-          headerShown: false,
-          animation: 'slide_from_right',
-        }}
-      >
-        <Stack.Screen
-          name="Intro"
-          component={AdvancedPagerView}
-          options={{
+    <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
+          screenOptions={{
             headerShown: false,
+            animation: 'slide_from_right',
           }}
-          listeners={{
-            focus: () => {
-              storage.set('hasSeenIntro', true);
-            },
-          }}
-        />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen
-          name="Tabs"
-          component={TabNavigator}
-          options={{
-            animation: 'fade',
-          }}
-        />
-        <Stack.Screen
-          name="Settings"
-          component={SettingScreen}
-          options={{
-            animation: 'slide_from_left',
-          }}
-        />
-        <Stack.Screen
-          name="GameDetails"
-          component={GameDetails}
-          options={{
-            presentation: 'transparentModal',
-            animation: 'fade',
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+        >
+          <Stack.Screen
+            name="Intro"
+            component={AdvancedPagerView}
+            options={{
+              headerShown: false,
+            }}
+            listeners={{
+              focus: () => {
+                storage.set('hasSeenIntro', true);
+              },
+            }}
+          />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="Tabs"
+            component={TabNavigator}
+            options={{
+              animation: 'fade',
+            }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingScreen}
+            options={{
+              animation: 'slide_from_left',
+            }}
+          />
+          <Stack.Screen
+            name="GameDetails"
+            component={GameDetails}
+            options={{
+              presentation: 'transparentModal',
+              animation: 'fade',
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Animated.View>
   );
 }
