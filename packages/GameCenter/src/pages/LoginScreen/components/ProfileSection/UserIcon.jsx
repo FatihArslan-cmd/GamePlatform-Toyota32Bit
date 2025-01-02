@@ -1,17 +1,12 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import React, { useRef, useCallback, useEffect } from 'react';
+import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { getRefreshToken } from '../../../shared/states/api';
 
-const SavedUserSection = () => {
-  const refreshToken = getRefreshToken();
-  
-  // Animation values
-  const scaleAnim = new Animated.Value(1);
-  const shineAnim = new Animated.Value(0);
+const UserIcon = ({ onPress, lastUser }) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const shineAnim = useRef(new Animated.Value(0)).current;
 
-  // Pulsing animation
-  const pulseAnimation = () => {
+  const pulseAnimation = useCallback(() => {
     Animated.sequence([
       Animated.timing(scaleAnim, {
         toValue: 1.1,
@@ -24,9 +19,9 @@ const SavedUserSection = () => {
         useNativeDriver: true,
       }),
     ]).start(() => pulseAnimation());
-  };
+  }, [scaleAnim]);
 
-  const shineAnimation = () => {
+  const shineAnimation = useCallback(() => {
     Animated.sequence([
       Animated.timing(shineAnim, {
         toValue: 1,
@@ -39,12 +34,17 @@ const SavedUserSection = () => {
         useNativeDriver: true,
       }),
     ]).start(() => shineAnimation());
-  };
+  }, [shineAnim]);
 
   useEffect(() => {
     pulseAnimation();
     shineAnimation();
-  }, []);
+
+    return () => {
+      scaleAnim.stopAnimation();
+      shineAnim.stopAnimation();
+    };
+  }, [pulseAnimation, shineAnimation]);
 
   const shineTranslate = shineAnim.interpolate({
     inputRange: [0, 1],
@@ -52,12 +52,12 @@ const SavedUserSection = () => {
   });
 
   return (
-    <View style={styles.container}>
-      {refreshToken ? (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.profileContainer}>
         <View style={styles.iconContainer}>
           <Animated.View
             style={[
-              styles.iconWrapper,
+              styles.userIconWrapper,
               {
                 transform: [{ scale: scaleAnim }],
               },
@@ -74,14 +74,15 @@ const SavedUserSection = () => {
             ]}
           />
         </View>
-      ) : null}
-    </View>
+        <Text style={styles.lastUserText}>Logged in as: </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
+  profileContainer: {
+    flexDirection: 'column',
     alignItems: 'center',
   },
   iconContainer: {
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 50,
   },
-  iconWrapper: {
+  userIconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -102,6 +103,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
     transform: [{ skewX: '-20deg' }],
   },
+  lastUserText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#8a2be2',
+    fontFamily: 'Orbitron-VariableFont_wght',
+  },
 });
 
-export default SavedUserSection;
+export default UserIcon;

@@ -42,7 +42,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       showToast('success', 'Successfully logged in!');
-    }, 600);
+    }, 1250);
     return () => clearTimeout(timer);
   }, []);
 

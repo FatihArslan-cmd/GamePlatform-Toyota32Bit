@@ -5,7 +5,7 @@ import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
-import SavedUserSection from './components/SavedUserSection';
+import SavedUserSection from './components/ProfileSection/SavedUserSection';
 const LoginScreen = () => {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const { currentToast, showToast, hideToast } = useToast();

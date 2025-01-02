@@ -140,13 +140,11 @@ export const removeToken = () => {
 
 export const refreshAccessToken = async (refreshToken) => {
   try {
-    const response = await axios.post('/refresh-token', {
-      refreshToken, // Body'de refresh token gönderiliyor
-    });
+    const response = await api.post('/refresh-token', {refreshToken});
 
+     console.log('response', response);
     const { accessToken } = response.data; // Yeni access token'ı al
-
-    saveToken(accessToken); // Yeni token'ı kaydet
+    saveToken(accessToken); // Yeni access token
     return accessToken;
   } catch (error) {
     console.error('Token refresh error:', error);
