@@ -16,11 +16,13 @@ class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
-        override fun getPackages(): List<ReactPackage> =
-            PackageList(this).packages.apply {
-              // Packages that cannot be autolinked yet can be added manually here, for example:
-              // add(MyReactNativePackage())
-            }
+        override fun getPackages(): List<ReactPackage> {
+          // Varsayılan paketleri al
+          val packages = PackageList(this).packages
+          // Manuel olarak FingerprintPackage'i ekle
+          packages.add(FingerprintPackage())
+          return packages
+        }
 
         override fun getJSMainModuleName(): String = "index"
 
@@ -37,7 +39,7 @@ class MainApplication : Application(), ReactApplication {
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
+      // Eğer Yeni Mimari etkinse, native giriş noktasını yükle
       load()
     }
   }

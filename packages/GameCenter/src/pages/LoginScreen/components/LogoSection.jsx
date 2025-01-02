@@ -6,8 +6,8 @@ const LogoSection = () => {
   return (
     <View style={styles.logoContainer}>
       <FastImage
-        source={require('../../../locales/icon.png')}
-        style={{ width: 175, height: 175 }}
+        source={require('../../../locales/deneme.png')}
+        style={{ width: 150, height: 150 }}
         ></FastImage>
       <Text style={styles.subtitleText}>Enter your realm</Text>
     </View>
