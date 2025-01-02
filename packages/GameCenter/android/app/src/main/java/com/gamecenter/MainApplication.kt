@@ -11,6 +11,7 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
+import com.gamecenter.NFCReaderPackage 
 
 class MainApplication : Application(), ReactApplication {
 
@@ -19,7 +20,7 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> {
           // Varsayılan paketleri al
           val packages = PackageList(this).packages
-          // Manuel olarak FingerprintPackage'i ekle
+          packages.add(NFCReaderPackage())
           packages.add(FingerprintPackage())
           return packages
         }

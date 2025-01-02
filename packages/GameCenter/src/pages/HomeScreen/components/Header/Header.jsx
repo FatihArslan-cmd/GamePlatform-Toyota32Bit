@@ -27,14 +27,12 @@ const Header = () => {
         />
         {!searchMode && (
           <>
-            <WavyLine color="#4A00E0" width={200} height={30} />
             <GradientText
               text="Game Center"
               colors={['#4A00E0', '#FF8C00']}
               textStyle={{ fontSize: 28 }}
               gradientDirection="horizontal"
             />
-            <WavyLine color="#FF8C00" width={200} height={30} />
             <View style={styles.rightActions}>
               <MenuComponent
                 menuVisible={menuVisible}
