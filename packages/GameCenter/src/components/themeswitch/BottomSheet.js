@@ -1,5 +1,5 @@
 import {StyleSheet, useWindowDimensions} from 'react-native';
-import React, {forwardRef, useCallback, useImperativeHandle, useState} from 'react';
+import React, { useCallback, useImperativeHandle, useState} from 'react';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
