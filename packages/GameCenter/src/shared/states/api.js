@@ -105,6 +105,10 @@ const saveToken = (token) => {
 };
 export const getRefreshToken = () => storage.getString('refreshToken');
 
+export const removeRefreshToken = () => {
+  storage.delete('refreshToken');
+};
+
 export const saveRefreshToken = (refreshAccessToken) => {
   if (!refreshAccessToken || typeof refreshAccessToken !== 'string') {
     console.error('Invalid token:', refreshAccessToken);

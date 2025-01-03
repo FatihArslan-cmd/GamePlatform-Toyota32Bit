@@ -12,6 +12,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.gamecenter.NFCReaderPackage 
+import com.gamecenter.NavigationBarPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -22,6 +23,8 @@ class MainApplication : Application(), ReactApplication {
           val packages = PackageList(this).packages
           packages.add(NFCReaderPackage())
           packages.add(FingerprintPackage())
+          packages.add(NavigationBarPackage())
+
           return packages
         }
 

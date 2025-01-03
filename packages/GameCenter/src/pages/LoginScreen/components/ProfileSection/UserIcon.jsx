@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const UserIcon = ({ onPress, lastUser }) => {
+const UserIcon = ({ onPress, }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shineAnim = useRef(new Animated.Value(0)).current;
 

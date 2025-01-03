@@ -12,18 +12,12 @@ const SavedUserSection = () => {
   const [permissions, setPermissions] = useState({ barcode: false, biometric: false, nfc: false });
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Define loading state in parent component
-  const [lastUser, setLastUser] = useState('');
   const navigation = useNavigation();
 
   useEffect(() => {
     const storedPermissions = storage.getString('permissions');
     if (storedPermissions) {
       setPermissions(JSON.parse(storedPermissions));
-    }
-
-    const storedUser = storage.getString('lastUser');
-    if (storedUser) {
-      setLastUser(storedUser);
     }
   }, []);
 
@@ -34,7 +28,7 @@ const SavedUserSection = () => {
   return (
     <View style={styles.container}>
       {refreshToken && (
-        <UserIcon onPress={() => setModalVisible(true)} lastUser={lastUser} />
+        <UserIcon onPress={() => setModalVisible(true)}  />
       )}
       <PermissionsModal
         visible={isModalVisible}

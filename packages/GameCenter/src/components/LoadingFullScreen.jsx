@@ -11,12 +11,17 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Text } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
+import { hideNavigationBar } from '../utils/NavBarManager';
 
 const { width } = Dimensions.get('window');
 
 const LoadingFullScreen = () => {
   const scale = useSharedValue(1);
   
+  useEffect(() => {
+    hideNavigationBar();
+  }, []);
+
   useEffect(() => {
     scale.value = withRepeat(
       withSpring(1.1, { damping: 2, stiffness: 80 }), 
