@@ -1,7 +1,7 @@
 import React from 'react';
 import { Svg, Path } from 'react-native-svg';
 
-const WavyLine = ({ color = '#6A4AFF', width = 500, height = 300 }) => (
+const WavyLine = ({ color = '#6A4AFF', width = 200, height = 20 }) => (
   <Svg
     height={height}
     width={width}

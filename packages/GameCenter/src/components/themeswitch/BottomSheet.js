@@ -12,7 +12,7 @@ import Switch from './Switch';
 import Icon from './Icon';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BottomSheet = forwardRef(({setTheme, theme, setThemeSwitch, themeSwitch}, ref) => {
+const BottomSheet = React.forwardRef(({setTheme, theme, setThemeSwitch, themeSwitch}, ref) => {
   const insets = useSafeAreaInsets();
   const {width} = useWindowDimensions();
   const [bottomSheetHeight, setBottomSheetHeight] = useState(1000);

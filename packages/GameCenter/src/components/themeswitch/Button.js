@@ -2,7 +2,7 @@ import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import React from 'react';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-const Button = ({ bottomSheetRef, theme }) => {
+const ThemeButton = ({ bottomSheetRef, theme }) => {
   const backgroundColorAnimation = useAnimatedStyle(() => {
     return {
       backgroundColor:
@@ -19,6 +19,7 @@ const Button = ({ bottomSheetRef, theme }) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
+        console.log('bottomSheetRef:', bottomSheetRef.current); // Ref loglanıyor mu?
         bottomSheetRef.current?.expand();
       }}>
       <Animated.View style={[styles.container, backgroundColorAnimation]}>
@@ -30,7 +31,7 @@ const Button = ({ bottomSheetRef, theme }) => {
   );
 };
 
-export default Button;
+export default ThemeButton;
 
 const styles = StyleSheet.create({
   container: {

@@ -199,7 +199,6 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 15,
     backgroundColor: '#ffffff10',
-    fontFamily: 'RussoOne-Regular',
   },
   animatedContainer: {
     width: '100%',

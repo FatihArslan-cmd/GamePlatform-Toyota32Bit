@@ -129,8 +129,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ffffff',
       padding: 24,
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
       elevation: 8,
     },
     title: {
