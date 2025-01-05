@@ -84,17 +84,18 @@ const listLobbiesHandler = (req, res) => {
   try {
     const lobbies = getLobbies();
 
-    const enrichedLobbies = lobbies.map((lobby) => ({
-      ...lobby,
-      timeoutActive: !!lobby.timeout,
-      lastOwnerLeave: lobby.lastOwnerLeave,
-    }));
+    const sanitizedLobbies = lobbies.map((lobby) => {
+      const { password, ...rest } = lobby; // Şifreyi çıkar
+      return rest;
+    });
 
-    res.status(200).json({ lobbies: enrichedLobbies });
+    res.status(200).json({ lobbies: sanitizedLobbies });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
 
 module.exports = {
   createLobbyHandler,

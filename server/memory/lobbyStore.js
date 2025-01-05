@@ -17,14 +17,15 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
     lobbyName,
     ownerId: userId,
     members: [userId],
+    blockedMembers: [],
     maxCapacity,
     lobbyType,
     gameName,
     password,
     startDate: lobbyType === 'event' ? startDate : null,
     endDate: lobbyType === 'event' ? endDate : null,
-    lastOwnerLeave: null, 
-    timeout: null, 
+    lastOwnerLeave: null,
+    timeout: null,
   };
 
   lobbies.set(userId, lobby);
@@ -113,6 +114,36 @@ const updateLobby = (userId, updates) => {
     throw new Error('Event lobbies require startDate and endDate');
   }
 
+  if (updates.addMember) {
+    if (lobby.members.includes(updates.addMember)) {
+      throw new Error('Member already in lobby');
+    }
+    if (lobby.blockedMembers.includes(updates.addMember)) {
+      throw new Error('Member is blocked and cannot be added');
+    }
+    if (lobby.members.length >= lobby.maxCapacity) {
+      throw new Error('Lobby is full');
+    }
+    lobby.members.push(updates.addMember);
+  }
+
+  if (updates.removeMember) {
+    lobby.members = lobby.members.filter((id) => id !== updates.removeMember);
+  }
+
+  if (updates.blockMember) {
+    if (lobby.members.includes(updates.blockMember)) {
+      lobby.members = lobby.members.filter((id) => id !== updates.blockMember);
+    }
+    if (!lobby.blockedMembers.includes(updates.blockMember)) {
+      lobby.blockedMembers.push(updates.blockMember);
+    }
+  }
+
+  if (updates.unblockMember) {
+    lobby.blockedMembers = lobby.blockedMembers.filter((id) => id !== updates.unblockMember);
+  }
+
   Object.assign(lobby, updates);
   return lobby;
 };
@@ -127,7 +158,7 @@ setInterval(() => {
       console.log(`Event lobby ${lobby.lobbyName} has been deleted due to end date.`);
     }
   });
-}, 60 * 1000); 
+}, 60 * 1000);
 
 module.exports = {
   createLobby,
