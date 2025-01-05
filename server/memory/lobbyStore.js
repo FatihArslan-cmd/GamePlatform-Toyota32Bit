@@ -1,26 +1,45 @@
-const lobbies = new Map(); // Kullanıcı ID'sine göre lobi bilgilerini tutacak.
+const lobbies = new Map();
 
-const createLobby = (userId, lobbyName, maxCapacity = 8) => {
+const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = null, password = null, startDate = null, endDate = null) => {
   if (lobbies.has(userId)) {
     throw new Error('User already owns a lobby');
+  }
+
+  if (!['normal', 'event'].includes(lobbyType)) {
+    throw new Error('Invalid lobby type');
+  }
+
+  if (lobbyType === 'event' && (!startDate || !endDate)) {
+    throw new Error('Event lobbies require startDate and endDate');
   }
 
   const lobby = {
     lobbyName,
     ownerId: userId,
-    members: [userId], // İlk üye lobi sahibidir.
+    members: [userId],
     maxCapacity,
+    lobbyType,
+    gameName,
+    password,
+    startDate: lobbyType === 'event' ? startDate : null,
+    endDate: lobbyType === 'event' ? endDate : null,
+    lastOwnerLeave: null, 
+    timeout: null, 
   };
 
   lobbies.set(userId, lobby);
   return lobby;
 };
 
-const joinLobby = (userId, lobbyName) => {
+const joinLobby = (userId, lobbyName, password = null) => {
   const lobby = Array.from(lobbies.values()).find((l) => l.lobbyName === lobbyName);
 
   if (!lobby) {
     throw new Error('Lobby not found');
+  }
+
+  if (lobby.password && lobby.password !== password) {
+    throw new Error('Invalid password');
   }
 
   if (lobby.members.length >= lobby.maxCapacity) {
@@ -29,6 +48,14 @@ const joinLobby = (userId, lobbyName) => {
 
   if (lobby.members.includes(userId)) {
     throw new Error('User is already in this lobby');
+  }
+
+  if (lobby.ownerId === userId) {
+    lobby.lastOwnerLeave = null;
+    if (lobby.timeout) {
+      clearTimeout(lobby.timeout);
+      lobby.timeout = null;
+    }
   }
 
   lobby.members.push(userId);
@@ -44,8 +71,20 @@ const leaveLobby = (userId) => {
 
   userLobby.members = userLobby.members.filter((id) => id !== userId);
 
-  if (userLobby.members.length === 0) {
-    lobbies.delete(userLobby.ownerId); // Lobi boşsa sil.
+  if (userLobby.ownerId === userId) {
+    if (userLobby.lobbyType === 'event') {
+      console.log(`Owner left, but lobby is event type and will remain active until ${userLobby.endDate}`);
+    } else {
+      userLobby.lastOwnerLeave = Date.now();
+      userLobby.timeout = setTimeout(() => {
+        lobbies.delete(userLobby.ownerId);
+        console.log(`Lobby owned by ${userLobby.ownerId} has been deleted after 8 hours.`);
+      }, 8 * 60 * 60 * 1000); 
+    }
+  }
+
+  if (userLobby.members.length === 0 && userLobby.lobbyType !== 'event') {
+    lobbies.delete(userLobby.ownerId); 
   }
 
   return userLobby;
@@ -59,12 +98,42 @@ const deleteLobby = (userId) => {
   return lobbies.delete(userId);
 };
 
+const updateLobby = (userId, updates) => {
+  const lobby = lobbies.get(userId);
+
+  if (!lobby) {
+    throw new Error('Lobby not found');
+  }
+
+  if (updates.lobbyType && !['normal', 'event'].includes(updates.lobbyType)) {
+    throw new Error('Invalid lobby type');
+  }
+
+  if (updates.lobbyType === 'event' && (!updates.startDate || !updates.endDate)) {
+    throw new Error('Event lobbies require startDate and endDate');
+  }
+
+  Object.assign(lobby, updates);
+  return lobby;
+};
+
 const getLobbies = () => Array.from(lobbies.values());
+
+setInterval(() => {
+  const now = Date.now();
+  Array.from(lobbies.values()).forEach((lobby) => {
+    if (lobby.lobbyType === 'event' && new Date(lobby.endDate).getTime() <= now) {
+      lobbies.delete(lobby.ownerId);
+      console.log(`Event lobby ${lobby.lobbyName} has been deleted due to end date.`);
+    }
+  });
+}, 60 * 1000); 
 
 module.exports = {
   createLobby,
   joinLobby,
   leaveLobby,
   deleteLobby,
+  updateLobby,
   getLobbies,
 };

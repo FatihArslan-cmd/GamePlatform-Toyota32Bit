@@ -13,21 +13,18 @@ const initializeWebSocketServer = (server, sessionConfig) => {
       ws.on('message', (message) => {
         console.log('Received:', message);
 
-        // Mesajı oturuma kaydet
         if (!req.session.messages) {
           req.session.messages = [];
         }
         req.session.messages.push(message);
         req.session.save();
 
-        // Mesajı diğer istemcilere gönder
         wss.clients.forEach((client) => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(message);
           }
         });
 
-        // Gönderen istemciye geri bildirim
         ws.send(`You: ${message}`);
       });
 
