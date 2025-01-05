@@ -85,7 +85,7 @@ const listLobbiesHandler = (req, res) => {
     const lobbies = getLobbies();
 
     const sanitizedLobbies = lobbies.map((lobby) => {
-      const { password, ...rest } = lobby; // Şifreyi çıkar
+      const { password, ...rest } = lobby;
       return rest;
     });
 
@@ -94,8 +94,6 @@ const listLobbiesHandler = (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
-
 
 module.exports = {
   createLobbyHandler,

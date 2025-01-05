@@ -5,6 +5,11 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
     throw new Error('User already owns a lobby');
   }
 
+  const userLobby = Array.from(lobbies.values()).find((l) => l.members.includes(userId));
+  if (userLobby) {
+    throw new Error('User is already in a lobby. Leave the lobby to create a new one.');
+  }
+
   if (!['normal', 'event'].includes(lobbyType)) {
     throw new Error('Invalid lobby type');
   }
@@ -33,6 +38,11 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
 };
 
 const joinLobby = (userId, lobbyName, password = null) => {
+  const userLobby = Array.from(lobbies.values()).find((l) => l.members.includes(userId));
+  if (userLobby) {
+    throw new Error('User is already in a lobby. Leave the lobby to join another.');
+  }
+
   const lobby = Array.from(lobbies.values()).find((l) => l.lobbyName === lobbyName);
 
   if (!lobby) {
@@ -80,12 +90,12 @@ const leaveLobby = (userId) => {
       userLobby.timeout = setTimeout(() => {
         lobbies.delete(userLobby.ownerId);
         console.log(`Lobby owned by ${userLobby.ownerId} has been deleted after 8 hours.`);
-      }, 8 * 60 * 60 * 1000); 
+      }, 8 * 60 * 60 * 1000);
     }
   }
 
   if (userLobby.members.length === 0 && userLobby.lobbyType !== 'event') {
-    lobbies.delete(userLobby.ownerId); 
+    lobbies.delete(userLobby.ownerId);
   }
 
   return userLobby;
