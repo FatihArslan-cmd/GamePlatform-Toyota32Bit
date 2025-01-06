@@ -1,31 +1,72 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../components/CustomModal';
 import { removeToken } from '../../shared/states/api';
 import BackButton from '../../components/BackIcon';
+import { storage } from '../../utils/storage';
+import BottomSheet from '../../components/themeswitch/BottomSheet'; // Ensure the path is correct
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useColorScheme } from 'react-native';
+import ThemeButton from '../../components/themeswitch/Button';
+
 const SettingScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const colorScheme = useColorScheme();
   const navigation = useNavigation();
+  const bottomSheetRef = useRef(null); // Ref for the BottomSheet
+  const insets = useSafeAreaInsets();
+    const [theme, setTheme] = useState(colorScheme);
+  const [themeSwitch, setThemeSwitch] = useState('system');
 
+  const getToken = () => {
+    const token = storage.getString('token'); // MMKV'den token alınıyor
+    console.log('Token1:', token);
+    if (!token) {
+      console.warn('No token found in storage');
+    }
+    console.log('Token2:', token);
+    return token;
+  };
+  
   const handleLogout = () => {
+    getToken();
     removeToken(); // Delete the token
     navigation.reset({
       index: 0,
       routes: [{ name: 'Login' }],
     });
   };
-
+  const backgroundColorAnimation = useAnimatedStyle(() => {
+    return {
+      backgroundColor:
+        theme === 'dark' ? withTiming('black') : withTiming('white'),
+    };
+  });
+ 
   return (
-    <View style={styles.container}>
-      <BackButton size={32} color='white' />
+        <GestureHandlerRootView style={{flex: 1}}>
+              <SafeAreaProvider>
+    <Animated.View
+      style={[
+        styles.container,
+        { paddingTop: insets.top },
+        backgroundColorAnimation,
+      ]}
+    >      <BackButton size={32} color="white" />
       <Button
+      
         mode="contained"
         onPress={() => setModalVisible(true)}
         style={styles.logoutButton}>
         Logout
       </Button>
+      <ThemeButton bottomSheetRef={bottomSheetRef} theme={theme} />
+
 
       <CustomModal
         visible={isModalVisible}
@@ -34,9 +75,19 @@ const SettingScreen = () => {
         text="Are you sure you want to log out?"
         showConfirmButton="false"
         onConfirm={handleLogout}
-      >
-      </CustomModal>
-    </View>
+      />
+
+      <BottomSheet
+        ref={bottomSheetRef} // Pass the ref to BottomSheet
+        setTheme={setTheme}
+        theme={theme}
+        setThemeSwitch={setThemeSwitch}
+        themeSwitch={themeSwitch}
+      />
+    
+    </Animated.View>
+    </SafeAreaProvider>
+      </GestureHandlerRootView>
   );
 };
 
@@ -53,17 +104,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
   },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
-  confirmButton: {
+  themeButton: {
     backgroundColor: '#8a2be2',
-  },
-  cancelButton: {
-    borderColor: '#8a2be2',
-    borderWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 20,
   },
 });
 

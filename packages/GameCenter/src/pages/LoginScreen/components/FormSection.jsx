@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View, Animated, Text } from 'react-native';
 import InputField from './FormSectionItem/InputField';
 import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
@@ -8,8 +8,8 @@ import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent';
 import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
-import { clearGamesFromStorage } from '../../../utils/api';
 import { login } from '../../../shared/states/api';
+import LoadingFullScreen from '../../../components/LoadingFullScreen';
 
 const FormSection = ({ onSendCode }) => {
   const [email, setEmail] = useState('');
@@ -23,24 +23,46 @@ const FormSection = ({ onSendCode }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
-  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const opacityAnim = useRef(new Animated.Value(1)).current; 
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
 
   const handleLoginPress = async () => {
     try {
       if (rememberMe) {
-        await login(email, password);
+        await login(email, password, rememberMe);
         setModalVisible(true);
       } else {
-        await login(email, password);
-         clearGamesFromStorage();
-         await fetchAndStoreGames();
-        navigation.navigate('Tabs');
+        await login(email, password, rememberMe);
+        await handlePostLoginActions();
       }
     } catch (error) {
       setErrorMessage(error.message || 'An error occurred during login');
       setErrorModalVisible(true);
     }
   };
+  
+  const handlePostLoginActions = async () => {
+    setIsLoading(true);
+  
+    const startTime = Date.now();
+  
+    await fetchAndStoreGames();
+  
+    const elapsedTime = Date.now() - startTime;
+    const minimumDelay = 2500;
+  
+    if (elapsedTime < minimumDelay) {
+      await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsedTime));
+    }
+  
+    navigation.navigate('Tabs');
+  
+    // setTimeout to delay setting isLoading to false by 1 second after navigation
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 50);
+  };
+  
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -70,13 +92,12 @@ const FormSection = ({ onSendCode }) => {
       setErrorModalVisible(true);
       return;
     }
-  
+
     if (countdown === 0) {
       setCountdown(30);
       onSendCode();
     }
   };
-  
 
   useEffect(() => {
     let timer;
@@ -88,6 +109,10 @@ const FormSection = ({ onSendCode }) => {
     return () => clearTimeout(timer);
   }, [countdown]);
 
+  if (isLoading) {
+    return <LoadingFullScreen />;
+  }
+  
   return (
     <View style={styles.formContainer}>
       <InputField
@@ -146,7 +171,8 @@ const FormSection = ({ onSendCode }) => {
         visible={isModalVisible}
         onDismiss={() => setModalVisible(false)}
         confirmText="Allow"
-        showConfirmButton ='true'
+        showConfirmButton="true"
+        onConfirm={() => { setModalVisible(false); handlePostLoginActions(); }}
       >
         <BioModalContent />
       </CustomModal>
@@ -173,10 +199,18 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 15,
     backgroundColor: '#ffffff10',
-    fontFamily: 'RussoOne-Regular',
   },
   animatedContainer: {
     width: '100%',
+  },
+  profileImageContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
 });
 

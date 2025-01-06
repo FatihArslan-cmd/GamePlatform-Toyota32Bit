@@ -29,9 +29,6 @@ const InputField = ({
       )
     }
     theme={{ colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: '#fff' } }}
-    outlineColor="#8a2be250"
-    activeOutlineColor="#8a2be2"
-    textColor="#fff"
   />
 );
 

@@ -1,128 +1,110 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Modal, Portal, Text } from 'react-native-paper';
-import { 
-  Animated, 
-  Dimensions, 
-  StyleSheet, 
-  TouchableWithoutFeedback, 
-  View,
-  PanResponder 
-} from 'react-native';
+import { StyleSheet, Dimensions, TouchableWithoutFeedback, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+  runOnJS,
+  interpolate,
+} from 'react-native-reanimated';
+import { PanResponder } from 'react-native';
 
 const BottomSheet = React.memo(({
-  visible, 
-  onDismiss, 
-  title, 
-  children, 
+  visible,
+  onDismiss,
+  title,
+  children,
   height = '50%',
   backgroundColor = 'white',
 }) => {
-  const slideAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
   const { height: screenHeight } = Dimensions.get('window');
-  const panY = useRef(new Animated.Value(0)).current;
-
+  
   const defaultHeight = useMemo(() => (
     typeof height === 'string' 
       ? screenHeight * (parseInt(height) / 100)
       : height
   ), [height, screenHeight]);
 
-  const resetPositionAnim = useMemo(() => (
-    Animated.spring(panY, {
-      toValue: 0,
-      tension: 50,
-      friction: 8,
-      useNativeDriver: true,
-    })
-  ), [panY]);
+  const translateY = useSharedValue(screenHeight);
+  const opacity = useSharedValue(0);
+  const gestureY = useSharedValue(0);
 
-  const closeAnim = useMemo(() => (
-    Animated.timing(panY, {
-      toValue: screenHeight,
-      duration: 200,
-      useNativeDriver: true,
-    })
-  ), [panY, screenHeight]);
+  const MAX_UPWARD_TRANSLATE = -defaultHeight * 0.3;
+  const DISMISS_THRESHOLD = screenHeight * 0.2;
 
-  const panResponder = useRef(
+  const close = useCallback(() => {
+    translateY.value = withTiming(screenHeight, { duration: 300 });
+    opacity.value = withTiming(0, { duration: 300 }, () => {
+      runOnJS(onDismiss)();
+    });
+  }, [translateY, opacity, screenHeight, onDismiss]);
+
+  const panResponder = useMemo(() => 
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gestureState) => (
-        Math.abs(gestureState.dy) > Math.abs(gestureState.dx)
-      ),
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        return Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
+      },
       onPanResponderMove: (_, gestureState) => {
         const newPosition = gestureState.dy;
         if (newPosition < 0) {
-          const resistedPosition = -Math.sqrt(Math.abs(newPosition)) * 5;
-          panY.setValue(Math.max(resistedPosition, -defaultHeight * 0.3));
+          const resistance = -Math.sqrt(Math.abs(newPosition)) * 5;
+          gestureY.value = Math.max(resistance, MAX_UPWARD_TRANSLATE);
         } else {
-          panY.setValue(newPosition);
+          gestureY.value = newPosition;
         }
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dy > screenHeight * 0.2 || gestureState.vy > 0.5) {
-          closeAnim.start(() => onDismiss());
+        if (gestureState.dy > DISMISS_THRESHOLD || gestureState.vy > 0.5) {
+          close();
         } else {
-          resetPositionAnim.start();
+          gestureY.value = withSpring(0, {
+            damping: 20,
+            stiffness: 90,
+          });
         }
       },
-    })
-  ).current;
+    }),
+  [close, gestureY, MAX_UPWARD_TRANSLATE, DISMISS_THRESHOLD]);
 
   useEffect(() => {
     if (visible) {
-      slideAnim.setValue(screenHeight);
-      fadeAnim.setValue(0);
-      panY.setValue(0);
-  
-      Animated.parallel([
-        Animated.spring(slideAnim, {
-          toValue: 0,
-          tension: 1, 
-          friction: 10, 
-          useNativeDriver: true,
-        }),
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000, // Daha yavaş bir görünüm animasyonu
-          useNativeDriver: true,
-        }),
-      ]).start();
+      translateY.value = screenHeight;
+      opacity.value = 0;
+      gestureY.value = 0;
+
+      translateY.value = withSpring(0, {
+        damping: 15,
+        stiffness: 90,
+      });
+      opacity.value = withTiming(1, { duration: 300 });
     } else {
-      Animated.parallel([
-        Animated.timing(slideAnim, {
-          toValue: screenHeight,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
+      translateY.value = withTiming(screenHeight, { duration: 300 });
+      opacity.value = withTiming(0, { duration: 300 });
     }
-  }, [visible, slideAnim, fadeAnim, screenHeight, panY]);
-  
+  }, [visible, translateY, opacity, screenHeight]);
 
-  const backdropOpacity = useMemo(() => panY.interpolate({
-    inputRange: [-defaultHeight * 0.3, 0, screenHeight * 0.2],
-    outputRange: [1.2, 1, 0],
-    extrapolate: 'clamp',
-  }), [panY, defaultHeight, screenHeight]);
+  const backdropAnimatedStyle = useAnimatedStyle(() => {
+    const backdropOpacity = interpolate(
+      gestureY.value,
+      [MAX_UPWARD_TRANSLATE, 0, DISMISS_THRESHOLD],
+      [1.2, 1, 0],
+    );
 
-  const modalStyle = useMemo(() => ({
+    return {
+      opacity: opacity.value * backdropOpacity,
+    };
+  });
+
+  const modalAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
-      { translateY: slideAnim },
-      { translateY: panY },
+      { translateY: translateY.value },
+      { translateY: gestureY.value },
     ],
-  }), [slideAnim, panY]);
-
-  const overlayStyle = useMemo(() => ({
-    opacity: Animated.multiply(fadeAnim, backdropOpacity),
-  }), [fadeAnim, backdropOpacity]);
+  }));
 
   const handleDismiss = useCallback(() => onDismiss(), [onDismiss]);
 
@@ -130,7 +112,7 @@ const BottomSheet = React.memo(({
     <Portal>
       <Modal visible={visible} onDismiss={handleDismiss} contentContainerStyle={styles.container}>
         <TouchableWithoutFeedback onPress={handleDismiss}>
-          <Animated.View style={[StyleSheet.absoluteFill, overlayStyle]}>
+          <Animated.View style={[StyleSheet.absoluteFill, backdropAnimatedStyle]}>
             <BlurView
               style={[StyleSheet.absoluteFill, styles.blurView]}
               blurType="light"
@@ -140,11 +122,11 @@ const BottomSheet = React.memo(({
           </Animated.View>
         </TouchableWithoutFeedback>
 
-        <Animated.View 
+        <Animated.View
           {...panResponder.panHandlers}
           style={[
             styles.modalContent,
-            modalStyle,
+            modalAnimatedStyle,
             { height: defaultHeight, backgroundColor },
           ]}
         >
@@ -175,6 +157,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
+    marginHorizontal: 15,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingTop: 20,

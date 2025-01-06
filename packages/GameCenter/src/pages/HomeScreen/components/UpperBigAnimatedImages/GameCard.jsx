@@ -1,53 +1,75 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Text, Chip } from 'react-native-paper';
 import { LinearGradient } from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import formatDate from '../../../../utils/FormatDate';
+
+const { height } = Dimensions.get('window'); // Ekran boyutlarını al
+
 const GameCard = ({ game }) => {
+  const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  const handleLayout = useCallback(
+    (event) => {
+      const { y } = event.nativeEvent.layout; 
+      const isCardVisible = y >= 0 && y <= height; 
+      setIsVisible(isCardVisible);
+    },
+    [height]
+  );
+
+  const handleImageLoad = useCallback(() => {
+    setImageLoaded(true);
+  }, []);
+
   return (
-    <View style={styles.page}>
-      <View style={styles.cardContainer}>
-        <FastImage
-          source={{ uri: game.background_image }}
-          style={styles.image}
-          onLoad={() => setImageLoaded(true)}
-        />
-        <LinearGradient
-          colors={['rgba(0,0,0,0.7)', 'transparent']}
-          style={styles.gradient}
-        >
-          <View style={styles.infoContainer}>
-            <Text style={styles.gameTitle}>{game.name}</Text>
-            <Text style={styles.releaseInfo}>Released: {game.released}</Text>
-            <Text style={styles.releaseInfo}>Last Updated: {formatDate(game.updated)}</Text>
-            {game.genres && (
-              <View style={styles.genreContainer}>
-                {game.genres.slice(0, 3).map(genre => (
-                  <Chip 
-                    key={genre.id}
-                    style={styles.genreChip} 
-                    textStyle={styles.genreChipText}
-                  >
-                    {genre.name}
-                  </Chip>
-                ))}
+    <View style={styles.page} onLayout={handleLayout}>
+      {isVisible && ( 
+        <View style={styles.cardContainer}>
+          <FastImage
+            source={{
+              uri: game.background_image,
+              priority: FastImage.priority.high,
+            }}
+            style={styles.image}
+            onLoad={handleImageLoad}
+          />
+          <LinearGradient
+            colors={['rgba(0,0,0,0.7)', 'transparent']}
+            style={styles.gradient}
+          >
+            <View style={styles.infoContainer}>
+              <Text style={styles.gameTitle}>{game.name}</Text>
+              <Text style={styles.releaseInfo}>Released: {game.released}</Text>
+              <Text style={styles.releaseInfo}>Last Updated: {formatDate(game.updated)}</Text>
+              {game.genres && (
+                <View style={styles.genreContainer}>
+                  {game.genres.slice(0, 3).map((genre) => (
+                    <Chip
+                      key={genre.id}
+                      style={styles.genreChip}
+                      textStyle={styles.genreChipText}
+                    >
+                      {genre.name}
+                    </Chip>
+                  ))}
+                </View>
+              )}
+              <View style={styles.statsContainer}>
+                <Chip style={styles.chip} textStyle={styles.chipText}>
+                  <MaterialIcons name="star" size={16} color="#FFD700" /> {game.rating}
+                </Chip>
+                <Chip style={styles.chip} textStyle={styles.chipText}>
+                  <MaterialIcons name="people" size={16} color="#fff" /> {game.ratings_count} ratings
+                </Chip>
               </View>
-            )}
-            <View style={styles.statsContainer}>
-              <Chip style={styles.chip} textStyle={styles.chipText}>
-                <MaterialIcons name="star" size={16} color="#FFD700" /> {game.rating}
-              </Chip>
-              <Chip style={styles.chip} textStyle={styles.chipText}>
-                <MaterialIcons name="people" size={16} color="#fff" /> {game.ratings_count} ratings
-              </Chip>
             </View>
-          </View>
-        </LinearGradient>
-      </View>
+          </LinearGradient>
+        </View>
+      )}
     </View>
   );
 };
@@ -69,7 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 20,
-    marginVertical:10
+    marginVertical: 10,
   },
   genreChip: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
@@ -78,7 +100,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontFamily: 'Orbitron-VariableFont_wght',
-
   },
   image: {
     width: '100%',
@@ -105,7 +126,6 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 4,
     fontFamily: 'Orbitron-VariableFont_wght',
-
   },
   releaseInfo: {
     color: '#ccc',
@@ -115,9 +135,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
     fontFamily: 'Orbitron-VariableFont_wght',
-
   },
-
   statsContainer: {
     flexDirection: 'row',
     gap: 11,
@@ -130,7 +148,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontFamily: 'Orbitron-VariableFont_wght',
-
   },
 });
 

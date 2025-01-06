@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Title, Button } from 'react-native-paper';
+import { Title } from 'react-native-paper';
 import PermissionItem from './PermissionItem';
+import { storage } from '../../../../utils/storage';
+// Initialize MMKV
 
 const BioModalContent = ({ onPermissionsChange }) => {
+  // Initialize permissions state
   const [permissions, setPermissions] = useState({
     biometric: false,
     nfc: false,
     barcode: false,
   });
 
-  const handlePermissionChange = (permission) => {
-    const newPermissions = {
+  useEffect(() => {
+    // Load saved permissions from MMKV when the component mounts
+    const savedPermissions = storage.getString('permissions');
+    if (savedPermissions) {
+      setPermissions(JSON.parse(savedPermissions));
+    }
+  }, []);
+
+  const handlePermissionChange = (key) => {
+    // Update the permissions state
+    const updatedPermissions = {
       ...permissions,
-      [permission]: !permissions[permission],
+      [key]: !permissions[key],
     };
-    setPermissions(newPermissions);
-    onPermissionsChange?.(newPermissions);
+
+    // Save the updated permissions to MMKV
+    storage.set('permissions', JSON.stringify(updatedPermissions));
+
+    // Update the state and notify parent component if needed
+    setPermissions(updatedPermissions);
+    if (onPermissionsChange) {
+      onPermissionsChange(updatedPermissions);
+    }
   };
 
   return (
@@ -26,27 +45,23 @@ const BioModalContent = ({ onPermissionsChange }) => {
       <PermissionItem
         title="Allow Touch ID / Face ID usage"
         icon="fingerprint"
-        permission="biometric"
         isChecked={permissions.biometric}
-        onToggle={handlePermissionChange}
+        onToggle={() => handlePermissionChange('biometric')}
       />
 
       <PermissionItem
         title="Allow NFC usage"
         icon="nfc"
-        permission="nfc"
         isChecked={permissions.nfc}
-        onToggle={handlePermissionChange}
+        onToggle={() => handlePermissionChange('nfc')}
       />
 
       <PermissionItem
         title="Allow barcode scanner usage"
         icon="barcode-scan"
-        permission="barcode"
         isChecked={permissions.barcode}
-        onToggle={handlePermissionChange}
+        onToggle={() => handlePermissionChange('barcode')}
       />
-
     </View>
   );
 };
@@ -60,17 +75,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: '#ffffff',
-  },
-  loginButton: {
-    backgroundColor: '#8a2be2',
-    paddingVertical: 8,
-    borderRadius: 30,
-    marginVertical: 10,
-  },
-  buttonLabel: {
-    fontSize: 16,
-    color: '#fff',
-    fontFamily: 'Orbitron-VariableFont_wght',
   },
 });
 

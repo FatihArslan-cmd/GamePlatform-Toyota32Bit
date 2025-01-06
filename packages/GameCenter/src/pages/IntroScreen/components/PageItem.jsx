@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Animated, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider } from 'react-native-paper';
@@ -22,14 +23,15 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         },
       ]}
     >
-      <Image
-        source={
-          page.icon
-            ? { uri: page.icon }
-            : page.image
-        }
-        style={[styles.image, { borderColor: '#8a2be250' }]}
-      />
+  <FastImage
+  source={
+    page.icon
+      ? { uri: page.icon, priority: FastImage.priority.high } 
+      : page.image
+  }
+  style={[styles.image, { borderColor: '#8a2be250' }]}
+/>
+
       <Text style={styles.title}>{page.title}</Text>
       <View style={styles.dividerContainer}>
         <Divider style={styles.divider} />

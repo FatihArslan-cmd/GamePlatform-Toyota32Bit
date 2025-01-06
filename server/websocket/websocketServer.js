@@ -1,18 +1,36 @@
 const WebSocket = require('ws');
+const session = require('express-session');
 
-const initializeWebSocketServer = (server) => {
+const initializeWebSocketServer = (server, sessionConfig) => {
   const wss = new WebSocket.Server({ server });
 
   wss.on('connection', (ws, req) => {
-    console.log('New WebSocket connection');
+    sessionConfig(req, {}, () => {
+      const sessionId = req.session.id;
 
-    ws.on('message', (message) => {
-      console.log('Received:', message);
-      ws.send(`Echo: ${message}`);
-    });
+      console.log(`New WebSocket connection: Session ID - ${sessionId}`);
 
-    ws.on('close', () => {
-      console.log('WebSocket connection closed');
+      ws.on('message', (message) => {
+        console.log('Received:', message);
+
+        if (!req.session.messages) {
+          req.session.messages = [];
+        }
+        req.session.messages.push(message);
+        req.session.save();
+
+        wss.clients.forEach((client) => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(message);
+          }
+        });
+
+        ws.send(`You: ${message}`);
+      });
+
+      ws.on('close', () => {
+        console.log(`WebSocket connection closed: Session ID - ${sessionId}`);
+      });
     });
   });
 

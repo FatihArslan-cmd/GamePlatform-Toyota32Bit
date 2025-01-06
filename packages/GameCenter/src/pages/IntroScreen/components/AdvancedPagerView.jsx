@@ -1,12 +1,19 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback,useEffect } from 'react';
 import { StyleSheet, View, Animated,StatusBar } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import PageItem from './PageItem';
 import pages from './pages';
 import { useNavigation } from '@react-navigation/native';
+import { setNavigationBar } from '../../../utils/NavBarManager';
 
 const AdvancedPagerView = () => {
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    // Set navigation bar color to blue with light icons
+    setNavigationBar('#1a1b2e', true);
+  }, []);
+
   const animValues = useRef(
     pages.map(() => ({
       scaleAnim: new Animated.Value(1),

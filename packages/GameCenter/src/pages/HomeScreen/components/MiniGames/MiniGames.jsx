@@ -5,6 +5,7 @@ import GameItem from './GameItem';
 import ScrollArrow from './ScrollArrow';
 import MyLoader from '../../../../components/SkeletonPlaceHolder/MiniGamesPlaceHolder'; // Orijinal Placeholder
 import { cardColors } from './CardColors';
+
 const MiniGamesBlock = memo(({ games }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
