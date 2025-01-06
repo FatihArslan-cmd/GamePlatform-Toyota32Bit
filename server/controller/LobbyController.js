@@ -23,13 +23,13 @@ const createLobbyHandler = (req, res) => {
 const joinLobbyHandler = (req, res) => {
   try {
     const userId = req.user.id;
-    const { lobbyName, password } = req.body;
+    const { code, password } = req.body;
 
-    if (!lobbyName) {
-      return res.status(400).json({ message: 'Lobby name is required' });
+    if (!code) {
+      return res.status(400).json({ message: 'Lobby code is required' });
     }
 
-    const lobby = joinLobby(userId, lobbyName, password);
+    const lobby = joinLobby(userId, code, password);
     res.status(200).json({ message: 'Joined lobby successfully', lobby });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -47,15 +47,19 @@ const leaveLobbyHandler = (req, res) => {
       ? 'Owner has left the lobby. The lobby will be deleted after 8 hours unless the owner rejoins.'
       : null;
 
+    const sanitizedLobby = { ...lobby };
+    delete sanitizedLobby.timeout;
+
     res.status(200).json({
       message: 'Left lobby successfully',
-      lobby,
+      lobby: sanitizedLobby,
       timeoutMessage,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 const deleteLobbyHandler = (req, res) => {
   try {

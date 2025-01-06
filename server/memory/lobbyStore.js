@@ -18,9 +18,12 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
     throw new Error('Event lobbies require startDate and endDate');
   }
 
+  const code = Math.random().toString(36).substr(2, 6).toUpperCase();
+
   const lobby = {
     lobbyName,
     ownerId: userId,
+    code,
     members: [userId],
     blockedMembers: [],
     maxCapacity,
@@ -37,13 +40,14 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
   return lobby;
 };
 
-const joinLobby = (userId, lobbyName, password = null) => {
+
+const joinLobby = (userId, code, password = null) => {
   const userLobby = Array.from(lobbies.values()).find((l) => l.members.includes(userId));
   if (userLobby) {
     throw new Error('User is already in a lobby. Leave the lobby to join another.');
   }
 
-  const lobby = Array.from(lobbies.values()).find((l) => l.lobbyName === lobbyName);
+  const lobby = Array.from(lobbies.values()).find((l) => l.code === code);
 
   if (!lobby) {
     throw new Error('Lobby not found');
@@ -73,6 +77,7 @@ const joinLobby = (userId, lobbyName, password = null) => {
   return lobby;
 };
 
+
 const leaveLobby = (userId) => {
   const userLobby = Array.from(lobbies.values()).find((l) => l.members.includes(userId));
 
@@ -90,20 +95,20 @@ const leaveLobby = (userId) => {
       userLobby.timeout = setTimeout(() => {
         lobbies.delete(userLobby.ownerId);
         console.log(`Lobby owned by ${userLobby.ownerId} has been deleted after 8 hours.`);
-      }, 8 * 60 * 60 * 1000);
+      }, 20 * 1000);
     }
   }
-
-  if (userLobby.members.length === 0 && userLobby.lobbyType !== 'event') {
-    lobbies.delete(userLobby.ownerId);
-  }
-
   return userLobby;
 };
 
 const deleteLobby = (userId) => {
   if (!lobbies.has(userId)) {
     throw new Error('User does not own any lobby');
+  }
+
+  const lobby = lobbies.get(userId);
+  if (lobby.ownerId !== userId) {
+    throw new Error('Only the lobby owner can delete the lobby');
   }
 
   return lobbies.delete(userId);
@@ -116,8 +121,17 @@ const updateLobby = (userId, updates) => {
     throw new Error('Lobby not found');
   }
 
+  if (lobby.ownerId !== userId) {
+    throw new Error('Only the lobby owner can update the lobby');
+  }
+
   if (updates.lobbyType && !['normal', 'event'].includes(updates.lobbyType)) {
     throw new Error('Invalid lobby type');
+  }
+
+  if (updates.lobbyType === 'normal' && lobby.lobbyType === 'event') {
+    lobby.startDate = null;
+    lobby.endDate = null;
   }
 
   if (updates.lobbyType === 'event' && (!updates.startDate || !updates.endDate)) {
@@ -158,7 +172,14 @@ const updateLobby = (userId, updates) => {
   return lobby;
 };
 
-const getLobbies = () => Array.from(lobbies.values());
+
+
+const getLobbies = () => {
+  return Array.from(lobbies.values()).map((lobby) => {
+    const { timeout, ...sanitizedLobby } = lobby; // timeout'u çıkarıyoruz
+    return sanitizedLobby;
+  });
+};
 
 setInterval(() => {
   const now = Date.now();
