@@ -2,10 +2,17 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const GradientDivider = () => {
+const GradientDivider = ({ colorProps }) => {
+  // Varsayılan renkler
+  const defaultColors = ['#4A00E0', '#FF8C00'];
+  
+  const gradientColors = Array.isArray(colorProps) && colorProps.length === 2 
+    ? colorProps 
+    : defaultColors;
+
   return (
     <LinearGradient
-      colors={['#4A00E0', '#FF8C00']}
+      colors={gradientColors}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={styles.divider}

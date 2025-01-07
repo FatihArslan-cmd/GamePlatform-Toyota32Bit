@@ -31,7 +31,7 @@ const GameCard = ({ title, instructions, imageSource, buttonText, onButtonPress 
             onPress={() => {
               navigation.navigate('GameDetails', {
                 title,
-                instructions,
+                about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
                 imageSource,
                 buttonText,
                 onButtonPress,
