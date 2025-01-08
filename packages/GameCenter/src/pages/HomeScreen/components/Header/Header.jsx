@@ -13,7 +13,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
 
-  const openMenu = () => setMenuVisible(true);
+  const openMenu = () => setTimeout(() => setMenuVisible(true), 100); // Hemen çalışacak şekilde ayarlandı
   const closeMenu = () => setMenuVisible(false);
 
   return (

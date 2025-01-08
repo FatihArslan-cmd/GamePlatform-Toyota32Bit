@@ -5,7 +5,7 @@ import { Card, Button } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
-const GameCard = ({ title, instructions, imageSource, buttonText, onButtonPress }) => {
+const GameCard = ({ gameName, instructions, imageSource, buttonText, onButtonPress }) => {
   const navigation = useNavigation();
 
   return (
@@ -30,7 +30,7 @@ const GameCard = ({ title, instructions, imageSource, buttonText, onButtonPress 
             labelStyle={styles.buttonText}
             onPress={() => {
               navigation.navigate('GameDetails', {
-                title,
+                gameName,
                 about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
                 imageSource,
                 buttonText,

@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
       tabContent: {
         flex: 1,
       },
+      
       // Instructions styles
       instructionContainer: {
         marginBottom: 20,

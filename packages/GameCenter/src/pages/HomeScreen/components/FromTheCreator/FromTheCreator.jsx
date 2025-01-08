@@ -15,7 +15,7 @@ const FromTheCreator = () => {
       <Text style={styles.title}>From the Creator</Text>
       <GradientDivider />
       <GameCard
-        title={gameData.title}
+        gameName="Bingo"
         instructions="Welcome to this amazing application! Explore and enjoy your experience."
         imageSource={getImageSource(gameData.imageSource)}
         buttonText="Explore Now"

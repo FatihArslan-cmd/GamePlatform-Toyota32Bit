@@ -4,6 +4,7 @@ const GameDetailsContext = createContext();
 
 export function GameDetailsProvider({ children }) {
   const [activeTab, setActiveTab] = useState('about');
+    const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
   const [gameSettings, setGameSettings] = useState({
     voiceChat: true,
     maxPlayers: 4,
@@ -15,6 +16,8 @@ export function GameDetailsProvider({ children }) {
       setActiveTab,
       gameSettings,
       setGameSettings,
+      lobbyModalVisible,
+      setLobbyModalVisible
     }}>
       {children}
     </GameDetailsContext.Provider>

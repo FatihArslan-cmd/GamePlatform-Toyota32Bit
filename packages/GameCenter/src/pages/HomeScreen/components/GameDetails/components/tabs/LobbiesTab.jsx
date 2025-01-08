@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button, Card, Title, Text, Badge, IconButton } from 'react-native-paper';
 import { styles } from '../../styles';
+import { useGameDetails } from '../../context/GameDetailsContext';
 
 const mockLobbies = [
   { id: 1, name: "Pro Players", host: "John's Game", players: 3, maxPlayers: 4, inProgress: false },
@@ -10,12 +11,14 @@ const mockLobbies = [
 ];
 
 export default function LobbiesTab() {
+  const { setLobbyModalVisible } = useGameDetails(); // Accessing the context here
+
   return (
     <View style={styles.lobbiesContainer}>
       <Button
         mode="contained"
         icon="plus-circle"
-        onPress={() => {/* Handle create lobby */}}
+        onPress={() => setLobbyModalVisible(true)} // Correct usage
         style={styles.createLobbyButton}
       >
         Create Lobby

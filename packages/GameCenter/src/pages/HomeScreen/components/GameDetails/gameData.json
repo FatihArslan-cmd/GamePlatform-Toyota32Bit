@@ -1,7 +1,4 @@
 {
-    "title": "Play Bingo",
-    "imageSource": "unnamed.png",
-    "buttonText": "Lobi Oluştur",
-    "onButtonPress": "Lobi oluşturma işlemi başlatıldı!"
+    "imageSource": "unnamed.png"
   }
   

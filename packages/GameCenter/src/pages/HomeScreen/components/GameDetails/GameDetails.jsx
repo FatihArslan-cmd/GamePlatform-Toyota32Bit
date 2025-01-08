@@ -5,12 +5,12 @@ import { GameDetailsProvider } from './context/GameDetailsContext';
 
 export default function GameDetails() {
   const route = useRoute();
-  const { title, about, imageSource } = route.params;
+  const { gameName, about, imageSource } = route.params;
 
   return (
     <GameDetailsProvider>
       <GameDetailsLayout 
-        title={title}
+        gameName={gameName}
         about={about}
         imageSource={imageSource}
       />

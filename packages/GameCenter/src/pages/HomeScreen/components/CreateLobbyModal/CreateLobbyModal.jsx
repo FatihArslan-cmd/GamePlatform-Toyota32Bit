@@ -10,9 +10,9 @@ import InvitationLink from './InvitationLink';
 import ToastMessage from '../../../../components/ToastMessage/Toast';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
 
-const CreateLobbyModal = ({ visible, onDismiss, height }) => {
+const CreateLobbyModal = ({ visible, onDismiss, gameName }) => {
   const [lobbyType, setLobbyType] = useState('normal');
-  const [game, setGame] = useState('');
+  const [lobbyName, setLobbyName] = useState('');
   const [password, setPassword] = useState('');
   const [invitationLink, setInvitationLink] = useState('');
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
   const { currentToast, showToast, hideToast } = useToast();
 
   const toggleLobbyType = useCallback(() => {
-    setLobbyType(current => (current === 'normal' ? 'event' : 'normal'));
+    setLobbyType((current) => (current === 'normal' ? 'event' : 'normal'));
   }, []);
 
   const handleSave = useCallback(() => {
@@ -33,22 +33,22 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
     showToast('success', 'Lobby created successfully!');
   }, [lobbyType]);
 
-
-
   const resetLobby = useCallback(() => {
     setLobbyType('normal');
-    setGame('');
+    setGame(gameName || ''); // Resetlerken de gameName varsa kullan
     setPassword('');
     setInvitationLink('');
     setError('');
-  }, []);
+  }, [gameName]);
+
+  const bottomSheetHeight = lobbyType === 'normal' ? '50%' : '70%';
 
   return (
     <BottomSheet
       visible={visible}
       onDismiss={onDismiss}
       title="Create Lobby"
-      height="60%"
+      height={bottomSheetHeight}
       backgroundColor="white"
     >
       <View style={styles.container}>
@@ -58,7 +58,9 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
 
             {lobbyType === 'event' && <CustomDateTimeSelector />}
 
-            <GameSelector game={game} onGameChange={setGame} />
+            <GameSelector 
+            lobbyName={lobbyName}
+            gameName={gameName} />
 
             <PasswordInput
               password={password}
@@ -88,7 +90,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
           </>
         ) : (
           <View style={styles.successContainer}>
-            <InvitationLink invitationLink={invitationLink}/>
+            <InvitationLink invitationLink={invitationLink} />
             <Button
               mode="outlined"
               onPress={resetLobby}
@@ -110,6 +112,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
     </BottomSheet>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
