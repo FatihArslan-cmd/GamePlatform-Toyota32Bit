@@ -160,16 +160,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#4a148c',
         elevation: 2,
       },
-      modernStartGameButton: {
-        position: 'absolute',
-        bottom: 16,
-        left: 16,
-        right: 16,
-        borderRadius: 12,
-        backgroundColor: '#4a148c',
-        elevation: 2,
-      },
-      
+   
       buttonContent: {
         height: 48,
       },
@@ -182,8 +173,8 @@ export const styles = StyleSheet.create({
         borderColor: '#4a148c',
         borderWidth: 1,
         borderRadius: 20,
-        alignSelf: 'center', // Butonu yatayda ortala
-        width: '90%', // Butonun genişliğini ekran boyutuna göre ayarla
+        alignSelf: 'center',
+        width: '90%',
       },
       instructionNumber: {
         width: 28,
