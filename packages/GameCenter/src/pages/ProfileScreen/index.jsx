@@ -3,9 +3,8 @@ import React from 'react'
 
 const ProfileScreen = ({ navigation }) => {
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+    <>
+    </>
   )
 }
 

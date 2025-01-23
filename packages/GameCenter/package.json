@@ -36,7 +36,9 @@
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.4.0",
     "react-native-svg": "^15.10.1",
-    "react-native-vector-icons": "^10.2.0"
+    "react-native-vector-icons": "^10.2.0",
+    "bingo": "file:../Bingo"
+
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

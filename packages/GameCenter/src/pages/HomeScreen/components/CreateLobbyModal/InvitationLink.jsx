@@ -7,7 +7,7 @@ import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 
-const InvitationLink = ({invitationLink}) => {
+const InvitationLink = ({code}) => {
   const [copied, setCopied] = useState(false);
   const [animation] = useState(new Animated.Value(0));
   const { currentToast, showToast, hideToast } = useToast();
@@ -15,8 +15,8 @@ const InvitationLink = ({invitationLink}) => {
   const theme = useTheme();
 
   const handleCopy = async () => {
-    if (!invitationLink) return;
-    Clipboard.setString(invitationLink);
+    if (!code) return;
+    Clipboard.setString(code);
 
     setCopied(true);
     showToast('success', 'Link copied to clipboard!');
@@ -42,17 +42,17 @@ const InvitationLink = ({invitationLink}) => {
   });
 
   const handleShare = (platform) => {
-    if (!invitationLink) {
+    if (!code) {
       return;
     }
 
     let url = '';
     switch (platform) {
       case 'whatsapp':
-        url = `https://wa.me/?text=${encodeURIComponent(invitationLink)}`;
+        url = `https://wa.me/?text=${encodeURIComponent(code)}`;
         break;
       case 'facebook':
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(invitationLink)}`;
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(code)}`;
         break;
       case 'instagram':
         return;
@@ -66,7 +66,7 @@ const InvitationLink = ({invitationLink}) => {
     });
   };
 
-  if (!invitationLink) return null;
+  if (!code) return null;
 
   return (
     <View style={styles.container}>
@@ -76,7 +76,7 @@ const InvitationLink = ({invitationLink}) => {
       </Text>
 
       <LottieView
-        source={require('../../../../locales/lottie/ShareLink.json')} // Replace with your Lottie animation file
+        source={require('../../../../locales/lottie/ShareLink.json')}
         autoPlay
         loop={true}
         style={styles.lottieAnimation}
@@ -102,7 +102,7 @@ const InvitationLink = ({invitationLink}) => {
                 style={styles.linkIcon}
               />
               <Text numberOfLines={1} style={styles.linkText}>
-                {invitationLink}
+                {code}
               </Text>
             </View>
 
@@ -155,11 +155,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 8,
+    fontFamily:'Orbitron-VariableFont_wght'
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
     marginBottom: 24,
+    fontFamily:'Orbitron-VariableFont_wght'
   },
   lottieAnimation: {
     width: 150,
@@ -193,6 +195,8 @@ const styles = StyleSheet.create({
   linkText: {
     flex: 1,
     fontSize: 16,
+    fontFamily:'Orbitron-VariableFont_wght'
+
   },
   copyIcon: {
     margin: 0,

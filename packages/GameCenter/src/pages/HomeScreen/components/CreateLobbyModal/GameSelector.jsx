@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Text, HelperText } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
-const GameSelector = ({ gameName, lobbyName, maxCapacity, onMaxCapacityChange }) => {
-  const validateCapacity = (value) => {
-    const numValue = parseInt(value);
-    if (isNaN(numValue) || numValue < 1) {
-      return false;
-    }
-    return true;
-  };
+const GameSelector = ({ 
+  gameName, 
+  lobbyName, 
+  maxCapacity,
+  onGameNameChange, // Changed
+  onLobbyNameChange, // Changed
+  onMaxCapacityChange, // Changed
+}) => {
 
   return (
     <>
@@ -20,6 +20,7 @@ const GameSelector = ({ gameName, lobbyName, maxCapacity, onMaxCapacityChange })
         placeholder="Enter lobby name..."
         left={<TextInput.Icon icon="home" />}
         style={styles.input}
+        onChangeText={onLobbyNameChange} // Changed
       />
 
       <TextInput
@@ -29,21 +30,21 @@ const GameSelector = ({ gameName, lobbyName, maxCapacity, onMaxCapacityChange })
         placeholder="Search for a game..."
         left={<TextInput.Icon icon="gamepad-variant" />}
         style={styles.input}
-        editable={!gameName}
+        editable={true}
+        onChangeText={onGameNameChange} // Changed
       />
 
       <TextInput
         label="Max Capacity"
         mode="outlined"
         value={maxCapacity}
-        onChangeText={onMaxCapacityChange}
         placeholder="Enter max players..."
         keyboardType="numeric"
         left={<TextInput.Icon icon="account-group" />}
         right={<TextInput.Icon icon="information" onPress={() => {}} />}
         style={styles.input}
+        onChangeText={onMaxCapacityChange} // Changed
       />
-
     </>
   );
 };
