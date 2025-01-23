@@ -1,0 +1,1291 @@
+{
+  "version": "6.0",
+  "nxVersion": "20.3.0",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": "package.json",
+        "hash": "7975678588640024782"
+      },
+      {
+        "file": "server/package.json",
+        "hash": "16213702088443568102"
+      },
+      {
+        "file": "server/middleware/cookieParser.js",
+        "hash": "10314156824277041967"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "2240405457247858559"
+      },
+      {
+        "file": "server/middleware/sessionMiddleware.js",
+        "hash": "3297841646582643330"
+      },
+      {
+        "file": "server/middleware/bodyParser.js",
+        "hash": "11702294646304800588"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "9599150962837760352"
+      },
+      {
+        "file": "server/controller/LobbyController.js",
+        "hash": "6191973943823754142"
+      },
+      {
+        "file": "server/memory/lobbyStore.js",
+        "hash": "16473798305606966874"
+      },
+      {
+        "file": "nx.json",
+        "hash": "14289225691211893739"
+      },
+      {
+        "file": "server/package-lock.json",
+        "hash": "4427114684134791045"
+      },
+      {
+        "file": "server/routes/api.js",
+        "hash": "13245580934915691873"
+      },
+      {
+        "file": "server/routes/lobby.js",
+        "hash": "5009142961329211013"
+      },
+      {
+        "file": "server/utils/users.js",
+        "hash": "3095389824606486651"
+      },
+      {
+        "file": "server/websocket/websocketServer.js",
+        "hash": "14921107703024309580"
+      },
+      {
+        "file": "server/middleware/authenticate.js",
+        "hash": "3758377265366105285"
+      },
+      {
+        "file": "server/config/sessionConfig.js",
+        "hash": "14510194957130709881"
+      },
+      {
+        "file": "yarn.lock",
+        "hash": "913062951272974994"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "14753864772816161294"
+      },
+      {
+        "file": "lerna-debug.log",
+        "hash": "9026146683228509025"
+      },
+      {
+        "file": "server/server.js",
+        "hash": "4362608952425686126"
+      },
+      {
+        "file": "server/controller/authController.js",
+        "hash": "7108925923742468422"
+      },
+      {
+        "file": "lerna.json",
+        "hash": "17897878541008155495"
+      }
+    ],
+    "projectFileMap": {
+      "@toyota32bit/bingo": [
+        {
+          "file": "packages/Bingo-32Bit-Toyota/.bundle/config",
+          "hash": "17920358181499705234"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/.eslintrc.js",
+          "hash": "5793809283379239964"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/.gitignore",
+          "hash": "8794513221510113730"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/.prettierrc.js",
+          "hash": "9056150430327835244"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/.watchmanconfig",
+          "hash": "11671972312060336992"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/App.jsx",
+          "hash": "11469033423041428774"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/Gemfile",
+          "hash": "6166261899605496885"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/README.md",
+          "hash": "3521560294993264261"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/__tests__/App.test.tsx",
+          "hash": "7179465219614274661"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/build.gradle",
+          "hash": "17643873205384495960"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/debug.keystore",
+          "hash": "5037686243849261810"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/proguard-rules.pro",
+          "hash": "4563710879397592286"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/debug/AndroidManifest.xml",
+          "hash": "12022303059910107014"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/AndroidManifest.xml",
+          "hash": "14447885280378050441"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/java/com/bingo/MainActivity.kt",
+          "hash": "6048148649326337305"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/java/com/bingo/MainApplication.kt",
+          "hash": "15942364980146304705"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/drawable/rn_edit_text_material.xml",
+          "hash": "10034437182348528253"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+          "hash": "10788509195642110029"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+          "hash": "14348562046770238248"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+          "hash": "328692529308011025"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+          "hash": "11802043336826859502"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+          "hash": "13006206334539413900"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+          "hash": "1812825738055967771"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+          "hash": "6104457872863500683"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+          "hash": "2478168592410677995"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+          "hash": "12283149652938275290"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+          "hash": "7126668675123994836"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/values/strings.xml",
+          "hash": "8750079879936792298"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/app/src/main/res/values/styles.xml",
+          "hash": "7258218790259398554"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/build.gradle",
+          "hash": "1013944487658934863"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/gradle.properties",
+          "hash": "7312583492790757823"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/gradle/wrapper/gradle-wrapper.jar",
+          "hash": "5909086893679643373"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/gradle/wrapper/gradle-wrapper.properties",
+          "hash": "17285723542988929831"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/gradlew",
+          "hash": "7553713931933475587"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/gradlew.bat",
+          "hash": "3049992198610835351"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/android/settings.gradle",
+          "hash": "10712756300425419205"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/app.json",
+          "hash": "11720184240769523883"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/babel.config.js",
+          "hash": "18426739052612318032"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/index.js",
+          "hash": "3491869931209585323"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/.xcode.env",
+          "hash": "17764363118650307201"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo.xcodeproj/project.pbxproj",
+          "hash": "4520475110677698551"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo.xcodeproj/xcshareddata/xcschemes/Bingo.xcscheme",
+          "hash": "8197637669655346624"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/AppDelegate.h",
+          "hash": "10870806535617087695"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/AppDelegate.mm",
+          "hash": "1669895460260895932"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/Images.xcassets/AppIcon.appiconset/Contents.json",
+          "hash": "10319337267594157153"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/Images.xcassets/Contents.json",
+          "hash": "17528716683530118988"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/Info.plist",
+          "hash": "7214771649726866704"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/LaunchScreen.storyboard",
+          "hash": "12195272874473052119"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/PrivacyInfo.xcprivacy",
+          "hash": "8813026469462961427"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Bingo/main.m",
+          "hash": "17227559343016262068"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/BingoTests/BingoTests.m",
+          "hash": "6562424766860607352"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/BingoTests/Info.plist",
+          "hash": "4957517430792437190"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/ios/Podfile",
+          "hash": "5502661770592930357"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/jest.config.js",
+          "hash": "4683447209731783137"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/metro.config.js",
+          "hash": "11801494867177832366"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/package-lock.json",
+          "hash": "6654714571017768448"
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/package.json",
+          "hash": "13237894604230239151",
+          "deps": [
+            "npm:@babel/core",
+            "npm:@babel/preset-env",
+            "npm:@babel/runtime",
+            "npm:@carimus/metro-symlinked-deps",
+            "npm:@react-native-community/cli",
+            "npm:@react-native-community/cli-platform-android",
+            "npm:@react-native-community/cli-platform-ios",
+            "npm:@react-native/babel-preset",
+            "npm:@react-native/eslint-config",
+            "npm:@react-native/metro-config",
+            "npm:@react-native/typescript-config",
+            "npm:@types/react@18.3.18",
+            "npm:@types/react-test-renderer",
+            "npm:babel-jest",
+            "npm:eslint",
+            "npm:jest",
+            "npm:prettier",
+            "npm:react-test-renderer@18.3.1",
+            "npm:typescript",
+            "npm:react@18.3.1",
+            "npm:react-native@0.76.5"
+          ]
+        },
+        {
+          "file": "packages/Bingo-32Bit-Toyota/tsconfig.json",
+          "hash": "11882245340308162546"
+        }
+      ],
+      "GameCenter": [
+        {
+          "file": "packages/GameCenter/.bundle/config",
+          "hash": "9116505824108018199"
+        },
+        {
+          "file": "packages/GameCenter/.eslintrc.js",
+          "hash": "5379267944986307428"
+        },
+        {
+          "file": "packages/GameCenter/.gitignore",
+          "hash": "3847900372329460893"
+        },
+        {
+          "file": "packages/GameCenter/.prettierrc.js",
+          "hash": "3440885991993665354"
+        },
+        {
+          "file": "packages/GameCenter/.watchmanconfig",
+          "hash": "15753941481085060538"
+        },
+        {
+          "file": "packages/GameCenter/Gemfile",
+          "hash": "2090536375223830271"
+        },
+        {
+          "file": "packages/GameCenter/HomeScreen.js",
+          "hash": "538439556847869103"
+        },
+        {
+          "file": "packages/GameCenter/README.md",
+          "hash": "9203742504703296138"
+        },
+        {
+          "file": "packages/GameCenter/__tests__/App.test.tsx",
+          "hash": "2535733238446136805"
+        },
+        {
+          "file": "packages/GameCenter/android/app/build.gradle",
+          "hash": "7451737871258494077"
+        },
+        {
+          "file": "packages/GameCenter/android/app/debug.keystore",
+          "hash": "5037686243849261810"
+        },
+        {
+          "file": "packages/GameCenter/android/app/proguard-rules.pro",
+          "hash": "18267964086664924466"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/debug/AndroidManifest.xml",
+          "hash": "9217300540490017338"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/AndroidManifest.xml",
+          "hash": "9344821607620996407"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/custom/OFL.txt",
+          "hash": "14037295034925332253"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/custom/README.txt",
+          "hash": "9922431018392668595"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/custom/SQR721B.TTF",
+          "hash": "2452622094342814593"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Anton-Regular.ttf",
+          "hash": "16404968705815655422"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-Black.ttf",
+          "hash": "2026472984133536293"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-Bold.ttf",
+          "hash": "17910509205507003333"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-ExtraBold.ttf",
+          "hash": "16638778259508530323"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-Medium.ttf",
+          "hash": "15136443580580220030"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-Regular.ttf",
+          "hash": "13447368572190623789"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-SemiBold.ttf",
+          "hash": "8955627727476322808"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/Orbitron-VariableFont_wght.ttf",
+          "hash": "13008766142505729147"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/assets/fonts/RussoOne-Regular.ttf",
+          "hash": "16370222422044313527"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/FingerprintModule.kt",
+          "hash": "6440403163476276370"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/FingerprintPackage.kt",
+          "hash": "552582071446939878"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/MainActivity.kt",
+          "hash": "9334237134953043952"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/MainApplication.kt",
+          "hash": "4214067532627893914"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/NFCReaderModule.kt",
+          "hash": "8130276081955776913"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/NFCReaderPackage.kt",
+          "hash": "8639080387889926566"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/NavigationBarModule.kt",
+          "hash": "10834579263096297717"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/java/com/gamecenter/NavigationBarPackage.kt",
+          "hash": "7639549874204965855"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/drawable-hdpi/bootsplash_logo.png",
+          "hash": "11267548548244523029"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/drawable-mdpi/bootsplash_logo.png",
+          "hash": "13842332520077868492"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/drawable-xhdpi/bootsplash_logo.png",
+          "hash": "1288119701121398951"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/drawable-xxhdpi/bootsplash_logo.png",
+          "hash": "14649477020734688803"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/drawable-xxxhdpi/bootsplash_logo.png",
+          "hash": "15143312121358574725"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/drawable/rn_edit_text_material.xml",
+          "hash": "4466596183044014152"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+          "hash": "10788509195642110029"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+          "hash": "14348562046770238248"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+          "hash": "328692529308011025"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+          "hash": "11802043336826859502"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+          "hash": "13006206334539413900"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+          "hash": "1812825738055967771"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+          "hash": "6104457872863500683"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+          "hash": "2478168592410677995"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+          "hash": "12283149652938275290"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+          "hash": "7126668675123994836"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/values/colors.xml",
+          "hash": "2334997505137082450"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/values/strings.xml",
+          "hash": "338681082063085215"
+        },
+        {
+          "file": "packages/GameCenter/android/app/src/main/res/values/styles.xml",
+          "hash": "9417895716626831455"
+        },
+        {
+          "file": "packages/GameCenter/android/build.gradle",
+          "hash": "2960284665621015150"
+        },
+        {
+          "file": "packages/GameCenter/android/gradle.properties",
+          "hash": "13198926122350436103"
+        },
+        {
+          "file": "packages/GameCenter/android/gradle/wrapper/gradle-wrapper.jar",
+          "hash": "5909086893679643373"
+        },
+        {
+          "file": "packages/GameCenter/android/gradle/wrapper/gradle-wrapper.properties",
+          "hash": "14314964109440154932"
+        },
+        {
+          "file": "packages/GameCenter/android/gradlew",
+          "hash": "8388103086298757654"
+        },
+        {
+          "file": "packages/GameCenter/android/gradlew.bat",
+          "hash": "3049992198610835351"
+        },
+        {
+          "file": "packages/GameCenter/android/link-assets-manifest.json",
+          "hash": "9828097793076991295"
+        },
+        {
+          "file": "packages/GameCenter/android/settings.gradle",
+          "hash": "8468630291478772550"
+        },
+        {
+          "file": "packages/GameCenter/app.json",
+          "hash": "17570238109066567735"
+        },
+        {
+          "file": "packages/GameCenter/assets/bootsplash/logo.png",
+          "hash": "8741875927236892319"
+        },
+        {
+          "file": "packages/GameCenter/assets/bootsplash/logo@1,5x.png",
+          "hash": "17232956947360506922"
+        },
+        {
+          "file": "packages/GameCenter/assets/bootsplash/logo@2x.png",
+          "hash": "12549711089523135220"
+        },
+        {
+          "file": "packages/GameCenter/assets/bootsplash/logo@3x.png",
+          "hash": "8714097872597826872"
+        },
+        {
+          "file": "packages/GameCenter/assets/bootsplash/logo@4x.png",
+          "hash": "12293371593481068282"
+        },
+        {
+          "file": "packages/GameCenter/assets/bootsplash/manifest.json",
+          "hash": "5820999467609580579"
+        },
+        {
+          "file": "packages/GameCenter/babel.config.js",
+          "hash": "15340541101519567668"
+        },
+        {
+          "file": "packages/GameCenter/index.js",
+          "hash": "16158152163679673651"
+        },
+        {
+          "file": "packages/GameCenter/ios/.xcode.env",
+          "hash": "2240437479405059044"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter.xcodeproj/project.pbxproj",
+          "hash": "1016587916122405843"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter.xcodeproj/xcshareddata/xcschemes/GameCenter.xcscheme",
+          "hash": "4624959796607422172"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/AppDelegate.h",
+          "hash": "4105548683868581501"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/AppDelegate.mm",
+          "hash": "16336031409930208599"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/BootSplash.storyboard",
+          "hash": "2852615016875981919"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Colors.xcassets/BootSplashBackground-63e227.colorset/Contents.json",
+          "hash": "15398877600088892453"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Images.xcassets/AppIcon.appiconset/Contents.json",
+          "hash": "13651775502586994303"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Images.xcassets/BootSplashLogo-63e227.imageset/Contents.json",
+          "hash": "16285685903377905186"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Images.xcassets/BootSplashLogo-63e227.imageset/logo-63e227.png",
+          "hash": "8353250622062779935"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Images.xcassets/BootSplashLogo-63e227.imageset/logo-63e227@2x.png",
+          "hash": "1901819992269731980"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Images.xcassets/BootSplashLogo-63e227.imageset/logo-63e227@3x.png",
+          "hash": "1696514643193289784"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Images.xcassets/Contents.json",
+          "hash": "10114040536141029740"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/Info.plist",
+          "hash": "14258871764904580047"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/LaunchScreen.storyboard",
+          "hash": "13738602225698367694"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/PrivacyInfo.xcprivacy",
+          "hash": "16670914145149810597"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenter/main.m",
+          "hash": "3932908704591016568"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenterTests/GameCenterTests.m",
+          "hash": "15921614299092075427"
+        },
+        {
+          "file": "packages/GameCenter/ios/GameCenterTests/Info.plist",
+          "hash": "490535150174461673"
+        },
+        {
+          "file": "packages/GameCenter/ios/Podfile",
+          "hash": "1816002856346212801"
+        },
+        {
+          "file": "packages/GameCenter/ios/link-assets-manifest.json",
+          "hash": "9828097793076991295"
+        },
+        {
+          "file": "packages/GameCenter/jest.config.js",
+          "hash": "3450453734004767423"
+        },
+        {
+          "file": "packages/GameCenter/metro.config.js",
+          "hash": "8655668318676756258"
+        },
+        {
+          "file": "packages/GameCenter/package-lock.json",
+          "hash": "14883049486846138787"
+        },
+        {
+          "file": "packages/GameCenter/package.json",
+          "hash": "16101375628714023582",
+          "deps": [
+            "npm:@babel/core",
+            "npm:@babel/preset-env",
+            "npm:@babel/runtime",
+            "npm:@react-native-community/cli",
+            "npm:@react-native-community/cli-platform-android",
+            "npm:@react-native-community/cli-platform-ios",
+            "npm:@react-native/babel-preset",
+            "npm:@react-native/eslint-config",
+            "npm:@react-native/metro-config",
+            "npm:@react-native/typescript-config",
+            "npm:@types/react-test-renderer",
+            "npm:babel-jest",
+            "npm:eslint",
+            "npm:jest",
+            "npm:prettier",
+            "npm:react-test-renderer@18.3.1",
+            "npm:@react-native-clipboard/clipboard@1.15.0",
+            "npm:@react-native-community/blur@4.4.1",
+            "npm:@react-native-community/datetimepicker@8.2.0",
+            "npm:@react-native-masked-view/masked-view@0.3.2",
+            "npm:@react-navigation/material-top-tabs@7.1.0",
+            "npm:@react-navigation/native@7.0.14",
+            "npm:@react-navigation/native-stack@7.2.0",
+            "npm:@shopify/flash-list@1.7.2",
+            "npm:@shopify/react-native-skia@1.7.6",
+            "npm:axios@1.7.9",
+            "npm:lottie-react-native@7.1.0",
+            "npm:react@18.3.1",
+            "npm:react-content-loader@7.0.2",
+            "npm:react-native@0.76.5",
+            "npm:react-native-bootsplash@6.3.2",
+            "npm:react-native-fast-image@8.6.3",
+            "npm:react-native-gesture-handler@2.21.2",
+            "npm:react-native-linear-gradient@2.8.3",
+            "npm:react-native-mmkv@3.2.0",
+            "npm:react-native-pager-view@6.6.1",
+            "npm:react-native-paper@5.12.5",
+            "npm:react-native-reanimated@3.16.6",
+            "npm:react-native-safe-area-context@5.0.0",
+            "npm:react-native-screens@4.4.0",
+            "npm:react-native-svg@15.10.1",
+            "npm:react-native-vector-icons@10.2.0"
+          ]
+        },
+        {
+          "file": "packages/GameCenter/react-native.config.js",
+          "hash": "6923682610638525135"
+        },
+        {
+          "file": "packages/GameCenter/src/App.js",
+          "hash": "6453471694130159498"
+        },
+        {
+          "file": "packages/GameCenter/src/components/BackIcon.jsx",
+          "hash": "13634980828815644136"
+        },
+        {
+          "file": "packages/GameCenter/src/components/BottomSheet.jsx",
+          "hash": "14102017279788909381"
+        },
+        {
+          "file": "packages/GameCenter/src/components/CustomModal.jsx",
+          "hash": "13804988075667981079"
+        },
+        {
+          "file": "packages/GameCenter/src/components/GradientDivider.jsx",
+          "hash": "11364198909309691047"
+        },
+        {
+          "file": "packages/GameCenter/src/components/GrandientText.jsx",
+          "hash": "15706463717026357730"
+        },
+        {
+          "file": "packages/GameCenter/src/components/LoadingFullScreen.jsx",
+          "hash": "8471657987354761159"
+        },
+        {
+          "file": "packages/GameCenter/src/components/SkeletonPlaceHolder/MiniGamesPlaceHolder.jsx",
+          "hash": "18356617689769751288"
+        },
+        {
+          "file": "packages/GameCenter/src/components/SkeletonPlaceHolder/TopRatedImagePlaceHolder.jsx",
+          "hash": "2932167679518207077"
+        },
+        {
+          "file": "packages/GameCenter/src/components/ToastMessage/Toast.jsx",
+          "hash": "15853598561004593367"
+        },
+        {
+          "file": "packages/GameCenter/src/components/ToastMessage/hooks/useToast.jsx",
+          "hash": "15419311692629396066"
+        },
+        {
+          "file": "packages/GameCenter/src/components/WavyLine.jsx",
+          "hash": "4187003577880683469"
+        },
+        {
+          "file": "packages/GameCenter/src/components/isTablet.js",
+          "hash": "5857255568758282585"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/BackDrop.js",
+          "hash": "1899590238644255017"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/BottomSheet.js",
+          "hash": "6453032732405831424"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/Button.js",
+          "hash": "10706428686400036218"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/Icon.js",
+          "hash": "4989389003794842654"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/Switch.js",
+          "hash": "3396540984176348963"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/index.jsx",
+          "hash": "2354549075138180592"
+        },
+        {
+          "file": "packages/GameCenter/src/components/themeswitch/setting.js",
+          "hash": "1122522125638977323"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/PO.png",
+          "hash": "12463678419016957422"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/assets/bootsplash/logo.png",
+          "hash": "8353250622062779935"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/assets/bootsplash/logo@1,5x.png",
+          "hash": "17295699536970273114"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/assets/bootsplash/logo@2x.png",
+          "hash": "1901819992269731980"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/assets/bootsplash/logo@3x.png",
+          "hash": "1696514643193289784"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/assets/bootsplash/logo@4x.png",
+          "hash": "18317368390813627675"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/assets/bootsplash/manifest.json",
+          "hash": "1689642474758990056"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/deneme.png",
+          "hash": "6390916540048241082"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Anton-Regular.ttf",
+          "hash": "16404968705815655422"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Anton/OFL.txt",
+          "hash": "14037295034925332253"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron-VariableFont_wght.ttf",
+          "hash": "13008766142505729147"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/OFL.txt",
+          "hash": "5276397800672624079"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/README.txt",
+          "hash": "9922431018392668595"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/static/Orbitron-Black.ttf",
+          "hash": "2026472984133536293"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/static/Orbitron-Bold.ttf",
+          "hash": "17910509205507003333"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/static/Orbitron-ExtraBold.ttf",
+          "hash": "16638778259508530323"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/static/Orbitron-Medium.ttf",
+          "hash": "15136443580580220030"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/static/Orbitron-Regular.ttf",
+          "hash": "13447368572190623789"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Orbitron/static/Orbitron-SemiBold.ttf",
+          "hash": "8955627727476322808"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Poppins-Black.ttf",
+          "hash": "11327420754488073778"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Poppins-Bold.ttf",
+          "hash": "3661811412608830506"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/Poppins-SemiBold.ttf",
+          "hash": "1872290532348165247"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/RussoOne-Regular.ttf",
+          "hash": "16370222422044313527"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/fonts/SQR721B.TTF",
+          "hash": "2452622094342814593"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/gameImages/unnamed.png",
+          "hash": "1577769913056867059"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/icon.png",
+          "hash": "14242258356210854259"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/Animation - 1734717216893.json",
+          "hash": "15218707591888221609"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/Live-icon.json",
+          "hash": "7219006637085976843"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/LoadingGaming.json",
+          "hash": "7233639888385692771"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/Profile-icon.json",
+          "hash": "11855451624457290817"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/RefreshAnimate.json",
+          "hash": "10711340691606646143"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/ShareLink.json",
+          "hash": "7449801053312169565"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/lottie/home.icon.json",
+          "hash": "14637213920148360244"
+        },
+        {
+          "file": "packages/GameCenter/src/locales/user.png",
+          "hash": "7713063682366594930"
+        },
+        {
+          "file": "packages/GameCenter/src/navigation/Navigation.js",
+          "hash": "8340036127054263468"
+        },
+        {
+          "file": "packages/GameCenter/src/navigation/TabBarNavigator.jsx",
+          "hash": "9025279325481368725"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/CreateLobbyModal/CreateLobbyModal.jsx",
+          "hash": "402055113506809977"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/CreateLobbyModal/DateTimeSelector.jsx",
+          "hash": "7114464489765524385"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/CreateLobbyModal/GameSelector.jsx",
+          "hash": "5134205718647456820"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/CreateLobbyModal/InvitationLink.jsx",
+          "hash": "14653365237925829820"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/CreateLobbyModal/LobbyTypeSelector.jsx",
+          "hash": "12700633341749126663"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/CreateLobbyModal/PasswordInput.jsx",
+          "hash": "9122614023275693879"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/FromTheCreator/FromTheCreator.jsx",
+          "hash": "1265350882790466035"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/FromTheCreator/GameCard.jsx",
+          "hash": "3111748125181302126"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/GameDetails.jsx",
+          "hash": "13380884875070626898"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/GameDetailsLayout.jsx",
+          "hash": "3810969638087790658"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/TabContent.jsx",
+          "hash": "4369296400126210530"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/TabNavigation.jsx",
+          "hash": "6999906397239996289"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/tabs/AboutTab.jsx",
+          "hash": "8986288514138897745"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/tabs/HistoryTab.jsx",
+          "hash": "6240913804549916613"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/tabs/LobbiesTab.jsx",
+          "hash": "16175328575387465422"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/components/tabs/SettingsTab.jsx",
+          "hash": "16737700424113267805"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/context/GameDetailsContext.jsx",
+          "hash": "17568100084524558586"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/gameData.json",
+          "hash": "100677250035072236"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/imageAssets.js",
+          "hash": "462083728617085836"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/GameDetails/styles.js",
+          "hash": "14349849806606934885"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/Header/Header.jsx",
+          "hash": "2129160235706831612"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/Header/MenuComponent.jsx",
+          "hash": "13416094781962687807"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/Header/SearchBar.jsx",
+          "hash": "18153744406167931380"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/MiniGames/CardColors.js",
+          "hash": "1426067363059052867"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/MiniGames/GameItem.jsx",
+          "hash": "15012425826223118230"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/MiniGames/MiniGames.jsx",
+          "hash": "2874941673433662621"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/MiniGames/ScrollArrow.jsx",
+          "hash": "14704119943666284933"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/UpperBigAnimatedImages/GameCard.jsx",
+          "hash": "4749115874836021898"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/UpperBigAnimatedImages/GameHeader.jsx",
+          "hash": "9011734692371252325"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/UpperBigAnimatedImages/PaginationDots.jsx",
+          "hash": "5220516971249669993"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/UpperBigAnimatedImages/UpperBigAnimatedImages.jsx",
+          "hash": "7774663368838553057"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/VideoPlayBlock/VideoPlayBlock.jsx",
+          "hash": "8694464489243616512"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/VideoPlayBlock/VideoPlayItems.jsx",
+          "hash": "13556395310942734235"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/components/VideoPlayBlock/games.js",
+          "hash": "7592687752632495656"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/hooks/useDisableBackButton.js",
+          "hash": "9642854101810435644"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/HomeScreen/index.jsx",
+          "hash": "3636140843564435225"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/IntroScreen/components/AdvancedPagerView.jsx",
+          "hash": "3614838621558394963"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/IntroScreen/components/PageItem.jsx",
+          "hash": "3584246635095978100"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/IntroScreen/components/pages.js",
+          "hash": "8596499191303294298"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/IntroScreen/index.jsx",
+          "hash": "17758545269025036849"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LiveScreen/index.jsx",
+          "hash": "5806385038003198079"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/Biometrics/FingerPrint.jsx",
+          "hash": "11808378907828541296"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/Biometrics/NfcReadScreen.jsx",
+          "hash": "1739115083044319178"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/FormSection.jsx",
+          "hash": "13254751604052337938"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/FormSectionItem/ActionButtons.jsx",
+          "hash": "7221924110818971452"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/FormSectionItem/ForgotPasswordSection.jsx",
+          "hash": "14848005727981918491"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/FormSectionItem/InputField.jsx",
+          "hash": "12074391157141203471"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/FormSectionItem/OptionsSection.jsx",
+          "hash": "174097318896590362"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/LogoSection.jsx",
+          "hash": "7589590353704673930"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ModalItem/BioModalContent.jsx",
+          "hash": "4473486601515340666"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ModalItem/PermissionItem.js",
+          "hash": "6295564230866559995"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ProfileSection/PermissionsModal.jsx",
+          "hash": "7674863175948672970"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ProfileSection/SavedUserSection.jsx",
+          "hash": "8667837288679310459"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ProfileSection/UserIcon.jsx",
+          "hash": "380845013551705723"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ProfileSection/handlePostLoginActions.js",
+          "hash": "16896334863460884431"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/components/ProfileSection/renderIcons.js",
+          "hash": "8349302007812540042"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/context/FormContext.jsx",
+          "hash": "12230610011208871426"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/LoginScreen/index.jsx",
+          "hash": "151614331855105274"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/ProfileScreen/index.jsx",
+          "hash": "2372831043917577001"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/SettingsScreen/AnimatedText.jsx",
+          "hash": "13402534068695174122"
+        },
+        {
+          "file": "packages/GameCenter/src/pages/SettingsScreen/index.jsx",
+          "hash": "12129672261001782009"
+        },
+        {
+          "file": "packages/GameCenter/src/shared/states/api.js",
+          "hash": "12739264138084650756"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/FontConfig.js",
+          "hash": "839797960144928132"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/FormatDate.js",
+          "hash": "3517855986175810033"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/NavBarManager.jsx",
+          "hash": "10482662645966058161"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/api.js",
+          "hash": "10811001300911291825"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/constants.js",
+          "hash": "5425279948409403430"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/getFormattedDate.js",
+          "hash": "14044906170726726620"
+        },
+        {
+          "file": "packages/GameCenter/src/utils/storage.js",
+          "hash": "2727746405239585863"
+        }
+      ]
+    }
+  }
+}

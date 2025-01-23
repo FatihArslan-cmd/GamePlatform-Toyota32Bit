@@ -1,14 +1,4 @@
 {
-    "title": "Bingo Nasıl Oynanır?",
-    "instructions": [
-      "Her oyuncuya rastgele sayılardan oluşan bir kart verilir",
-      "Sayılar sırayla çekilir",
-      "Kartınızdaki sayıları işaretleyin",
-      "Dikey, yatay veya çapraz bir sıra tamamlandığında \"BİNGO!\" deyin",
-      "İlk bingo yapan oyuncu kazanır!"
-    ],
-    "imageSource": "unnamed.png",
-    "buttonText": "Lobi Oluştur",
-    "onButtonPress": "Lobi oluşturma işlemi başlatıldı!"
+    "imageSource": "unnamed.png"
   }
   

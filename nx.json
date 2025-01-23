@@ -1,0 +1,19 @@
+{
+  "targetDefaults": {
+    "android": {
+      "dependsOn": []
+    },
+    "ios": {
+      "dependsOn": []
+    },
+    "lint": {
+      "dependsOn": []
+    },
+    "start": {
+      "dependsOn": []
+    },
+    "test": {
+      "dependsOn": []
+    }
+  }
+}

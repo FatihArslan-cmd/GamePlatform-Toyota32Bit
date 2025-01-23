@@ -10,11 +10,11 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
     throw new Error('User is already in a lobby. Leave the lobby to create a new one.');
   }
 
-  if (!['normal', 'event'].includes(lobbyType)) {
+  if (!['Normal', 'Event'].includes(lobbyType)) {
     throw new Error('Invalid lobby type');
   }
 
-  if (lobbyType === 'event' && (!startDate || !endDate)) {
+  if (lobbyType === 'Event' && (!startDate || !endDate)) {
     throw new Error('Event lobbies require startDate and endDate');
   }
 
@@ -30,8 +30,8 @@ const createLobby = (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = n
     lobbyType,
     gameName,
     password,
-    startDate: lobbyType === 'event' ? startDate : null,
-    endDate: lobbyType === 'event' ? endDate : null,
+    startDate: lobbyType === 'Event' ? startDate : null,
+    endDate: lobbyType === 'Event' ? endDate : null,
     lastOwnerLeave: null,
     timeout: null,
   };
@@ -88,7 +88,7 @@ const leaveLobby = (userId) => {
   userLobby.members = userLobby.members.filter((id) => id !== userId);
 
   if (userLobby.ownerId === userId) {
-    if (userLobby.lobbyType === 'event') {
+    if (userLobby.lobbyType === 'Event') {
       console.log(`Owner left, but lobby is event type and will remain active until ${userLobby.endDate}`);
     } else {
       userLobby.lastOwnerLeave = Date.now();
@@ -125,16 +125,16 @@ const updateLobby = (userId, updates) => {
     throw new Error('Only the lobby owner can update the lobby');
   }
 
-  if (updates.lobbyType && !['normal', 'event'].includes(updates.lobbyType)) {
+  if (updates.lobbyType && !['Normal', 'Event'].includes(updates.lobbyType)) {
     throw new Error('Invalid lobby type');
   }
 
-  if (updates.lobbyType === 'normal' && lobby.lobbyType === 'event') {
+  if (updates.lobbyType === 'Normal' && lobby.lobbyType === 'Event') {
     lobby.startDate = null;
     lobby.endDate = null;
   }
 
-  if (updates.lobbyType === 'event' && (!updates.startDate || !updates.endDate)) {
+  if (updates.lobbyType === 'Event' && (!updates.startDate || !updates.endDate)) {
     throw new Error('Event lobbies require startDate and endDate');
   }
 
@@ -184,7 +184,7 @@ const getLobbies = () => {
 setInterval(() => {
   const now = Date.now();
   Array.from(lobbies.values()).forEach((lobby) => {
-    if (lobby.lobbyType === 'event' && new Date(lobby.endDate).getTime() <= now) {
+    if (lobby.lobbyType === 'Event' && new Date(lobby.endDate).getTime() <= now) {
       lobbies.delete(lobby.ownerId);
       console.log(`Event lobby ${lobby.lobbyName} has been deleted due to end date.`);
     }

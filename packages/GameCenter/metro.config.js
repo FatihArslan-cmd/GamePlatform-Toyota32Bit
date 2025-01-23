@@ -6,7 +6,7 @@ const config = {
     // Lerna root düzeyindeki node_modules
     path.resolve(__dirname, '../../node_modules'),
     // Shared klasörü
-    path.resolve(__dirname, '../Bingo-32Bit-Toyota'),
+    path.resolve(__dirname, '../Bingo'),
   ],
   resolver: {
     extraNodeModules: {

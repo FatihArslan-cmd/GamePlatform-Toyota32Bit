@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, HelperText } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import BottomSheet from '../../../../components/BottomSheet';
 import LobbyTypeSelector from './LobbyTypeSelector';
 import CustomDateTimeSelector from './DateTimeSelector';
@@ -9,76 +9,142 @@ import PasswordInput from './PasswordInput';
 import InvitationLink from './InvitationLink';
 import ToastMessage from '../../../../components/ToastMessage/Toast';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
+import { getToken } from '../../../../shared/states/api';
+import CustomModal from '../../../../components/CustomModal';
 
-const CreateLobbyModal = ({ visible, onDismiss, height }) => {
-  const [lobbyType, setLobbyType] = useState('normal');
-  const [game, setGame] = useState('');
+const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => {
+  const [lobbyType, setLobbyType] = useState('Normal');
+  const [lobbyName, setLobbyName] = useState('');
+  const [gameName, setGameName] = useState('');
+  const [maxCapacity, setMaxCapacity] = useState('');
   const [password, setPassword] = useState('');
-  const [invitationLink, setInvitationLink] = useState('');
+  const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, setModalText] = useState('');
+
   const { currentToast, showToast, hideToast } = useToast();
 
+  useEffect(() => {
+    if (initialGameName) {
+      setGameName(initialGameName);
+    }
+  }, [initialGameName]);
+
   const toggleLobbyType = useCallback(() => {
-    setLobbyType(current => (current === 'normal' ? 'event' : 'normal'));
+    setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
   }, []);
 
-  const handleSave = useCallback(() => {
-    if (lobbyType === 'event') {
-      // Additional logic for 'event' type if needed
+    const handleDateTimeChange = useCallback((type, value) => {
+      if(type === 'startDate'){
+        setStartDate(value);
+      } else {
+        setEndDate(value)
+      }
+    }, []);
+
+
+  const handleModalDismiss = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
+  const handleSave = useCallback(async () => {
+ 
+    const token = getToken();
+ 
+
+    const requestBody = {
+      lobbyName,
+      lobbyType,
+      gameName,
+      code,
+      maxCapacity: parseInt(maxCapacity, 10),
+      password: password || null,
+       startDate: lobbyType === 'Event' ? startDate.toISOString() : null,
+        endDate: lobbyType === 'Event' ? endDate.toISOString() : null,
+    };
+
+    try {
+      const response = await fetch('http://10.0.2.2:3000/api/lobby/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create lobby');
+      }
+      console.log(data);
+      setCode(`${data.lobby.code}`);
+      showToast('success', 'Lobby created successfully!');
+    } catch (error) {
+      setModalText(error.message);
+      setModalVisible(true);
     }
-    setError('');
-    const code = Math.random().toString(36).substr(2, 10).toUpperCase();
-    setInvitationLink(`https://gamecenter.com/invite/${code}`);
-    showToast('success', 'Lobby created successfully!');
-  }, [lobbyType]);
-
-
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lobbyName, lobbyType, gameName, password, maxCapacity, showToast, startDate, endDate]);
 
   const resetLobby = useCallback(() => {
-    setLobbyType('normal');
-    setGame('');
+    setLobbyType('Normal');
     setPassword('');
-    setInvitationLink('');
+    setMaxCapacity('');
+    setCode('');
     setError('');
-  }, []);
+    setGameName(initialGameName || ''); // Reset to initial if it exists, otherwise reset to empty string
+    setLobbyName('');
+      setStartDate(new Date());
+    setEndDate(new Date());
+  }, [initialGameName]);
+
+  const bottomSheetHeight = lobbyType === 'Normal' ? '50%' : '70%';
 
   return (
     <BottomSheet
       visible={visible}
       onDismiss={onDismiss}
       title="Create Lobby"
-      height="60%"
+      height={bottomSheetHeight}
       backgroundColor="white"
     >
       <View style={styles.container}>
-        {!invitationLink ? (
+        {!code ? (
           <>
             <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} />
-
-            {lobbyType === 'event' && <CustomDateTimeSelector />}
-
-            <GameSelector game={game} onGameChange={setGame} />
-
+            {lobbyType === 'Event' && (
+              <CustomDateTimeSelector
+               onDateTimeChange={handleDateTimeChange}
+                initialStartDate={startDate}
+                initialEndDate={endDate}
+               />
+            )}
+            <GameSelector
+              gameName={gameName}
+              lobbyName={lobbyName}
+              maxCapacity={maxCapacity}
+              onGameNameChange={setGameName}
+              onLobbyNameChange={setLobbyName}
+              onMaxCapacityChange={setMaxCapacity}
+              editableGameName={!initialGameName} // Pass the editability based on initialGameName
+            />
             <PasswordInput
               password={password}
               isPasswordVisible={isPasswordVisible}
               onPasswordChange={setPassword}
               onToggleVisibility={() => setIsPasswordVisible(!isPasswordVisible)}
             />
-
-            {error ? (
-              <HelperText type="error" visible={!!error}>
-                {error}
-              </HelperText>
-            ) : null}
-
             <Button
               mode="contained"
               onPress={handleSave}
               style={[
                 styles.createButton,
-                invitationLink && styles.createButtonWithLink,
+                code && styles.createButtonWithLink,
               ]}
               contentStyle={styles.createButtonContent}
               icon="plus-circle"
@@ -88,7 +154,7 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
           </>
         ) : (
           <View style={styles.successContainer}>
-            <InvitationLink invitationLink={invitationLink}/>
+            <InvitationLink code={code} />
             <Button
               mode="outlined"
               onPress={resetLobby}
@@ -107,6 +173,12 @@ const CreateLobbyModal = ({ visible, onDismiss, height }) => {
           onHide={hideToast}
         />
       )}
+      <CustomModal
+        visible={modalVisible}
+        onDismiss={handleModalDismiss}
+        text={modalText}
+        title="Error"
+      />
     </BottomSheet>
   );
 };

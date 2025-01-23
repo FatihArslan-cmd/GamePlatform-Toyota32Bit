@@ -1,16 +1,25 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const CustomDateTimeSelector = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+const CustomDateTimeSelector = ({ onDateTimeChange, initialStartDate, initialEndDate }) => {
+  const [startDate, setStartDate] = useState(initialStartDate || new Date());
+  const [endDate, setEndDate] = useState(initialEndDate || new Date());
   const [pickerConfig, setPickerConfig] = useState({
     mode: 'date',
     type: null, // 'start' or 'end'
     show: false,
   });
+
+  useEffect(() => {
+    if (initialStartDate) {
+      setStartDate(initialStartDate);
+    }
+    if (initialEndDate) {
+      setEndDate(initialEndDate);
+    }
+  }, [initialStartDate, initialEndDate]);
 
   const openPicker = useCallback((type, mode) => {
     setPickerConfig({ mode, type, show: true });
@@ -26,24 +35,29 @@ const CustomDateTimeSelector = () => {
       const updatedDate =
         pickerConfig.mode === 'date'
           ? new Date(
-              selectedDate.setHours(
-                pickerConfig.type === 'start'
-                  ? startDate.getHours()
-                  : endDate.getHours(),
-                pickerConfig.type === 'start'
-                  ? startDate.getMinutes()
-                  : endDate.getMinutes()
-              )
+            selectedDate.setHours(
+              pickerConfig.type === 'start'
+                ? startDate.getHours()
+                : endDate.getHours(),
+              pickerConfig.type === 'start'
+                ? startDate.getMinutes()
+                : endDate.getMinutes()
             )
+          )
           : new Date(
-              pickerConfig.type === 'start' ? startDate : endDate
-            ).setHours(selectedDate.getHours(), selectedDate.getMinutes());
+            pickerConfig.type === 'start' ? startDate : endDate
+          ).setHours(selectedDate.getHours(), selectedDate.getMinutes());
 
-      pickerConfig.type === 'start'
-        ? setStartDate(new Date(updatedDate))
-        : setEndDate(new Date(updatedDate));
+      const newDate = new Date(updatedDate)
+      if(pickerConfig.type === 'start'){
+        setStartDate(newDate);
+        onDateTimeChange('startDate', newDate);
+      } else {
+         setEndDate(newDate);
+        onDateTimeChange('endDate', newDate);
+      }
     }
-  }, [pickerConfig, startDate, endDate]);
+  }, [pickerConfig, startDate, endDate, onDateTimeChange]);
 
   const formatDate = (date) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };

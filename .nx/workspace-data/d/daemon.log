@@ -1,0 +1,311 @@
+[NX Daemon Server] - 2025-01-22T16:40:34.074Z - Started listening on: \\.\pipe\nx\C:\Users\Fatih\AppData\Local\Temp\8e78676fee8896d68598\d.sock
+[NX Daemon Server] - 2025-01-22T16:40:34.106Z - [WATCHER]: Subscribed to changes within: C:\GamePlatformToyota32bit (native)
+[NX Daemon Server] - 2025-01-22T16:40:34.109Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-01-22T16:40:34.111Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-01-22T16:40:34.113Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-01-22T16:40:34.117Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2025-01-22T16:40:34.639Z - Time taken for 'Load Nx Plugin: C:\GamePlatformToyota32bit\node_modules\nx\src\plugins\package-json' 514.4871999999999ms
+[NX Daemon Server] - 2025-01-22T16:40:34.648Z - Time taken for 'Load Nx Plugin: C:\GamePlatformToyota32bit\node_modules\nx\src\plugins\project-json\build-nodes\project-json' 523.4723999999999ms
+[NX Daemon Server] - 2025-01-22T16:40:35.327Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2025-01-22T16:40:35.327Z - [REQUEST]: 
+[NX Daemon Server] - 2025-01-22T16:40:35.327Z - [REQUEST]: 
+[NX Daemon Server] - 2025-01-22T16:40:35.340Z - Time taken for 'loadNxPlugins' 956.7689999999999ms
+[NX Daemon Server] - 2025-01-22T16:40:45.497Z - Time taken for 'build-project-configs' 10142.079699999998ms
+[NX Daemon Server] - 2025-01-22T16:40:45.755Z - [SYNC]: collect registered sync generators
+[NX Daemon Server] - 2025-01-22T16:40:45.757Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2025-01-22T16:40:45.758Z - Time taken for 'total for creating and serializing project graph' 11639.5253ms
+[NX Daemon Server] - 2025-01-22T16:40:45.758Z - Done responding to the client project-graph
+[NX Daemon Server] - 2025-01-22T16:40:45.758Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 11640. Response time: 1.
+[NX Daemon Server] - 2025-01-22T16:40:45.775Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX Daemon Server] - 2025-01-22T16:40:45.776Z - Done responding to the client handleContextFileData
+[NX Daemon Server] - 2025-01-22T16:40:45.776Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 1.
+[NX Daemon Server] - 2025-01-22T16:40:45.953Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-01-22T16:44:04.111Z - [WATCHER]: nx.json was modified
+[NX Daemon Server] - 2025-01-22T16:44:04.112Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:44:04.218Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2025-01-22T16:44:04.218Z - [REQUEST]: nx.json
+[NX Daemon Server] - 2025-01-22T16:44:04.218Z - [REQUEST]: 
+[NX Daemon Server] - 2025-01-22T16:44:04.221Z - Time taken for 'hash changed files from watcher' 2.275999999983469ms
+[NX Daemon Server] - 2025-01-22T16:44:04.249Z - Time taken for 'build-project-configs' 21.07159999999567ms
+[NX Daemon Server] - 2025-01-22T16:44:04.297Z - [SYNC]: collect registered sync generators
+[NX Daemon Server] - 2025-01-22T16:44:04.298Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX Daemon Server] - 2025-01-22T16:44:04.299Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX Daemon Server] - 2025-01-22T16:44:04.299Z - Time taken for 'total execution time for createProjectGraph()' 34.72100000001956ms
+[NX Daemon Server] - 2025-01-22T16:46:28.859Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:29.264Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:31.313Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:31.704Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:32.047Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:32.157Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:38.289Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:39.784Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:39.892Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.001Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.112Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.220Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.330Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.438Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.525Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:40.578Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:41.591Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:41.654Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:41.808Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.096Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.329Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.487Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.612Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.800Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.879Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:45.940Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:46.066Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:49.125Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:49.389Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:49.792Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:49.885Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:50.056Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:50.119Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:50.306Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:53.271Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:53.611Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:53.923Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:54.016Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:54.204Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:54.281Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:54.453Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:54.532Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:57.569Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:57.854Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:58.200Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:58.317Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:58.611Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:58.759Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:58.894Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:59.033Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:59.205Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:59.357Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:59.486Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:46:59.636Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:47:15.794Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:49:52.772Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2025-01-22T16:49:52.820Z - [WATCHER]: 0 file(s) created or restored, 0 file(s) modified, 26 file(s) deleted
+[NX Daemon Server] - 2025-01-22T16:49:52.821Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (sources)
+[NX Daemon Server] - 2025-01-22T16:49:52.822Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (outputs)
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+
+
+> NX runtime error err=cannot send event from fs watcher: sending into a closed channel
+

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Menu, Divider, Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible }) => {
+const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible, openBottomSheet, setJoinLobbyModalVisible }) => { // openBottomSheet prop olarak alındı, setJoinLobbyModalVisible eklendi
   const navigation = useNavigation();
 
   return (
@@ -44,8 +44,20 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible 
       />
       <Divider />
       <Menu.Item
-        onPress={() => {}}
+        onPress={() => {
+          closeMenu();
+          openBottomSheet(); // bottom sheet'i aç
+        }}
         title="Active Lobbies"
+        titleStyle={styles.menuItemText}
+      />
+      <Divider />
+      <Menu.Item
+        onPress={() => {
+          closeMenu();
+          setJoinLobbyModalVisible(true); // Join Lobby modalını aç
+        }}
+        title="Join Lobby"
         titleStyle={styles.menuItemText}
       />
     </Menu>
