@@ -8,6 +8,7 @@ import MenuComponent from './MenuComponent';
 import CreateLobbyModal from '../CreateLobbyModal/CreateLobbyModal';
 import BottomSheet from '../../../../components/BottomSheet';
 import ActiveLobbiesContent from './ActiveLobbiesContext';
+import JoinLobbyModal from './JoinLobbyModal'; // Yeni modalı import et
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -15,6 +16,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [joinLobbyModalVisible, setJoinLobbyModalVisible] = useState(false); // Yeni state
 
   const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
@@ -45,6 +47,7 @@ const Header = () => {
                 closeMenu={closeMenu}
                 setLobbyModalVisible={setLobbyModalVisible}
                 openBottomSheet={openBottomSheet} // openBottomSheet prop olarak geçirildi
+                setJoinLobbyModalVisible={setJoinLobbyModalVisible} //join lobby modalını açmak için
               />
             </View>
           </>
@@ -63,6 +66,10 @@ const Header = () => {
       >
         <ActiveLobbiesContent />
       </BottomSheet>
+      <JoinLobbyModal // Join Lobby modalını ekle
+        visible={joinLobbyModalVisible}
+        onDismiss={() => setJoinLobbyModalVisible(false)}
+      />
     </>
   );
 };
