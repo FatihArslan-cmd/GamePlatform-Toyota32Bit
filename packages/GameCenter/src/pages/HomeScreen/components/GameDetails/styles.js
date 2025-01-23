@@ -230,7 +230,24 @@ export const styles = StyleSheet.create({
         marginBottom: 12,
       },
     // ... (previous code remains the same until styles)
-        
+    badgeContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    lobbyTypeBadge: {
+      backgroundColor: '#673ab7', // Or any color you prefer
+      color: 'white',
+    },
+   inProgressBadge: {
+     backgroundColor: '#f44336',
+      marginLeft: 5
+  },
+  lobbyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
         // Continuing styles
         lobbyInfoItem: {
           flexDirection: 'row',
@@ -295,8 +312,21 @@ export const styles = StyleSheet.create({
           color: '#666',
           fontFamily: 'Orbitron-VariableFont_wght',
       },
-      // Settings styles
-      settingsContainer: {
+      loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+      },
+      errorText: {
+          fontSize: 16,
+          color: 'red',
+      },      settingsContainer: {
           marginBottom: 20,
       },
       settingsCard: {

@@ -15,8 +15,10 @@ const authenticate = (req, res, next) => {
   // Verify the token
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token' });
+      console.error('JWT Verification Error:', err); // Hata detayını gör
+      return res.status(401).json({ message: 'Invalid token', error: err.message });
     }
+  
 
     const userId = decoded.id;
 
