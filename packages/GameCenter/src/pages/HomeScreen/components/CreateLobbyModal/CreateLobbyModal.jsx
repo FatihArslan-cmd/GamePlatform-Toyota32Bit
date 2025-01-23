@@ -13,7 +13,7 @@ import { getToken } from '../../../../shared/states/api';
 import CustomModal from '../../../../components/CustomModal';
 
 const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => {
-  const [lobbyType, setLobbyType] = useState('normal');
+  const [lobbyType, setLobbyType] = useState('Normal');
   const [lobbyName, setLobbyName] = useState('');
   const [gameName, setGameName] = useState('');
   const [maxCapacity, setMaxCapacity] = useState('');
@@ -21,6 +21,8 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState('');
 
@@ -32,38 +34,27 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
     }
   }, [initialGameName]);
 
-
   const toggleLobbyType = useCallback(() => {
-    setLobbyType((current) => (current === 'normal' ? 'event' : 'normal'));
+    setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
   }, []);
+
+    const handleDateTimeChange = useCallback((type, value) => {
+      if(type === 'startDate'){
+        setStartDate(value);
+      } else {
+        setEndDate(value)
+      }
+    }, []);
+
 
   const handleModalDismiss = useCallback(() => {
     setModalVisible(false);
   }, []);
 
   const handleSave = useCallback(async () => {
-    if (!lobbyName.trim()) {
-      setModalText('Lobby name cannot be empty');
-      setModalVisible(true)
-      return;
-    }
-    if (!gameName.trim()) {
-        setModalText('Game name cannot be empty');
-        setModalVisible(true)
-      return;
-    }
-    if (!maxCapacity.trim()) {
-        setModalText('Max capacity cannot be empty');
-        setModalVisible(true)
-      return;
-    }
-
+ 
     const token = getToken();
-    if (!token) {
-      setModalText('Authentication token not found');
-      setModalVisible(true)
-      return;
-    }
+ 
 
     const requestBody = {
       lobbyName,
@@ -72,6 +63,8 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
       code,
       maxCapacity: parseInt(maxCapacity, 10),
       password: password || null,
+       startDate: lobbyType === 'Event' ? startDate.toISOString() : null,
+        endDate: lobbyType === 'Event' ? endDate.toISOString() : null,
     };
 
     try {
@@ -95,19 +88,22 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
       setModalText(error.message);
       setModalVisible(true);
     }
-  }, [lobbyName, lobbyType, gameName, password, maxCapacity, showToast]);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lobbyName, lobbyType, gameName, password, maxCapacity, showToast, startDate, endDate]);
 
   const resetLobby = useCallback(() => {
-    setLobbyType('normal');
+    setLobbyType('Normal');
     setPassword('');
     setMaxCapacity('');
     setCode('');
     setError('');
     setGameName(initialGameName || ''); // Reset to initial if it exists, otherwise reset to empty string
     setLobbyName('');
+      setStartDate(new Date());
+    setEndDate(new Date());
   }, [initialGameName]);
 
-  const bottomSheetHeight = lobbyType === 'normal' ? '50%' : '70%';
+  const bottomSheetHeight = lobbyType === 'Normal' ? '50%' : '70%';
 
   return (
     <BottomSheet
@@ -121,16 +117,22 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
         {!code ? (
           <>
             <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} />
-            {lobbyType === 'event' && <CustomDateTimeSelector />}
+            {lobbyType === 'Event' && (
+              <CustomDateTimeSelector
+               onDateTimeChange={handleDateTimeChange}
+                initialStartDate={startDate}
+                initialEndDate={endDate}
+               />
+            )}
             <GameSelector
-    gameName={gameName}
-    lobbyName={lobbyName}
-    maxCapacity={maxCapacity}
-    onGameNameChange={setGameName}
-    onLobbyNameChange={setLobbyName}
-    onMaxCapacityChange={setMaxCapacity}
-    editableGameName={!initialGameName} // Pass the editability based on initialGameName
-  />
+              gameName={gameName}
+              lobbyName={lobbyName}
+              maxCapacity={maxCapacity}
+              onGameNameChange={setGameName}
+              onLobbyNameChange={setLobbyName}
+              onMaxCapacityChange={setMaxCapacity}
+              editableGameName={!initialGameName} // Pass the editability based on initialGameName
+            />
             <PasswordInput
               password={password}
               isPasswordVisible={isPasswordVisible}
@@ -171,12 +173,12 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
           onHide={hideToast}
         />
       )}
-        <CustomModal
-            visible={modalVisible}
-            onDismiss={handleModalDismiss}
-            text={modalText}
-            title="Error"
-        />
+      <CustomModal
+        visible={modalVisible}
+        onDismiss={handleModalDismiss}
+        text={modalText}
+        title="Error"
+      />
     </BottomSheet>
   );
 };

@@ -7,11 +7,11 @@ const LobbyTypeSelector = ({ lobbyType, onToggle }) => {
     <View style={styles.lobbyTypeContainer}>
       <Text style={styles.label}>Lobby Type</Text>
       <Button
-        mode={lobbyType === 'normal' ? 'contained' : 'outlined'}
+        mode={lobbyType === 'Normal' ? 'contained' : 'outlined'}
         onPress={onToggle}
         style={styles.typeButton}
       >
-        {lobbyType === 'normal' ? '🎮 Normal' : '📅 Event'}
+        {lobbyType === 'Normal' ? '🎮 Normal' : '📅 Event'}
       </Button>
     </View>
   );

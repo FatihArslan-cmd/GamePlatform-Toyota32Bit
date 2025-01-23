@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Menu, Divider, Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible }) => {
+const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible, openBottomSheet }) => { // openBottomSheet prop olarak alındı
   const navigation = useNavigation();
 
   return (
@@ -44,7 +44,10 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible 
       />
       <Divider />
       <Menu.Item
-        onPress={() => {}}
+        onPress={() => {
+          closeMenu();
+          openBottomSheet(); // bottom sheet'i aç
+        }}
         title="Active Lobbies"
         titleStyle={styles.menuItemText}
       />

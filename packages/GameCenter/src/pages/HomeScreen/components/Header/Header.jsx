@@ -6,15 +6,20 @@ import GradientText from '../../../../components/GrandientText';
 import SearchBar from './SearchBar';
 import MenuComponent from './MenuComponent';
 import CreateLobbyModal from '../CreateLobbyModal/CreateLobbyModal';
+import BottomSheet from '../../../../components/BottomSheet';
+import ActiveLobbiesContent from './ActiveLobbiesContext';
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
-  const openMenu = () => setTimeout(() => setMenuVisible(true), 100); // Hemen çalışacak şekilde ayarlandı
+  const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
+  const openBottomSheet = () => setIsBottomSheetVisible(true);
+  const closeBottomSheet = () => setIsBottomSheetVisible(false);
 
   return (
     <>
@@ -39,6 +44,7 @@ const Header = () => {
                 openMenu={openMenu}
                 closeMenu={closeMenu}
                 setLobbyModalVisible={setLobbyModalVisible}
+                openBottomSheet={openBottomSheet} // openBottomSheet prop olarak geçirildi
               />
             </View>
           </>
@@ -49,6 +55,14 @@ const Header = () => {
         onDismiss={() => setLobbyModalVisible(false)}
         height="50%"
       />
+      <BottomSheet
+        visible={isBottomSheetVisible}
+        onDismiss={closeBottomSheet}
+        title="Active Lobbies"
+        height="50%"
+      >
+        <ActiveLobbiesContent />
+      </BottomSheet>
     </>
   );
 };
