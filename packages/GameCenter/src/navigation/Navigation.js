@@ -9,7 +9,7 @@ import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.
 import SettingScreen from '../pages/SettingsScreen/index.jsx';
 import BootSplash from 'react-native-bootsplash';
 import { Animated } from 'react-native';
-
+import GameScreen from '../pages/GameScreen/index.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -88,6 +88,12 @@ export default function Navigation() {
               animation: 'fade',
             }}
           />
+     
+        <Stack.Screen name="GameScreen"
+         component={GameScreen}   options={{
+              animation: 'fade',
+            }}
+         />
         </Stack.Navigator>
       </NavigationContainer>
     </Animated.View>
