@@ -4,7 +4,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import TopBar from './components/TopBar';
 import ProfileSection from './components/ProfileSection';
 import styles from './styles/ProfileScreenStyles';
-
+import Buttons from './components/Buttons';
 
 const ProfileScreen = () => {
     return (
@@ -17,6 +17,7 @@ const ProfileScreen = () => {
                 />
                 <TopBar />
                 <ProfileSection />
+                <Buttons/>
             </SafeAreaView>
         </SafeAreaProvider>
     );
