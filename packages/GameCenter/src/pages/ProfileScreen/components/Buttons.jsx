@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableRipple, useTheme } from 'react-native-paper';
+import FriendsPage from './FriendsPage'; // FriendsPage bileşenini import ediyoruz.
 
 const Buttons = () => {
     const insets = useSafeAreaInsets();
@@ -49,7 +50,7 @@ const Buttons = () => {
                         onPress={() => handleTabPress(index)}
                         rippleColor={colors.primary}
                     >
-                        <View style={styles.tabContent}> {/* Added a container for text */}
+                        <View style={styles.tabContent}>
                             <Text style={[styles.tabNumber, activeTabIndex === index && styles.activeTabText]}>
                                 {tab.title}
                             </Text>
@@ -84,7 +85,7 @@ const Buttons = () => {
                     <Text style={styles.pageText}>Achievements Content</Text>
                 </View>
                 <View key="1" style={styles.page}>
-                    <Text style={styles.pageText}>Friends Content</Text>
+                    <FriendsPage />
                 </View>
             </PagerView>
         </View>
@@ -105,11 +106,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 1,
     },
-    tabContent: {   // NEW: Added a container for the text, which allows it to stack
+    tabContent: {   
         alignItems: 'center',
     },
    tabNumber: {
-        fontSize: 22, // Increased font size for the numbers
+        fontSize: 22,
         color: 'gray',
         fontFamily: 'Orbitron-VariableFont_wght',
         paddingVertical:10
@@ -136,8 +137,7 @@ const styles = StyleSheet.create({
     },
     page: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+      
     },
     pageText: {
         fontSize: 20,

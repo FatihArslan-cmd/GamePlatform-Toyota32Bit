@@ -19,7 +19,7 @@ const ProfileSection = () => {
             </View>
             <GrandientText
                 text="FatihProfessional"
-                colors={['#87CEEB', '#FFFFFF']}
+                colors={['#6200ee', '#FFFFFF']}
                 textStyle={styles.userNameText}
                 height={75}
                 width={420}
