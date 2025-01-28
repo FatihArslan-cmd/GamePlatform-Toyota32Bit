@@ -15,19 +15,7 @@ const fontConfig = {
       fontWeight: 'normal',
     },
     thin: {
-      fontFamily: 'SQR721B',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'Poppins-Black',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'Poppins-Bold',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'Poppins-SemiBold',
+      fontFamily: 'Roboto_Condensed-Black',
       fontWeight: 'normal',
     },
   },
