@@ -1,3 +1,4 @@
+// Buttons.js
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import PagerView from 'react-native-pager-view';
@@ -11,12 +12,13 @@ const Buttons = () => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const { colors } = useTheme();
     const slideAnimation = useRef(new Animated.Value(0)).current;
-    
+    const [friendCount, setFriendCount] = useState(0); // Arkadaş sayısını saklamak için state
+
     const screenWidth = Dimensions.get('window').width;
 
     const tabs = [
         { id: 0, title: '91', subtitle: 'Achievements' },
-        { id: 1, title: '0', subtitle: 'Friends' }
+        { id: 1, title: friendCount.toString(), subtitle: 'Friends' } // Arkadaş sayısını title'a bağladık
     ];
 
     const animateSlider = (index) => {
@@ -38,7 +40,23 @@ const Buttons = () => {
         const newIndex = event.nativeEvent.position;
         setActiveTabIndex(newIndex);
         animateSlider(newIndex);
+       
     };
+
+     const handleFriendCountChange = (count) => {
+        setFriendCount(count); 
+        
+        const newTabs = [...tabs]
+        newTabs[1].title = count.toString();
+
+    
+    };
+    useEffect(() => {
+      
+       const newTabs = [...tabs]
+       newTabs[1].title = friendCount.toString();
+
+    },[friendCount])
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -51,7 +69,7 @@ const Buttons = () => {
                         rippleColor={colors.primary}
                     >
                         <View style={styles.tabContent}>
-                            <Text style={[styles.tabNumber, activeTabIndex === index && styles.activeTabText]}>
+                             <Text style={[styles.tabNumber, activeTabIndex === index && styles.activeTabText]}>
                                 {tab.title}
                             </Text>
                              <Text style={[styles.tabText, activeTabIndex === index && styles.activeTabText]}>
@@ -85,7 +103,7 @@ const Buttons = () => {
                     <Text style={styles.pageText}>Achievements Content</Text>
                 </View>
                 <View key="1" style={styles.page}>
-                    <FriendsPage />
+                    <FriendsPage onFriendCountChange={handleFriendCountChange} />
                 </View>
             </PagerView>
         </View>
