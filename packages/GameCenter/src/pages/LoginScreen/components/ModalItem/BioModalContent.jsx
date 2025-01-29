@@ -3,10 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import PermissionItem from './PermissionItem';
 import { storage } from '../../../../utils/storage';
-// Initialize MMKV
 
 const BioModalContent = ({ onPermissionsChange }) => {
-  // Initialize permissions state
+  
   const [permissions, setPermissions] = useState({
     biometric: false,
     nfc: false,

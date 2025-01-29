@@ -1,4 +1,3 @@
-// EmptyState.js
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, Surface, IconButton, useTheme } from 'react-native-paper';

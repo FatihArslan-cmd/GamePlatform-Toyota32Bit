@@ -5,24 +5,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import FriendsPage from './Friends/FriendsPage';
 import AchivementsPage from './Achivements';
+
 const Buttons = () => {
     const insets = useSafeAreaInsets();
     const pagerRef = useRef(null);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const { colors } = useTheme();
     const slideAnimation = useRef(new Animated.Value(0)).current;
-    const [friendCount, setFriendCount] = useState(0); // Arkadaş sayısını saklamak için state
-
+    const [friendCount, setFriendCount] = useState(0);
+    const [achievementCount, setAchievementCount] = useState(0);
     const screenWidth = Dimensions.get('window').width;
 
-    const tabs = [
-        { id: 0, title: '91', subtitle: 'Achievements' },
-        { id: 1, title: friendCount.toString(), subtitle: 'Friends' } // Arkadaş sayısını title'a bağladık
-    ];
+    const [tabs, setTabs] = useState([
+        { id: 0, title: '0', subtitle: 'Achievements' },
+        { id: 1, title: friendCount.toString(), subtitle: 'Friends' }
+    ]);
 
     const animateSlider = (index) => {
         Animated.spring(slideAnimation, {
-            toValue: index * 48.1, 
+            toValue: index * 48.1,
             useNativeDriver: true,
             tension: 68,
             friction: 10
@@ -39,23 +40,25 @@ const Buttons = () => {
         const newIndex = event.nativeEvent.position;
         setActiveTabIndex(newIndex);
         animateSlider(newIndex);
-       
     };
 
-     const handleFriendCountChange = (count) => {
-        setFriendCount(count); 
-        
-        const newTabs = [...tabs]
-        newTabs[1].title = count.toString();
-
-    
+    const handleFriendCountChange = (count) => {
+        setFriendCount(count);
     };
+
+    const handleAchievementCountChange = (count) => {
+        setAchievementCount(count);
+    };
+
     useEffect(() => {
-      
-       const newTabs = [...tabs]
-       newTabs[1].title = friendCount.toString();
+        setTabs(prevTabs => {
+            const newTabs = [...prevTabs];
+            newTabs[0].title = achievementCount.toString();
+            newTabs[1].title = friendCount.toString();
+            return newTabs;
+        });
+    }, [achievementCount, friendCount]);
 
-    },[friendCount])
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -68,10 +71,10 @@ const Buttons = () => {
                         rippleColor={colors.primary}
                     >
                         <View style={styles.tabContent}>
-                             <Text style={[styles.tabNumber, activeTabIndex === index && styles.activeTabText]}>
+                            <Text style={[styles.tabNumber, activeTabIndex === index && styles.activeTabText]}>
                                 {tab.title}
                             </Text>
-                             <Text style={[styles.tabText, activeTabIndex === index && styles.activeTabText]}>
+                            <Text style={[styles.tabText, activeTabIndex === index && styles.activeTabText]}>
                                 {tab.subtitle}
                             </Text>
                         </View>
@@ -82,11 +85,12 @@ const Buttons = () => {
                         styles.indicator,
                         {
                             width: '50%',
-                            transform: [{ translateX: slideAnimation.interpolate({
+                            transform: [{
+                                translateX: slideAnimation.interpolate({
                                     inputRange: [0, 100],
                                     outputRange: [0, screenWidth]
-                                    })
-                                }]
+                                })
+                            }]
                         }
                     ]}
                 />
@@ -99,7 +103,7 @@ const Buttons = () => {
                 scrollEnabled={true}
             >
                 <View key="0" style={styles.page}>
-                    <AchivementsPage />
+                    <AchivementsPage onAchievementCountChange={handleAchievementCountChange} />
                 </View>
                 <View key="1" style={styles.page}>
                     <FriendsPage onFriendCountChange={handleFriendCountChange} />
@@ -123,14 +127,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         zIndex: 1,
     },
-    tabContent: {   
+    tabContent: {
         alignItems: 'center',
     },
-   tabNumber: {
+    tabNumber: {
         fontSize: 22,
         color: 'gray',
         fontFamily: 'Orbitron-VariableFont_wght',
-        paddingVertical:10
+        paddingVertical: 10
     },
     tabText: {
         fontSize: 16,
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         borderRadius: 5,
-        zIndex:2,
+        zIndex: 2,
 
     },
     pagerView: {
@@ -154,7 +158,7 @@ const styles = StyleSheet.create({
     },
     page: {
         flex: 1,
-      
+
     },
     pageText: {
         fontSize: 20,
