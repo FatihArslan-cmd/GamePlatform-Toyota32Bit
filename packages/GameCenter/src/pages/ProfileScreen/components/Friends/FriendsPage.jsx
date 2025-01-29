@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text } from 'react-native';
-import { Button, Snackbar, TouchableRipple } from 'react-native-paper';
-import InputField from '../../LoginScreen/components/FormSectionItem/InputField';
+import { View, FlatList } from 'react-native';
+import { Button, Snackbar, TouchableRipple,Text } from 'react-native-paper';
+import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useFriendsPage from '../hooks/useFriendsPage';
-import styles from '../styles/FriendPageStyles';
+import useFriendsPage from '../../hooks/useFriendsPage';
+import styles from '../../styles/FriendPageStyles';
 import FriendAddModal from './Modals/FriendAddModal';
 import FriendItem from './FrientItem';
 import InviteModal from './Modals/InviteModal';
@@ -53,7 +53,7 @@ const FriendsPage = ({ onFriendCountChange }) => {
 
     return (
         <View style={styles.container}>
-            {error ? <Text style={{ color: 'red', textAlign: 'center' }}>{error}</Text> : null}
+            {error ? <Text style={{ color: 'red', textAlign: 'center',fontFamily:'Orbitron-VariableFont_wght' }}>{error}</Text> : null}
             <InviteModal 
                 visible={modalVisible}
                 onDismiss={handleModalDismiss}
@@ -90,7 +90,7 @@ const FriendsPage = ({ onFriendCountChange }) => {
                 mode="contained"
                 style={[styles.inviteButton, { backgroundColor: `${colors.primary}70` }]}
                 buttonColor={colors.primary}
-                labelStyle={[styles.inviteButtonText, { color: 'white', opacity: 0.80 }]}
+                labelStyle={[styles.inviteButtonText, { color: 'white', opacity: 0.80,fontFamily:'Orbitron-VariableFont_wght' }]}
                 icon={() => <Icon name="link-variant" color='white' size={24} />}
                 iconPosition="trailing"
                 onPress={handleInvitePress}

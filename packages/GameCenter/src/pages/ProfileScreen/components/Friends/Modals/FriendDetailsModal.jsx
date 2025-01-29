@@ -1,7 +1,7 @@
 import React from 'react';
-import CustomModal from '../../../../components/CustomModal';
+import CustomModal from '../../../../../components/CustomModal';
 import FastImage from 'react-native-fast-image';
-import styles from '../../styles/FriendPageStyles';
+import styles from '../../../styles/FriendPageStyles';
 
 
 const FriendDetailsModal = ({ visible, onDismiss, selectedFriend, onRemoveFriend }) => {

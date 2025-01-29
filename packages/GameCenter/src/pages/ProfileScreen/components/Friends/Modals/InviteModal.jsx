@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import CustomModal from '../../../../components/CustomModal';
-import styles from '../../styles/FriendPageStyles'; 
+import CustomModal from '../../../../../components/CustomModal';
+import styles from '../../../styles/FriendPageStyles'; 
 
 const InviteModal = ({ visible, onDismiss, friendCode, onCopyCode, onShareCode, colors }) => {
   return (

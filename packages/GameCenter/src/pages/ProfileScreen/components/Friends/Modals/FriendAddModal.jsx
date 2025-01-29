@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
-import CustomModal from '../../../../components/CustomModal';
-import styles from '../../styles/FriendPageStyles';
+import InputField from '../../../../LoginScreen/components/FormSectionItem/InputField';
+import CustomModal from '../../../../../components/CustomModal';
+import styles from '../../../styles/FriendPageStyles';
 import { View } from 'react-native';
 const FriendAddModal = ({ visible, onDismiss, onAddFriend }) => {
 

@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
     },
     inviteButtonText: {
         fontSize: 16,
-        fontWeight: 'bold',
     },
     friendsList: {
         flex: 1,

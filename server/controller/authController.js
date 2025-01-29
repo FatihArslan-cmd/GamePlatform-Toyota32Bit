@@ -25,10 +25,8 @@ const login = (req, res) => {
   
       const userId = user.id;
   
-      // Access token (1 saat geçerli)
       const accessToken = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' });
   
-      // Refresh token (7 gün geçerli)
       const refreshToken = jwt.sign({ id: userId }, REFRESH_SECRET_KEY, { expiresIn: '29d' });
   
       // Kullanıcı bilgilerini hashle
@@ -66,8 +64,7 @@ const login = (req, res) => {
   };
   
   const refreshAccessToken = (req, res) => {
-    const { refreshToken } = req.body; // İstemciden refresh token alın
-  
+    const refreshToken = req.cookies.refreshToken; 
     if (!refreshToken) {
       return res.status(401).json({ message: 'Refresh token is required' });
     }

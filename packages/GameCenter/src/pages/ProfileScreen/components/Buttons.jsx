@@ -1,11 +1,10 @@
-// Buttons.js
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import FriendsPage from './FriendsPage'; // FriendsPage bileşenini import ediyoruz.
-
+import FriendsPage from './Friends/FriendsPage';
+import AchivementsPage from './Achivements';
 const Buttons = () => {
     const insets = useSafeAreaInsets();
     const pagerRef = useRef(null);
@@ -100,7 +99,7 @@ const Buttons = () => {
                 scrollEnabled={true}
             >
                 <View key="0" style={styles.page}>
-                    <Text style={styles.pageText}>Achievements Content</Text>
+                    <AchivementsPage />
                 </View>
                 <View key="1" style={styles.page}>
                     <FriendsPage onFriendCountChange={handleFriendCountChange} />
