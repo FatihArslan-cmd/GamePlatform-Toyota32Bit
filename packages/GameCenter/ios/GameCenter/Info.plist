@@ -32,7 +32,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -58,6 +58,11 @@
 		<string>Orbitron-SemiBold.ttf</string>
 		<string>Orbitron-VariableFont_wght.ttf</string>
 		<string>RussoOne-Regular.ttf</string>
+		<string>Poppins-Black.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Roboto_Condensed-Black.ttf</string>
+		<string>Roboto_Condensed-Bold.ttf</string>
 	</array>
 </dict>
 </plist>

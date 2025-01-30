@@ -4,12 +4,13 @@ import { Button, Card, Title, IconButton, Surface } from 'react-native-paper';
 import { styles } from '../../styles';
 import axios from 'axios';
 import { getToken } from '../../../../../../shared/states/api';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AboutTab({ about }) {
   const [userLobby, setUserLobby] = useState(null);
   const formattedAbout = Array.isArray(about) ? about : [about];
-  const userId = 1; // Şimdilik sabit bir kullanıcı ID kullanıyoruz. Gerçekte bunu kullanıcı oturumundan almanız gerekir.
-
+  const userId = 1;
+  const navigation = useNavigation();
   useEffect(() => {
     const fetchLobbies = async () => {
       const token = getToken();
@@ -70,9 +71,11 @@ export default function AboutTab({ about }) {
         </Card>
       )}
 
-      <Button
+<Button
         mode="contained"
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate('GameScreen'); 
+        }}
         style={styles.startGameButton}
         contentStyle={styles.buttonContent}
         labelStyle={styles.buttonLabel}

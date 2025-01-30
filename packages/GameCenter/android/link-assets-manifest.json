@@ -42,6 +42,26 @@
       "sha1": "51441780e1af77d5bdbfe1fffad3a90644d8ee76"
     },
     {
+      "path": "src/locales/fonts/Poppins-Black.ttf",
+      "sha1": "645e04c53c6b5b35bce654a811ebce16af8aa721"
+    },
+    {
+      "path": "src/locales/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "src/locales/fonts/Poppins-SemiBold.ttf",
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
+    },
+    {
+      "path": "src/locales/fonts/Roboto_Condensed-Black.ttf",
+      "sha1": "317f765e1f770c422243ccdd7d0b8cf408c58db4"
+    },
+    {
+      "path": "src/locales/fonts/Roboto_Condensed-Bold.ttf",
+      "sha1": "b872ba48fedf30d87dd5353b5e4b58285aef964b"
+    },
+    {
       "path": "src/locales/fonts/RussoOne-Regular.ttf",
       "sha1": "4a12533ad9ee3d6c83da4ac659d78ef9fb702ab4"
     },
