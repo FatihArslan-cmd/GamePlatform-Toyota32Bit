@@ -1,12 +1,9 @@
 import axios from 'axios';
 import { storage } from './storage';
-// Create MMKV storage instance
 
 export const fetchAndStoreGames = async () => {
     try {
-        // Check if 'games' exists in local storage
         if (storage.contains('games')) {
-           
             return null;
         }
 
@@ -46,3 +43,11 @@ export const clearGamesFromStorage = () => {
         console.log('No games found in storage to clear.');
     }
 };
+export const deleteIfExists = (key) => {
+    if (storage.contains(key)) { 
+      storage.delete(key); 
+      console.log(`"${key}" başarıyla silindi.`);
+    } else {
+      console.log(`"${key}" anahtarı bulunamadı.`);
+    }
+  };

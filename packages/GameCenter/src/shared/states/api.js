@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { storage } from '../../utils/storage';
-import { useContext } from 'react';
-import { UserContext } from '../../context/UserContext';
+
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -76,7 +75,7 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-export const login = async (username, password, rememberMe=false) => {
+export const login = async (username, password,) => {
   try {
     const response = await api.post('/login', { username, password });
     const { accessToken, refreshToken, profilePhoto, encryptedInfo} = response.data;
@@ -86,10 +85,8 @@ export const login = async (username, password, rememberMe=false) => {
     }
 
     saveToken(accessToken);
-
-    if (rememberMe) {
-      saveRefreshToken(refreshToken);
-    }
+    saveRefreshToken(refreshToken);
+    
 
     const userData = {
       username,

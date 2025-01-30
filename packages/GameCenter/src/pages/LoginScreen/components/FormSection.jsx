@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect,useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { StyleSheet, View, Animated, Text } from 'react-native';
 import InputField from './FormSectionItem/InputField';
 import OptionsSection from './FormSectionItem/OptionsSection';
@@ -11,6 +11,7 @@ import { fetchAndStoreGames } from '../../../utils/api';
 import { login } from '../../../shared/states/api';
 import LoadingFullScreen from '../../../components/LoadingFullScreen';
 import { UserContext } from '../../../context/UserContext';
+import { deleteIfExists } from '../../../utils/api';
 
 const FormSection = ({ onSendCode }) => {
   const [username, setUsername] = useState('');
@@ -24,48 +25,53 @@ const FormSection = ({ onSendCode }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(0)).current;
-  const opacityAnim = useRef(new Animated.Value(1)).current; 
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const [isLoading, setIsLoading] = useState(false);
   const { loginUser } = useContext(UserContext);
 
   const handleLoginPress = async () => {
     try {
       if (rememberMe) {
-        const data = await login(username, password, true);
-        loginUser(data.data)
         setModalVisible(true);
       } else {
-        const data = await login(username, password, true);
-        loginUser(data.data)
-        await handlePostLoginActions();
+        await handleDirectLogin();
+        deleteIfExists('permissions');
+
       }
     } catch (error) {
       setErrorMessage(error.message || 'An error occurred during login');
       setErrorModalVisible(true);
     }
   };
-  
+
+  const handleDirectLogin = async () => {
+      setIsLoading(true);
+      try {
+          const data = await login(username, password);
+          loginUser(data.data);
+        await handlePostLoginActions();
+      }catch(error){
+        setErrorMessage(error.message || 'An error occurred during login');
+        setErrorModalVisible(true);
+      } finally {
+        setIsLoading(false);
+      }
+  };
+
   const handlePostLoginActions = async () => {
-    setIsLoading(true);
-  
+    
     const startTime = Date.now();
-  
     await fetchAndStoreGames();
-  
+
     const elapsedTime = Date.now() - startTime;
     const minimumDelay = 2500;
-  
+
     if (elapsedTime < minimumDelay) {
       await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsedTime));
     }
-  
+
     navigation.navigate('Tabs');
-  
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 50);
   };
-  
 
   const handleForgotPasswordToggle = (showForgot) => {
     Animated.parallel([
@@ -115,7 +121,7 @@ const FormSection = ({ onSendCode }) => {
   if (isLoading) {
     return <LoadingFullScreen />;
   }
-  
+
   return (
     <View style={styles.formContainer}>
       <InputField
@@ -175,7 +181,10 @@ const FormSection = ({ onSendCode }) => {
         onDismiss={() => setModalVisible(false)}
         confirmText="Allow"
         showConfirmButton="true"
-        onConfirm={() => { setModalVisible(false); handlePostLoginActions(); }}
+        onConfirm={async () => {
+          setModalVisible(false);
+          await handleDirectLogin();
+         }}
       >
         <BioModalContent />
       </CustomModal>

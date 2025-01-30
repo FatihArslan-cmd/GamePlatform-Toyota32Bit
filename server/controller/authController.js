@@ -24,8 +24,9 @@ const login = (req, res) => {
       }
   
       const userId = user.id;
-  
-      const accessToken = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' });
+      req.session.userId = userId;
+
+      const accessToken = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '12h' });
   
       const refreshToken = jwt.sign({ id: userId }, REFRESH_SECRET_KEY, { expiresIn: '29d' });
   
@@ -64,7 +65,7 @@ const login = (req, res) => {
   };
   
   const refreshAccessToken = (req, res) => {
-    const refreshToken = req.cookies.refreshToken; 
+    const { refreshToken } = req.body;
     if (!refreshToken) {
       return res.status(401).json({ message: 'Refresh token is required' });
     }

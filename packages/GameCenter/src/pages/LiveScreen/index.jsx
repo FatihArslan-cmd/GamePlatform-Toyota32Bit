@@ -1,72 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import TopicList from './TopicList';
+import { useWebSocket } from './webSocketManager';
+import {useFocusEffect} from '@react-navigation/native'
+import { getToken } from '../../shared/states/api';
+const LiveScreen = ({ navigation }) => {
+    const insets = useSafeAreaInsets();
+    const [topicName, setTopicName] = useState('');
+    const [topics, setTopics] = useState([]);
+      const { sendMessage, messageQueue } = useWebSocket('ws://10.0.2.2:3000');
+      const [accessToken, setAccessToken] = useState('');
+     const [encryptedInfo, setEncryptedInfo] = useState('')
 
-const LiveScreen = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [ws, setWs] = useState(null);
 
-  useEffect(() => {
-    // WebSocket bağlantısını başlat
-    const socket = new WebSocket('ws://192.168.0.104:3000');
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchTokens = async() =>{
+                 const token = await getToken();
+                if(token){
+                    setAccessToken(token)
+                }
+             }
+            fetchTokens();
+        }, [])
+    );
 
-    socket.onopen = () => {
-      console.log('WebSocket bağlantısı kuruldu.');
-    };
 
-    socket.onmessage = (event) => {
-      // Mesajları listeye ekle
-      setMessages((prev) => [
-        ...prev,
-        { id: generateUniqueId(), text: event.data }, // Benzersiz ID
-      ]);
-    };
+    useEffect(() => {
+        if (messageQueue && messageQueue.length > 0) {
+            const parsedMessage = messageQueue[0];
+           if(parsedMessage.type === 'topicCreated'){
+             setTopics((prev)=> [...prev, {id: parsedMessage.topicId, name: parsedMessage.topicName}]);
+           }
+              messageQueue.shift();
+           }
+      }, [messageQueue]);
 
-    socket.onclose = () => {
-      console.log('WebSocket bağlantısı kapatıldı.');
-    };
 
-    setWs(socket);
-
-    return () => {
-      socket.close();
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (ws && input.trim()) {
-      ws.send(input);
-      setMessages((prev) => [
-        ...prev,
-        { id: generateUniqueId(), text: `Me: ${input}` }, // Benzersiz ID
-      ]);
-      setInput('');
-    }
+  const handleCreateTopic = () => {
+      sendMessage({type: 'createTopic', topicName: topicName});
+    setTopicName('');
   };
-
-  // Benzersiz ID oluşturma fonksiyonu
-  const generateUniqueId = () => {
-    return `${Date.now()}-${Math.floor(Math.random() * 100000)}`;
-  };
+   const navigateToChat = (topicId, topicName) =>{
+        navigation.navigate('Chat', {topicId:topicId, topicName: topicName});
+   }
 
   return (
-    <View style={styles.container}>
-      <FlashList
-        data={messages}
-        renderItem={({ item }) => <Text style={styles.message}>{item.text}</Text>}
-        keyExtractor={(item) => item.id}
-        estimatedItemSize={50} // Performans için tahmini öğe boyutu
-      />
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <Text style={styles.title}>Topics</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          value={input}
-          onChangeText={setInput}
-          placeholder="Mesaj yazın"
+          placeholder="Enter topic name"
+          value={topicName}
+          onChangeText={setTopicName}
         />
-        <Button title="Gönder" onPress={sendMessage} />
+        <Button title="Create" onPress={handleCreateTopic} />
       </View>
+     <TopicList topics={topics} onTopicPress={navigateToChat}/>
     </View>
   );
 };
@@ -74,25 +66,22 @@ const LiveScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 20,
   },
-  message: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#e1e1e1',
-    borderRadius: 5,
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
   input: {
     flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
     padding: 10,
     marginRight: 10,
   },

@@ -11,13 +11,17 @@ const SavedUserSection = () => {
   const refreshToken = getRefreshToken();
   const [permissions, setPermissions] = useState({ barcode: false, biometric: false, nfc: false });
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Define loading state in parent component
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
+  const [hasPermissions, setHasPermissions] = useState(false)
 
   useEffect(() => {
     const storedPermissions = storage.getString('permissions');
     if (storedPermissions) {
-      setPermissions(JSON.parse(storedPermissions));
+      const parsedPermissions = JSON.parse(storedPermissions);
+      setPermissions(parsedPermissions);
+      const hasAnyPermission = Object.values(parsedPermissions).some(value => value === true);
+      setHasPermissions(hasAnyPermission);
     }
   }, []);
 
@@ -27,7 +31,7 @@ const SavedUserSection = () => {
 
   return (
     <View style={styles.container}>
-      {refreshToken && (
+      {hasPermissions && (
         <UserIcon onPress={() => setModalVisible(true)}  />
       )}
       <PermissionsModal
@@ -35,7 +39,7 @@ const SavedUserSection = () => {
         onDismiss={() => setModalVisible(false)}
         permissions={permissions}
         navigation={navigation}
-        setIsLoading={setIsLoading} // Pass setIsLoading to PermissionsModal
+        setIsLoading={setIsLoading}
       />
     </View>
   );

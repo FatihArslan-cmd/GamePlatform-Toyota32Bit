@@ -10,6 +10,8 @@ import SettingScreen from '../pages/SettingsScreen/index.jsx';
 import BootSplash from 'react-native-bootsplash';
 import { Animated } from 'react-native';
 import GameScreen from '../pages/GameScreen/index.jsx';
+import ChatScreen from '../pages/LiveScreen/ChatScreen.jsx';
+
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -69,6 +71,13 @@ export default function Navigation() {
           <Stack.Screen
             name="Tabs"
             component={TabNavigator}
+            options={{
+              animation: 'fade',
+            }}
+          />
+           <Stack.Screen
+            name="Chat"
+            component={ChatScreen}
             options={{
               animation: 'fade',
             }}
