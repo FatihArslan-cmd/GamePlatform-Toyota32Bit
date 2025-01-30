@@ -40,8 +40,8 @@ const GameItem = memo(({ item, color, onPress }) => {
         <Card style={styles.card}>
           <FastImage
             source={{ uri: item.image_background,
-              priority: FastImage.priority.normal,
-              cache: FastImage.cacheControl.immutable, // Önbellekte değişmeden saklar
+              priority: FastImage.priority.high,
+              cache: FastImage.cacheControl.immutable,
              }}
             style={styles.cardCover}
           />

@@ -26,7 +26,7 @@ const VideoPlayBlock = memo(() => {
           <VideoPlayItems
             key={game.title}
             title={game.title}
-            imageUri={isFocused ? game.imageUri : null} // Eğer görünür değilse FastImage kaldırılır
+            imageUri={isFocused ? game.imageUri : null} 
             index={index}
           />
         ))}

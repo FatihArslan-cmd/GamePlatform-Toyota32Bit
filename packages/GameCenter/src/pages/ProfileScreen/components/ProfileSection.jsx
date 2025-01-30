@@ -21,7 +21,8 @@ return (
         source={{
           uri: user.profilePhoto,
           priority: FastImage.priority.high,
-        }}
+          cache: FastImage.cacheControl.immutable,
+                }}
         resizeMode={FastImage.resizeMode.cover}
       />
     </View>

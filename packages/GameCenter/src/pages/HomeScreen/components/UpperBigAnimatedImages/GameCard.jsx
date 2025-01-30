@@ -33,7 +33,8 @@ const GameCard = ({ game }) => {
             source={{
               uri: game.background_image,
               priority: FastImage.priority.high,
-            }}
+              cache: FastImage.cacheControl.immutable,
+                        }}
             style={styles.image}
             onLoad={handleImageLoad}
           />
