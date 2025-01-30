@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useContext } from 'react';
 import { StyleSheet, View, Animated, Text } from 'react-native';
 import InputField from './FormSectionItem/InputField';
 import OptionsSection from './FormSectionItem/OptionsSection';
@@ -10,9 +10,10 @@ import { useNavigation } from '@react-navigation/native';
 import { fetchAndStoreGames } from '../../../utils/api';
 import { login } from '../../../shared/states/api';
 import LoadingFullScreen from '../../../components/LoadingFullScreen';
+import { UserContext } from '../../../context/UserContext';
 
 const FormSection = ({ onSendCode }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -25,14 +26,17 @@ const FormSection = ({ onSendCode }) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current; 
   const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const { loginUser } = useContext(UserContext);
 
   const handleLoginPress = async () => {
     try {
       if (rememberMe) {
-        await login(email, password, rememberMe);
+        const data = await login(username, password, true);
+        loginUser(data.data)
         setModalVisible(true);
       } else {
-        await login(email, password, rememberMe);
+        const data = await login(username, password, true);
+        loginUser(data.data)
         await handlePostLoginActions();
       }
     } catch (error) {
@@ -57,7 +61,6 @@ const FormSection = ({ onSendCode }) => {
   
     navigation.navigate('Tabs');
   
-    // setTimeout to delay setting isLoading to false by 1 second after navigation
     setTimeout(() => {
       setIsLoading(false);
     }, 50);
@@ -87,8 +90,8 @@ const FormSection = ({ onSendCode }) => {
   };
 
   const handleSendCodeWithCountdown = () => {
-    if (!email.trim()) {
-      setErrorMessage('Email field cannot be empty');
+    if (!username.trim()) {
+      setErrorMessage('Username field cannot be empty');
       setErrorModalVisible(true);
       return;
     }
@@ -116,9 +119,9 @@ const FormSection = ({ onSendCode }) => {
   return (
     <View style={styles.formContainer}>
       <InputField
-        label="Email / Username"
-        value={email}
-        onChangeText={setEmail}
+        label="Username"
+        value={username}
+        onChangeText={setUsername}
         leftIcon="account-circle"
         style={styles.input}
       />

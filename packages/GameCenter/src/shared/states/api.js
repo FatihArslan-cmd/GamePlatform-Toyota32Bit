@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { storage } from '../../utils/storage';
+import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -77,7 +79,7 @@ const processQueue = (error, token = null) => {
 export const login = async (username, password, rememberMe=false) => {
   try {
     const response = await api.post('/login', { username, password });
-    const { accessToken, refreshToken } = response.data;
+    const { accessToken, refreshToken, profilePhoto, encryptedInfo} = response.data;
 
     if (!accessToken) {
       throw new Error('Access token missing in response');
@@ -89,12 +91,19 @@ export const login = async (username, password, rememberMe=false) => {
       saveRefreshToken(refreshToken);
     }
 
-    return response.data;
+    const userData = {
+      username,
+      profilePhoto,
+      encryptedInfo
+    }
+    await storage.set('user', JSON.stringify(userData)) 
+    return {data: userData, resData: response.data};
   } catch (error) {
     console.log('Login error:', error);
     throw error.response?.data || { message: 'An error occurred' };
   }
 };
+
 
 const saveToken = (token) => {
   if (!token || typeof token !== 'string') {

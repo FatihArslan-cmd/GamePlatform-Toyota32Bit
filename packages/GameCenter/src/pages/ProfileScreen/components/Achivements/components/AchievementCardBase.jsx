@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     card: {
         marginBottom: 12,
         backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        borderRadius:20
     },
     cardContent: {
         flexDirection: 'row',
