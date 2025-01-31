@@ -1,4 +1,4 @@
-export const achievementsData = [
+const achievementsData = [
     {
       id: '1',
       title: 'First Bingo!',
@@ -117,7 +117,8 @@ export const achievementsData = [
       description: 'Won 200 bingo games.',
       rarity: 'Legendary',
       xp: '3000',
-        color: '#FF0000',
-        owned: true
+     color: '#FF0000',
     }
   ];
+
+module.exports = { achievementsData };
