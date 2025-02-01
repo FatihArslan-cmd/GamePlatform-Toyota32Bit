@@ -2,7 +2,6 @@ import React, {  useCallback } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { useCameraPermission } from 'react-native-vision-camera';
 import { useFocusEffect } from '@react-navigation/native';
-
 import CameraView from './CameraView';
 import PermissionHandler from "./PermissionHandler";
 

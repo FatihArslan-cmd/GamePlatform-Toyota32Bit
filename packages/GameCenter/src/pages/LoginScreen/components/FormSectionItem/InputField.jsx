@@ -10,6 +10,7 @@ const InputField = ({
   rightIcon,
   onRightIconPress,
   style,
+  textColor, // Yeni textColor prop'u eklendi
 }) => (
   <TextInput
     mode="flat"
@@ -28,7 +29,7 @@ const InputField = ({
         />
       )
     }
-    theme={{ colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: '#fff' } }}
+    theme={{ colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: textColor || '#fff' } }} // textColor prop'unu kullandık
   />
 );
 

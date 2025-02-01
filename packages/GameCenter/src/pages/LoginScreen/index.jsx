@@ -7,14 +7,11 @@ import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
 import SavedUserSection from './components/ProfileSection/SavedUserSection';
 import { hideNavigationBar } from '../../utils/NavBarManager';
-import { useNavigation } from '@react-navigation/native';
 const LoginScreen = () => {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const { currentToast, showToast, hideToast } = useToast();
-  const navigation = useNavigation();
 
   useEffect(() => {
-    // Set navigation bar color to blue with light icons
     hideNavigationBar();
   }, []);
 
@@ -44,7 +41,6 @@ const LoginScreen = () => {
         />
         <SavedUserSection />  
       </LinearGradient>
-        <Button title="Show Toast" onPress={() => navigation.navigate("BarcodeScan") } />
       {currentToast && (
         <ToastMessage
           type={currentToast.type}

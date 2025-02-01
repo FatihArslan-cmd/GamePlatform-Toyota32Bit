@@ -6,9 +6,13 @@ import { handlePostLoginActions } from './handlePostLoginActions';
 import { authenticateWithFingerprint } from '../Biometrics/FingerPrint';
 import { HandleNFCRead } from '../Biometrics/NfcReadScreen';
 import PermissionsIcon from './renderIcons';
+import { useNavigation } from '@react-navigation/native';
+import { storage } from '../../../../utils/storage';
 
-const PermissionsModal = ({ visible, onDismiss, permissions, navigation, setIsLoading }) => {
+const PermissionsModal = ({ visible, onDismiss, permissions, setIsLoading }) => {
   const [activePermission, setActivePermission] = useState(null);
+  const navigation = useNavigation();
+
 
   const handlePermissionAction = async (permissionType) => {
     try {
@@ -20,7 +24,7 @@ const PermissionsModal = ({ visible, onDismiss, permissions, navigation, setIsLo
           await HandleNFC();
           break;
         case 'barcode':
-          await HandleLoading();
+          HandleBarcode();
           break;
         default:
           break;
@@ -32,7 +36,7 @@ const PermissionsModal = ({ visible, onDismiss, permissions, navigation, setIsLo
 
   const HandleFingerprintAuth = async () => {
     try {
-        setActivePermission('finger');
+      setActivePermission('finger');
       const isAuthenticated = await authenticateWithFingerprint();
       setActivePermission(null);
       if (isAuthenticated) {
@@ -43,6 +47,7 @@ const PermissionsModal = ({ visible, onDismiss, permissions, navigation, setIsLo
     }
   };
 
+ 
   const HandleNFC = async () => {
     try {
       setActivePermission('nfc');
@@ -55,7 +60,32 @@ const PermissionsModal = ({ visible, onDismiss, permissions, navigation, setIsLo
       console.error('Error during NFC operation:', error);
     }
   };
+  const HandleBarcode = async () => {
+    try {
+        setActivePermission('barcode');
 
+        const hasQR = storage.contains('qrCode');
+        onDismiss();
+        if (hasQR) {
+            navigation.navigate('BarcodeScan', {
+                onBarcodeSuccess: async () => {
+                    setActivePermission(null);
+                    await HandleLoading();
+                }
+            });
+        } else {
+            navigation.navigate('QRCode',{
+               onBarcodeSuccess: async () => {
+                    setActivePermission(null);
+                    await HandleLoading();
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error during Barcode operation:', error);
+        setActivePermission(null);
+    }
+};
   const HandleLoading = async () => {
     try {
       setIsLoading(true);

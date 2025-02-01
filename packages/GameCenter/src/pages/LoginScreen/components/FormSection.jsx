@@ -36,7 +36,7 @@ const FormSection = ({ onSendCode }) => {
       } else {
         await handleDirectLogin();
         deleteIfExists('permissions');
-
+        deleteIfExists('QrCode');
       }
     } catch (error) {
       setErrorMessage(error.message || 'An error occurred during login');

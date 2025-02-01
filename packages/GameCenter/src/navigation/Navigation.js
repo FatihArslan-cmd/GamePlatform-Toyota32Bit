@@ -12,6 +12,7 @@ import { Animated } from 'react-native';
 import GameScreen from '../pages/GameScreen/index.jsx';
 import ChatScreen from '../pages/LiveScreen/ChatScreen.jsx';
 import BarcodeScan from '../components/BarcodeScanScreen/BarcodeScan.jsx';
+import CreateQRcodeScreen from '../pages/LoginScreen/components/Biometrics/CreateQRcodeScreen.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,13 @@ export default function Navigation() {
              <Stack.Screen
             name="BarcodeScan"
             component={BarcodeScan}
+            options={{
+              animation: 'fade',
+            }}
+          />
+              <Stack.Screen
+            name="QRCode"
+            component={CreateQRcodeScreen}
             options={{
               animation: 'fade',
             }}

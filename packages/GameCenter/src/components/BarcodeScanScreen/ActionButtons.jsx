@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TouchableRipple } from 'react-native-paper';
 const ActionButtons = ({ toggleFlash, flashMode, toggleCamera, zoomIn, zoomOut,goBack }) => {
