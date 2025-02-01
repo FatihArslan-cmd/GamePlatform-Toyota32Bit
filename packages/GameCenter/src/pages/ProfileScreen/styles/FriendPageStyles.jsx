@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
      codeContainer: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 20,

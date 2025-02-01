@@ -11,12 +11,12 @@ const CameraView = () => {
   const [flashMode, setFlashMode] = useState(false);
   const [cameraPosition, setCameraPosition] = useState('back');
   const [zoomLevel, setZoomLevel] = useState(1);
-  const [storedQrCode, setStoredQrCode] = useState(null); // State to hold the QR code from storage
+  const [storedQrCode, setStoredQrCode] = useState(null);
   const device = useCameraDevice(cameraPosition);
   const navigation = useNavigation();
-   const route = useRoute();
+  const route = useRoute();
 
-    const { onBarcodeSuccess } = route.params;
+  const { onBarcodeSuccess, onBarcodeScanned } = route.params; // Yeni fonksiyonu da al
 
   useEffect(() => {
     const fetchQrCode = async () => {
@@ -30,24 +30,28 @@ const CameraView = () => {
   const codeScanner = useCodeScanner({
     codeTypes: ['code-128', 'qr'],
     onCodeScanned: (codes) => {
-        if (codes.length > 0) {
-             setIsScanning(false)
-          const { value } = codes[0]
-          if (storedQrCode && value === storedQrCode) { // Check against stored QR code
-            onBarcodeSuccess();
-         } else {
-            Alert.alert('Scanned Code', `${value}`, [
-                {
-                  text: 'OK',
-                  onPress: () => setIsScanning(true),
-                },
-              ]);
-         }
+      if (codes.length > 0) {
+        setIsScanning(false);
+        const { value } = codes[0];
           
-        }
-
+          if (storedQrCode && value === storedQrCode) {
+            onBarcodeSuccess(); // Eşleşirse sadece bu fonksiyon çalışır
+          }  else {
+            if (onBarcodeScanned && typeof onBarcodeScanned === 'function') {
+               onBarcodeScanned(value);  // Yeni fonksiyonu çalıştır
+            }
+           
+            Alert.alert('Scanned Code', `${value}`, [
+              {
+                text: 'OK',
+                onPress: () => setIsScanning(true),
+              },
+            ]);
+          }
+      }
     },
   });
+
 
   const toggleFlash = () => {
     setFlashMode((prev) => !prev);
@@ -73,11 +77,10 @@ const CameraView = () => {
   };
 
 
-    if (!device) {
-        return <View style={styles.noDeviceContainer}>
-        </View>
-    }
-
+  if (!device) {
+    return <View style={styles.noDeviceContainer}>
+    </View>
+  }
 
   return (
     <View style={styles.container}>
@@ -90,15 +93,15 @@ const CameraView = () => {
         zoom={zoomLevel}
         codeScanner={isScanning ? codeScanner : undefined}
       />
-     <ScannerOverlay />
+      <ScannerOverlay />
 
       <ActionButtons
-            toggleFlash={toggleFlash}
-            flashMode={flashMode}
-            toggleCamera={toggleCamera}
-            zoomIn={zoomIn}
-            zoomOut={zoomOut}
-            goBack={goBack}
+        toggleFlash={toggleFlash}
+        flashMode={flashMode}
+        toggleCamera={toggleCamera}
+        zoomIn={zoomIn}
+        zoomOut={zoomOut}
+        goBack={goBack}
       />
     </View>
   );
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
   },
     noDeviceContainer: {
         flex: 1,
-        backgroundColor: 'black',   
+        backgroundColor: 'black',
     }
 });
 
