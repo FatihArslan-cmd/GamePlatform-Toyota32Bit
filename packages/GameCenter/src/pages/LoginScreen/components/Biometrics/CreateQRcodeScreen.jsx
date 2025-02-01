@@ -69,7 +69,7 @@ const CreateQRcodeScreen = ({ route }) => {
             {qrCodeValue ? (
                 <Card style={styles.qrCard}>
                     <Card.Content style={styles.qrContent}>
-                        <Text variant="titleMedium" style={styles.qrTitle}>Oluşturulan QR Kod</Text>
+                        <Text variant="bodyLarge" style={styles.qrTitle}>Oluşturulan QR Kod</Text>
                         <QRCode
                             value={qrCodeValue}
                             size={200}

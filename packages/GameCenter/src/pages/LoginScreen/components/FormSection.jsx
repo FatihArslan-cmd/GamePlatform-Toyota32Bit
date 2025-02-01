@@ -47,7 +47,7 @@ const FormSection = ({ onSendCode }) => {
   const handleDirectLogin = async () => {
     try {
       const data = await login(username, password);
-      setIsLoading(true); // Set loading to true *before* API call
+      setIsLoading(true); 
       loginUser(data.data);
       await handlePostLoginActions();
     } catch (error) {
