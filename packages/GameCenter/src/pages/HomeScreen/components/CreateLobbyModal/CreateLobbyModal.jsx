@@ -11,6 +11,9 @@ import ToastMessage from '../../../../components/ToastMessage/Toast';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import { getToken } from '../../../../shared/states/api';
 import CustomModal from '../../../../components/CustomModal';
+import axios from 'axios';
+import useModal from '../../../../hooks/useModal';
+
 
 const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => {
   const [lobbyType, setLobbyType] = useState('Normal');
@@ -19,14 +22,12 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
   const [maxCapacity, setMaxCapacity] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
-  const [error, setError] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalText, setModalText] = useState('');
 
   const { currentToast, showToast, hideToast } = useToast();
+  const { modalVisible, showModal, closeModal, modalMessage, modalTitle, modalType } = useModal();
 
   useEffect(() => {
     if (initialGameName) {
@@ -38,24 +39,16 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
     setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
   }, []);
 
-    const handleDateTimeChange = useCallback((type, value) => {
-      if(type === 'startDate'){
-        setStartDate(value);
-      } else {
-        setEndDate(value)
-      }
-    }, []);
-
-
-  const handleModalDismiss = useCallback(() => {
-    setModalVisible(false);
+  const handleDateTimeChange = useCallback((type, value) => {
+    if (type === 'startDate') {
+      setStartDate(value);
+    } else {
+      setEndDate(value);
+    }
   }, []);
 
   const handleSave = useCallback(async () => {
- 
     const token = getToken();
- 
-
     const requestBody = {
       lobbyName,
       lobbyType,
@@ -63,47 +56,42 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
       code,
       maxCapacity: parseInt(maxCapacity, 10),
       password: password || null,
-       startDate: lobbyType === 'Event' ? startDate.toISOString() : null,
-        endDate: lobbyType === 'Event' ? endDate.toISOString() : null,
+      startDate: lobbyType === 'Event' ? startDate.toISOString() : null,
+      endDate: lobbyType === 'Event' ? endDate.toISOString() : null,
     };
 
     try {
-      const response = await fetch('http://10.0.2.2:3000/api/lobby/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody),
-      });
+       const response = await axios.post('http://10.0.2.2:3000/api/lobby/create', requestBody, {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to create lobby');
+      if(response.status !== 200){
+         throw new Error(response.data.message || 'Failed to create lobby');
       }
+
+      const { data } = response
       console.log(data);
       setCode(`${data.lobby.code}`);
       showToast('success', 'Lobby created successfully!');
     } catch (error) {
-      setModalText(error.message);
-      setModalVisible(true);
+       showModal('error', 'Error', error.message);
     }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lobbyName, lobbyType, gameName, password, maxCapacity, showToast, startDate, endDate]);
+  }, [lobbyName, lobbyType, gameName, password, maxCapacity, showToast, startDate, endDate, showModal]);
 
-  const resetLobby = useCallback(() => {
-    setLobbyType('Normal');
-    setPassword('');
-    setMaxCapacity('');
-    setCode('');
-    setError('');
-    setGameName(initialGameName || ''); // Reset to initial if it exists, otherwise reset to empty string
-    setLobbyName('');
-      setStartDate(new Date());
-    setEndDate(new Date());
-  }, [initialGameName]);
+    const resetLobby = useCallback(() => {
+        setLobbyType('Normal');
+        setPassword('');
+        setMaxCapacity('');
+        setCode('');
+        setGameName(initialGameName || '');
+        setLobbyName('');
+        setStartDate(new Date());
+        setEndDate(new Date());
+    }, [initialGameName]);
 
-  const bottomSheetHeight = lobbyType === 'Normal' ? '50%' : '70%';
+    const bottomSheetHeight = lobbyType === 'Normal' ? '50%' : '70%';
 
   return (
     <BottomSheet
@@ -119,10 +107,10 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
             <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} />
             {lobbyType === 'Event' && (
               <CustomDateTimeSelector
-               onDateTimeChange={handleDateTimeChange}
+                onDateTimeChange={handleDateTimeChange}
                 initialStartDate={startDate}
                 initialEndDate={endDate}
-               />
+              />
             )}
             <GameSelector
               gameName={gameName}
@@ -131,7 +119,7 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
               onGameNameChange={setGameName}
               onLobbyNameChange={setLobbyName}
               onMaxCapacityChange={setMaxCapacity}
-              editableGameName={!initialGameName} // Pass the editability based on initialGameName
+              editableGameName={!initialGameName}
             />
             <PasswordInput
               password={password}
@@ -173,11 +161,12 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
           onHide={hideToast}
         />
       )}
-      <CustomModal
+       <CustomModal
         visible={modalVisible}
-        onDismiss={handleModalDismiss}
-        text={modalText}
-        title="Error"
+        onDismiss={closeModal}
+        text={modalMessage}
+        title={modalTitle}
+        type={modalType}
       />
     </BottomSheet>
   );

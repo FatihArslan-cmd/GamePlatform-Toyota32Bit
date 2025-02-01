@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native'; // Import TouchableOpacity and Alert
+import { View, StyleSheet, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { 
   Card, 
   Text, 
   Title, 
-  Chip, 
   Button, 
   Surface 
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import { getToken } from '../../../../shared/states/api';
-import Clipboard from '@react-native-clipboard/clipboard'; // Import Clipboard
+import Clipboard from '@react-native-clipboard/clipboard';
 import ToastMessage from '../../../../components/ToastMessage/Toast';
+import useToast from '../../../../components/ToastMessage/hooks/useToast';
 
 const { width } = Dimensions.get('window');
 
 const ActiveLobbiesContent = () => {
   const [userLobby, setUserLobby] = useState(null);
   const userId = 1;
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('success'); // Default type
+  const { currentToast, showToast, hideToast } = useToast(); // Use the hook
+
 
   useEffect(() => {
     const fetchLobbies = async () => {
@@ -46,24 +45,14 @@ const ActiveLobbiesContent = () => {
     fetchLobbies();
   }, []);
 
-  const showToast = (message, type = 'success') => {
-    setToastMessage(message);
-    setToastType(type);
-    setToastVisible(true);
-  };
-
-  const hideToast = () => {
-    setToastVisible(false);
-  };
-
 
   const copyLobbyCodeToClipboard = async (code) => {
     try {
       await Clipboard.setString(code);
-      showToast('Lobby code successfully copied!', 'success');
+      showToast('Lobby code successfully copied!', 'success'); // Use hook's showToast
     } catch (error) {
       console.error("Error copying to clipboard:", error);
-      showToast('Failed to copy lobby code.', 'error');
+      showToast('Failed to copy lobby code.', 'error'); // Use hook's showToast
     }
   };
 
@@ -82,7 +71,6 @@ const ActiveLobbiesContent = () => {
     return (
       <Card style={styles.lobbyCard}>
         <View style={styles.cardHeaderActions}>
-          {/* Make codeContainer touchable */}
           <TouchableOpacity 
             style={styles.codeContainer}
             onPress={() => copyLobbyCodeToClipboard(userLobby.code)}
@@ -160,11 +148,11 @@ const ActiveLobbiesContent = () => {
 
   return (
     <View style={styles.container}>
-      {toastVisible && (
+      {currentToast && (  // Use currentToast from the hook
         <ToastMessage
-          type={toastType}
-          message={toastMessage}
-          onHide={hideToast}
+          type={currentToast.type}
+          message={currentToast.message}
+          onHide={hideToast}  // Use hook's hideToast
         />
       )}
       {renderLobbyContent()}
@@ -173,89 +161,89 @@ const ActiveLobbiesContent = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#F5F5F5',
-  },
-  lobbyCard: {
-    width: width * 0.90,
-    elevation: 4,
-  },
-  cardHeaderActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-  },
-  codeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  lobbyCode: {
-    marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    marginLeft: 10,
-  },
-  lobbyName: {
-    textAlign: 'center',
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  typeBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
-  },
-  lobbyType: {
-    marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  lobbyDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 15,
-  },
-  detailItem: {
-    alignItems: 'center',
-  },
-  detailHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  detailLabel: {
-    marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 15,
-  },
-  leaveButton: {
-    width: '48%',
-    backgroundColor: '#FF5722',
-  },
-  joinButton: {
-    width: '48%',
-    backgroundColor: '#4CAF50',
-  },
-  noLobbyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  noLobbyText: {
-    marginBottom: 20,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#F5F5F5',
+      },
+      lobbyCard: {
+        width: width * 0.90,
+        elevation: 4,
+      },
+      cardHeaderActions: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+      },
+      codeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      lobbyCode: {
+        marginLeft: 5,
+        fontFamily: 'Orbitron-VariableFont_wght',
+      },
+      headerIcons: {
+        flexDirection: 'row',
+      },
+      iconButton: {
+        marginLeft: 10,
+      },
+      lobbyName: {
+        textAlign: 'center',
+        fontFamily: 'Orbitron-VariableFont_wght',
+      },
+      typeBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 10,
+      },
+      lobbyType: {
+        marginLeft: 5,
+        fontFamily: 'Orbitron-VariableFont_wght',
+      },
+      lobbyDetails: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginVertical: 15,
+      },
+      detailItem: {
+        alignItems: 'center',
+      },
+      detailHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 5,
+      },
+      detailLabel: {
+        marginLeft: 5,
+        fontFamily: 'Orbitron-VariableFont_wght',
+      },
+      actionButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 15,
+      },
+      leaveButton: {
+        width: '48%',
+        backgroundColor: '#FF5722',
+      },
+      joinButton: {
+        width: '48%',
+        backgroundColor: '#4CAF50',
+      },
+      noLobbyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+      },
+      noLobbyText: {
+        marginBottom: 20,
+        fontFamily: 'Orbitron-VariableFont_wght',
+      },
 });
 
 export default ActiveLobbiesContent;

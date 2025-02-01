@@ -1,53 +1,42 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Alert, TouchableOpacity, Clipboard } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Clipboard } from 'react-native';
 import CustomModal from '../../../../components/CustomModal';
 import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
 import { getToken } from '../../../../shared/states/api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
+import useToast from '../../../../components/ToastMessage/hooks/useToast';
+import axios from 'axios';
 
 const JoinLobbyModal = ({ visible, onDismiss }) => {
   const [lobbyCode, setLobbyCode] = useState('');
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastType, setToastType] = useState('info');
-  const [toastMessage, setToastMessage] = useState('');
-
-  const showToast = (type, message) => {
-    setToastType(type);
-    setToastMessage(message);
-    setToastVisible(true);
-  };
-
-  const hideToast = () => {
-    setToastVisible(false);
-  };
-
+  const { currentToast, showToast, hideToast } = useToast(); // Use the hook
 
   const handleJoinLobby = useCallback(async () => {
     try {
       const token = await getToken();
-      const response = await fetch('http://10.0.2.2:3000/api/lobby/join', { // Backend URL'nizi buraya girin
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ code: lobbyCode }),
-      });
+      const response = await axios.post(
+        'http://10.0.2.2:3000/api/lobby/join', // Use your backend URL
+        { code: lobbyCode },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-         showToast('error', data.message || 'Failed to join lobby.');
+      if (response.status !== 200) {
+          showToast('error', response.data?.message || 'Failed to join lobby.');
         return;
       }
+
       onDismiss();
       showToast('success', 'Successfully joined lobby!');
     } catch (error) {
       console.error('Error joining lobby:', error);
       showToast('error', 'Failed to join lobby. Please try again.');
     }
-  }, [lobbyCode, onDismiss]);
+  }, [lobbyCode, onDismiss, showToast]);
 
   const handlePaste = useCallback(async () => {
     try {
@@ -57,7 +46,7 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
       console.error('Error pasting from clipboard:', error);
       showToast('error', 'Failed to paste from clipboard.');
     }
-  }, []);
+  }, [showToast]);
 
   const handleClear = useCallback(() => {
     setLobbyCode('');
@@ -81,7 +70,7 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
             onChangeText={setLobbyCode}
             style={styles.input}
           />
-             {lobbyCode.length > 0 && (  // Eğer lobi kodu doluysa çarpı işaretini göster
+          {lobbyCode.length > 0 && (
             <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
               <Icon name="cancel" size={24} color="#fff" />
             </TouchableOpacity>
@@ -89,14 +78,13 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
           <TouchableOpacity style={styles.pasteButton} onPress={handlePaste}>
             <Icon name="content-paste" size={24} color="#fff" />
           </TouchableOpacity>
-
         </View>
       </View>
-       {toastVisible && (
+      {currentToast && ( // Use currentToast from the hook
         <ToastMessage
-          type={toastType}
-          message={toastMessage}
-          onHide={hideToast}
+          type={currentToast.type}
+          message={currentToast.message}
+          onHide={hideToast} // Use hook's hideToast
         />
       )}
     </CustomModal>
@@ -117,7 +105,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     flex: 1,
   },
-   clearButton: {
+  clearButton: {
     padding: 10,
     marginLeft: 8,
     borderRadius: 5,

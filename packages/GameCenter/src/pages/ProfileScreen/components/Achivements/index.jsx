@@ -7,7 +7,7 @@ import OwnedAchievementCard from './components/OwnedAchievementCard';
 import ErrorComponents from '../../../../components/ErrorComponents';
 import { getToken } from '../../../../shared/states/api';
 import EmptyState from '../../../../components/EmptyState';
-
+import axios from 'axios'; // Import axios
 
 const AchievementsPage = ({ onAchievementCountChange }) => {
     const [activeTab, setActiveTab] = useState('all');
@@ -22,33 +22,30 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
       const token = getToken();
       try {
           const headers = {
-              'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
           };
-
-          const responseAll = await fetch('http://10.0.2.2:3000/api/achievements', { headers });
-          const responseOwned = await fetch('http://10.0.2.2:3000/api/achievements/owned', { headers });
-
-
-            if (!responseAll.ok || !responseOwned.ok) {
-              throw new Error(`HTTP error! Status: ${responseAll.status} or ${responseOwned.status}`);
-            }
+           const [responseAll, responseOwned] = await Promise.all([
+                axios.get('http://10.0.2.2:3000/api/achievements', { headers }),
+                axios.get('http://10.0.2.2:3000/api/achievements/owned', { headers }),
+            ]);
             
-            const dataAll = await responseAll.json();
-            const dataOwned = await responseOwned.json();
-            console.log(dataOwned)
-            setAllAchievements(dataAll);
-            setOwnedAchievements(dataOwned);
-            const ownedCount = dataOwned.length;
+            setAllAchievements(responseAll.data);
+            setOwnedAchievements(responseOwned.data);
+            console.log(responseOwned.data)
+            const ownedCount = responseOwned.data.length;
             onAchievementCountChange(ownedCount);
-
-      } catch (err) {
-          console.error("Error fetching achievements:", err);
-          setError(err.message || 'An unexpected error occurred');
-      } finally {
-          setLoading(false);
-      }
-  }, [onAchievementCountChange]);
+        } catch (err) {
+            console.error("Error fetching achievements:", err);
+             if (axios.isAxiosError(err)) {
+                 setError(err.message || 'An unexpected error occurred');
+                 } else {
+                 setError('An unexpected error occurred');
+             }
+            
+        } finally {
+            setLoading(false);
+        }
+    }, [onAchievementCountChange]);
 
     useEffect(() => {
         fetchAchievements();
