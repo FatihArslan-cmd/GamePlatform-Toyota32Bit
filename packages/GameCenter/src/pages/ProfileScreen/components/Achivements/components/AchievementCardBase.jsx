@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, IconButton, useTheme } from 'react-native-paper';
 
-const AchievementCardBase = ({ item, isOwned = false }) => {
+const AchievementCardBase = ({ item}) => {
     const theme = useTheme();
 
     const getRarityStyle = () => {

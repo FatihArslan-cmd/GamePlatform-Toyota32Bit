@@ -5,13 +5,14 @@ import TopicList from './TopicList';
 import { useWebSocket } from './webSocketManager';
 import {useFocusEffect} from '@react-navigation/native'
 import { getToken } from '../../shared/states/api';
+import { useNavigation } from '@react-navigation/native';
 const LiveScreen = ({ navigation }) => {
+
     const insets = useSafeAreaInsets();
     const [topicName, setTopicName] = useState('');
     const [topics, setTopics] = useState([]);
       const { sendMessage, messageQueue } = useWebSocket('ws://10.0.2.2:3000');
       const [accessToken, setAccessToken] = useState('');
-     const [encryptedInfo, setEncryptedInfo] = useState('')
 
 
     useFocusEffect(
@@ -37,7 +38,9 @@ const LiveScreen = ({ navigation }) => {
            }
       }, [messageQueue]);
 
-
+      const openScanner = () => {
+        navigation.navigate('BarcodeScan');
+      };
   const handleCreateTopic = () => {
       sendMessage({type: 'createTopic', topicName: topicName});
     setTopicName('');
@@ -58,6 +61,8 @@ const LiveScreen = ({ navigation }) => {
         />
         <Button title="Create" onPress={handleCreateTopic} />
       </View>
+      <Button title="Barkod Tara" onPress={openScanner} />
+
      <TopicList topics={topics} onTopicPress={navigateToChat}/>
     </View>
   );

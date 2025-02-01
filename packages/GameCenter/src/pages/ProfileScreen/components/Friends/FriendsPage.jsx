@@ -9,7 +9,7 @@ import FriendAddModal from './Modals/FriendAddModal';
 import FriendItem from './FrientItem';
 import InviteModal from './Modals/InviteModal';
 import FriendDetailsModal from './Modals/FriendDetailsModal';
-
+import EmptyState from '../../../../components/EmptyState';
 
 const FriendsPage = ({ onFriendCountChange }) => {
     const {
@@ -110,7 +110,7 @@ const FriendsPage = ({ onFriendCountChange }) => {
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 style={styles.friendsList}
-                ListEmptyComponent={() => <Text style={styles.emptyListText}>No friends yet.</Text>}
+                ListEmptyComponent={() => <EmptyState message={"No friends Yet!"}/>}
             />
             <Snackbar
                 visible={snackbarVisible}

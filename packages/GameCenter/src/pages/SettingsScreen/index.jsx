@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../components/CustomModal';
-import { removeToken } from '../../shared/states/api';
 import BackButton from '../../components/BackIcon';
 import BottomSheet from '../../components/themeswitch/BottomSheet'; // Ensure the path is correct
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -12,7 +11,6 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useColorScheme } from 'react-native';
 import ThemeButton from '../../components/themeswitch/Button';
-import { getToken } from '../../shared/states/api';
 import { UserContext } from '../../context/UserContext';
 
 const SettingScreen = () => {
@@ -28,8 +26,6 @@ const SettingScreen = () => {
 
   
   const handleLogout = () => {
-    getToken();
-    removeToken();
     logoutUser();
     navigation.reset({
       index: 0,

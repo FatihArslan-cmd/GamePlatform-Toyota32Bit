@@ -45,17 +45,17 @@ const FormSection = ({ onSendCode }) => {
   };
 
   const handleDirectLogin = async () => {
-      setIsLoading(true);
-      try {
-          const data = await login(username, password);
-          loginUser(data.data);
-        await handlePostLoginActions();
-      }catch(error){
-        setErrorMessage(error.message || 'An error occurred during login');
-        setErrorModalVisible(true);
-      } finally {
-        setIsLoading(false);
-      }
+    try {
+      const data = await login(username, password);
+      setIsLoading(true); // Set loading to true *before* API call
+      loginUser(data.data);
+      await handlePostLoginActions();
+    } catch (error) {
+      setErrorMessage(error.message || 'An error occurred during login');
+      setErrorModalVisible(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePostLoginActions = async () => {

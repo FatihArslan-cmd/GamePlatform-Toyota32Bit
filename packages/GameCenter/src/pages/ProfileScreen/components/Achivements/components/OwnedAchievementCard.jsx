@@ -3,7 +3,7 @@ import AchievementCardBase from './AchievementCardBase';
 import useLevelCalculation from '../hooks/useLevelCalculation';
 import LevelProgressBar from './LevelProgressBar';
 
-const OwnedAchievementCard = ({ item, index }) => {
+const OwnedAchievementCard = ({ item }) => {
     const { level, xpForNextLevel, xpProgress } = useLevelCalculation(parseInt(item.xp));
 
     return (
