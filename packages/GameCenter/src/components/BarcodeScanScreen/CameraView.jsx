@@ -20,8 +20,10 @@ const CameraView = () => {
 
   useEffect(() => {
     const fetchQrCode = async () => {
+        if(storage.contains('qrCode')) {
       const qrCode = await storage.get('qrCode');
       setStoredQrCode(qrCode);
+    }
     };
 
     fetchQrCode();
@@ -38,15 +40,9 @@ const CameraView = () => {
             onBarcodeSuccess(); // Eşleşirse sadece bu fonksiyon çalışır
           }  else {
             if (onBarcodeScanned && typeof onBarcodeScanned === 'function') {
-               onBarcodeScanned(value);  // Yeni fonksiyonu çalıştır
+               onBarcodeScanned(value); 
             }
            
-            Alert.alert('Scanned Code', `${value}`, [
-              {
-                text: 'OK',
-                onPress: () => setIsScanning(true),
-              },
-            ]);
           }
       }
     },

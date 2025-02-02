@@ -55,6 +55,7 @@ const TopBar = () => {
                 text={modalMessage}
                 showConfirmButton={false} 
             />
+            
             <IconButton icon="pencil" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} />
             <Text style={styles.title}>Profile</Text>
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>

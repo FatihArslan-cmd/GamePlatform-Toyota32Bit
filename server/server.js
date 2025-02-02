@@ -1,6 +1,6 @@
 const express = require('express');
 const { sessionConfig } = require('./config/sessionConfig');
-const routes = require('./routes/api');
+const routes = require('./routes');
 const cookieParser = require('cookie-parser');
 const http = require('http');
 const initializeWebSocketServer = require('./websocket/websocketServer');
@@ -25,7 +25,7 @@ app.use(
     credentials: true, 
   })
 );
-// HTTP + WebSocket sunucusunu başlat
+
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

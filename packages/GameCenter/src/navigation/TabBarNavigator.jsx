@@ -51,7 +51,7 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={require('../locales/lottie/Live-icon.json')}
+                source={require('../locales/lottie/ChatIcon.json')}
                 style={[styles.icon, { tintColor: 'black' }]}
               />
             ),
@@ -144,11 +144,11 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
   }, [active]);
 
   const animatedComponentCircleStyles = useAnimatedStyle(() => ({
-    transform: [{ scale: withTiming(active ? 1 : 0, { duration: 250 }) }],
+    transform: [{ scale: withTiming(active ? 1 : 0, { duration: 500 }) }],
   }));
 
   const animatedIconContainerStyles = useAnimatedStyle(() => ({
-    opacity: withTiming(active ? 1 : 0.5, { duration: 250 }),
+    opacity: withTiming(active ? 1 : 0.5, { duration: 500 }),
   }));
 
   return (
