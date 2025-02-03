@@ -1,4 +1,3 @@
-// websocket/websocketServer.js
 const WebSocket = require('ws');
 const { getRoom } = require('../memory/chatRoomStore'); // room işlemlerini yapabilmek için import ediyoruz
 
