@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
         margin: 0
     },
     title: {
-        fontSize: 22,
-        color: '#e5e6ea',
+        fontSize: 28,        color: '#e5e6ea',
         alignSelf: "center",
         paddingLeft: 10,
         fontFamily: 'Orbitron-VariableFont_wght',

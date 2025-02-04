@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { Button, FAB, Text } from 'react-native-paper';
-import RoomList from '../components/RoomList';
+import { Button, Text } from 'react-native-paper';
+import RoomList from '../components/Rooms/RoomList';
 import { getRooms, joinRoom, deleteRoom, becomeSupporter, leaveSupporter } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
+import { FAB, Portal } from 'react-native-paper';
 
 
 const RoomsScreen = () => {
@@ -11,6 +12,12 @@ const RoomsScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigation = useNavigation();
+
+  const [state, setState] = React.useState({ open: false });
+
+  const onStateChange = ({ open }) => setState({ open });
+
+  const { open } = state;
 
   useEffect(() => {
     fetchRooms();
@@ -86,6 +93,37 @@ const RoomsScreen = () => {
 
   return (
     <View style={styles.container}>
+                  <Portal>
+        <FAB.Group
+          open={open}
+          visible
+          icon={open ? 'calendar-today' : 'plus'}
+          actions={[
+            { icon: 'plus', onPress: () => console.log('Pressed add') },
+            {
+              icon: 'star',
+              label: 'Star',
+              onPress: () => console.log('Pressed star'),
+            },
+            {
+              icon: 'email',
+              label: 'Email',
+              onPress: () => console.log('Pressed email'),
+            },
+            {
+              icon: 'bell',
+              label: 'Remind',
+              onPress: () => console.log('Pressed notifications'),
+            },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+              // do something if the speed dial is open
+            }
+          }}
+        />
+      </Portal>
       <RoomList
         rooms={rooms}
         onJoin={handleJoinRoom}
@@ -93,11 +131,7 @@ const RoomsScreen = () => {
         onBecomeSupporter={handleBecomeSupporter}
         onLeaveSupporter={handleLeaveSupporter}
       />
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => navigation.navigate('CreateRoom')}
-      />
+
     </View>
   );
 };

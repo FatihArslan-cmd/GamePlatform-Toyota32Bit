@@ -1,17 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, IconButton } from 'react-native-paper';
+import { Text, IconButton, Snackbar } from 'react-native-paper'; // Snackbar eklendi
 import styles from '../styles/ProfileScreenStyles';
 import { useNavigation } from '@react-navigation/native';
-import { getToken } from '../../../shared/states/api';
-import axios from 'axios';
 import CustomModal from '../../../components/CustomModal';
 import useModal from '../../../hooks/useModal';
+import useFriendsPage from '../hooks/useFriendsPage';
 
 const TopBar = () => {
     const navigation = useNavigation();
     const { modalVisible, modalMessage, modalTitle, showModal, closeModal } = useModal();
-
+    const { handleAddFriend, error, snackbarVisible, setSnackbarVisible, snackbarMessage } = useFriendsPage();
 
     const navigateToCamera = () => {
         navigation.navigate('BarcodeScan', {
@@ -19,43 +18,41 @@ const TopBar = () => {
         });
     };
 
-     const handleBarcodeScanned = async (barcodeValue) => {
-        const token = getToken();
-    
+    const handleBarcodeScanned = async (barcodeValue) => {
         try {
-             const response = await axios.post('http://10.0.2.2:3000/api/add-friend', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                   'Authorization': `Bearer ${token}`
-                },
-                data: { friendCode: barcodeValue },
-              });
-    
-            if (response.status === 200) {
-                 showModal('success', 'Başarılı', response.data.message);
-             } else {
-                 showModal('error', 'Hata', response.data.message || 'Arkadaş ekleme başarısız.');
+            await handleAddFriend(barcodeValue);
+
+            if (error) {
+                showModal('error', 'Hata', error);
+            } else {
+                showModal('success', 'Başarılı', snackbarMessage || 'Arkadaş başarıyla eklendi.');
             }
-        } catch (error) {
-               console.error('Fetch error:', error);
-               showModal('error', 'Hata', 'Arkadaş eklenirken bir sorun oluştu.Lütfen tekrar deneyiniz.');
-        }
-         finally {
-               navigation.goBack();
+
+        } catch (err) {
+            console.error('Arkadaş ekleme hatası:', err);
+            showModal('error', 'Hata', 'Arkadaş eklenirken bir sorun oluştu. Lütfen tekrar deneyin.');
+        } finally {
+            navigation.goBack();
         }
     };
 
     return (
         <View style={styles.topBar}>
-             <CustomModal
+            <CustomModal
                 visible={modalVisible}
                 onDismiss={closeModal}
                 title={modalTitle}
                 text={modalMessage}
-                showConfirmButton={false} 
+                showConfirmButton={false}
             />
-            
+            <Snackbar
+                visible={snackbarVisible}
+                onDismiss={() => setSnackbarVisible(false)}
+                duration={3000}
+            >
+                {snackbarMessage}
+            </Snackbar>
+
             <IconButton icon="pencil" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} />
             <Text style={styles.title}>Profile</Text>
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>

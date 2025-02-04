@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import Clipboard from '@react-native-clipboard/clipboard';
 import lobbyService from './services/lobbyService';
+import ToastMessage from '../../../../components/ToastMessage/Toast';
 
 const JoinLobbyModal = ({ visible, onDismiss }) => {
   const [lobbyCode, setLobbyCode] = useState('');

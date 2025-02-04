@@ -1,24 +1,31 @@
-import axios from 'axios';
+import { getToken } from '../../../shared/states/api';
+import api from '../../../shared/states/api';
 
-const API_URL = 'http://10.0.2.2:3000/api/rooms'; // Backend adresinizi buraya yazın
+// Helper function to add the token to the headers
+const getHeaders = () => {
+  const token = getToken();
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}), // conditionally add authorization header
+  };
+};
 
-const api = axios.create({
-  baseURL: API_URL,
-  withCredentials: true, // Cookie'leri göndermek için (session)
-});
 
 export const createRoom = async (name) => {
-  try {
-    const response = await api.post('/', { name });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error.message;
-  }
-};
+    try {
+      const response = await api.post('/rooms', { name: name }, { // Use POST to create a room, and include the name in the body
+        headers: getHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error creating room:", error); // Log the error for debugging
+      throw error.response ? error.response.data : error.message;
+    }
+  };
 
 export const getRooms = async () => {
   try {
-    const response = await api.get('/');
+    const response = await api.get('/rooms', { headers: getHeaders() });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -27,7 +34,7 @@ export const getRooms = async () => {
 
 export const getRoom = async (roomId) => {
   try {
-    const response = await api.get(`/${roomId}`);
+    const response = await api.get(`/rooms/${roomId}`, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -36,7 +43,7 @@ export const getRoom = async (roomId) => {
 
 export const joinRoom = async (roomId) => {
   try {
-    const response = await api.post(`/${roomId}/join`);
+    const response = await api.post(`/rooms/${roomId}/join`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -45,7 +52,7 @@ export const joinRoom = async (roomId) => {
 
 export const leaveRoom = async (roomId) => {
     try {
-        const response = await api.post(`/${roomId}/leave`);
+        const response = await api.post(`/rooms/${roomId}/leave`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
         return response.data;
       } catch (error) {
         throw error.response ? error.response.data : error.message;
@@ -54,7 +61,7 @@ export const leaveRoom = async (roomId) => {
 
 export const deleteRoom = async (roomId) => {
   try {
-    const response = await api.delete(`/${roomId}`);
+    const response = await api.delete(`/rooms/${roomId}`, { headers: getHeaders() });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -63,7 +70,7 @@ export const deleteRoom = async (roomId) => {
 
 export const becomeSupporter = async (roomId) => {
     try {
-        const response = await api.post(`/${roomId}/become-supporter`);
+        const response = await api.post(`/rooms/${roomId}/become-supporter`, {}, { headers: getHeaders() });  // added empty body because POST requests should have a body even if empty to avoid potential issues with server
         return response.data;
       } catch (error) {
         throw error.response ? error.response.data : error.message;
@@ -72,7 +79,7 @@ export const becomeSupporter = async (roomId) => {
   
   export const leaveSupporter = async (roomId) => {
     try {
-        const response = await api.post(`/${roomId}/leave-supporter`);
+        const response = await api.post(`/rooms/${roomId}/leave-supporter`, {}, { headers: getHeaders() });  // added empty body because POST requests should have a body even if empty to avoid potential issues with server
         return response.data;
       } catch (error) {
         throw error.response ? error.response.data : error.message;
