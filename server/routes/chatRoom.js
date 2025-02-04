@@ -7,7 +7,9 @@ const {
   leaveRoomHandler,
   deleteRoomHandler,
   becomeSupporterHandler,
-  leaveSupporterHandler
+  leaveSupporterHandler,
+  getRoomsByMeHandler, // Eklendi
+  getRoomsNotByMeHandler // Eklendi
 } = require('../controller/roomController');
 const authenticate = require('../middleware/authenticate');
 
@@ -15,6 +17,8 @@ const router = express.Router();
 
 router.post('/', authenticate, createRoomHandler);
 router.get('/', authenticate, getAllRoomsHandler);
+router.get('/me', authenticate, getRoomsByMeHandler); 
+router.get('/others', authenticate, getRoomsNotByMeHandler);
 router.get('/:roomId', authenticate, getRoomHandler);
 router.post('/:roomId/join', authenticate, joinRoomHandler);
 router.post('/:roomId/leave', authenticate, leaveRoomHandler);

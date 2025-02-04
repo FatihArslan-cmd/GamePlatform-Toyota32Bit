@@ -1,3 +1,4 @@
+// chatRoomStore.js
 const crypto = require('crypto');
 const users = require('../utils/users');
 
@@ -64,6 +65,50 @@ function getAllRooms() {
         supporterCount: room.supporters.size  //Add the supporter count
       };
     });
+}
+
+// Yeni fonksiyon: Kullanıcının yarattığı odaları getir
+function getRoomsByCreator(creatorId) {
+    return Array.from(rooms.values())
+        .filter(room => room.creatorId === creatorId)
+        .map(room => {
+            // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
+            const supportersWithUsernames = Array.from(room.supporters).map(userId => {
+                const username = Object.keys(users).find(key => users[key].id === userId);
+                return {
+                    id: userId,
+                    username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+                };
+            });
+
+            return {
+                ...room,
+                supporters: supportersWithUsernames,
+                supporterCount: room.supporters.size  //Add the supporter count
+            };
+        });
+}
+
+// Yeni fonksiyon: Kullanıcının yaratmadığı odaları getir
+function getRoomsNotByCreator(creatorId) {
+    return Array.from(rooms.values())
+        .filter(room => room.creatorId !== creatorId)
+        .map(room => {
+            // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
+            const supportersWithUsernames = Array.from(room.supporters).map(userId => {
+                const username = Object.keys(users).find(key => users[key].id === userId);
+                return {
+                    id: userId,
+                    username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+                };
+            });
+
+            return {
+                ...room,
+                supporters: supportersWithUsernames,
+                supporterCount: room.supporters.size  //Add the supporter count
+            };
+        });
 }
 
 
@@ -149,5 +194,7 @@ module.exports = {
     becomeSupporter,
     leaveSupporter,
     topics,  // Expose the topics array
-    isValidTopic
+    isValidTopic,
+    getRoomsByCreator, // Export new function
+    getRoomsNotByCreator // Export new function
 };
