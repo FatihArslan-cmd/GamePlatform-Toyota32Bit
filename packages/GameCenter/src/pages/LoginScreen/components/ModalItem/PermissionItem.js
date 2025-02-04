@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#e0e0e0',
     flex: 1,
+    fontFamily:'Orbitron-ExtraBold'
   },
 });
 

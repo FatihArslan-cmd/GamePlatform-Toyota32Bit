@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   subtitleText: {
     fontSize: 16,
     color: '#8a2be2',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     marginTop: 5,
     letterSpacing: 3,
   },

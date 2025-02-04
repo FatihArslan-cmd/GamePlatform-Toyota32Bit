@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: '#ffffff',
+    fontFamily:'Orbitron-ExtraBold'
   },
 });
 

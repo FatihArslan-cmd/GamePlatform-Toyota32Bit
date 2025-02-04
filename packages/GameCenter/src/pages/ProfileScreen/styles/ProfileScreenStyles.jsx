@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         fontSize: 28,        color: '#e5e6ea',
         alignSelf: "center",
         paddingLeft: 10,
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold'
     },
     profileSection: {
         alignItems: 'center',
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
     userNameText: {
         fontSize: 42,
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
         marginTop: 20,
     },
 });

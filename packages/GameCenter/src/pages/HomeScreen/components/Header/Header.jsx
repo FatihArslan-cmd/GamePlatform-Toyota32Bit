@@ -19,6 +19,7 @@ const Header = () => {
 
   const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
+  
   const openBottomSheet = () => setIsBottomSheetVisible(true);
   const closeBottomSheet = () => setIsBottomSheetVisible(false);
 

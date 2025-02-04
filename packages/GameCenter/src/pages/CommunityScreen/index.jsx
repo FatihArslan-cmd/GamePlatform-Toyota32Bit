@@ -1,67 +1,93 @@
-import React from 'react';
-import { StyleSheet, } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context'; 
+import PagerView from 'react-native-pager-view';
 import Header from './components/Header/Header';
 import useHeaderAnimation from '../HomeScreen/hooks/useHeaderAnimation';
 import RoomsScreen from './pages/RoomsScreen';
+import Buttons from './components/Buttons/Buttons';
+import ExplorerScreen from './pages/ExplorerScreen'; // ExplorerScreen'i import et
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const CommunityScreen = () => {
+  const pagerRef = useRef(null);
 
-   const appBarHeight = useSharedValue(0);
-    const scrollY = useSharedValue(0);
-    const isScrolling = useSharedValue(0);
-  
-    const scrollHandler = useAnimatedScrollHandler({
-      onScroll: (event) => {
-        if (!isScrolling.value) {
-          isScrolling.value = true;
-        }
-        scrollY.value = event.contentOffset.y;
-      },
-      onEndDrag: () => {
-        isScrolling.value = false;
-      },
-      onMomentumEnd: () => {
-        isScrolling.value = false;
-      },
-    });
+  const appBarHeight = useSharedValue(0);
+  const scrollY = useSharedValue(0);
+  const isScrolling = useSharedValue(0);
+  const currentPageIndex = useSharedValue(0); // Şu anki sayfa index'ini tutar
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      if (!isScrolling.value) {
+        isScrolling.value = true;
+      }
+      scrollY.value = event.contentOffset.y;
+    },
+    onEndDrag: () => {
+      isScrolling.value = false;
+    },
+    onMomentumEnd: () => {
+      isScrolling.value = false;
+    },
+  });
+
   const headerAnimatedStyle = useHeaderAnimation(scrollY, appBarHeight);
+
   const onLayout = (event) => {
     appBarHeight.value = event.nativeEvent.layout.height;
   };
+
+  const goToPage = (pageIndex) => {
+    pagerRef.current?.setPage(pageIndex);
+    currentPageIndex.value = pageIndex; // currentPageIndex'i güncelle
+  };
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-   <Animated.View
+    <View style={styles.safeArea}>
+      <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onLayout}
       >
         <Header />
-      </Animated.View>  
-      
-      <AnimatedScrollView
-        onScroll={scrollHandler}
-        scrollEventThrottle={8}
-        overScrollMode="never"
-        bounces={false}
-        removeClippedSubviews={true}
-        showsVerticalScrollIndicator={false}
+      </Animated.View>
+
+      <Buttons goToHome={() => goToPage(0)} goToExplorer={() => goToPage(1)} />
+
+      <PagerView
+        style={styles.pagerView}
+        initialPage={0}
+        ref={pagerRef}
+        scrollEnabled={true}
       >
-          <RoomsScreen />
+        <View key="0">
+          <AnimatedScrollView
+            onScroll={scrollHandler}
+            scrollEventThrottle={8}
+            overScrollMode="never"
+            bounces={false}
+            removeClippedSubviews={true}
+            showsVerticalScrollIndicator={true}
+          >
+            <RoomsScreen />
           </AnimatedScrollView>
-    </SafeAreaView>
+        </View>
+        <View key="1">
+          <ExplorerScreen />
+        </View>
+      </PagerView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f0f0', // Optional: Background color
+    backgroundColor: 'white',
   },
   appBar: {
     position: 'absolute',
@@ -71,6 +97,9 @@ const styles = StyleSheet.create({
     zIndex: 1,
     backgroundColor: 'white',
     elevation: 4,
+  },
+  pagerView: {
+    flex: 1,
   },
 });
 

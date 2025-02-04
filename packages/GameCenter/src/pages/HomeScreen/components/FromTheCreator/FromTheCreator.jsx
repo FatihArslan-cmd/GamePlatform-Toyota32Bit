@@ -4,7 +4,7 @@ import GradientDivider from '../../../../components/GradientDivider';
 import GameCard from './GameCard';
 import gameData from '../GameDetails/gameData.json';
 import imageAssets from '../GameDetails/imageAssets';
-
+import GrandientText from '../../../../components/GrandientText';
 const FromTheCreator = () => {
   const getImageSource = (imageName) => {
     return imageAssets[imageName] || null;
@@ -12,7 +12,13 @@ const FromTheCreator = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>From the Creator</Text>
+        <GrandientText
+          text="From the Creator"
+          colors={['black', '#778899']}
+          textStyle={{ fontSize: 32}}
+          gradientDirection="horizontal"
+          width={400  }
+        />
       <GradientDivider />
       <GameCard
         gameName="Bingo"

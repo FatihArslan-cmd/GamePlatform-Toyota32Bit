@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     fontSize: 28,
     marginBottom: 8,
   },
   subtitle: {
     color: 'rgba(255, 255, 255, 0.8)',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     fontSize: 16,
   },
 });
