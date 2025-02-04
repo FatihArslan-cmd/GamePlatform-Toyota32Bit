@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react'; // useState'i ekle
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
@@ -15,11 +15,11 @@ const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView)
 
 const CommunityScreen = () => {
   const pagerRef = useRef(null);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // State olarak tanımla
 
   const appBarHeight = useSharedValue(0);
   const scrollY = useSharedValue(0);
   const isScrolling = useSharedValue(0);
-  const currentPageIndex = useSharedValue(0); // Şu anki sayfa index'ini tutar
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -44,7 +44,7 @@ const CommunityScreen = () => {
 
   const goToPage = (pageIndex) => {
     pagerRef.current?.setPage(pageIndex);
-    currentPageIndex.value = pageIndex; // currentPageIndex'i güncelle
+    setCurrentPageIndex(pageIndex); // State'i güncelle
   };
 
   return (
@@ -56,13 +56,18 @@ const CommunityScreen = () => {
         <Header />
       </Animated.View>
 
-      <Buttons goToHome={() => goToPage(0)} goToExplorer={() => goToPage(1)} />
+      <Buttons
+        goToHome={() => goToPage(0)}
+        goToExplorer={() => goToPage(1)}
+        currentPageIndex={currentPageIndex} // Aktif sayfa bilgisini gönder
+      />
 
       <PagerView
         style={styles.pagerView}
         initialPage={0}
         ref={pagerRef}
         scrollEnabled={true}
+        onPageSelected={(e) => setCurrentPageIndex(e.nativeEvent.position)} // Sayfa değiştiğinde state'i güncelle
       >
         <View key="0">
           <AnimatedScrollView
