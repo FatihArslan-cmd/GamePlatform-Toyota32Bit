@@ -6,8 +6,8 @@ import SearchBar from './SearchBar';
 import MenuComponent from './MenuComponent';
 import CreateLobbyModal from '../CreateLobbyModal/CreateLobbyModal';
 import BottomSheet from '../../../../components/BottomSheet';
-import ActiveLobbiesContent from './ActiveLobbiesContext';
-import JoinLobbyModal from './JoinLobbyModal'; // Yeni modalı import et
+import ActiveLobbiesContent from './ActiveLobbiesContent';
+import JoinLobbyModal from './JoinLobbyModal';
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);

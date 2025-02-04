@@ -10,9 +10,10 @@ import SettingScreen from '../pages/SettingsScreen/index.jsx';
 import BootSplash from 'react-native-bootsplash';
 import { Animated } from 'react-native';
 import GameScreen from '../pages/GameScreen/index.jsx';
-import ChatScreen from '../pages/LiveScreen/ChatScreen.jsx';
 import BarcodeScan from '../components/BarcodeScanScreen/BarcodeScan.jsx';
 import CreateQRcodeScreen from '../pages/LoginScreen/components/Biometrics/CreateQRcodeScreen.jsx';
+import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen.jsx';
+import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -77,13 +78,7 @@ export default function Navigation() {
               animation: 'fade',
             }}
           />
-           <Stack.Screen
-            name="Chat"
-            component={ChatScreen}
-            options={{
-              animation: 'fade',
-            }}
-          />
+      
              <Stack.Screen
             name="BarcodeScan"
             component={BarcodeScan}
@@ -110,6 +105,20 @@ export default function Navigation() {
             component={GameDetails}
             options={{
               presentation: 'transparentModal',
+              animation: 'fade',
+            }}
+          />
+           <Stack.Screen
+            name="Rooms"
+            component={RoomsScreen}
+            options={{
+              animation: 'fade',
+            }}
+          />
+           <Stack.Screen
+            name="CreateRoom"
+            component={CreateRoomScreen}
+            options={{
               animation: 'fade',
             }}
           />

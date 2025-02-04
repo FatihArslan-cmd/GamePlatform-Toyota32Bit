@@ -6,7 +6,7 @@ import Animated, { useAnimatedStyle, withTiming, useDerivedValue } from 'react-n
 import Lottie from 'lottie-react-native';
 import HomeScreen from '../pages/HomeScreen/index';
 import ProfileScreen from '../pages/ProfileScreen/index';
-import LiveScreen from '../pages/LiveScreen';
+import CommunityScreen from '../pages/CommunityScreen';
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const Tab = createMaterialTopTabNavigator();
@@ -44,8 +44,8 @@ const TabNavigator = () => {
           }}
         />
                 <Tab.Screen
-          name="LiveScreen"
-          component={LiveScreen}
+          name="CommunityScreen"
+          component={CommunityScreen}
           options={{
             tabBarIcon: ({ ref }) => (
               <Lottie

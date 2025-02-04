@@ -1,34 +1,19 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, Clipboard } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import CustomModal from '../../../../components/CustomModal';
 import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
-import { getToken } from '../../../../shared/states/api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
-import axios from 'axios';
+import Clipboard from '@react-native-clipboard/clipboard';
+import lobbyService from './services/lobbyService';
 
 const JoinLobbyModal = ({ visible, onDismiss }) => {
   const [lobbyCode, setLobbyCode] = useState('');
-  const { currentToast, showToast, hideToast } = useToast(); // Use the hook
+  const { currentToast, showToast, hideToast } = useToast();
 
   const handleJoinLobby = useCallback(async () => {
     try {
-      const token = await getToken();
-      const response = await axios.post(
-        'http://10.0.2.2:3000/api/lobby/join', // Use your backend URL
-        { code: lobbyCode },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status !== 200) {
-          showToast('error', response.data?.message || 'Failed to join lobby.');
-        return;
-      }
+      await lobbyService.joinLobby(lobbyCode);
 
       onDismiss();
       showToast('success', 'Successfully joined lobby!');
@@ -80,11 +65,11 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
           </TouchableOpacity>
         </View>
       </View>
-      {currentToast && ( // Use currentToast from the hook
+      {currentToast && (
         <ToastMessage
           type={currentToast.type}
           message={currentToast.message}
-          onHide={hideToast} // Use hook's hideToast
+          onHide={hideToast}
         />
       )}
     </CustomModal>

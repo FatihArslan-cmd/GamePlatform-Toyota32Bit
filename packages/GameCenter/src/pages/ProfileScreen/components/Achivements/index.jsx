@@ -5,9 +5,8 @@ import { FlashList } from "@shopify/flash-list";
 import AchievementCard from './components/AchievementCard';
 import OwnedAchievementCard from './components/OwnedAchievementCard';
 import ErrorComponents from '../../../../components/ErrorComponents';
-import { getToken } from '../../../../shared/states/api';
 import EmptyState from '../../../../components/EmptyState';
-import axios from 'axios'; // Import axios
+import { getAchievements, getOwnedAchievements } from './services/service';
 
 const AchievementsPage = ({ onAchievementCountChange }) => {
     const [activeTab, setActiveTab] = useState('all');
@@ -17,31 +16,22 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
     const [error, setError] = useState(null);
 
     const fetchAchievements = useCallback(async () => {
-      setLoading(true);
-      setError(null);
-      const token = getToken();
-      try {
-          const headers = {
-              'Authorization': `Bearer ${token}`,
-          };
-           const [responseAll, responseOwned] = await Promise.all([
-                axios.get('http://10.0.2.2:3000/api/achievements', { headers }),
-                axios.get('http://10.0.2.2:3000/api/achievements/owned', { headers }),
+        setLoading(true);
+        setError(null);
+        try {
+            const [allAchievementsData, ownedAchievementsData] = await Promise.all([
+                getAchievements(),
+                getOwnedAchievements(),
             ]);
-            
-            setAllAchievements(responseAll.data);
-            setOwnedAchievements(responseOwned.data);
-            console.log(responseOwned.data)
-            const ownedCount = responseOwned.data.length;
+
+            setAllAchievements(allAchievementsData);
+            setOwnedAchievements(ownedAchievementsData);
+             const ownedCount = ownedAchievementsData.length;
             onAchievementCountChange(ownedCount);
+            
         } catch (err) {
             console.error("Error fetching achievements:", err);
-             if (axios.isAxiosError(err)) {
-                 setError(err.message || 'An unexpected error occurred');
-                 } else {
-                 setError('An unexpected error occurred');
-             }
-            
+             setError(err.message || 'An unexpected error occurred');
         } finally {
             setLoading(false);
         }
@@ -55,7 +45,6 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
       if (activeTab === 'all') {
           return <AchievementCard item={item} />;
       } else {
-        
           return <OwnedAchievementCard item={item} />;
       }
   }, [activeTab]);

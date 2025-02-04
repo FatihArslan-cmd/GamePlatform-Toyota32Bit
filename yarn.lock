@@ -8283,7 +8283,7 @@ pure-rand@^6.0.0:
   resolved "https://registry.npmjs.org/pure-rand/-/pure-rand-6.1.0.tgz"
   integrity sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==
 
-qrcode@^1.5.4:
+qrcode@^1.5.3, qrcode@^1.5.4:
   version "1.5.4"
   resolved "https://registry.npmjs.org/qrcode/-/qrcode-1.5.4.tgz"
   integrity sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==
@@ -8435,6 +8435,13 @@ react-native-paper@^5.12.5:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"
     use-latest-callback "^0.1.5"
+
+react-native-qrcode-skia@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/react-native-qrcode-skia/-/react-native-qrcode-skia-0.3.1.tgz"
+  integrity sha512-bD97s78PkYhwf0rMSORd+GWLEaXu7nB7rqNBwKBVRBFt3PtjXCMIMTI/9rzbCoxanDNofVrleVwP8vWrAnMpaQ==
+  dependencies:
+    qrcode "^1.5.3"
 
 react-native-qrcode-svg@^6.3.14:
   version "6.3.14"

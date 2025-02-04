@@ -6,8 +6,12 @@ let isRefreshing = false;
 let failedQueue = [];
 
 const api = axios.create({
-  baseURL: 'http://10.0.2.2:3000/api', 
+  baseURL: 'http://10.0.2.2:3000/api',
   timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json', // Genellikle JSON verisi gönderip alırsınız.
+    'Authorization': 'Bearer YOUR_API_TOKEN', // Eğer API anahtarı gerekiyorsa
+  },
 });
 
 api.interceptors.request.use(

@@ -11,7 +11,7 @@ import ToastMessage from '../../../../components/ToastMessage/Toast';
 import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import { getToken } from '../../../../shared/states/api';
 import CustomModal from '../../../../components/CustomModal';
-import axios from 'axios';
+import api from '../../../../shared/states/api';
 import useModal from '../../../../hooks/useModal';
 
 
@@ -61,7 +61,7 @@ const CreateLobbyModal = ({ visible, onDismiss, gameName: initialGameName }) => 
     };
 
     try {
-       const response = await axios.post('http://10.0.2.2:3000/api/lobby/create', requestBody, {
+       const response = await api.post('/lobby/create', requestBody, {
          headers: {
            Authorization: `Bearer ${token}`,
          },
