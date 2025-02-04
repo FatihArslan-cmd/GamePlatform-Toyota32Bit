@@ -14,34 +14,38 @@ import RoomHeader from './RoomHeader';
 import RoomNameInput from './RoomNameInput';
 import ImageSelector from './ImageSelector';
 import CreateButton from './CreateButton';
-import ErrorDisplay from './Errordisplay';
+import BackButton from '../../../../components/BackIcon';
+import useToast from '../../../../components/ToastMessage/hooks/useToast';
+import ToastMessage from '../../../../components/ToastMessage/Toast';
 
 const CreateRoomScreen = () => {
   const [roomName, setRoomName] = useState('');
   const [topic, setTopic] = useState('');
   const [imageUri, setImageUri] = useState(null);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const { currentToast, showToast, hideToast } = useToast(); // Use the hook
 
   const handleCreateRoom = async () => {
     if (!roomName.trim()) {
-      setError('Room name cannot be empty');
+      showToast("error", 'Room name cannot be empty');
       return;
     }
     if (!topic) {
-      setError('Please select a topic');
+      showToast("error",'Please select a topic');
       return;
     }
 
     setLoading(true);
-    setError('');
 
     try {
       await createRoom(roomName, topic, imageUri);
-      navigation.goBack();
+      showToast("success", "Room created successfully!");
+      setTimeout(() => {
+        navigation.goBack();
+      },3000);
     } catch (err) {
-      setError(err.message || "Failed to create room");
+      showToast("error", err.message || "Failed to create room");
     } finally {
       setLoading(false);
     }
@@ -52,45 +56,46 @@ const CreateRoomScreen = () => {
   };
 
   return (
-      <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}
-        >
-          <ScrollView contentContainerStyle={styles.scrollContent}>
-            <View style={styles.content}>
-              <RoomHeader />
-              
-              <View style={styles.inputContainer}>
-                <RoomNameInput
-                  value={roomName}
-                  onChangeText={setRoomName}
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <View style={styles.content}>
+            <BackButton />
+            <RoomHeader />
+
+            <View style={styles.inputContainer}>
+              <RoomNameInput value={roomName} onChangeText={setRoomName} />
+
+              <View style={styles.topicSelectorContainer}>
+                <CommunityTopics
+                  onTopicSelect={handleTopicSelectAndCreate}
+                  selectedTopic={topic}
                 />
-
-                <View style={styles.topicSelectorContainer}>
-                  <CommunityTopics
-                    onTopicSelect={handleTopicSelectAndCreate}
-                    selectedTopic={topic}
-                  />
-                </View>
-
-                <ImageSelector
-                  imageUri={imageUri}
-                  onImageSelected={setImageUri}
-                  onError={setError}
-                />
-
-                <ErrorDisplay error={error} />
               </View>
 
-              <CreateButton
-                onPress={handleCreateRoom}
-                loading={loading}
+              <ImageSelector
+                imageUri={imageUri}
+                onImageSelected={setImageUri}
               />
+
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+
+            <CreateButton onPress={handleCreateRoom} loading={loading} />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+       {currentToast && (
+                <ToastMessage
+                  type={currentToast.type}
+                  message={currentToast.message}
+                  onHide={hideToast} // Call hideToast to clear the current toast
+                />
+              )}
+    </SafeAreaView>
   );
 };
 

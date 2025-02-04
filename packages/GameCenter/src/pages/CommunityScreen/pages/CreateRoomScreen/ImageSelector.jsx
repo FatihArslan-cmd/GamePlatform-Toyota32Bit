@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { TouchableRipple } from 'react-native-paper';
+import FastImage from 'react-native-fast-image'; // Import FastImage
 
 const ImageSelector = ({ imageUri, onImageSelected, onError }) => {
   const handleImagePick = async () => {
@@ -26,14 +28,15 @@ const ImageSelector = ({ imageUri, onImageSelected, onError }) => {
   };
 
   return (
-    <TouchableOpacity
+    <TouchableRipple
       style={styles.imagePicker}
       onPress={handleImagePick}
     >
       {imageUri ? (
-        <Image
-          source={{ uri: imageUri }}
+        <FastImage 
+          source={{ uri: imageUri, priority: FastImage.priority.high }} // Add priority for better caching
           style={styles.imagePreview}
+          resizeMode={FastImage.resizeMode.cover} 
         />
       ) : (
         <View style={styles.imagePlaceholder}>
@@ -41,7 +44,7 @@ const ImageSelector = ({ imageUri, onImageSelected, onError }) => {
           <Text style={styles.imagePickerText}>Select Image</Text>
         </View>
       )}
-    </TouchableOpacity>
+    </TouchableRipple>
   );
 };
 
