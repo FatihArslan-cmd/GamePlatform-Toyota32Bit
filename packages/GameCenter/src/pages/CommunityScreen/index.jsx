@@ -9,7 +9,7 @@ import Header from './components/Header/Header';
 import useHeaderAnimation from '../HomeScreen/hooks/useHeaderAnimation';
 import RoomsScreen from './pages/RoomsScreen';
 import Buttons from './components/Buttons/Buttons';
-import ExplorerScreen from './pages/ExplorerScreen'; // ExplorerScreen'i import et
+import ExplorerScreen from './pages/ExplorerScreen';// ExplorerScreen'i import et
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
