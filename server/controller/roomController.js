@@ -1,11 +1,39 @@
-const { createRoom, getRoom, getAllRooms, joinRoom, leaveRoom, deleteRoom, becomeSupporter, leaveSupporter} = require('../memory/chatRoomStore');
+const { createRoom, getRoom, getAllRooms, joinRoom, leaveRoom, deleteRoom, becomeSupporter, leaveSupporter, topics, isValidTopic} = require('../memory/chatRoomStore');
+
+const isURL = (string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
 
 const createRoomHandler = (req, res) => {
-    const { name } = req.body;
+    const { name, topic, imageUrl } = req.body;
+
     if (!name) {
         return res.status(400).json({ message: 'Oda adı gereklidir' });
     }
-    const room = createRoom(name, req.user.id);
+
+    if (!topic) {
+        return res.status(400).json({ message: 'Oda konusu (topic) gereklidir' });
+    }
+
+   if (!isValidTopic(topic)) {
+        return res.status(400).json({ message: 'Geçersiz oda konusu. Lütfen şu konulardan birini seçin: ' + topics.join(', ') });
+    }
+
+
+    if (!imageUrl) {
+        return res.status(400).json({ message: 'Oda resmi (imageUrl) gereklidir' });
+    }
+
+    if (!isURL(imageUrl)) {
+        return res.status(400).json({ message: 'Geçersiz resim URL\'si' });
+    }
+
+    const room = createRoom(name, req.user.id, topic, imageUrl);
     res.status(201).json(room);
 };
 
