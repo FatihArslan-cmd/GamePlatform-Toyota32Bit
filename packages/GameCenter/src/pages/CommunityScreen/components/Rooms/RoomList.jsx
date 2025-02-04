@@ -1,10 +1,10 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import RoomCard from './RoomCard';
 
 const RoomList = ({ rooms, onJoin, onDelete, onBecomeSupporter, onLeaveSupporter }) => {
   return (
-    <FlatList
+    <FlashList
       data={rooms}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (

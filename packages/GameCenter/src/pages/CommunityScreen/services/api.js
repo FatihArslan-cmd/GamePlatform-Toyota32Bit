@@ -11,17 +11,21 @@ const getHeaders = () => {
 };
 
 
-export const createRoom = async (name) => {
+export const createRoom = async (name, topic, imageUrl) => {
     try {
-      const response = await api.post('/rooms', { name: name }, { // Use POST to create a room, and include the name in the body
-        headers: getHeaders(),
-      });
-      return response.data;
+        const response = await api.post('/rooms', {
+            name: name, // or just name,
+            topic: topic, // or just topic,
+            imageUrl: imageUrl, // or just imageUrl
+        }, {
+            headers: getHeaders(),
+        });
+        return response.data;
     } catch (error) {
-      console.error("Error creating room:", error); // Log the error for debugging
-      throw error.response ? error.response.data : error.message;
+        console.error("Error creating room:", error); // Log the error for debugging
+        throw error.response ? error.response.data : error.message;
     }
-  };
+};
 
 export const getRooms = async () => {
   try {

@@ -8407,6 +8407,11 @@ react-native-gesture-handler@^2.21.2:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-image-picker@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-8.0.0.tgz#cf5f0e40bb61f01b6dfb3125a8a745db27623d3a"
+  integrity sha512-yPhUG8p3xld+hgMUqBkOCLpGcxwm7Rp4UbnWJJsBbSi6fTfK6/YQXf0LpEEhNHUrCJh4Frk4il9OeRAJBCzCCg==
+
 react-native-is-edge-to-edge@^1.1.6:
   version "1.1.6"
   resolved "https://registry.npmjs.org/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.1.6.tgz"

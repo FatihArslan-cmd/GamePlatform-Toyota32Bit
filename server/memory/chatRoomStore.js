@@ -4,16 +4,16 @@ const users = require('../utils/users');
 const rooms = new Map(); // Map<roomId, { id: string, name: string, creatorId: string, supporters: Set<userId>, topic: string, imageUrl: string, createdAt: Date }>
 
 const topics = [
-  "Sports",
-  "AI",
-  "Art",
-  "Travel",
-  "Tech",
-  "Health",
-  "Food",
-  "Space",
-  "Startups",
-  "Crypto"
+    "⚽ Sports",
+    "🤖 AI",
+    "🎨 Art",
+    "✈️ Travel",
+    "💻 Tech",
+    "❤️‍⚕️ Health",
+    "🍔 Food",
+    "🚀 Space",
+    "💡 Startups",
+    "₿ Crypto"
 ];
 
 function createRoom(name, creatorId, topic, imageUrl) {

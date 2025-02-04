@@ -41,7 +41,8 @@
       "**/react-native-bootsplash",
       "**/react-native-vision-camera",
       "**/react-native-qrcode-svg",
-      "**/react-native-qrcode-skia"
+      "**/react-native-qrcode-skia",
+      "**/react-native-image-picker"
 
     ]
   },
