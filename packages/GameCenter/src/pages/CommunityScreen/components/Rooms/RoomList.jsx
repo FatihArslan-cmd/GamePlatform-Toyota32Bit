@@ -16,6 +16,7 @@ const RoomList = ({ rooms, onJoin, onDelete, onBecomeSupporter, onLeaveSupporter
           onLeaveSupporter={onLeaveSupporter}
         />
       )}
+      estimatedItemSize={150}
     />
   );
 };

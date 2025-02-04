@@ -22,7 +22,6 @@ export const createRoom = async (name, topic, imageUrl) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error creating room:", error); // Log the error for debugging
         throw error.response ? error.response.data : error.message;
     }
 };

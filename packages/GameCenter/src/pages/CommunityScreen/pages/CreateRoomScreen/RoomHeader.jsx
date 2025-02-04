@@ -1,19 +1,15 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import GrandientText from '../../../../components/GrandientText';
 
 const RoomHeader = () => (
-  <Text style={styles.title}>Create a new community </Text>
+       <GrandientText
+            text="Create a Community"
+            colors={['black', '#778899']}
+            textStyle={{ fontSize: 32, textAlign: 'center' }} 
+            gradientDirection="horizontal"
+            width={500}
+          />
 );
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 30,
-    fontFamily: 'Orbitron-ExtraBold',
-  },
-});
 
 export default RoomHeader;
