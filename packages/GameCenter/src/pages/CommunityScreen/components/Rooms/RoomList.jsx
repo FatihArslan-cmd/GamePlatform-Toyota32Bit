@@ -2,7 +2,7 @@ import React from 'react';
 import { FlashList } from '@shopify/flash-list';
 import RoomCard from './RoomCard';
 
-const RoomList = ({ rooms, onJoin, onDelete, onBecomeSupporter, onLeaveSupporter }) => {
+const RoomList = ({ rooms, onJoin, onDelete, onBecomeSupporter }) => {
   return (
     <FlashList
       data={rooms}
@@ -13,7 +13,6 @@ const RoomList = ({ rooms, onJoin, onDelete, onBecomeSupporter, onLeaveSupporter
           onJoin={onJoin}
           onDelete={onDelete}
           onBecomeSupporter={onBecomeSupporter}
-          onLeaveSupporter={onLeaveSupporter}
         />
       )}
       estimatedItemSize={150}

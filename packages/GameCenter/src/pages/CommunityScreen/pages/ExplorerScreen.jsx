@@ -18,7 +18,7 @@ const ExplorerScreen = () => {
   const fetchRooms = useCallback(async () => {
     setLoading(true);
     setError(null);
-    loadingStartTime.current = Date.now(); // Record start time
+    loadingStartTime.current = Date.now(); 
 
     try {
       const data = await getOthersRoom();
@@ -55,26 +55,6 @@ const ExplorerScreen = () => {
     }
 
 
-    const handleLeaveSupporter = async (roomId) => {
-        try{
-           await leaveSupporter(roomId);
-           fetchRooms()
-        }
-        catch (err){
-            setError(err.message || "Supporter ayrılırken hata oluştu");
-        }
-    }
-
-    const handleJoinRoom = () => {
-        // Join room logic can be added here if needed in ExplorerScreen
-        console.log("Join room in ExplorerScreen is not implemented yet.");
-    };
-
-    const handleDeleteRoom = () => {
-        // Delete room logic is not relevant in ExplorerScreen, but placeholder if props are passed
-        console.log("Delete room in ExplorerScreen is not implemented and not relevant.");
-    };
-
 
     return (
       <View style={styles.container}>
@@ -93,10 +73,7 @@ const ExplorerScreen = () => {
         ) : (
           <RoomList
             rooms={rooms}
-            onJoin={handleJoinRoom}
-            onDelete={handleDeleteRoom}
             onBecomeSupporter={handleBecomeSupporter}
-            onLeaveSupporter={handleLeaveSupporter}
           />
         )}
       </View>

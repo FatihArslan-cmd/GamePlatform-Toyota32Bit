@@ -19,12 +19,20 @@ const useHeaderAnimation = (scrollY, appBarHeight) => {
       { extrapolateRight: 'clamp' }
     );
 
+    const opacity = interpolate(
+      scrollY.value,
+      [0, HEADER_SCROLL_DISTANCE],
+      [1, 0],
+      { extrapolateRight: 'clamp' }
+    );
+
     return {
       transform: [{
         translateY: withSpring(translateY, SPRING_CONFIG)
-      }]
+      }],
+      opacity: withSpring(opacity, SPRING_CONFIG), // Fade animation ekleniyor
     };
-  }, [appBarHeight]); 
+  }, [appBarHeight]);
 
   return headerAnimatedStyle;
 };

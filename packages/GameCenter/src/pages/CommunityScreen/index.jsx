@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'; // useState'i ekle
+import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
@@ -6,18 +6,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import PagerView from 'react-native-pager-view';
 import Header from './components/Header/Header';
-import useHeaderAnimation from '../HomeScreen/hooks/useHeaderAnimation';
-import RoomsScreen from './pages/RoomsScreen';
+import RoomsScreen from './pages/RoomsScreen/RoomsScreen';
 import Buttons from './components/Buttons/Buttons';
-import ExplorerScreen from './pages/ExplorerScreen';// ExplorerScreen'i import et
+import ExplorerScreen from './pages/ExplorerScreen';
+import { useHeaderAnimatedStyle, useButtonsAnimatedStyle } from './components/Animations/HeaderAnimation'; // Import animation styles
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const CommunityScreen = () => {
   const pagerRef = useRef(null);
-  const [currentPageIndex, setCurrentPageIndex] = useState(0); // State olarak tanımla
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const appBarHeight = useSharedValue(0);
+  const buttonsBarHeight = useSharedValue(0);
   const scrollY = useSharedValue(0);
   const isScrolling = useSharedValue(0);
 
@@ -36,38 +37,47 @@ const CommunityScreen = () => {
     },
   });
 
-  const headerAnimatedStyle = useHeaderAnimation(scrollY, appBarHeight);
+  const headerAnimatedStyle = useHeaderAnimatedStyle(scrollY, appBarHeight); // Use imported hook
+  const buttonsAnimatedStyle = useButtonsAnimatedStyle(scrollY, buttonsBarHeight); // Use imported hook
 
-  const onLayout = (event) => {
+
+  const onHeaderLayout = (event) => {
     appBarHeight.value = event.nativeEvent.layout.height;
+  };
+  const onButtonsLayout = (event) => {
+    buttonsBarHeight.value = event.nativeEvent.layout.height;
   };
 
   const goToPage = (pageIndex) => {
     pagerRef.current?.setPage(pageIndex);
-    setCurrentPageIndex(pageIndex); // State'i güncelle
+    setCurrentPageIndex(pageIndex);
   };
 
   return (
     <View style={styles.safeArea}>
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
-        onLayout={onLayout}
+        onLayout={onHeaderLayout}
       >
         <Header />
       </Animated.View>
-
+      <Animated.View
+        style={[styles.buttonsBar, buttonsAnimatedStyle]}
+        onLayout={onButtonsLayout}
+      >
       <Buttons
         goToHome={() => goToPage(0)}
         goToExplorer={() => goToPage(1)}
-        currentPageIndex={currentPageIndex} // Aktif sayfa bilgisini gönder
+        currentPageIndex={currentPageIndex}
       />
+      </Animated.View>
 
       <PagerView
         style={styles.pagerView}
         initialPage={0}
         ref={pagerRef}
         scrollEnabled={true}
-        onPageSelected={(e) => setCurrentPageIndex(e.nativeEvent.position)} // Sayfa değiştiğinde state'i güncelle
+        onPageSelected={(e) => setCurrentPageIndex(e.nativeEvent.position)}
       >
         <View key="0">
           <AnimatedScrollView
@@ -99,12 +109,22 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
+    zIndex: 2,
     backgroundColor: 'white',
     elevation: 4,
   },
+  buttonsBar: {
+    position: 'absolute',
+    top: 80,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    backgroundColor: 'white',
+     elevation: 2,
+  },
   pagerView: {
     flex: 1,
+    marginTop: 80,
   },
 });
 

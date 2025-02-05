@@ -7,7 +7,7 @@ import OwnedAchievementCard from './components/OwnedAchievementCard';
 import ErrorComponents from '../../../../components/ErrorComponents';
 import EmptyState from '../../../../components/EmptyState';
 import { getAchievements, getOwnedAchievements } from './services/service';
-
+import { ExplorerLoadingSkeleton } from '../../../CommunityScreen/components/Loading/ExplorerLoadingScreen';
 const AchievementsPage = ({ onAchievementCountChange }) => {
     const [activeTab, setActiveTab] = useState('all');
     const [allAchievements, setAllAchievements] = useState([]);
