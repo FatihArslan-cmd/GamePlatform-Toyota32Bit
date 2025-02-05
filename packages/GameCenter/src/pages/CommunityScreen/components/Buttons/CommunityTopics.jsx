@@ -39,6 +39,7 @@ const CommunityTopics = ({ onTopicSelect, selectedTopic }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingTop:60,
   },
   chip: {
     marginHorizontal: 4,

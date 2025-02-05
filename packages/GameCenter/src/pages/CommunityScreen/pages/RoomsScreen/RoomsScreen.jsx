@@ -4,7 +4,8 @@ import { meJoinedRooms } from '../../services/api';
 import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/VideoPlayItems';
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
 import Message from './Message';
-
+import GradientDivider from '../../../../components/GradientDivider';
+import { G } from 'react-native-svg';
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,7 @@ const RoomsScreen = () => {
   return (
     <View style={styles.container}>
       {rooms.length > 0 ? (
+        <>
         <ScrollView
           horizontal
           style={styles.scrollView}
@@ -60,11 +62,14 @@ const RoomsScreen = () => {
             </View>
           ))}
         </ScrollView>
+        <GradientDivider    colors={['#6610F2', '#EA047E']} // Mor - Pembe
+ horizontalMargin={'%10'} height={1} />
+        </>
       ) : (
         !loading && !error && (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No rooms available.</Text>
-          </View>
+          <>
+          
+          </>
         )
       )}
       <Message />
@@ -79,7 +84,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flexGrow: 0,
-    marginBottom: 20, // Added marginBottom to create space for Message component
   },
   contentContainer: {
     flexDirection: 'row',
@@ -87,7 +91,6 @@ const styles = StyleSheet.create({
   },
   roomItem: {
     marginHorizontal: 16,
-    marginBottom: 20,
     marginTop: 20,
   },
   errorText: {

@@ -1,27 +1,24 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
+import MessageItem from './MessageItem';
 
-// Ağır liste verisi - 150 adet öğe
+// Ağır liste verisi - 150 adet öğe (MessageItem için uygun veri yapısıyla)
 const DATA = Array.from({ length: 150 }, (_, index) => ({
   id: String(index),
-  title: `Ağır Liste Öğesi ${index + 1}`,
-  description: `Bu öğe, uzun ve karmaşık bir açıklamaya sahip olabilir. Performansı test etmek için tasarlandı. Örneğin, bu açıklama çok satırlı ve farklı stil özelliklerine sahip olabilir. Hatta burada daha fazla metin olabilir ki listenin ne kadar performanslı olduğunu görelim.`,
-  imageUrl: `https://via.placeholder.com/150/f0f0f0?text=Resim${index+1}`, // Örnek resim URL'si
-  extraData: Array.from({length: 5}, (_, i) => `Ek bilgi ${i+1} için öğe ${index+1}`), // Ek veriler
+  username: `Kullanıcı ${index + 1}`,
+  userAvatar: `https://randomuser.me/api/portraits/men/${index + 1}.jpg`, // randomuser.me'den erkek portreleri
+  timePosted: `${Math.floor(Math.random() * 24)} saat önce`,
+  content: `Bu bir örnek mesaj içeriğidir ${index + 1}. Bu mesaj uzun ve karmaşık olabilir. Performansı test etmek için tasarlandı. Örneğin, bu mesaj çok satırlı ve farklı stil özelliklerine sahip olabilir. Hatta burada daha fazla metin olabilir ki listenin ne kadar performanslı olduğunu görelim.`,
+  contentImage: index % 3 === 0 ? `https://via.placeholder.com/200x150/fedcba?text=Resim${index+1}` : null, // Bazı öğeler için örnek resim
+  initialLikes: Math.floor(Math.random() * 100),
+  commentCount: Math.floor(Math.random() * 20),
+  shareCount: Math.floor(Math.random() * 5),
 }));
 
-// Her bir öğeyi render eden fonksiyon
+// Her bir öğeyi render eden fonksiyon, şimdi MessageItem kullanıyor
 const renderItem = ({ item }) => (
-  <View style={styles.itemContainer}>
-    <Text style={styles.title}>{item.title}</Text>
-    <Text style={styles.description}>{item.description}</Text>
-    {item.extraData.map((data, index) => (
-      <Text key={index} style={styles.extraText}>{data}</Text>
-    ))}
-    {/* İsteğe bağlı: Ağırlaştırmak için resim ekleyebilirsiniz (performansı etkileyebilir) */}
-    {/* <Image source={{ uri: item.imageUrl }} style={styles.image} /> */}
-  </View>
+  <MessageItem message={item} />
 );
 
 const Message = () => {
@@ -30,7 +27,7 @@ const Message = () => {
       <FlashList
         data={DATA}
         renderItem={renderItem}
-        estimatedItemSize={200} // Tahmini öğe yüksekliği. Performansı artırmak için önemli.
+        estimatedItemSize={150} // MessageItem'ın tahmini yüksekliği, ayarlanabilir
         // contentContainerStyle={styles.listContentContainer} // İsteğe bağlı: Liste içeriği için stil
       />
     </SafeAreaView>
@@ -40,34 +37,10 @@ const Message = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white', // Arka plan rengi daha hoş bir görünüm için
   },
   listContentContainer: {
-    padding: 10, // İsteğe bağlı: Liste içeriğinin etrafında boşluk
-  },
-  itemContainer: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 8,
-  },
-  extraText: {
-    fontSize: 12,
-    color: '#777',
-    marginBottom: 4,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginTop: 8,
+    paddingVertical: 10, // Liste içeriğinin etrafında dikey boşluk
   },
 });
 

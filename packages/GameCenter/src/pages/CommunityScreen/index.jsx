@@ -37,9 +37,8 @@ const CommunityScreen = () => {
     },
   });
 
-  const headerAnimatedStyle = useHeaderAnimatedStyle(scrollY, appBarHeight); // Use imported hook
-  const buttonsAnimatedStyle = useButtonsAnimatedStyle(scrollY, buttonsBarHeight); // Use imported hook
-
+  const headerAnimatedStyle = useHeaderAnimatedStyle(scrollY, appBarHeight);
+  const buttonsAnimatedStyle = useButtonsAnimatedStyle(scrollY, buttonsBarHeight);
 
   const onHeaderLayout = (event) => {
     appBarHeight.value = event.nativeEvent.layout.height;
@@ -51,6 +50,13 @@ const CommunityScreen = () => {
   const goToPage = (pageIndex) => {
     pagerRef.current?.setPage(pageIndex);
     setCurrentPageIndex(pageIndex);
+  };
+
+  const onPageSelected = (e) => {
+    setCurrentPageIndex(e.nativeEvent.position);
+    if (e.nativeEvent.position === 1) { // Explorer ekranına geçildiğinde
+      scrollY.value = 0; // scrollY değerini sıfırla
+    }
   };
 
   return (
@@ -77,7 +83,7 @@ const CommunityScreen = () => {
         initialPage={0}
         ref={pagerRef}
         scrollEnabled={true}
-        onPageSelected={(e) => setCurrentPageIndex(e.nativeEvent.position)}
+        onPageSelected={onPageSelected} // onPageSelected olayını ekleyin
       >
         <View key="0">
           <AnimatedScrollView
