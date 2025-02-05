@@ -1,54 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import React, { useState, useCallback, useRef } from 'react';
+import { View, StyleSheet } from 'react-native';
 import RoomList from '../components/Rooms/RoomList';
-import { getRooms, joinRoom, deleteRoom, becomeSupporter, leaveSupporter } from '../services/api';
+import {   becomeSupporter, leaveSupporter,getOthersRoom } from '../services/api';
 import CommunityTopics from '../components/Buttons/CommunityTopics';
+import EmptyState from '../../../components/EmptyState';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+import { ExplorerLoadingSkeleton } from '../components/Loading/ExplorerLoadingScreen';
 
 const ExplorerScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const minimumLoadingTime = 1000;
+  const loadingStartTime = useRef(null);
 
 
-  useEffect(() => {
-    fetchRooms();
-  }, []);
-
-
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
     setLoading(true);
     setError(null);
+    loadingStartTime.current = Date.now(); // Record start time
+
     try {
-      const data = await getRooms();
+      const data = await getOthersRoom();
       setRooms(data);
     } catch (err) {
       setError(err.message || "Odaları yüklerken bir hata oluştu");
     } finally {
-      setLoading(false);
+      const elapsedTime = Date.now() - loadingStartTime.current;
+      const delay = Math.max(0, minimumLoadingTime - elapsedTime);
+
+      setTimeout(() => {
+        setLoading(false);
+      }, delay);
     }
-  };
+  }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchRooms();
+      return () => {
+      };
+    }, [fetchRooms])
+  );
 
-  const handleJoinRoom = async (roomId) => {
-    try{
-        await joinRoom(roomId);
-        fetchRooms()
-      } catch (err){
-        setError(err.message || "Odaya katılırken bir hata oluştu");
-    }
-  }
-
-
-  const handleDeleteRoom = async (roomId) => {
-      try{
-          await deleteRoom(roomId);
-          fetchRooms();
-      }
-      catch (err){
-        setError(err.message || "Odayı silerken bir hata oluştu");
-    }
-  }
 
     const handleBecomeSupporter = async (roomId) => {
         try{
@@ -60,56 +54,61 @@ const ExplorerScreen = () => {
         }
     }
 
+
     const handleLeaveSupporter = async (roomId) => {
-        try {
-            await leaveSupporter(roomId)
-            fetchRooms()
-        } catch (err) {
-            setError(err.message || 'Supporterlıktan çıkarken hata oluştu')
+        try{
+           await leaveSupporter(roomId);
+           fetchRooms()
+        }
+        catch (err){
+            setError(err.message || "Supporter ayrılırken hata oluştu");
         }
     }
 
-  if(loading){
-        return <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large"/>
+    const handleJoinRoom = () => {
+        // Join room logic can be added here if needed in ExplorerScreen
+        console.log("Join room in ExplorerScreen is not implemented yet.");
+    };
+
+    const handleDeleteRoom = () => {
+        // Delete room logic is not relevant in ExplorerScreen, but placeholder if props are passed
+        console.log("Delete room in ExplorerScreen is not implemented and not relevant.");
+    };
+
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.communityTopicsWrapper}>
+          <CommunityTopics />
         </View>
-    }
 
-    if(error){
-        return <View style={styles.errorContainer}>
-            <Text>Hata : {error}</Text>
-            <Button onPress={fetchRooms}>Tekrar Dene</Button>
-        </View>
-    }
-
-
-  return (
-    <View style={styles.container}>
-
-
-<View style={styles.communityTopicsWrapper}>  {/* Yeni stil */}
-      <CommunityTopics />
-    </View>
-  
-
-      <RoomList
-        rooms={rooms}
-        onJoin={handleJoinRoom}
-        onDelete={handleDeleteRoom}
-        onBecomeSupporter={handleBecomeSupporter}
-        onLeaveSupporter={handleLeaveSupporter}
-      />
-
-    </View>
-  );
-};
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ExplorerLoadingSkeleton />
+          </View>
+        ) : error ? (
+          <View style={styles.errorContainer}>
+            <EmptyState />
+          </View>
+        ) : (
+          <RoomList
+            rooms={rooms}
+            onJoin={handleJoinRoom}
+            onDelete={handleDeleteRoom}
+            onBecomeSupporter={handleBecomeSupporter}
+            onLeaveSupporter={handleLeaveSupporter}
+          />
+        )}
+      </View>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
     backgroundColor: '#f0f0f0',
-    
+
   },
 
   communityTopicsWrapper: {

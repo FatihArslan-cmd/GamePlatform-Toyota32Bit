@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-const CreateButton = ({ onPress, loading }) => (
+const CreateButton = ({ onPress, loading, disabled }) => ( 
   <Button
     mode="contained"
     onPress={onPress}
     loading={loading}
-    disabled={loading}
+    disabled={disabled} 
     style={styles.createButton}
     contentStyle={styles.createButtonContent}
     labelStyle={{ color: 'white' }}

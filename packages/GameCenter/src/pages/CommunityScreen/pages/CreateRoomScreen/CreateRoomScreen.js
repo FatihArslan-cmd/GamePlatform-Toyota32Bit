@@ -23,8 +23,9 @@ const CreateRoomScreen = () => {
   const [topic, setTopic] = useState('');
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isCreateSuccess, setIsCreateSuccess] = useState(false); // Yeni state eklendi
   const navigation = useNavigation();
-  const { currentToast, showToast, hideToast } = useToast(); // Use the hook
+  const { currentToast, showToast, hideToast } = useToast();
 
   const handleCreateRoom = async () => {
     if (!roomName.trim()) {
@@ -41,6 +42,7 @@ const CreateRoomScreen = () => {
     try {
       await createRoom(roomName, topic, imageUri);
       showToast("success", "Room created successfully!");
+      setIsCreateSuccess(true); // Başarılı oda oluşturulduktan sonra butonu devre dışı bırak
       setTimeout(() => {
         navigation.goBack();
       },3000);
@@ -83,7 +85,7 @@ const CreateRoomScreen = () => {
 
             </View>
 
-            <CreateButton onPress={handleCreateRoom} loading={loading} />
+            <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} /> {/* disabled prop güncellendi */}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -92,7 +94,7 @@ const CreateRoomScreen = () => {
                 <ToastMessage
                   type={currentToast.type}
                   message={currentToast.message}
-                  onHide={hideToast} // Call hideToast to clear the current toast
+                  onHide={hideToast}
                 />
               )}
     </SafeAreaView>

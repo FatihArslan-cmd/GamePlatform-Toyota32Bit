@@ -44,15 +44,38 @@ export const getRoom = async (roomId) => {
   }
 };
 
-export const joinRoom = async (roomId) => {
+export const getOthersRoom = async () => {
   try {
-    const response = await api.post(`/rooms/${roomId}/join`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+    const response = await api.get(`/rooms/other`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
   }
 };
-
+export const meJoinedRooms = async () => {
+    try {
+      const response = await api.get(`/rooms/me-joined-rooms`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  };
+export const getmyRooms = async () => {
+    try {
+      const response = await api.get(`/rooms/me`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  };
+  export const joinRoom = async (roomId) => {
+    try {
+      const response = await api.post(`/rooms/${roomId}/join`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error.message;
+    }
+  };
 export const leaveRoom = async (roomId) => {
     try {
         const response = await api.post(`/rooms/${roomId}/leave`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server

@@ -1,5 +1,4 @@
-// Controller dosyası (örneğin chatRoomController.js)
-const { createRoom, getRoom, getAllRooms, joinRoom, leaveRoom, deleteRoom, becomeSupporter, leaveSupporter, topics, isValidTopic, getRoomsByCreator, getRoomsNotByCreator} = require('../memory/chatRoomStore');
+const { createRoom, getRoom, getAllRooms, joinRoom, leaveRoom, deleteRoom, becomeSupporter, leaveSupporter, topics, isValidTopic, getRoomsByCreator, getRoomsNotByCreator, getRoomsBySupporter} = require('../memory/chatRoomStore');
 
 const isURL = (string) => {
   try {
@@ -63,6 +62,13 @@ const getRoomsByMeHandler = (req, res) => {
 const getRoomsNotByMeHandler = (req, res) => {
     const userId = req.user.id;
     const rooms = getRoomsNotByCreator(userId);
+    res.json(rooms);
+};
+
+// Yeni Handler: Kullanıcının supporter olduğu odaları getir
+const getRoomsBySupporterHandler = (req, res) => {
+    const userId = req.user.id;
+    const rooms = getRoomsBySupporter(userId);
     res.json(rooms);
 };
 
@@ -143,5 +149,6 @@ module.exports = {
     becomeSupporterHandler,
     leaveSupporterHandler,
     getRoomsByMeHandler, // Export new handler
-    getRoomsNotByMeHandler // Export new handler
+    getRoomsNotByMeHandler, // Export new handler
+    getRoomsBySupporterHandler // Export new handler
 };

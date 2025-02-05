@@ -1,4 +1,3 @@
-// chatRoomStore.js
 const crypto = require('crypto');
 const users = require('../utils/users');
 
@@ -90,15 +89,38 @@ function getRoomsByCreator(creatorId) {
 }
 
 // Yeni fonksiyon: Kullanıcının yaratmadığı odaları getir
-function getRoomsNotByCreator(creatorId) {
+// Düzenleme: Kullanıcının supporter olmadıgı odaları getirir
+function getRoomsNotByCreator(userId) { // Function name remains same as requested, but parameter name changed to userId for clarity
     return Array.from(rooms.values())
-        .filter(room => room.creatorId !== creatorId)
+        .filter(room => !room.supporters.has(userId)) // Changed filter condition to check if userId is NOT a supporter
         .map(room => {
             // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
-            const supportersWithUsernames = Array.from(room.supporters).map(userId => {
-                const username = Object.keys(users).find(key => users[key].id === userId);
+            const supportersWithUsernames = Array.from(room.supporters).map(supporterId => { // Renamed userId to supporterId for clarity in map
+                const username = Object.keys(users).find(key => users[key].id === supporterId);
                 return {
-                    id: userId,
+                    id: supporterId,
+                    username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+                };
+            });
+
+            return {
+                ...room,
+                supporters: supportersWithUsernames,
+                supporterCount: room.supporters.size  //Add the supporter count
+            };
+        });
+}
+
+// Yeni fonksiyon: Kullanıcının supporter olduğu odaları getir
+function getRoomsBySupporter(userId) {
+    return Array.from(rooms.values())
+        .filter(room => room.supporters.has(userId))
+        .map(room => {
+            // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
+            const supportersWithUsernames = Array.from(room.supporters).map(supporterId => {
+                const username = Object.keys(users).find(key => users[key].id === supporterId);
+                return {
+                    id: supporterId,
                     username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
                 };
             });
@@ -196,5 +218,6 @@ module.exports = {
     topics,  // Expose the topics array
     isValidTopic,
     getRoomsByCreator, // Export new function
-    getRoomsNotByCreator // Export new function
+    getRoomsNotByCreator, // Export new function
+    getRoomsBySupporter // Export new function
 };

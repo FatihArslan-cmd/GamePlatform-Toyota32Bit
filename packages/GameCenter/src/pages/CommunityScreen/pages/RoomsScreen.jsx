@@ -1,63 +1,83 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { FAB, Portal, PaperProvider } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import CustomFAB from '../components/Buttons/CustomFab';
+import { meJoinedRooms } from '../services/api';
+import VideoPlayItems from '../../HomeScreen/components/VideoPlayBlock/VideoPlayItems';
+
 const RoomsScreen = () => {
-  const [state, setState] = React.useState({ open: false });
- const navigation = useNavigation();
-  const onStateChange = ({ open }) => setState({ open });
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const { open } = state;
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const data = await meJoinedRooms();
+        setRooms(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch rooms');
+        setLoading(false);
+      }
+    };
 
-  return (
-    <PaperProvider>
+    fetchRooms();
+  }, []);
+
+  if (loading) {
+    return (
       <View style={styles.container}>
-        <Text style={styles.text}>Rooms Sayfası</Text>
+        <Text>Loading rooms...</Text>
       </View>
-      <Portal>
-        <FAB.Group
-          open={open}
-          visible
-          icon={open ? 'calendar-today' : 'plus'}
-          actions={[
-            { icon: 'plus', onPress: () => console.log('Pressed add') },
-            {
-              icon: 'star',
-              label: 'Star',
-              onPress: () => navigation.navigate('CreateRoom'),
-            },
-            {
-              icon: 'email',
-              label: 'Email',
-              onPress: () => console.log('Pressed email'),
-            },
-            {
-              icon: 'bell',
-              label: 'Remind',
-              onPress: () => console.log('Pressed notifications'),
-            },
-          ]}
-          onStateChange={onStateChange}
-          onPress={() => {
-            if (open) {
-              // do something if the speed dial is open
-            }
-          }}
-        />
-      </Portal>
-    </PaperProvider>
+    );
+  }
+
+  
+  return (
+    <View style={styles.container}>
+      {rooms.length > 0 ? (
+        <ScrollView
+          horizontal
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+          showsHorizontalScrollIndicator={false} 
+        >
+          {rooms.map((room, index) => (
+            <View key={room.id} style={styles.roomItem}> 
+              <VideoPlayItems
+                title={room.name}
+                imageUri={room.imageUrl}
+                index={index}
+              />
+            </View>
+          ))}
+        </ScrollView>
+      ) : (
+        <></>
+      )}
+      <CustomFAB />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 20,
   },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
+
+  scrollView: {
+    flexGrow: 0,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+  },
+  roomItem: {
+    marginHorizontal: 16, // Itemler arası boşluk artırıldı
+    marginBottom: 20,
+    marginTop: 20,
   },
 });
 
