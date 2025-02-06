@@ -1,11 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useRef, useState,useContext} from 'react';
+import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../components/CustomModal';
-import { removeToken } from '../../shared/states/api';
 import BackButton from '../../components/BackIcon';
-import { storage } from '../../utils/storage';
 import BottomSheet from '../../components/themeswitch/BottomSheet'; // Ensure the path is correct
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
@@ -13,6 +11,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useColorScheme } from 'react-native';
 import ThemeButton from '../../components/themeswitch/Button';
+import { UserContext } from '../../context/UserContext';
 
 const SettingScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -22,25 +21,18 @@ const SettingScreen = () => {
   const insets = useSafeAreaInsets();
     const [theme, setTheme] = useState(colorScheme);
   const [themeSwitch, setThemeSwitch] = useState('system');
+  const { logoutUser } = useContext(UserContext);
 
-  const getToken = () => {
-    const token = storage.getString('token'); // MMKV'den token alınıyor
-    console.log('Token1:', token);
-    if (!token) {
-      console.warn('No token found in storage');
-    }
-    console.log('Token2:', token);
-    return token;
-  };
+
   
   const handleLogout = () => {
-    getToken();
-    removeToken(); // Delete the token
+    logoutUser();
     navigation.reset({
       index: 0,
       routes: [{ name: 'Login' }],
     });
   };
+
   const backgroundColorAnimation = useAnimatedStyle(() => {
     return {
       backgroundColor:

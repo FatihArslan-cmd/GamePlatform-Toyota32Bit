@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { storage } from '../../utils/storage';
 
+
 let isRefreshing = false;
 let failedQueue = [];
 
 const api = axios.create({
-  baseURL: 'http://10.0.2.2:3000/api', 
+  baseURL: 'http://10.0.2.2:3000/api',
   timeout: 5000,
 });
 
@@ -74,27 +75,32 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-export const login = async (username, password, rememberMe=false) => {
+export const login = async (username, password,) => {
   try {
     const response = await api.post('/login', { username, password });
-    const { accessToken, refreshToken } = response.data;
+    const { accessToken, refreshToken, profilePhoto, encryptedInfo} = response.data;
 
     if (!accessToken) {
       throw new Error('Access token missing in response');
     }
 
     saveToken(accessToken);
+    saveRefreshToken(refreshToken);
+    
 
-    if (rememberMe) {
-      saveRefreshToken(refreshToken);
+    const userData = {
+      username,
+      profilePhoto,
+      encryptedInfo
     }
-
-    return response.data;
+    await storage.set('user', JSON.stringify(userData)) 
+    return {data: userData, resData: response.data};
   } catch (error) {
     console.log('Login error:', error);
     throw error.response?.data || { message: 'An error occurred' };
   }
 };
+
 
 const saveToken = (token) => {
   if (!token || typeof token !== 'string') {

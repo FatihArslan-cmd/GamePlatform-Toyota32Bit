@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 28,
-    color: '#1a1a1a',
+    color: '#666',
     letterSpacing: -0.5,
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold'
   },
   dateText: {
     fontSize: 14,

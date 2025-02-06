@@ -1,20 +1,17 @@
 import React ,{ useEffect } from 'react';
-import { StyleSheet, Animated,Linking,StatusBar } from 'react-native';
+import { StyleSheet, Animated,Linking,StatusBar, Button } from 'react-native';
 import FormSection from './components/FormSection';
 import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';
 import ToastMessage from '../../components/ToastMessage/Toast';
 import useToast from '../../components/ToastMessage/hooks/useToast';
 import SavedUserSection from './components/ProfileSection/SavedUserSection';
-import { setNavigationBar,hideNavigationBar } from '../../utils/NavBarManager';
-
+import { hideNavigationBar } from '../../utils/NavBarManager';
 const LoginScreen = () => {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
   const { currentToast, showToast, hideToast } = useToast();
 
-
   useEffect(() => {
-    // Set navigation bar color to blue with light icons
     hideNavigationBar();
   }, []);
 
@@ -44,7 +41,6 @@ const LoginScreen = () => {
         />
         <SavedUserSection />  
       </LinearGradient>
-
       {currentToast && (
         <ToastMessage
           type={currentToast.type}

@@ -5,7 +5,6 @@ import PermissionItem from './PermissionItem';
 import { storage } from '../../../../utils/storage';
 
 const BioModalContent = ({ onPermissionsChange }) => {
-  
   const [permissions, setPermissions] = useState({
     biometric: false,
     nfc: false,
@@ -20,11 +19,11 @@ const BioModalContent = ({ onPermissionsChange }) => {
     }
   }, []);
 
-  const handlePermissionChange = (key) => {
+    const handlePermissionChange = (key) => {
     // Update the permissions state
     const updatedPermissions = {
       ...permissions,
-      [key]: !permissions[key],
+      [key]: !permissions[key], // Toggle the permission value
     };
 
     // Save the updated permissions to MMKV
@@ -46,6 +45,7 @@ const BioModalContent = ({ onPermissionsChange }) => {
         icon="fingerprint"
         isChecked={permissions.biometric}
         onToggle={() => handlePermissionChange('biometric')}
+        permission="biometric"
       />
 
       <PermissionItem
@@ -53,6 +53,7 @@ const BioModalContent = ({ onPermissionsChange }) => {
         icon="nfc"
         isChecked={permissions.nfc}
         onToggle={() => handlePermissionChange('nfc')}
+        permission="nfc"
       />
 
       <PermissionItem
@@ -60,6 +61,7 @@ const BioModalContent = ({ onPermissionsChange }) => {
         icon="barcode-scan"
         isChecked={permissions.barcode}
         onToggle={() => handlePermissionChange('barcode')}
+        permission="barcode"
       />
     </View>
   );
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: '#ffffff',
+    fontFamily:'Orbitron-ExtraBold'
   },
 });
 

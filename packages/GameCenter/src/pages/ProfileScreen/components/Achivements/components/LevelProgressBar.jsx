@@ -15,15 +15,16 @@ const LevelProgressBar = ({ level, currentXP, nextLevelXP }) => {
   const animatedStyle = useAnimatedStyle(() => ({
     width: `${progressAnim.value}%`,
   }));
+    const currentLevelNumber = level;
+    const nextLevelNumber = level + 1;
 
+    const remainingXP = nextLevelXP - currentXP;
   return (
     <View style={styles.container}>
-      <View style={styles.levelBadge}>
-        <View style={styles.modernBadge}>
-          <Text style={styles.levelText}>LVL {level}</Text>
-        </View>
-      </View>
-
+        <View style={styles.progressContent}>
+        <View style={styles.levelContainer}>
+            <Text style={styles.currentLevelText}>{currentLevelNumber}</Text>
+          </View>
       <View style={styles.progressSection}>
         <View style={styles.progressContainer}>
           <LinearGradient
@@ -41,12 +42,15 @@ const LevelProgressBar = ({ level, currentXP, nextLevelXP }) => {
             />
           </Animated.View>
         </View>
-
-        <View style={styles.xpContainer}>
-          <Text style={styles.xpText}>
-            {currentXP}/{nextLevelXP} XP
-          </Text>
+      </View>
+            <View style={styles.nextLevelContainer}>
+            <Text style={styles.nextLevelText}>{nextLevelNumber}</Text>
         </View>
+    </View>
+      <View style={styles.xpContainer}>
+        <Text style={styles.xpText}>
+          {remainingXP.toLocaleString()} XP TO LEVEL {nextLevelNumber}
+        </Text>
       </View>
     </View>
   );
@@ -54,31 +58,42 @@ const LevelProgressBar = ({ level, currentXP, nextLevelXP }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: 'rgba(44, 7, 53, 0.1)',
     borderRadius: 12,
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     margin: 10,
   },
-  levelBadge: {
-    marginRight: 12,
-  },
-  modernBadge: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: '#321B3B',
-    borderWidth: 1,
-    borderColor: 'rgba(142, 45, 226, 0.3)',
-  },
-  levelText: {
-    color: '#FFFFFF',
-    fontFamily: 'Orbitron-VariableFont_wght',
-    fontSize: 14,
-    letterSpacing: 0.5,
-  },
+      progressContent: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+      },
+    levelContainer:{
+        paddingHorizontal: 12,
+        paddingVertical: 3,
+      borderRadius: 5,
+      backgroundColor: '#321B3B',
+    },
+    nextLevelContainer:{
+       paddingHorizontal: 12,
+        paddingVertical: 3,
+      borderRadius: 5,
+      backgroundColor: '#321B3B',
+    },
+    currentLevelText: {
+          color: '#FFFFFF',
+      fontFamily: 'Orbitron-VariableFont_wght',
+        fontSize: 16,
+    },
+    nextLevelText: {
+      color: '#FFFFFF',
+      fontFamily: 'Orbitron-VariableFont_wght',
+      fontSize: 16,
+    },
   progressSection: {
-    flex: 1,
+      flex:1,
+      marginHorizontal: 10,
   },
   progressContainer: {
     height: 12,

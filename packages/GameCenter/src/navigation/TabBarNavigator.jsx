@@ -6,7 +6,7 @@ import Animated, { useAnimatedStyle, withTiming, useDerivedValue } from 'react-n
 import Lottie from 'lottie-react-native';
 import HomeScreen from '../pages/HomeScreen/index';
 import ProfileScreen from '../pages/ProfileScreen/index';
-import LiveScreen from '../pages/LiveScreen';
+import CommunityScreen from '../pages/CommunityScreen';
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const Tab = createMaterialTopTabNavigator();
@@ -44,14 +44,14 @@ const TabNavigator = () => {
           }}
         />
                 <Tab.Screen
-          name="LiveScreen"
-          component={LiveScreen}
+          name="CommunityScreen"
+          component={CommunityScreen}
           options={{
             tabBarIcon: ({ ref }) => (
               <Lottie
                 ref={ref}
                 loop={false}
-                source={require('../locales/lottie/Live-icon.json')}
+                source={require('../locales/lottie/ChatIcon.json')}
                 style={[styles.icon, { tintColor: 'black' }]}
               />
             ),
@@ -144,11 +144,11 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
   }, [active]);
 
   const animatedComponentCircleStyles = useAnimatedStyle(() => ({
-    transform: [{ scale: withTiming(active ? 1 : 0, { duration: 250 }) }],
+    transform: [{ scale: withTiming(active ? 1 : 0, { duration: 500 }) }],
   }));
 
   const animatedIconContainerStyles = useAnimatedStyle(() => ({
-    opacity: withTiming(active ? 1 : 0.5, { duration: 250 }),
+    opacity: withTiming(active ? 1 : 0.5, { duration: 500 }),
   }));
 
   return (

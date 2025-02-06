@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import WavyLine from '../../../../components/WavyLine';
 import GradientText from '../../../../components/GrandientText';
 import SearchBar from './SearchBar';
 import MenuComponent from './MenuComponent';
 import CreateLobbyModal from '../CreateLobbyModal/CreateLobbyModal';
 import BottomSheet from '../../../../components/BottomSheet';
-import ActiveLobbiesContent from './ActiveLobbiesContext';
-import JoinLobbyModal from './JoinLobbyModal'; // Yeni modalı import et
+import ActiveLobbiesContent from './ActiveLobbiesContent';
+import JoinLobbyModal from './JoinLobbyModal';
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -20,6 +19,7 @@ const Header = () => {
 
   const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
+  
   const openBottomSheet = () => setIsBottomSheetVisible(true);
   const closeBottomSheet = () => setIsBottomSheetVisible(false);
 

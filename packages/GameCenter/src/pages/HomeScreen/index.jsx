@@ -6,10 +6,7 @@ import {
 } from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
-  useAnimatedStyle,
   useSharedValue,
-  interpolate,
-  withSpring,
 } from 'react-native-reanimated';
 import { getGamesFromStorage } from '../../utils/api';
 import ToastMessage from '../../components/ToastMessage/Toast';
@@ -21,6 +18,7 @@ import FromTheCreator from './components/FromTheCreator/FromTheCreator';
 import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 import useDisableBackButton from './hooks/useDisableBackButton';
 import { hideNavigationBar } from '../../utils/NavBarManager';
+import useHeaderAnimation from './hooks/useHeaderAnimation';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
@@ -29,7 +27,7 @@ const HomeScreen = () => {
   const [games, setGames] = useState([]);
   const appBarHeight = useSharedValue(0);
   const scrollY = useSharedValue(0);
-  const isScrolling = useSharedValue(false);
+  const isScrolling = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -46,28 +44,7 @@ const HomeScreen = () => {
     },
   });
 
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(
-      scrollY.value,
-      [0, 750], 
-      [0, -appBarHeight.value],
-      { extrapolateRight: 'clamp' }
-    );
-
-    return {
-      transform: [{
-        translateY: withSpring(translateY, {
-          mass: 0.5,
-          damping: 15,
-          stiffness: 100,
-          overshootClamping: true,
-          restDisplacementThreshold: 0.01,
-          restSpeedThreshold: 0.01,
-        })
-      }]
-    };
-  }, []);
-
+  const headerAnimatedStyle = useHeaderAnimation(scrollY, appBarHeight);
   useEffect(() => {
     hideNavigationBar();
     const loadGames = async () => {
@@ -93,13 +70,16 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      
       <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onLayout}
       >
         <Header />
       </Animated.View>
+
       <AnimatedScrollView
         onScroll={scrollHandler}
         scrollEventThrottle={8}
@@ -113,6 +93,7 @@ const HomeScreen = () => {
         <FromTheCreator />
         <VideoPlayBlock />
       </AnimatedScrollView>
+
       {currentToast && (
         <ToastMessage
           type={currentToast.type}

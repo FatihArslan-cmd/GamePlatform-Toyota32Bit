@@ -6,7 +6,7 @@ import games from './games';
 import VideoPlayItems from './VideoPlayItems';
 import { useIsFocused } from '@react-navigation/native';
 import GradientDivider from '../../../../components/GradientDivider';
-
+import GrandientText from '../../../../components/GrandientText';
 const VideoPlayBlock = memo(() => {
   const isFocused = useIsFocused();
 
@@ -18,7 +18,13 @@ const VideoPlayBlock = memo(() => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upcoming Games</Text>
+       <GrandientText
+                text="Upcoming Games"
+                colors={['black', '#778899']}
+                textStyle={{ fontSize: 32}}
+                gradientDirection="horizontal"
+                width={400  }
+              />
       <GradientDivider/>
       <View style={{marginVertical:10}}/>
       <View style={styles.gridContainer}>
@@ -26,7 +32,7 @@ const VideoPlayBlock = memo(() => {
           <VideoPlayItems
             key={game.title}
             title={game.title}
-            imageUri={isFocused ? game.imageUri : null} // Eğer görünür değilse FastImage kaldırılır
+            imageUri={isFocused ? game.imageUri : null} 
             index={index}
           />
         ))}

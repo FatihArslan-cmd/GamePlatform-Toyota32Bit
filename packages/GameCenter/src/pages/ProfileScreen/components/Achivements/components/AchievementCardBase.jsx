@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, IconButton, useTheme } from 'react-native-paper';
 
-const AchievementCardBase = ({ item, isOwned = false }) => {
+const AchievementCardBase = ({ item}) => {
     const theme = useTheme();
 
     const getRarityStyle = () => {
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     card: {
         marginBottom: 12,
         backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        borderRadius:20
     },
     cardContent: {
         flexDirection: 'row',

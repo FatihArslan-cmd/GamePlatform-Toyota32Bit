@@ -12,20 +12,27 @@ import Animated, {
 import { Text } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { hideNavigationBar } from '../utils/NavBarManager';
+import FastImage from 'react-native-fast-image';
+import games from '../pages/HomeScreen/components/VideoPlayBlock/games';
 
 const { width } = Dimensions.get('window');
 
 const LoadingFullScreen = () => {
   const scale = useSharedValue(1);
-  
+
   useEffect(() => {
     hideNavigationBar();
   }, []);
 
   useEffect(() => {
+    const imagesToPreload = games.map(game => ({ uri: game.imageUri }));
+    FastImage.preload(imagesToPreload);
+  }, []);
+
+  useEffect(() => {
     scale.value = withRepeat(
-      withSpring(1.1, { damping: 2, stiffness: 80 }), 
-      -1, 
+      withSpring(1.1, { damping: 2, stiffness: 80 }),
+      -1,
       true
     );
   }, []);
@@ -91,13 +98,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     fontSize: 28,
     marginBottom: 8,
   },
   subtitle: {
     color: 'rgba(255, 255, 255, 0.8)',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     fontSize: 16,
   },
 });

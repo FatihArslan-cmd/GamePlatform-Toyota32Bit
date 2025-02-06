@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTheme } from 'react-native-paper';
-import { getToken } from '../../../shared/states/api';
+import * as FriendService from '../services/service'; 
 
 const useFriendsPage = () => {
     const { colors } = useTheme();
@@ -15,31 +15,17 @@ const useFriendsPage = () => {
     const [friendModalVisible, setFriendModalVisible] = useState(false);
     const [snackbarVisible, setSnackbarVisible] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [searchText, setSearchText] = useState(''); // Arama metni için state
-
+    const [searchText, setSearchText] = useState('');
 
     const handleInvitePress = async () => {
         setLoading(true);
         setError('');
         try {
-            const token = await getToken();
-            const response = await fetch('http://10.0.2.2:3000/api/generate-friend-code', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                setFriendCode(data.friendCode);
-                setModalVisible(true);
-            } else {
-                setError(data.message || 'Failed to generate code.');
-            }
+            const data = await FriendService.generateFriendCode();
+            setFriendCode(data.friendCode);
+            setModalVisible(true);
         } catch (err) {
-            setError('Failed to connect to the server.');
+            setError(err.message || 'Failed to generate code.');
         } finally {
             setLoading(false);
         }
@@ -69,28 +55,20 @@ const useFriendsPage = () => {
         handleModalDismiss();
     };
 
-     const fetchFriends = async () => {
+    const fetchFriendsList = async () => {
         setError('');
         try {
-            const token = await getToken();
-            const response = await fetch('http://10.0.2.2:3000/api/friends', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setFriends(data.friends);
-            } else {
-                setError(data.message || 'Failed to fetch friends');
-            }
+            const data = await FriendService.fetchFriends();
+            setFriends(data.friends);
         } catch (err) {
+            setError(err.message || 'Failed to fetch friends');
         }
     };
 
     useEffect(() => {
-        fetchFriends();
+        fetchFriendsList();
     }, []);
+
     const handleFriendPress = (friend) => {
         setSelectedFriend(friend);
         setFriendModalVisible(true);
@@ -105,23 +83,14 @@ const useFriendsPage = () => {
         setLoading(true);
         setError('');
         try {
-            const token = await getToken();
-            const response = await fetch(`http://10.0.2.2:3000/api/remove-friend/${selectedFriend.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                setFriendModalVisible(false);
-                setSelectedFriend(null);
-                fetchFriends();
-            } else {
-                setError(data.message || 'Failed to remove friend.');
-            }
+            await FriendService.removeFriend(selectedFriend.id);
+            setFriendModalVisible(false);
+            setSelectedFriend(null);
+            fetchFriendsList();
+             setSnackbarMessage('Friend Removed Successfully!');
+              setSnackbarVisible(true);
         } catch (err) {
+            setError(err.message || 'Failed to remove friend.');
         } finally {
             setLoading(false);
         }
@@ -131,29 +100,17 @@ const useFriendsPage = () => {
         setLoading(true);
         setError('');
         try {
-            const token = await getToken();
-            const response = await fetch('http://10.0.2.2:3000/api/add-friend', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ friendCode: code }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-              fetchFriends();
-                setSnackbarMessage('Friend added successfully!');
-                setSnackbarVisible(true)
-            } else {
-                setError(data.message || 'Failed to add friend.');
-            }
+            await FriendService.addFriend(code);
+            fetchFriendsList();
+            setSnackbarMessage('Friend added successfully!');
+            setSnackbarVisible(true);
         } catch (err) {
+            setError(err.message || 'Failed to add friend.');
         } finally {
             setLoading(false);
         }
     };
+
     const handleSearchChange = (text) => {
         setSearchText(text);
     };
@@ -182,7 +139,7 @@ const useFriendsPage = () => {
         handleCopyCode,
         handleModalDismiss,
         handleShareCode,
-        fetchFriends,
+        fetchFriends: fetchFriendsList, 
         handleFriendPress,
         handleFriendModalDismiss,
         handleRemoveFriend,

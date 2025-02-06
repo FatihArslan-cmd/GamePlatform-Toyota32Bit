@@ -5,7 +5,7 @@ import GameItem from './GameItem';
 import ScrollArrow from './ScrollArrow';
 import MyLoader from '../../../../components/SkeletonPlaceHolder/MiniGamesPlaceHolder'; // Orijinal Placeholder
 import { cardColors } from './CardColors';
-
+import GrandientText from '../../../../components/GrandientText';
 const MiniGamesBlock = memo(({ games }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -41,7 +41,12 @@ const MiniGamesBlock = memo(({ games }) => {
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.title}>Mini Games</Text>
+        <GrandientText
+          text="Mini Games"
+          colors={['black', '#778899']}
+          textStyle={{ fontSize: 32, textAlign: 'center' }} 
+          gradientDirection="horizontal"
+        />
       <Divider style={styles.divider} />
       {isLoading ? (
         <MyLoader />

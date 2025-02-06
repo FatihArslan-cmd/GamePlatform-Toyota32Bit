@@ -13,6 +13,7 @@ const GameCard = ({ gameName, instructions, imageSource, buttonText, onButtonPre
       <FastImage
         style={styles.imageBackground}
         source={imageSource}
+        
       >
         <View style={styles.overlay} />
       </FastImage>

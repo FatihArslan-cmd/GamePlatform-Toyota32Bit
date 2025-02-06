@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Menu, Divider, Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -55,7 +55,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       <Menu.Item
         onPress={() => {
           closeMenu();
-          setJoinLobbyModalVisible(true); // Join Lobby modalını aç
+          setJoinLobbyModalVisible(true);
         }}
         title="Join Lobby"
         titleStyle={styles.menuItemText}

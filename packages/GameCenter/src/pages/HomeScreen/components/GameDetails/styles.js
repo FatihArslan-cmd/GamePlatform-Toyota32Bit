@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
         top: 40,
         left: 16,
         zIndex: 10,
+
       },
       image: {
         borderRadius: 55,
@@ -43,7 +44,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#4a148c',
         letterSpacing: 0.5,
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold'
       },
       tabContainer: {
         flexDirection: 'row',

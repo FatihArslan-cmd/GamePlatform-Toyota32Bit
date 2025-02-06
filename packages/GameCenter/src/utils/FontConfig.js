@@ -1,3 +1,4 @@
+import { BlendMode } from '@shopify/react-native-skia';
 import { configureFonts, MD2LightTheme } from 'react-native-paper';
 
 const fontConfig = {
@@ -9,6 +10,10 @@ const fontConfig = {
     medium: {
       fontFamily: 'Orbitron-VariableFont_wght',
       fontWeight: 'normal',
+    },
+    bold: {
+      fontFamily: 'Orbitron-ExtraBold',
+      fontWeight: 'bold',
     },
     light: {
       fontFamily: 'RussoOne-Regular',

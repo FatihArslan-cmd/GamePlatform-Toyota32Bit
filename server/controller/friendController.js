@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const users = require('../utils/users');
 const { sessionStore } = require('../config/sessionConfig');
 
-const friendCodes = {}; // Bellek içi (in-memory) obje
+const friendCodes = {}; 
 
 const generateFriendCode = (req, res) => {
     const userId = req.user.id;

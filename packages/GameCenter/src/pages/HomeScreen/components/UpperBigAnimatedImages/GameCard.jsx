@@ -33,7 +33,8 @@ const GameCard = ({ game }) => {
             source={{
               uri: game.background_image,
               priority: FastImage.priority.high,
-            }}
+              cache: FastImage.cacheControl.immutable,
+                        }}
             style={styles.image}
             onLoad={handleImageLoad}
           />
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 4,
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold'
   },
   releaseInfo: {
     color: '#ccc',
