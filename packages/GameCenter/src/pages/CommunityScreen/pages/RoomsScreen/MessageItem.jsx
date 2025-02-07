@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, IconButton, Avatar, PaperProvider } from 'react-native-paper';
+import { Text, IconButton, Avatar} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/Ionicons'; // veya istediğiniz icon seti (örneğin FontAwesome)
 
 const MessageItem = ({ message }) => {
   const [liked, setLiked] = useState(false);

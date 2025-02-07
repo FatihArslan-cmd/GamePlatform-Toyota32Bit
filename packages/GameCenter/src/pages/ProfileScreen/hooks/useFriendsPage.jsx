@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTheme } from 'react-native-paper';
-import * as FriendService from '../services/service'; 
+import * as FriendService from '../services/service';
 
 const useFriendsPage = () => {
     const { colors } = useTheme();
@@ -17,7 +17,21 @@ const useFriendsPage = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [searchText, setSearchText] = useState('');
 
-    const handleInvitePress = async () => {
+    const fetchFriendsList = useCallback(async () => {
+        setError('');
+        try {
+            const data = await FriendService.fetchFriends();
+            setFriends(data.friends);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch friends');
+        }
+    }, []); // fetchFriendsList is memoized as it's used in useEffect
+
+    useEffect(() => {
+        fetchFriendsList();
+    }, [fetchFriendsList]); // Dependency array includes the memoized fetchFriendsList
+
+    const handleInvitePress = useCallback(async () => {
         setLoading(true);
         setError('');
         try {
@@ -29,20 +43,20 @@ const useFriendsPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const handleCopyCode = async () => {
+    const handleCopyCode = useCallback(async () => {
         Clipboard.setString(friendCode);
         setSnackbarMessage('Code copied to clipboard');
         setSnackbarVisible(true);
-    };
+    }, [friendCode]); // Dependency array includes friendCode
 
-    const handleModalDismiss = () => {
+    const handleModalDismiss = useCallback(() => {
         setModalVisible(false);
         setFriendCode('');
-    };
+    }, []);
 
-    const handleShareCode = async () => {
+    const handleShareCode = useCallback(async () => {
         try {
             const shareOptions = {
                 message: `Here is my friend code: ${friendCode}`,
@@ -52,41 +66,27 @@ const useFriendsPage = () => {
             console.log("Error sharing code:", error);
             setError("Failed to share code");
         }
-        handleModalDismiss();
-    };
+        handleModalDismiss(); // Using memoized handleModalDismiss
+    }, [friendCode, handleModalDismiss]); // Dependency array includes friendCode and handleModalDismiss
 
-    const fetchFriendsList = async () => {
-        setError('');
-        try {
-            const data = await FriendService.fetchFriends();
-            setFriends(data.friends);
-        } catch (err) {
-            setError(err.message || 'Failed to fetch friends');
-        }
-    };
-
-    useEffect(() => {
-        fetchFriendsList();
-    }, []);
-
-    const handleFriendPress = (friend) => {
+    const handleFriendPress = useCallback((friend) => {
         setSelectedFriend(friend);
         setFriendModalVisible(true);
-    };
+    }, []);
 
-    const handleFriendModalDismiss = () => {
+    const handleFriendModalDismiss = useCallback(() => {
         setFriendModalVisible(false);
         setSelectedFriend(null);
-    };
+    }, []);
 
-    const handleRemoveFriend = async () => {
+    const handleRemoveFriend = useCallback(async () => {
         setLoading(true);
         setError('');
         try {
             await FriendService.removeFriend(selectedFriend.id);
             setFriendModalVisible(false);
             setSelectedFriend(null);
-            fetchFriendsList();
+            await fetchFriendsList(); // Using memoized fetchFriendsList
              setSnackbarMessage('Friend Removed Successfully!');
               setSnackbarVisible(true);
         } catch (err) {
@@ -94,14 +94,14 @@ const useFriendsPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [selectedFriend, fetchFriendsList]); // Dependency array includes selectedFriend and fetchFriendsList
 
-    const handleAddFriend = async (code) => {
+    const handleAddFriend = useCallback(async (code) => {
         setLoading(true);
         setError('');
         try {
             await FriendService.addFriend(code);
-            fetchFriendsList();
+            await fetchFriendsList(); // Using memoized fetchFriendsList
             setSnackbarMessage('Friend added successfully!');
             setSnackbarVisible(true);
         } catch (err) {
@@ -109,11 +109,11 @@ const useFriendsPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [fetchFriendsList]); // Dependency array includes fetchFriendsList
 
-    const handleSearchChange = (text) => {
+    const handleSearchChange = useCallback((text) => {
         setSearchText(text);
-    };
+    }, []);
 
     return {
         colors,
@@ -139,7 +139,7 @@ const useFriendsPage = () => {
         handleCopyCode,
         handleModalDismiss,
         handleShareCode,
-        fetchFriends: fetchFriendsList, 
+        fetchFriends: fetchFriendsList,
         handleFriendPress,
         handleFriendModalDismiss,
         handleRemoveFriend,

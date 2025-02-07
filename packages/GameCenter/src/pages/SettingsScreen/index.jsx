@@ -1,108 +1,47 @@
-import React, { useRef, useState,useContext} from 'react';
-import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import CustomModal from '../../components/CustomModal';
-import BackButton from '../../components/BackIcon';
-import BottomSheet from '../../components/themeswitch/BottomSheet'; // Ensure the path is correct
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useColorScheme } from 'react-native';
-import ThemeButton from '../../components/themeswitch/Button';
-import { UserContext } from '../../context/UserContext';
+import React, { useState, useEffect } from 'react';
+import { View, Image, Text, StyleSheet } from 'react-native';
+import getDominantImageColor from '../../utils/getDominantImageColor'; // Doğru yolu kontrol edin
 
-const SettingScreen = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const colorScheme = useColorScheme();
-  const navigation = useNavigation();
-  const bottomSheetRef = useRef(null); // Ref for the BottomSheet
-  const insets = useSafeAreaInsets();
-    const [theme, setTheme] = useState(colorScheme);
-  const [themeSwitch, setThemeSwitch] = useState('system');
-  const { logoutUser } = useContext(UserContext);
+const SettingsScreen = () => {
+  const [dominantColor, setDominantColor] = useState(null);
+  const imageURL = "https://randomuser.me/api/portraits/women/16.jpg"; // Doğru URL formatı
+  const imageSource = { uri: imageURL }; // Image component için doğru format
 
-
-  
-  const handleLogout = () => {
-    logoutUser();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+  const handleGetDominantColor = async () => {
+    try {
+      // Direkt olarak imageURL'yi getDominantImageColor fonksiyonuna verin.
+      const color = await getDominantImageColor(imageURL);
+      if (color) {
+        setDominantColor(color);
+      }
+    } catch (error) {
+      console.error("Baskın renk alınırken hata oluştu:", error);
+      // Hata durumunda kullanıcıya bilgi verebilirsiniz.
+      setDominantColor('#CCCCCC'); // Hata durumunda varsayılan bir renk ayarlayabilirsiniz.
+    }
   };
 
-  const backgroundColorAnimation = useAnimatedStyle(() => {
-    return {
-      backgroundColor:
-        theme === 'dark' ? withTiming('black') : withTiming('white'),
-    };
-  });
- 
+  useEffect(() => {
+    handleGetDominantColor();
+  }, []);
+
   return (
-        <GestureHandlerRootView style={{flex: 1}}>
-              <SafeAreaProvider>
-    <Animated.View
-      style={[
-        styles.container,
-        { paddingTop: insets.top },
-        backgroundColorAnimation,
-      ]}
-    >      <BackButton size={32} color="white" />
-      <Button
-      
-        mode="contained"
-        onPress={() => setModalVisible(true)}
-        style={styles.logoutButton}>
-        Logout
-      </Button>
-      <ThemeButton bottomSheetRef={bottomSheetRef} theme={theme} />
-
-
-      <CustomModal
-        visible={isModalVisible}
-        onDismiss={() => setModalVisible(false)}
-        title="Logout"
-        text="Are you sure you want to log out?"
-        showConfirmButton="false"
-        onConfirm={handleLogout}
-      />
-
-      <BottomSheet
-        ref={bottomSheetRef} // Pass the ref to BottomSheet
-        setTheme={setTheme}
-        theme={theme}
-        setThemeSwitch={setThemeSwitch}
-        themeSwitch={themeSwitch}
-      />
-    
-    </Animated.View>
-    </SafeAreaProvider>
-      </GestureHandlerRootView>
+    <View>
+      <Image source={imageSource} style={{ width: 200, height: 200 }} />
+      {dominantColor && (
+        <View style={[styles.colorBox, { backgroundColor: dominantColor }]} />
+      )}
+      {dominantColor && <Text>Baskın Renk: {dominantColor}</Text>}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#121212',
-  },
-  logoutButton: {
-    backgroundColor: '#8a2be2',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  themeButton: {
-    backgroundColor: '#8a2be2',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 20,
+  colorBox: {
+    width: 50,
+    height: 50,
+    marginTop: 10,
   },
 });
 
-export default SettingScreen;
+export default SettingsScreen;

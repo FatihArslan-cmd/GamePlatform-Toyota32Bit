@@ -5,7 +5,8 @@ import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/VideoP
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
 import Message from './Message';
 import GradientDivider from '../../../../components/GradientDivider';
-import { G } from 'react-native-svg';
+import BackButton from '../../components/Buttons/UpIcon';
+
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);

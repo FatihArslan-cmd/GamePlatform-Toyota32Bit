@@ -14,6 +14,7 @@ import BarcodeScan from '../components/BarcodeScanScreen/BarcodeScan.jsx';
 import CreateQRcodeScreen from '../pages/LoginScreen/components/Biometrics/CreateQRcodeScreen.jsx';
 import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.jsx';
 import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js';
+import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/index.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -122,7 +123,13 @@ export default function Navigation() {
               animation: 'slide_from_bottom', // Use slide_from_bottom for bottom-up animation
             }}
           />
-     
+             <Stack.Screen
+            name="CreatePost"
+            component={CreatePostScreen}
+            options={{
+              animation: 'slide_from_bottom', // Use slide_from_bottom for bottom-up animation
+            }}
+          />
         <Stack.Screen name="GameScreen"
          component={GameScreen}   options={{
               animation: 'fade',

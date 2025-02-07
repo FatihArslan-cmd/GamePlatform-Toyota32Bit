@@ -12,24 +12,24 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const EmptyState = ({ message }) => {
-  const fadeAnim = useSharedValue(0); // Animated.Value yerine useSharedValue kullanıyoruz
+const EmptyStateComponent = React.memo(({ message }) => { // React.memo ile sarıyoruz
+  const fadeAnim = useSharedValue(0);
 
   useEffect(() => {
-    fadeAnim.value = withTiming(1, { duration: 750 }); // withTiming ile animasyonu tanımlıyoruz
-  }, []); // Bağımlılık dizisini boş bırakıyoruz, sadece mount olduğunda çalışacak
+    fadeAnim.value = withTiming(1, { duration: 750 });
+  }, []);
 
-  const animatedStyle = useAnimatedStyle(() => { // useAnimatedStyle ile animated style oluşturuyoruz
+  const animatedStyle = useAnimatedStyle(() => {
     return {
-      opacity: fadeAnim.value, // Opaklığı shared value ile bağlıyoruz
+      opacity: fadeAnim.value,
     };
   });
 
   return (
-    <Animated.View // Animated.View Reanimated'dan import edildi
+    <Animated.View
       style={[
         styles.container,
-        animatedStyle, // animatedStyle'ı style prop'una ekliyoruz
+        animatedStyle,
       ]}
     >
       <LottieView
@@ -41,7 +41,7 @@ const EmptyState = ({ message }) => {
       <Text style={styles.textStyle} >{message}</Text>
     </Animated.View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -60,4 +60,6 @@ const styles = StyleSheet.create({
   }
 });
 
+// React.memo ile sarmalanmış componenti export ediyoruz
+const EmptyState = EmptyStateComponent;
 export default EmptyState;

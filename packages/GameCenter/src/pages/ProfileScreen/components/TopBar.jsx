@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, IconButton, Snackbar } from 'react-native-paper'; // Snackbar eklendi
+import { Text, IconButton, Snackbar } from 'react-native-paper';
 import styles from '../styles/ProfileScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../../components/CustomModal';
 import useModal from '../../../hooks/useModal';
 import useFriendsPage from '../hooks/useFriendsPage';
 
-const TopBar = () => {
+const TopBar = ({ onPencilPress, isEditMode }) => { // Receive onPencilPress and isEditMode as props
     const navigation = useNavigation();
     const { modalVisible, modalMessage, modalTitle, showModal, closeModal } = useModal();
     const { handleAddFriend, error, snackbarVisible, setSnackbarVisible, snackbarMessage } = useFriendsPage();
@@ -53,7 +53,13 @@ const TopBar = () => {
                 {snackbarMessage}
             </Snackbar>
 
-            <IconButton icon="pencil" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} />
+            <IconButton
+                icon="pencil"
+                size={24}
+                iconColor={isEditMode ? "#6200ee" : "#a5a7ac"} // Change color when edit mode is on
+                style={styles.topBarIcon}
+                onPress={onPencilPress} // Call the prop function
+            />
             <Text style={styles.title}>Profile</Text>
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
                 <IconButton icon="camera" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} onPress={navigateToCamera} />

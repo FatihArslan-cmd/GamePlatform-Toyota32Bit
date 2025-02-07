@@ -13,6 +13,7 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.gamecenter.NFCReaderPackage 
 import com.gamecenter.NavigationBarPackage
+import com.gamecenter.DominantColorPackage; // Paket adınızı buraya girin
 
 class MainApplication : Application(), ReactApplication {
 
@@ -24,6 +25,7 @@ class MainApplication : Application(), ReactApplication {
           packages.add(NFCReaderPackage())
           packages.add(FingerprintPackage())
           packages.add(NavigationBarPackage())
+          packages.add(DominantColorPackage())
 
           return packages
         }

@@ -42,7 +42,9 @@
       "**/react-native-vision-camera",
       "**/react-native-qrcode-svg",
       "**/react-native-qrcode-skia",
-      "**/react-native-image-picker"
+      "**/react-native-image-picker",
+      "**/@react-native-firebase/app",
+      "**/@react-native-firebase/messaging"
 
     ]
   },

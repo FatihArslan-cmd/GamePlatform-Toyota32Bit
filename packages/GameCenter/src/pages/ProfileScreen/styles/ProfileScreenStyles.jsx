@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
         margin: 0
     },
     title: {
-        fontSize: 28,        color: '#e5e6ea',
+        fontSize: 28,
+        color: '#e5e6ea',
         alignSelf: "center",
         paddingLeft: 10,
         fontFamily: 'Orbitron-ExtraBold'
@@ -39,6 +40,17 @@ const styles = StyleSheet.create({
         fontSize: 42,
         fontFamily: 'Orbitron-ExtraBold',
         marginTop: 20,
+    },
+    cameraIconContainer: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        borderRadius: 25, // Increased for larger profile image
+        overflow: 'hidden',
+    },
+    cameraIcon: {
+        margin: 0,
+        borderRadius: 25, // Increased to match container
     },
 });
 
