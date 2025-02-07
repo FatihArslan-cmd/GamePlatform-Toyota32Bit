@@ -2,14 +2,14 @@ import { NativeModules } from 'react-native';
 
 const { DominantColor } = NativeModules;
 
-const getDominantImageColor = async (imagePath) => {
+const getDominantColorsFromQuadrants = async (imagePath) => {
   try {
-    const dominantColorHex = await DominantColor.getDominantColor(imagePath);
-    return dominantColorHex;
+    const dominantColorHexArray = await DominantColor.getDominantColorFromQuadrants(imagePath);
+    return dominantColorHexArray;
   } catch (e) {
-    console.error("Baskın renk alınırken hata:", e);
+    console.error("Baskın renkler alınırken hata:", e);
     return null;
   }
 };
 
-export default getDominantImageColor;
+export default getDominantColorsFromQuadrants;
