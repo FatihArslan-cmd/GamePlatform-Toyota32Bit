@@ -1,18 +1,19 @@
-package com.gamecenter // Paket adınızı buraya girin (örneğin com.example.myapp)
-
+package com.gamecenter;
 import com.facebook.react.bridge.*
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.graphics.Color
 import java.net.URL
-import com.facebook.react.bridge.Arguments // WritableArray için import ekleyin
+import java.io.FileInputStream
+import java.io.File
+import androidx.palette.graphics.Palette
 
 class DominantColorModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
-    override fun getName() = "DominantColor"
+    override fun getName() = "DominantColor" // JavaScript tarafında bu isimle çağıracağız
 
     @ReactMethod
-    fun getDominantColorFromQuadrants(imagePath: String, promise: Promise) {
+    fun getDominantColor(imagePath: String, promise: Promise) {
         try {
             val bitmap = loadImage(imagePath)
             if (bitmap == null) {
@@ -20,28 +21,44 @@ class DominantColorModule(reactContext: ReactApplicationContext) : ReactContextB
                 return
             }
 
-            val dominantColors = calculateDominantColorsFromQuadrants(bitmap)
-            promise.resolve(dominantColors)
+            val dominantColor = calculateDominantColor(bitmap)
+            val colorHexString = String.format("#%06X", (0xFFFFFF and dominantColor)) // Hex stringe dönüştür
+            promise.resolve(colorHexString)
 
         } catch (e: Exception) {
-            promise.reject("DOMINANT_COLOR_ERROR", "Baskın renkler hesaplanırken hata oluştu: ${e.message}", e)
+            promise.reject("DOMINANT_COLOR_ERROR", "Baskın renk hesaplanırken hata oluştu: ${e.message}", e)
         }
     }
 
     private fun loadImage(imagePath: String): Bitmap? {
         return try {
-            if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-                val url = URL(imagePath)
-                BitmapFactory.decodeStream(url.openConnection().getInputStream())
-            } else if (imagePath.startsWith("content://") || imagePath.startsWith("file://") || !imagePath.contains("://")) {
-                val absolutePath = if (!imagePath.startsWith("content://") && !imagePath.startsWith("file://") && !imagePath.contains("://")) {
-                    imagePath
-                } else {
-                    imagePath
+            val inputStream = when {
+                imagePath.startsWith("http://") || imagePath.startsWith("https://") -> {
+                    URL(imagePath).openConnection().apply {
+                        connectTimeout = 5000
+                        readTimeout = 5000
+                    }.getInputStream()
                 }
-                BitmapFactory.decodeFile(absolutePath)
-            } else {
-                null
+                else -> FileInputStream(File(imagePath))
+            }
+
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream.close()
+
+            options.inSampleSize = calculateInSampleSize(options, 100, 100)
+            options.inJustDecodeBounds = false
+
+            val newInputStream = when {
+                imagePath.startsWith("http://") || imagePath.startsWith("https://") ->
+                    URL(imagePath).openStream()
+                else -> FileInputStream(File(imagePath))
+            }
+
+            return BitmapFactory.decodeStream(newInputStream, null, options).also {
+                newInputStream.close()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -49,76 +66,29 @@ class DominantColorModule(reactContext: ReactApplicationContext) : ReactContextB
         }
     }
 
-    private fun calculateDominantColorForPixels(pixels: IntArray): Int {
-        if (pixels.isEmpty()) return Color.BLACK // Boş piksel dizisi için varsayılan renk
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val (height: Int, width: Int) = options.run { outHeight to outWidth }
+        var inSampleSize = 1
 
-        val colorMap = mutableMapOf<Int, Int>()
-        for (pixel in pixels) {
-            val color = pixel and 0xFFFFFF
-            colorMap[color] = (colorMap[color] ?: 0) + 1
-        }
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight = height / 2
+            val halfWidth = width / 2
 
-        var dominantColor = Color.BLACK
-        var maxCount = 0
-        for ((color, count) in colorMap) {
-            if (count > maxCount) {
-                maxCount = count
-                dominantColor = color
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
             }
         }
-        return dominantColor or Color.BLACK
+        return inSampleSize
     }
 
-
-    private fun calculateDominantColorsFromQuadrants(bitmap: Bitmap): WritableArray {
-        val width = bitmap.width
-        val height = bitmap.height
-        val pixels = IntArray(width * height)
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
-
-        val quadrantWidth = width / 2
-        val quadrantHeight = height / 2
-
-        val dominantColorsArray = Arguments.createArray()
-
-        // Sol Üst Köşe
-        val topLeftPixels = IntArray(quadrantWidth * quadrantHeight)
-        for (y in 0 until quadrantHeight) {
-            for (x in 0 until quadrantWidth) {
-                topLeftPixels[y * quadrantWidth + x] = pixels[y * width + x]
-            }
+    private fun calculateDominantColor(bitmap: Bitmap): Int {
+        return try {
+            val palette = Palette.from(bitmap)
+                .maximumColorCount(8) // Optimize color analysis
+                .generate()
+            palette.dominantSwatch?.rgb ?: Color.BLACK
+        } catch (e: Exception) {
+            Color.BLACK
         }
-        dominantColorsArray.pushString(String.format("#%06X", (0xFFFFFF and calculateDominantColorForPixels(topLeftPixels))))
-
-
-        // Sağ Üst Köşe
-        val topRightPixels = IntArray(quadrantWidth * quadrantHeight)
-        for (y in 0 until quadrantHeight) {
-            for (x in 0 until quadrantWidth) {
-                topRightPixels[y * quadrantWidth + x] = pixels[y * width + (x + quadrantWidth)]
-            }
-        }
-        dominantColorsArray.pushString(String.format("#%06X", (0xFFFFFF and calculateDominantColorForPixels(topRightPixels))))
-
-        // Sol Alt Köşe
-        val bottomLeftPixels = IntArray(quadrantWidth * quadrantHeight)
-        for (y in 0 until quadrantHeight) {
-            for (x in 0 until quadrantWidth) {
-                bottomLeftPixels[y * quadrantWidth + x] = pixels[(y + quadrantHeight) * width + x]
-            }
-        }
-        dominantColorsArray.pushString(String.format("#%06X", (0xFFFFFF and calculateDominantColorForPixels(bottomLeftPixels))))
-
-        // Sağ Alt Köşe
-        val bottomRightPixels = IntArray(quadrantWidth * quadrantHeight)
-        for (y in 0 until quadrantHeight) {
-            for (x in 0 until quadrantWidth) {
-                bottomRightPixels[y * quadrantWidth + x] = pixels[(y + quadrantHeight) * width + (x + quadrantWidth)]
-            }
-        }
-        dominantColorsArray.pushString(String.format("#%06X", (0xFFFFFF and calculateDominantColorForPixels(bottomRightPixels))))
-
-
-        return dominantColorsArray
     }
 }

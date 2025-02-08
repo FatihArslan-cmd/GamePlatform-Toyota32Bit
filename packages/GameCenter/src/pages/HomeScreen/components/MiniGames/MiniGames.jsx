@@ -4,7 +4,6 @@ import { Text, Divider } from 'react-native-paper';
 import GameItem from './GameItem';
 import ScrollArrow from './ScrollArrow';
 import MyLoader from '../../../../components/SkeletonPlaceHolder/MiniGamesPlaceHolder'; // Orijinal Placeholder
-import { cardColors } from './CardColors';
 import GrandientText from '../../../../components/GrandientText';
 const MiniGamesBlock = memo(({ games }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,6 +14,7 @@ const MiniGamesBlock = memo(({ games }) => {
   useEffect(() => {
     const timeout = setTimeout(() => setIsLoading(false), 1500); // Yükleme simülasyonu
     return () => clearTimeout(timeout);
+
   }, []);
 
   const handleScroll = (event) => {
@@ -33,8 +33,8 @@ const MiniGamesBlock = memo(({ games }) => {
     }
   };
 
-  const tags = games.flatMap((game) => game.tags?.slice(0, 44) || []);
-  const displayedTags = tags.slice(0, 20);
+  const tags = games.flatMap((game) => game.tags?.slice(0, 14) || []);
+  const displayedTags = tags.slice(0, 14);
 
   const topRow = displayedTags.filter((_, i) => i % 2 === 0);
   const bottomRow = displayedTags.filter((_, i) => i % 2 === 1);
@@ -64,7 +64,7 @@ const MiniGamesBlock = memo(({ games }) => {
             <View style={styles.rowsContainer}>
               <View style={styles.row}>
                 {topRow.map((item, index) => (
-                  <GameItem key={index} item={item} color={cardColors[index % cardColors.length]} />
+                  <GameItem key={index} item={item} />
                 ))}
               </View>
               <View style={styles.row}>
@@ -72,7 +72,6 @@ const MiniGamesBlock = memo(({ games }) => {
                   <GameItem
                     key={index + topRow.length}
                     item={item}
-                    color={cardColors[(index + topRow.length) % cardColors.length]}
                   />
                 ))}
               </View>
