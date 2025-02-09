@@ -15,25 +15,23 @@ import RoomNameInput from './RoomNameInput';
 import ImageSelector from './ImageSelector';
 import CreateButton from './CreateButton';
 import BackButton from '../../../../components/BackIcon';
-import useToast from '../../../../components/ToastMessage/hooks/useToast';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
+import { ToastService } from '../../../../context/ToastService'; // Import ToastService
 
 const CreateRoomScreen = () => {
   const [roomName, setRoomName] = useState('');
   const [topic, setTopic] = useState('');
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isCreateSuccess, setIsCreateSuccess] = useState(false); // Yeni state eklendi
+  const [isCreateSuccess, setIsCreateSuccess] = useState(false);
   const navigation = useNavigation();
-  const { currentToast, showToast, hideToast } = useToast();
 
   const handleCreateRoom = async () => {
     if (!roomName.trim()) {
-      showToast("error", 'Room name cannot be empty');
+      ToastService.show("error", 'Room name cannot be empty'); // Use ToastService.show
       return;
     }
     if (!topic) {
-      showToast("error",'Please select a topic');
+      ToastService.show("error",'Please select a topic'); // Use ToastService.show
       return;
     }
 
@@ -41,13 +39,13 @@ const CreateRoomScreen = () => {
 
     try {
       await createRoom(roomName, topic, imageUri);
-      showToast("success", "Room created successfully!");
-      setIsCreateSuccess(true); // Başarılı oda oluşturulduktan sonra butonu devre dışı bırak
+      ToastService.show("success", "Room created successfully!"); // Use ToastService.show
+      setIsCreateSuccess(true);
       setTimeout(() => {
         navigation.goBack();
       },3000);
     } catch (err) {
-      showToast("error", err.message || "Failed to create room");
+      ToastService.show("error", err.message || "Failed to create room"); // Use ToastService.show
     } finally {
       setLoading(false);
     }
@@ -85,18 +83,10 @@ const CreateRoomScreen = () => {
 
             </View>
 
-            <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} /> {/* disabled prop güncellendi */}
+            <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-
-       {currentToast && (
-                <ToastMessage
-                  type={currentToast.type}
-                  message={currentToast.message}
-                  onHide={hideToast}
-                />
-              )}
     </SafeAreaView>
   );
 };

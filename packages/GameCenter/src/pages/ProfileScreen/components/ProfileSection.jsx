@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import GrandientText from '../../../components/GrandientText';
 import styles from '../styles/ProfileScreenStyles';
 import { UserContext } from '../../../context/UserContext';
-import { IconButton } from 'react-native-paper';
+import { IconButton,Tooltip } from 'react-native-paper';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 
@@ -85,6 +85,7 @@ const ProfileSection = ({ isEditMode }) => {
 
     return (
         <View style={styles.profileSection}>
+            <Tooltip title='Profile' >
             <View style={styles.profileImageContainer}>
                 <FastImage
                     style={styles.profileImage}
@@ -114,6 +115,7 @@ const ProfileSection = ({ isEditMode }) => {
                     </Animated.View>
                 )}
             </View>
+            </Tooltip>
             <GrandientText
                 text={user.username}
                 colors={['#6200ee', '#FFFFFF']}

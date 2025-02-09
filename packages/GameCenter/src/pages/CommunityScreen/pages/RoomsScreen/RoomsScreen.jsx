@@ -5,8 +5,7 @@ import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/VideoP
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
 import Message from './Message';
 import GradientDivider from '../../../../components/GradientDivider';
-import BackButton from '../../components/Buttons/UpIcon';
-
+import ErrorComponents from '../../../../components/ErrorComponents';
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +37,8 @@ const RoomsScreen = () => {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>Error: {error}</Text>
+        <ErrorComponents></ErrorComponents>
+        <Text style={styles.errorText}>{error}</Text>
       </View>
     );
   }
@@ -73,7 +73,6 @@ const RoomsScreen = () => {
           </>
         )
       )}
-      <Message />
     </View>
   );
 };

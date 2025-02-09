@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import { TextInput, IconButton } from 'react-native-paper';
+import { TextInput, IconButton,Tooltip } from 'react-native-paper';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const SearchBar = ({ searchMode, setSearchMode, searchQuery, setSearchQuery }) => {
@@ -56,11 +56,14 @@ const SearchBar = ({ searchMode, setSearchMode, searchQuery, setSearchQuery }) =
           </Animated.View>
         </>
       ) : (
+        <Tooltip title='Search' >
         <IconButton
           icon="magnify"
           onPress={handleSearchPress}
           color="gray"
+          
         />
+        </Tooltip>
       )}
     </>
   );

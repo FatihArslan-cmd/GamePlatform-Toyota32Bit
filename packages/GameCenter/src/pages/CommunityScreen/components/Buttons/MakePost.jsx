@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
-import { TouchableRipple } from 'react-native-paper';
+import { TouchableRipple,Tooltip } from 'react-native-paper';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -65,7 +65,6 @@ const MakePost = ({ color = '#fff', size }) => {
 
   return (
     <View style={styles.container}>
-      {/* Sub FABs */}
       {subFabs.map((fab, index) => (
         <Animated.View 
           key={fab.icon} 
@@ -89,9 +88,11 @@ const MakePost = ({ color = '#fff', size }) => {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={styles.ripple}
         >
+            <Tooltip title='Make a post' >
           <View style={[styles.circle, { width: circleSize, height: circleSize, borderRadius: circleSize / 2 }]}>
             <Icon name="plus" size={adjustedSize} color={color} />
           </View>
+            </Tooltip>
         </TouchableRipple>
       </Animated.View>
     </View>

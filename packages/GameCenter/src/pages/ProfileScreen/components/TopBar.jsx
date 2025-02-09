@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, IconButton, Snackbar } from 'react-native-paper';
+import { Text, IconButton, Snackbar,Tooltip } from 'react-native-paper';
 import styles from '../styles/ProfileScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../../components/CustomModal';
@@ -52,7 +52,7 @@ const TopBar = ({ onPencilPress, isEditMode }) => { // Receive onPencilPress and
             >
                 {snackbarMessage}
             </Snackbar>
-
+            <Tooltip title="Update">
             <IconButton
                 icon="pencil"
                 size={24}
@@ -60,10 +60,15 @@ const TopBar = ({ onPencilPress, isEditMode }) => { // Receive onPencilPress and
                 style={styles.topBarIcon}
                 onPress={onPencilPress} // Call the prop function
             />
+            </Tooltip>
             <Text style={styles.title}>Profile</Text>
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+                <Tooltip title="Add Friend"> 
                 <IconButton icon="camera" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} onPress={navigateToCamera} />
+                </Tooltip>
+                <Tooltip title="Options">
                 <IconButton icon="dots-vertical" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} />
+                </Tooltip>
             </View>
         </View>
     );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
-import { Button, Snackbar, TouchableRipple,Text } from 'react-native-paper';
+import { Button, Snackbar, TouchableRipple,Text,Tooltip } from 'react-native-paper';
 import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useFriendsPage from '../../hooks/useFriendsPage';
@@ -75,12 +75,15 @@ const FriendsPage = ({ onFriendCountChange }) => {
                     style={styles.input}
                     onChangeText={handleSearchChange}
                     rightIcon={() => (
+                        <Tooltip title='Add friends' >
                         <TouchableRipple onPress={handleOpenAddModal}>
                             <Icon name="plus" size={28} color={colors.primary} />
                         </TouchableRipple>
+                        </Tooltip>
                     )}
                 />
             </View>
+
             <FriendAddModal
                 visible={addModalVisible}
                 onDismiss={handleCloseAddModal}

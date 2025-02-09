@@ -1,12 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton,Tooltip } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 const RightActions = () => {
   const navigation = useNavigation();
   return (
     <View style={{ flexDirection: 'row' }}>
+        <Tooltip title="Create Community">
       <IconButton
         icon="plus"
         size={28}
@@ -14,6 +15,8 @@ const RightActions = () => {
           navigation.navigate('CreateRoom');
         }}
       />
+        </Tooltip>
+        <Tooltip title="Search">
       <IconButton
         icon="magnify"
         size={28}
@@ -21,6 +24,7 @@ const RightActions = () => {
           navigation.navigate('SearchScreen');
         }}
       />
+        </Tooltip>
     </View>
   );
 };

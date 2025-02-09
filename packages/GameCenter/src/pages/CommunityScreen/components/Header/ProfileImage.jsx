@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
+import { TouchableRipple,Tooltip } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../../../context/UserContext'; // Adjust path if needed
@@ -11,6 +11,8 @@ const ProfileImage = () => {
   const navigation = useNavigation();
 
   return (
+    <Tooltip title="Profile">
+
     <TouchableRipple onPress={() => navigation.navigate('ProfileScreen')}>
       <View style={styles.profileImageContainer}>
         <FastImage
@@ -24,6 +26,8 @@ const ProfileImage = () => {
         />
       </View>
     </TouchableRipple>
+    </Tooltip>
+
   );
 };
 
