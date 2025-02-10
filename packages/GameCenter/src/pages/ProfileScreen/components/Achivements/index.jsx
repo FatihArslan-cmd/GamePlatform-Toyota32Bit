@@ -28,7 +28,7 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
             setOwnedAchievements(ownedAchievementsData);
              const ownedCount = ownedAchievementsData.length;
             onAchievementCountChange(ownedCount);
-            
+
         } catch (err) {
             console.error("Error fetching achievements:", err);
              setError(err.message || 'An unexpected error occurred');
@@ -57,7 +57,7 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
         return ownedAchievements;
     }
 }, [activeTab, allAchievements, ownedAchievements]);
-    
+
 
     return (
         <View style={[styles.container, { backgroundColor: '#1e1e1e' }]}>
@@ -65,8 +65,8 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
                 value={activeTab}
                 onValueChange={setActiveTab}
                 buttons={[
-                    { value: 'all', label: 'All Achievements' },
-                    { value: 'owned', label: 'Your Achievements' },
+                    { value: 'all', label: 'All Achievements', labelStyle: styles.buttonLabel }, // labelStyle eklendi
+                    { value: 'owned', label: 'Your Achievements', labelStyle: styles.buttonLabel }, // labelStyle eklendi
                 ]}
                 style={styles.segmentedButtons}
             />
@@ -84,7 +84,7 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
                     ListEmptyComponent={() => <EmptyState message="Henüz bir başarımınız bulunmamaktadır." />}
                 />
             )}
-            
+
         </View>
     );
 };
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 20,
     },
-   
+
     segmentedButtons: {
         marginHorizontal: 16,
         marginBottom: 16,
@@ -103,6 +103,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 16,
     },
+    buttonLabel: { // buttonLabel stil tanımı
+        fontFamily: 'Orbitron-ExtraBold',
+    }
 });
 
 export default AchievementsPage;

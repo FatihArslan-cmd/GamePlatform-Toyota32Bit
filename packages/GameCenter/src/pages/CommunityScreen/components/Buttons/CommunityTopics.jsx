@@ -6,7 +6,7 @@ import { topics } from './topics';
 const CommunityTopics = ({ onTopicSelect, selectedTopic }) => {
 
   const handleTopicPress = (topic) => {
-    console.log("Selected Topic:", topic); // Seçilen topic'i konsola yazdır
+    console.log("Selected Topic:", topic);
     onTopicSelect(topic);
   };
 
@@ -15,6 +15,7 @@ const CommunityTopics = ({ onTopicSelect, selectedTopic }) => {
       horizontal={true}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.container}
+      fadingEdgeLength={50} // ADDED fadingEdgeLength HERE
     >
       {topics.map((topic, index) => (
         <Chip
@@ -27,7 +28,7 @@ const CommunityTopics = ({ onTopicSelect, selectedTopic }) => {
             styles.chipText,
             topic === selectedTopic ? styles.selectedChipText : null,
           ]}
-          onPress={() => handleTopicPress(topic)}  // onPress'i güncelledik
+          onPress={() => handleTopicPress(topic)}
         >
           {topic}
         </Chip>

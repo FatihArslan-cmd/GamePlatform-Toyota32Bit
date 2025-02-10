@@ -135,13 +135,13 @@ const styles = StyleSheet.create({
     tabNumber: {
         fontSize: 22,
         color: 'gray',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
         paddingVertical: 10
     },
     tabText: {
         fontSize: 16,
         color: 'gray',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
     },
     activeTabText: {
         color: 'white',

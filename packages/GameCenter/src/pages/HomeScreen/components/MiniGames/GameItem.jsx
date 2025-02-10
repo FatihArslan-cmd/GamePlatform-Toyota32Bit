@@ -20,6 +20,9 @@ const GameItem = memo(({ item, onPress }) => {
 
   useEffect(() => {
     const fetchDominantColor = async () => {
+      const startTime = performance.now(); // Use performance.now() for more accurate timing
+      const timerLabel = `fetchDominantColor for ${item.name || 'unknown game'}`;
+      console.time(timerLabel);
       console.log(item.image_background)
       if (item.image_background) {
         try {
@@ -35,10 +38,14 @@ const GameItem = memo(({ item, onPress }) => {
           setDominantColor('red');
         }
       }
+      console.timeEnd(timerLabel);
+      const endTime = performance.now();
+      const duration = (endTime - startTime) / 1000; // Convert milliseconds to seconds
+      console.log(`fetchDominantColor for ${item.name || 'unknown game'} took ${duration.toFixed(3)} seconds`);
     };
 
     fetchDominantColor();
-  }, [item.image_background]);
+  }, [item.image_background, item.name]); // Added item.name to dependency array
 
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -99,13 +106,17 @@ const styles = StyleSheet.create({
   surface: {
     borderRadius: 20,
     padding: 12,
-    paddingBottom: 52 // Increased paddingBottom to accommodate play button
+    paddingBottom: 52, // Increased paddingBottom to accommodate play button
+    // boxShadow: '0 5px 10px rgba(0,0,0,0.2)', // Original boxShadow
+    boxShadow: '0 5px 12px rgba(0,0,0,0.3)', // Increased blur radius and opacity for brighter shadow
   },
   card: {
     width: 150,
     height: 180,
     borderRadius: 12,
     overflow: 'hidden',
+    // boxShadow: '0 2px 4px rgba(0,0,0,0.2)', // Original boxShadow
+    boxShadow: '0 2px 6px rgba(0,0,0,0.25)', // Increased blur radius and opacity for brighter shadow
   },
   cardCover: {
     height: '100%',

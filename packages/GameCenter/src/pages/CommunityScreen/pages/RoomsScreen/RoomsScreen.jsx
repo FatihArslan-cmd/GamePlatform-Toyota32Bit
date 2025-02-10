@@ -52,6 +52,7 @@ const RoomsScreen = () => {
           style={styles.scrollView}
           contentContainerStyle={styles.contentContainer}
           showsHorizontalScrollIndicator={false}
+          fadingEdgeLength={50} // ADDED fadingEdgeLength HERE
         >
           {rooms.map((room, index) => (
             <View key={room.id} style={styles.roomItem}>
@@ -69,7 +70,7 @@ const RoomsScreen = () => {
       ) : (
         !loading && !error && (
           <>
-          
+
           </>
         )
       )}
