@@ -4,23 +4,16 @@ import { PaperProvider } from 'react-native-paper';
 import { theme } from './utils/FontConfig.js';
 import { UserProvider } from './context/UserContext.jsx';
 import { ToastProvider } from './context/ToastService.jsx';
-import {
-  requestUserPermission,
-  setupForegroundNotifications,
-  setupBackgroundNotifications,
-  checkInitialNotification,
-} from './utils/Firebase/notificationHandlers.js';
+import { createDefaultChannel, requestUserPermission, setupForegroundNotifications, setupBackgroundNotifications, checkInitialNotification } from './utils/Firebase/notificationHandlers.js';
 
 const App = () => {
+  
   useEffect(() => {
-    requestUserPermission();
-    const unsubscribeForeground = setupForegroundNotifications();
-    setupBackgroundNotifications();
-    checkInitialNotification();
-
-    return () => {
-      unsubscribeForeground(); 
-    };
+    createDefaultChannel(); // Kanalı oluştur
+    requestUserPermission(); // İzinleri iste
+    setupForegroundNotifications(); // Foreground bildirimlerini dinle
+    setupBackgroundNotifications(); // Arkaplan bildirimlerini dinle
+    checkInitialNotification(); // Uygulama açılış bildirimini kontrol et
   }, []);
 
   return (
