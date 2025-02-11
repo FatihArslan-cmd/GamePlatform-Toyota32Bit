@@ -1,56 +1,23 @@
-import React, { useEffect, useRef, useImperativeHandle, forwardRef, useState } from "react"; // useState import edildi
+import React, { useEffect, useRef, useImperativeHandle, forwardRef, useState } from "react";
 import { StyleSheet, View, Animated, TouchableOpacity, Dimensions, PanResponder } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Text } from "react-native-paper";
 const { width } = Dimensions.get('window');
 
-const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityChange }, ref) => { // onVisibilityChange prop eklendi
+const ToastMessage = forwardRef(({ action: initialAction }, ref) => {
   const translateY = useRef(new Animated.Value(-100)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.8)).current;
   const progress = useRef(new Animated.Value(0)).current;
   const timeoutRef = useRef(null);
-  const isCurrentlyVisible = useRef(false); // Toast'un şu anda görünür olup olmadığını takip eder
+  const isCurrentlyVisible = useRef(false);
 
-  // State'ler eklendi
   const [currentType, setCurrentType] = useState("info");
   const [currentMessage, setCurrentMessage] = useState("");
-  const [currentAction, setCurrentAction] = useState(initialAction); // initialAction kullanıldı
+  const [currentAction, setCurrentAction] = useState(initialAction);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(gestureState.dx);
-        opacity.setValue(1 - Math.abs(gestureState.dx) / 200);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (Math.abs(gestureState.dx) > width * 0.4) {
-          Animated.timing(translateX, {
-            toValue: gestureState.dx > 0 ? width : -width,
-            duration: 200,
-            useNativeDriver: true,
-          }).start(internalHideToast);
-        } else {
-          Animated.parallel([
-            Animated.spring(translateX, {
-              toValue: 0,
-              useNativeDriver: true,
-              tension: 50,
-              friction: 8,
-            }),
-            Animated.timing(opacity, {
-              toValue: 1,
-              duration: 200,
-              useNativeDriver: true,
-            }),
-          ]).start();
-        }
-      },
-    })
-  ).current;
+  // PanResponder kaldırıldı
 
   const showAnimation = (callback) => {
     Animated.parallel([
@@ -72,8 +39,7 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityCh
         friction: 8,
       }),
     ]).start(() => {
-      isCurrentlyVisible.current = true; // Toast görünür oldu
-      if (onVisibilityChange) onVisibilityChange(true); // Toast görünürlüğünü bildir
+      isCurrentlyVisible.current = true;
       timeoutRef.current = setTimeout(internalHideToast, 3000);
       Animated.timing(progress, {
         toValue: 1,
@@ -84,13 +50,7 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityCh
   };
 
   const internalHideToast = (callback) => {
-    if (!isCurrentlyVisible.current) { // Eğer zaten görünür değilse, hiçbir şey yapma
-      if (callback) callback();
-      return;
-    }
-    isCurrentlyVisible.current = false; // Toast görünmez oldu
-    if (onVisibilityChange) onVisibilityChange(false); // Toast görünmezliğini bildir
-    clearTimeout(timeoutRef.current);
+    isCurrentlyVisible.current = false;
     Animated.parallel([
       Animated.timing(translateY, {
         toValue: -100,
@@ -108,21 +68,31 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityCh
         useNativeDriver: true,
       }),
     ]).start(() => {
-      if (onHide) onHide();
       progress.setValue(0);
-      setCurrentMessage(""); // Mesajı temizle
+      setCurrentMessage("");
       if (callback) callback();
     });
   };
 
   useImperativeHandle(ref, () => ({
     showToast: (toastType = "info", toastMessage = "", toastAction) => {
-      setCurrentType(toastType); // State'i güncelle
-      setCurrentMessage(toastMessage); // State'i güncelle
-      setCurrentAction(toastAction); // State'i güncelle
-      showAnimation();
+      if (isCurrentlyVisible.current) {
+        internalHideToast(() => { // Önceki toast varsa hemen kapat ve sonra yenisini göster
+          clearTimeout(timeoutRef.current); // Mevcut timeout'u temizle
+          setCurrentType(toastType);
+          setCurrentMessage(toastMessage);
+          setCurrentAction(toastAction);
+          showAnimation();
+        });
+      } else {
+        clearTimeout(timeoutRef.current); // Önceki timeout'u temizle (garanti için)
+        setCurrentType(toastType);
+        setCurrentMessage(toastMessage);
+        setCurrentAction(toastAction);
+        showAnimation();
+      }
     },
-    hideToast: (callback) => {
+    hideToast: (callback) => { // Harici hide fonksiyonu yine de hızlıca kapatabilir. İsteğe bağlı olarak kaldırılabilir.
       internalHideToast(callback);
     },
   }));
@@ -155,14 +125,13 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityCh
 
   return (
     <Animated.View
-      {...panResponder.panHandlers}
       style={[
         styles.toastContainer,
         {
           opacity,
           transform: [
             { translateY },
-            { translateX },
+            { translateX }, // translateX kaldırılabilir, animasyon etkilemiyor şu an
             { scale },
           ],
         },
@@ -170,32 +139,25 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityCh
     >
       <View style={[styles.content, { backgroundColor: getBackgroundColor(currentType) }]}>
         <Animated.View style={[styles.iconContainer, getIconAnimation()]}>
-          <Icon name={getIconName(currentType)} size={24} color="#fff" /> 
+          <Icon name={getIconName(currentType)} size={24} color="#fff" />
         </Animated.View>
 
         <View style={styles.messageContainer}>
           <Text style={styles.message} numberOfLines={2}>
-            {currentMessage} {/* currentMessage kullanıldı */}
+            {currentMessage}
           </Text>
-          {currentAction && ( // currentAction kullanıldı
+          {currentAction && (
             <TouchableOpacity
-              onPress={currentAction.onPress} // currentAction kullanıldı
+              onPress={currentAction.onPress}
               style={styles.actionButton}
               activeOpacity={0.7}
             >
-              <Text style={styles.actionText}>{currentAction.label}</Text>  
+              <Text style={styles.actionText}>{currentAction.label}</Text>
             </TouchableOpacity>
           )}
         </View>
 
-        <TouchableOpacity
-          onPress={internalHideToast}
-          style={styles.closeButton}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-          activeOpacity={0.7}
-        >
-          <Icon name="close" size={20} color="#fff" />
-        </TouchableOpacity>
+        {/* Kapatma butonu kaldırıldı */}
       </View>
 
       <Animated.View
@@ -203,7 +165,7 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityCh
           styles.progressBar,
           {
             width: progressWidth,
-            backgroundColor: getBackgroundColor(currentType), // currentType kullanıldı
+            backgroundColor: getBackgroundColor(currentType),
           }
         ]}
       />
@@ -281,7 +243,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     fontWeight:'bold'
   },
-  closeButton: {
+  closeButton: { // closeButton still exists in styles but is not used in render anymore
     padding: 4,
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 20,

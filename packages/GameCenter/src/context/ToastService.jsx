@@ -21,13 +21,9 @@ const ToastProvider = ({ children }) => {
 const ToastService = {
   show: (type = "info", message = "", action) => {
     if (toastRef && toastRef.current) {
-      if (isToastVisible) {
-        toastRef.current.hideToast(() => { // Mevcut toast varsa önce kapat
-          toastRef.current.showToast(type, message, action); // Sonra yenisini göster
-        });
-      } else {
-        toastRef.current.showToast(type, message, action); // Toast zaten görünür değilse direkt göster
-      }
+      toastRef.current.hideToast(() => { // Önce mevcut toast'ı kapat (eğer varsa)
+        toastRef.current.showToast(type, message, action); // Sonra yenisini göster
+      });
     } else {
       console.warn("Toast ref henüz ayarlanmamış. Toast gösterilemedi.");
     }

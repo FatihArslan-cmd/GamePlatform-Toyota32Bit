@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Avatar, Card, Text, TouchableRipple, List } from 'react-native-paper';
+import { Avatar, Card, TouchableRipple } from 'react-native-paper';
 import { useUser } from '../../../context/UserContext';
 import GrandientText from '../../../components/GrandientText';
-
+import LogoutButton from './LogOutButton';
 const ProfileSection = () => {
   const { user } = useUser();
+
 
   return (
     <Card style={styles.card}>
@@ -31,7 +32,7 @@ const ProfileSection = () => {
               />
             </View>
           </View>
-          <List.Icon icon="chevron-right" />
+          <LogoutButton showText={false} showChevron={false} />
         </Card.Content>
       </TouchableRipple>
     </Card>

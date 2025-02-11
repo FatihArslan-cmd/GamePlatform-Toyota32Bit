@@ -1,11 +1,17 @@
 
 import React from 'react';
 import { Linking,StyleSheet } from 'react-native';
-import { Card, List} from 'react-native-paper';
+import { Card, List,Snackbar} from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import LogoutButton from './LogOutButton';
 
 const AboutSection = () => {
+    const [visible, setVisible] = React.useState(false);
+
+    const onToggleSnackBar = () => setVisible(!visible);
+  
+    const onDismissSnackBar = () => setVisible(false);
+
   return (
     <Card style={styles.card}>
       <Card.Content>
@@ -18,6 +24,7 @@ const AboutSection = () => {
         <List.Item
         titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
           title="App Version"
+          onPress={onToggleSnackBar}
           descriptionStyle={{fontFamily:'Orbitron-VariableFont_wght'}}
           description="1.0.0"
           left={props => <List.Icon {...props}  color="#6366F1" icon="information" />}
@@ -40,7 +47,12 @@ const AboutSection = () => {
         />
 
         <LogoutButton /> 
-
+        <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar} >
+            
+    App Version 1.0.0     
+ </Snackbar>
       </Card.Content>
     </Card>
   );

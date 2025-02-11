@@ -3,10 +3,40 @@ import {  StyleSheet } from 'react-native';
 import { Card, List } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import { CustomSwitch } from './CustomSwitch';
+import { ToastService } from '../../../context/ToastService'; // Import ToastService. Adjust the path as needed
+
 const NotificationSection = () => {
   const [pushEnabled, setPushEnabled] = React.useState(true);
   const [emailEnabled, setEmailEnabled] = React.useState(true);
   const [marketingEnabled, setMarketingEnabled] = React.useState(false);
+
+  const handlePushToggle = (newValue) => {
+    setPushEnabled(newValue);
+    if (newValue) {
+      ToastService.show("info", "Push Notifications enabled");
+    } else {
+      ToastService.show("info", "Push Notifications disabled");
+    }
+  };
+
+  const handleEmailToggle = (newValue) => {
+    setEmailEnabled(newValue);
+    if (newValue) {
+      ToastService.show("info", "Email Notifications enabled");
+    } else {
+      ToastService.show("info", "Email Notifications disabled");
+    }
+  };
+
+  const handleMarketingToggle = (newValue) => {
+    setMarketingEnabled(newValue);
+    if (newValue) {
+      ToastService.show("info", "Marketing Emails enabled");
+    } else {
+      ToastService.show("info", "Marketing Emails disabled");
+    }
+  };
+
 
   return (
     <Card style={styles.card}>
@@ -26,11 +56,11 @@ const NotificationSection = () => {
           right={() => (
             <CustomSwitch
               value={pushEnabled}
-              onValueChange={setPushEnabled}
+              onValueChange={handlePushToggle}
             />
           )}
         />
-        
+
         <List.Item
           title="Email Notifications"
           titleStyle={styles.titleStyle}
@@ -40,11 +70,11 @@ const NotificationSection = () => {
           right={() => (
             <CustomSwitch
               value={emailEnabled}
-              onValueChange={setEmailEnabled}
+              onValueChange={handleEmailToggle}
             />
           )}
         />
-        
+
         <List.Item
           title="Marketing Emails"
           titleStyle={styles.titleStyle}
@@ -54,7 +84,7 @@ const NotificationSection = () => {
           right={() => (
             <CustomSwitch
               value={marketingEnabled}
-              onValueChange={setMarketingEnabled}
+              onValueChange={handleMarketingToggle}
             />
           )}
         />

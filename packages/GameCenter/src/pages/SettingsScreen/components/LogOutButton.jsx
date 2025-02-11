@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Button, List } from 'react-native-paper'; // Import List
+import { Button, List } from 'react-native-paper';
 import CustomModal from '../../../components/CustomModal';
 import { UserContext } from '../../../context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 
-const LogoutButton = () => {
+const LogoutButton = ({ showText = true, showChevron = true }) => { // Added showChevron prop with default value true
   const [isModalVisible, setModalVisible] = useState(false);
   const { logoutUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -20,13 +20,12 @@ const LogoutButton = () => {
 
   return (
     <>
-      {/* Button component is no longer directly rendered */}
       <List.Item
-        title="Logout"
+        title={showText ? "Logout" : null}
         titleStyle={{ fontFamily: 'Orbitron-ExtraBold' }}
-        left={props => <List.Icon {...props} color="#B22222" icon="logout" />} // Changed icon and color to match logout purpose
-        right={props => <List.Icon {...props} color="#B22222" icon="chevron-right" />} // Added chevron for consistency
-        onPress={() => setModalVisible(true)} // Open modal on press
+        left={props => <List.Icon {...props} color="#B22222" icon="logout" />}
+        right={props => showChevron ? <List.Icon {...props} color="#B22222" icon="chevron-right" /> : null} // Conditionally render chevron based on showChevron
+        onPress={() => setModalVisible(true)}
       />
 
       <CustomModal
@@ -34,16 +33,12 @@ const LogoutButton = () => {
         onDismiss={() => setModalVisible(false)}
         title="Logout"
         text="Are you sure you want to log out?"
-        showConfirmButton="true" // Changed to true to show confirm and cancel buttons
+        showConfirmButton="true"
         onConfirm={handleLogout}
-        onCancel={() => setModalVisible(false)} // Added onCancel to close modal
+        onCancel={() => setModalVisible(false)}
       />
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  // logoutButton style is no longer needed as List.Item handles styling
-});
 
 export default LogoutButton;
