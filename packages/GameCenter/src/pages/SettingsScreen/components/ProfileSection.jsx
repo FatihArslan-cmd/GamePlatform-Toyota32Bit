@@ -4,19 +4,23 @@ import { Avatar, Card, TouchableRipple } from 'react-native-paper';
 import { useUser } from '../../../context/UserContext';
 import GrandientText from '../../../components/GrandientText';
 import LogoutButton from './LogOutButton';
+import Animated from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
+import { customTransition } from './customTransition';
+
 const ProfileSection = () => {
   const { user } = useUser();
-
+  const navigation = useNavigation();
 
   return (
     <Card style={styles.card}>
-      <TouchableRipple onPress={() => {/* Navigate to profile edit */}}>
+      <TouchableRipple onPress={() => navigation.navigate('ProfileDetailsScreen')}>
         <Card.Content style={styles.content}>
           <View style={styles.profileInfo}>
-            <Avatar.Image
+            <Animated.Image
               source={{ uri: user?.profilePhoto }}
-              size={75}
-              style={styles.avatar}
+              style={[styles.avatar, { borderRadius: 37.5 }]}
+              sharedTransitionTag="profileTransition"
             />
             <View style={styles.userInfo}>
               <GrandientText
@@ -24,9 +28,9 @@ const ProfileSection = () => {
                 colors={['#4A00E0', '#FF8C00']}
                 textStyle={styles.usernameText}
                 gradientDirection="horizontal"
-                textAlignment={{ // Override default textAlignment to align right
-                  justifyContent: 'flex-end', // Align content to the end (right in row)
-                  alignItems: 'center',       // Vertically center
+                textAlignment={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
                 }}
                 width={100}
               />
@@ -59,6 +63,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: 8,
+    width: 75,
+    height: 75,
   },
   userInfo: {
     flex: 1,

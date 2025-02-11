@@ -15,7 +15,7 @@ import CreateQRcodeScreen from '../pages/LoginScreen/components/Biometrics/Creat
 import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.jsx';
 import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js';
 import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/index.jsx';
-
+import ProfileDetailsScreen from '../pages/SettingsScreen/pages/ProfileDetailsScreen.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -56,7 +56,6 @@ export default function Navigation() {
           initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
           screenOptions={{
             headerShown: false,
-            animation: 'slide_from_right',
           }}
         >
           <Stack.Screen
@@ -97,9 +96,7 @@ export default function Navigation() {
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
-            options={{
-              animation: 'slide_from_left',
-            }}
+        
           />
           <Stack.Screen
             name="GameDetails"
@@ -111,8 +108,16 @@ export default function Navigation() {
           />
            <Stack.Screen
             name="Rooms"
-            component={RoomsScreen}
+            component={RoomsScreen}ProfileDetailsScreen
             options={{
+              animation: 'fade',
+            }}
+          />
+          <Stack.Screen
+            name="ProfileDetailsScreen"
+            component={ProfileDetailsScreen}
+            options={{
+              presentation: 'transparentModal',
               animation: 'fade',
             }}
           />

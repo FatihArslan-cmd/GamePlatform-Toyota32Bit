@@ -37,14 +37,16 @@ const SettingsScreen = () => {
   return (
     <GestureHandlerRootView>
       <Surface style={[styles.container, { paddingTop: insets.top }]}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.fixedHeader}>
           <Animated.View entering={FadeIn.duration(500)}>
             <Header />
           </Animated.View>
+        </View>
 
+        <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scrollView}>
           <View style={styles.content}>
             {sections.map((Section, index) => (
-              <AnimatedSection key={index} index={index}> {/* Use the imported AnimatedSection */}
+              <AnimatedSection key={index} index={index}>
                 <Section.component {...Section.props} />
               </AnimatedSection>
             ))}
@@ -67,8 +69,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  fixedHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex:2
+  },
+  scrollView: {
+    flex: 1,
+  },
   scrollContent: {
     paddingBottom: 32,
+    paddingTop: 70, // Add paddingTop to account for header height, adjust as needed. Assuming header height is around 70.
   },
   content: {
     flex: 1,

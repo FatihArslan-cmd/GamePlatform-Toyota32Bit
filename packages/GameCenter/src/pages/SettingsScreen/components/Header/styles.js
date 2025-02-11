@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   appbar: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     elevation: 2, // Add elevation here for the shadow
     flexDirection: 'row',
     alignItems: 'center',
