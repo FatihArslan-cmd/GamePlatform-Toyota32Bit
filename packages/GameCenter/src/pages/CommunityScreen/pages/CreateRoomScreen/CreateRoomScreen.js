@@ -16,6 +16,7 @@ import ImageSelector from './ImageSelector';
 import CreateButton from './CreateButton';
 import BackButton from '../../../../components/BackIcon';
 import { ToastService } from '../../../../context/ToastService'; // Import ToastService
+import { AnimatedSection } from '../../../../components/Animations/EnteringAnimation';
 
 const CreateRoomScreen = () => {
   const [roomName, setRoomName] = useState('');
@@ -64,26 +65,37 @@ const CreateRoomScreen = () => {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.content}>
             <BackButton />
-            <RoomHeader />
+
+            <AnimatedSection index={0}>
+              <RoomHeader />
+            </AnimatedSection>
 
             <View style={styles.inputContainer}>
-              <RoomNameInput value={roomName} onChangeText={setRoomName} />
+              <AnimatedSection index={1}>
+                <RoomNameInput value={roomName} onChangeText={setRoomName} />
+              </AnimatedSection>
 
               <View style={styles.topicSelectorContainer}>
-                <CommunityTopics
-                  onTopicSelect={handleTopicSelectAndCreate}
-                  selectedTopic={topic}
-                />
+                <AnimatedSection index={2}>
+                  <CommunityTopics
+                    onTopicSelect={handleTopicSelectAndCreate}
+                    selectedTopic={topic}
+                  />
+                </AnimatedSection>
               </View>
 
-              <ImageSelector
-                imageUri={imageUri}
-                onImageSelected={setImageUri}
-              />
+              <AnimatedSection index={3}>
+                <ImageSelector
+                  imageUri={imageUri}
+                  onImageSelected={setImageUri}
+                />
+              </AnimatedSection>
 
             </View>
 
-            <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} />
+            <AnimatedSection index={4}>
+              <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} />
+            </AnimatedSection>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
