@@ -21,8 +21,8 @@ const ProfileScreen = () => {
                     backgroundColor="transparent"
                     barStyle="dark-content"
                 />
-                <TopBar onPencilPress={toggleEditMode} isEditMode={isEditMode} /> {/* Pass state and handler */}
-                <ProfileSection isEditMode={isEditMode} /> {/* Pass edit mode state */}
+                <TopBar onPencilPress={toggleEditMode} isEditMode={isEditMode} /> 
+                <ProfileSection isEditMode={isEditMode} /> 
                 <Buttons/>
             </SafeAreaView>
         </SafeAreaProvider>

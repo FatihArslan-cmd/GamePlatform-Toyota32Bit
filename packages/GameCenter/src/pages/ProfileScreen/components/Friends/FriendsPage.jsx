@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
-import { Button, Snackbar, TouchableRipple,Text,Tooltip } from 'react-native-paper';
+import { Button, TouchableRipple,Text,Tooltip } from 'react-native-paper';
 import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useFriendsPage from '../../hooks/useFriendsPage';
@@ -10,6 +10,8 @@ import FriendItem from './FrientItem';
 import InviteModal from './Modals/InviteModal';
 import FriendDetailsModal from './Modals/FriendDetailsModal';
 import EmptyState from '../../../../components/EmptyState';
+import { ToastService } from '../../../../context/ToastService';
+
 
 const FriendsPage = ({ onFriendCountChange }) => {
     const {
@@ -21,9 +23,6 @@ const FriendsPage = ({ onFriendCountChange }) => {
         friends,
         selectedFriend,
         friendModalVisible,
-        snackbarVisible,
-        snackbarMessage,
-        setSnackbarVisible,
         handleInvitePress,
         handleCopyCode,
         handleModalDismiss,
@@ -51,10 +50,16 @@ const FriendsPage = ({ onFriendCountChange }) => {
         setAddModalVisible(false);
     };
 
+    useEffect(() => {
+        if (error) {
+            ToastService.show("error", error);
+        }
+    }, [error]);
+
+
     return (
         <View style={styles.container}>
-            {error ? <Text style={{ color: 'red', textAlign: 'center',fontFamily:'Orbitron-VariableFont_wght' }}>{error}</Text> : null}
-            <InviteModal 
+            <InviteModal
                 visible={modalVisible}
                 onDismiss={handleModalDismiss}
                 friendCode={friendCode}
@@ -105,26 +110,19 @@ const FriendsPage = ({ onFriendCountChange }) => {
             <FlatList
                 data={friends}
                 renderItem={({ item }) => (
-                  <FriendItem 
-                    item={item} 
-                    colors={colors} 
-                    onPress={() => handleFriendPress(item)} 
+                  <FriendItem
+                    item={item}
+                    colors={colors}
+                    onPress={() => handleFriendPress(item)}
                 />
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 style={styles.friendsList}
                 ListEmptyComponent={() => <EmptyState message={"No friends Yet!"}/>}
             />
-            <Snackbar
-                visible={snackbarVisible}
-                onDismiss={() => setSnackbarVisible(false)}
-                duration={3000}
-                style={[styles.snackbar, { backgroundColor: colors.primary }]}
-            >
-                {snackbarMessage}
-            </Snackbar>
         </View>
     );
 };
+
 
 export default FriendsPage;

@@ -20,17 +20,18 @@ export const generateFriendCode = async () => {
 export const fetchFriends = async () => {
     try {
         const headers = await getAuthHeader();
-        const response = await api.get(`/friends`, { headers });
+        const response = await api.get(`/friends/friends`, { headers });
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || 'Failed to fetch friends');
+        console.log("Error fetching friends:", error);
+        throw new Error(error.response?.data?.message || 'Failed to fetch friends' );
     }
 };
 
 export const removeFriend = async (friendId) => {
     try {
         const headers = await getAuthHeader();
-        const response = await api.delete(`/remove-friend/${friendId}`, { headers });
+        const response = await api.delete(`/friends/remove-friend/${friendId}`, { headers });
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || 'Failed to remove friend.');
@@ -40,7 +41,7 @@ export const removeFriend = async (friendId) => {
 export const addFriend = async (friendCode) => {
     try {
         const headers = await getAuthHeader();
-        const response = await api.post(`/add-friend`, { friendCode }, { headers });
+        const response = await api.post(`/friends/add-friend`, { friendCode }, { headers });
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || 'Failed to add friend.');

@@ -24,7 +24,6 @@ import { ToastService } from '../../context/ToastService';
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const HomeScreen = () => {
-  const { currentToast, showToast, hideToast } = useToast();
   const [games, setGames] = useState([]);
   const appBarHeight = useSharedValue(0);
   const scrollY = useSharedValue(0);
@@ -90,7 +89,6 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <UpperBigAnimatedImages games={games} />
-        <MiniGamesBlock games={games} />
         <FromTheCreator />
         <VideoPlayBlock />
       </AnimatedScrollView>

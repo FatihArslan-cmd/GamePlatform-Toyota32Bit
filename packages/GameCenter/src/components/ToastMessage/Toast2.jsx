@@ -4,13 +4,14 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Text } from "react-native-paper";
 const { width } = Dimensions.get('window');
 
-const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { // initialAction olarak yeniden adlandırıldı
+const ToastMessage = forwardRef(({ onHide, action: initialAction, onVisibilityChange }, ref) => { // onVisibilityChange prop eklendi
   const translateY = useRef(new Animated.Value(-100)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.8)).current;
   const progress = useRef(new Animated.Value(0)).current;
   const timeoutRef = useRef(null);
+  const isCurrentlyVisible = useRef(false); // Toast'un şu anda görünür olup olmadığını takip eder
 
   // State'ler eklendi
   const [currentType, setCurrentType] = useState("info");
@@ -51,7 +52,7 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { //
     })
   ).current;
 
-  const showAnimation = () => {
+  const showAnimation = (callback) => {
     Animated.parallel([
       Animated.spring(translateY, {
         toValue: 0,
@@ -71,16 +72,24 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { //
         friction: 8,
       }),
     ]).start(() => {
+      isCurrentlyVisible.current = true; // Toast görünür oldu
+      if (onVisibilityChange) onVisibilityChange(true); // Toast görünürlüğünü bildir
       timeoutRef.current = setTimeout(internalHideToast, 3000);
       Animated.timing(progress, {
         toValue: 1,
         duration: 3000,
         useNativeDriver: false,
-      }).start();
+      }).start(callback);
     });
   };
 
-  const internalHideToast = () => {
+  const internalHideToast = (callback) => {
+    if (!isCurrentlyVisible.current) { // Eğer zaten görünür değilse, hiçbir şey yapma
+      if (callback) callback();
+      return;
+    }
+    isCurrentlyVisible.current = false; // Toast görünmez oldu
+    if (onVisibilityChange) onVisibilityChange(false); // Toast görünmezliğini bildir
     clearTimeout(timeoutRef.current);
     Animated.parallel([
       Animated.timing(translateY, {
@@ -101,7 +110,8 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { //
     ]).start(() => {
       if (onHide) onHide();
       progress.setValue(0);
-        setCurrentMessage(""); // Mesajı temizle
+      setCurrentMessage(""); // Mesajı temizle
+      if (callback) callback();
     });
   };
 
@@ -112,8 +122,8 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { //
       setCurrentAction(toastAction); // State'i güncelle
       showAnimation();
     },
-    hideToast: () => {
-      internalHideToast();
+    hideToast: (callback) => {
+      internalHideToast(callback);
     },
   }));
 
@@ -158,9 +168,9 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { //
         },
       ]}
     >
-      <View style={[styles.content, { backgroundColor: getBackgroundColor(currentType) }]}> {/* currentType kullanıldı */}
+      <View style={[styles.content, { backgroundColor: getBackgroundColor(currentType) }]}>
         <Animated.View style={[styles.iconContainer, getIconAnimation()]}>
-          <Icon name={getIconName(currentType)} size={24} color="#fff" /> {/* currentType kullanıldı */}
+          <Icon name={getIconName(currentType)} size={24} color="#fff" /> 
         </Animated.View>
 
         <View style={styles.messageContainer}>
@@ -173,7 +183,7 @@ const ToastMessage = forwardRef(({ onHide, action: initialAction }, ref) => { //
               style={styles.actionButton}
               activeOpacity={0.7}
             >
-              <Text style={styles.actionText}>{currentAction.label}</Text>  {/* currentAction kullanıldı */}
+              <Text style={styles.actionText}>{currentAction.label}</Text>  
             </TouchableOpacity>
           )}
         </View>
@@ -244,7 +254,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     alignSelf: 'center',
     width: '90%',
-    zIndex: 1000,
+    zIndex: 1000000,
   },
   content: {
     flexDirection: "row",

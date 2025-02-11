@@ -51,6 +51,8 @@ export const setupForegroundNotifications = () => {
           pressAction: {
             id: 'varsayılan',
           },
+          sound: 'lumos_sound_effect', // Özel ses dosyası adı (uzantısız) - Android için
+
           // Android'e özel stil ayarları (isteğe bağlı)
           // style: {
           //   type: AndroidStyle.BIGTEXT,
