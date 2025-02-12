@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import notifee, { AndroidImportance, AndroidStyle } from '@notifee/react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { PermissionsAndroid } from 'react-native'; // PermissionsAndroid import'unu ekledim
 
 // Firebase bildirim izni iste

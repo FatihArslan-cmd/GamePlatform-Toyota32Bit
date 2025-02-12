@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Linking,StyleSheet } from 'react-native';
 import { Card, List, RadioButton } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
-
+import GradientDivider from '../../../components/GradientDivider';
 
 const LanguageSection = () => {
   const [expanded, setExpanded] = useState(false);
@@ -15,6 +15,19 @@ const LanguageSection = () => {
     setExpanded(false); // Close the accordion after language selection
   };
 
+  const getFlagEmoji = (language) => {
+    switch (language) {
+      case 'Turkish':
+        return '🇹🇷 ';
+      case 'English':
+        return '🇺🇸 '; // Or '🇬🇧 ' for British English, or just '🌐 ' for general language
+      case 'German':
+        return '🇩🇪 ';
+      default:
+        return '';
+    }
+  };
+
   return (
     <Card style={styles.card}>
       <Card.Content>
@@ -24,7 +37,8 @@ const LanguageSection = () => {
           textStyle={{ fontSize: 22 }}
           gradientDirection="horizontal"
         />
-
+  <GradientDivider horizontalMargin='%10'  colorProps={['black', '#778899']}
+                    />
         <List.Accordion
           expanded={expanded}
           onPress={handlePress}
@@ -35,19 +49,19 @@ const LanguageSection = () => {
           left={props => <List.Icon {...props}  color="#6366F1" icon="translate" />}
         >
           <List.Item
-            title="Türkçe"
+            title={`${getFlagEmoji('Turkish')}Türkçe`}
             onPress={() => handleLanguageChange('Turkish')}
             titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
             right={() => selectedLanguage === 'Turkish' ? <List.Icon icon="check" /> : null}
           />
           <List.Item
-            title="English"
+            title={`${getFlagEmoji('English')}English`}
             onPress={() => handleLanguageChange('English')}
             titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
             right={() => selectedLanguage === 'English' ? <List.Icon icon="check" /> : null}
           />
           <List.Item
-            title="Deutsch"
+            title={`${getFlagEmoji('German')}Deutsch`}
             titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
             onPress={() => handleLanguageChange('German')}
             right={() => selectedLanguage === 'German' ? <List.Icon icon="check" /> : null}

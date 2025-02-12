@@ -1,16 +1,15 @@
 import React from 'react';
-import {  StyleSheet } from 'react-native';
+import {  StyleSheet, TouchableOpacity} from 'react-native';
 import { Card, List } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
-import { CustomSwitch } from './CustomSwitch';
-import { ToastService } from '../../../context/ToastService'; // Import ToastService. Adjust the path as needed
-
+import { ToastService } from '../../../context/ToastService';
+import GradientDivider from '../../../components/GradientDivider';
 const NotificationSection = () => {
   const [pushEnabled, setPushEnabled] = React.useState(true);
   const [emailEnabled, setEmailEnabled] = React.useState(true);
-  const [marketingEnabled, setMarketingEnabled] = React.useState(false);
 
-  const handlePushToggle = (newValue) => {
+  const handlePushToggle = () => {
+    const newValue = !pushEnabled;
     setPushEnabled(newValue);
     if (newValue) {
       ToastService.show("info", "Push Notifications enabled");
@@ -19,7 +18,8 @@ const NotificationSection = () => {
     }
   };
 
-  const handleEmailToggle = (newValue) => {
+  const handleEmailToggle = () => {
+    const newValue = !emailEnabled;
     setEmailEnabled(newValue);
     if (newValue) {
       ToastService.show("info", "Email Notifications enabled");
@@ -27,16 +27,6 @@ const NotificationSection = () => {
       ToastService.show("info", "Email Notifications disabled");
     }
   };
-
-  const handleMarketingToggle = (newValue) => {
-    setMarketingEnabled(newValue);
-    if (newValue) {
-      ToastService.show("info", "Marketing Emails enabled");
-    } else {
-      ToastService.show("info", "Marketing Emails disabled");
-    }
-  };
-
 
   return (
     <Card style={styles.card}>
@@ -47,47 +37,43 @@ const NotificationSection = () => {
           textStyle={{ fontSize: 22 }}
           gradientDirection="horizontal"
         />
-        <List.Item
-          title="Push Notifications"
-          titleStyle={styles.titleStyle}
-          description="Receive push notifications"
-          descriptionStyle={styles.descriptionStyle}
-          left={props => <List.Icon {...props} icon="bell" color="#6366F1" />}
-          right={() => (
-            <CustomSwitch
-              value={pushEnabled}
-              onValueChange={handlePushToggle}
-            />
-          )}
-        />
+  <GradientDivider horizontalMargin='%10'  colorProps={['black', '#778899']}
+                    />        <TouchableOpacity onPress={handlePushToggle} style={styles.listItemContainer}>
+          <List.Item
+            title="Push Notifications"
+            titleStyle={styles.titleStyle}
+            description="Receive push notifications"
+            descriptionStyle={styles.descriptionStyle}
+            left={props => <List.Icon {...props} icon="bell" color="#6366F1" />}
+            right={() => (
+              <GrandientText
+                text={pushEnabled ? "Enabled" : "Disabled"}
+                colors={pushEnabled ? ['green', 'darkgreen'] : ['red', 'darkred']}
+                textStyle={styles.rightTextStyle}
+                gradientDirection="horizontal"
+              />
+            )}
+          />
+        </TouchableOpacity>
 
-        <List.Item
-          title="Email Notifications"
-          titleStyle={styles.titleStyle}
-          description="Receive email updates"
-          descriptionStyle={styles.descriptionStyle}
-          left={props => <List.Icon {...props} icon="email" color="#6366F1" />}
-          right={() => (
-            <CustomSwitch
-              value={emailEnabled}
-              onValueChange={handleEmailToggle}
-            />
-          )}
-        />
+        <TouchableOpacity onPress={handleEmailToggle} style={styles.listItemContainer}>
+          <List.Item
+            title="Email Notifications"
+            titleStyle={styles.titleStyle}
+            description="Receive email updates"
+            descriptionStyle={styles.descriptionStyle}
+            left={props => <List.Icon {...props} icon="email" color="#6366F1" />}
+            right={() => (
+              <GrandientText
+                text={emailEnabled ? "Enabled" : "Disabled"}
+                colors={emailEnabled ? ['green', 'darkgreen'] : ['red', 'darkred']}
+                textStyle={styles.rightTextStyle}
+                gradientDirection="horizontal"
+              />
+            )}
+          />
+        </TouchableOpacity>
 
-        <List.Item
-          title="Marketing Emails"
-          titleStyle={styles.titleStyle}
-          description="Receive promotional emails"
-          descriptionStyle={styles.descriptionStyle}
-          left={props => <List.Icon {...props} icon="bullhorn" color="#6366F1" />}
-          right={() => (
-            <CustomSwitch
-              value={marketingEnabled}
-              onValueChange={handleMarketingToggle}
-            />
-          )}
-        />
       </Card.Content>
     </Card>
   );
@@ -109,19 +95,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
   },
-  switchContainer: {
-    width: 48,
-    height: 26,
-    borderRadius: 13,
-    padding: 2,
+  rightTextStyle: {
+    fontFamily: 'Orbitron-VariableFont_wght',
+    fontSize: 14,
   },
-  thumb: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: 'white',
-    elevation: 2,
-  },
+  listItemContainer: {
+    // Optional: Add styling if needed for the TouchableOpacity container
+  }
 });
 
 export default NotificationSection;

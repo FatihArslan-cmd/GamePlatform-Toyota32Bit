@@ -2,7 +2,8 @@ import React from 'react';
 import { Linking,StyleSheet } from 'react-native';
 import { Card, List} from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
-
+import GradientDivider from '../../../components/GradientDivider';
+import { G } from 'react-native-svg';
 
 const ThemeSection = ({ handleThemePress }) => { // Receive handleThemePress as prop
 
@@ -19,8 +20,7 @@ const ThemeSection = ({ handleThemePress }) => { // Receive handleThemePress as 
             textStyle={{ fontSize: 22 }}
             gradientDirection="horizontal"
           />
-
-      <List.Item
+  <GradientDivider horizontalMargin='%10'  colorProps={['black', '#778899']} />      <List.Item
         titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
           title="Choose Theme"
           descriptionStyle={{fontFamily:'Orbitron-VariableFont_wght'}}

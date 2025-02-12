@@ -9,8 +9,6 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { getGamesFromStorage } from '../../utils/api';
-import ToastMessage from '../../components/ToastMessage/Toast';
-import useToast from '../../components/ToastMessage/hooks/useToast';
 import Header from './components/Header/Header';
 import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
 import MiniGamesBlock from './components/MiniGames/MiniGames';

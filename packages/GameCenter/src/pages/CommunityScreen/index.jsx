@@ -64,8 +64,8 @@ const CommunityScreen = () => {
   return (
     <View style={styles.safeArea}>
     <BackButton />
+    <MakePost />
 
-      <MakePost />
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onHeaderLayout}
