@@ -1,10 +1,30 @@
+// PostToolbar.js
 import React from 'react';
 import { View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/createPostStyles';
+import { launchImageLibrary } from 'react-native-image-picker';
 
-const PostToolbar = () => {
+const PostToolbar = ({ setSelectedImage }) => {
+
+  const handleImageSelection = async () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.8,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        setSelectedImage(response.assets[0].uri);
+      }
+    });
+  };
+
   return (
     <View style={styles.toolbarContainer}>
       <View style={styles.toolbar}>
@@ -12,7 +32,7 @@ const PostToolbar = () => {
           style={styles.toolbarButton}
           borderless={true}
           rippleColor="rgba(0,0,0,0.1)"
-          onPress={() => { /* Handle image selection */ }}
+          onPress={handleImageSelection}
         >
           <Icon name="image" size={28} color="#1DA1F2" />
         </TouchableRipple>

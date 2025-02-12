@@ -73,6 +73,30 @@ const styles = StyleSheet.create({
     color: '#1DA1F2', // Blue text color like in the image
     fontSize: 14, // Match the font size, you might need to adjust this
   },
+  postMediaContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+    position: 'relative', // For positioning the remove icon
+  },
+  postMediaImage: {
+    width: 200,
+    height: 300, // Adjust height as needed
+    resizeMode: 'cover',
+  },
+  removeMediaButton: {
+    position: 'absolute',
+    top: -10, // Adjust position as needed
+    right: -10, // Adjust position as needed
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  removeMediaIcon: {
+    color: '#fff',
+  },
 });
 
 export default styles;
