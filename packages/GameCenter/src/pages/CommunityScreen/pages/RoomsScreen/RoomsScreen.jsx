@@ -66,6 +66,7 @@ const RoomsScreen = () => {
         </ScrollView>
         <GradientDivider    colors={['#6610F2', '#EA047E']} // Mor - Pembe
  horizontalMargin={'%10'} height={1} />
+        <Message /> 
         </>
       ) : (
         !loading && !error && (

@@ -1,12 +1,11 @@
-// PostInput.js
 import React, { useContext } from 'react';
-import { View, Image, TouchableOpacity, ScrollView } from 'react-native'; // Import ScrollView
+import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Avatar, Card, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserContext } from '../../../../../context/UserContext';
 import styles from '../styles/createPostStyles';
 
-const PostInput = ({ selectedImage, setSelectedImage }) => {
+const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) => { // Receive postText and setPostText props
   const { user } = useContext(UserContext);
 
   const handleRemoveImage = () => {
@@ -42,6 +41,8 @@ const PostInput = ({ selectedImage, setSelectedImage }) => {
             underlineColor="transparent"
             activeUnderlineColor="transparent"
             mode="flat"
+            value={postText} // Control the input value with postText prop
+            onChangeText={setPostText} // Update postText state in CreatePostScreen
           />
         </Card.Content>
 

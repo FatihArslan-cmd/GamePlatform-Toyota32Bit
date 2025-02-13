@@ -1,4 +1,3 @@
-// PostToolbar.js
 import React from 'react';
 import { View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';

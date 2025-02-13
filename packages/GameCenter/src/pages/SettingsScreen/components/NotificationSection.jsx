@@ -37,8 +37,7 @@ const NotificationSection = () => {
           textStyle={{ fontSize: 22 }}
           gradientDirection="horizontal"
         />
-  <GradientDivider horizontalMargin='%10'  colorProps={['black', '#778899']}
-                    />        <TouchableOpacity onPress={handlePushToggle} style={styles.listItemContainer}>
+          <TouchableOpacity onPress={handlePushToggle} style={styles.listItemContainer}>
           <List.Item
             title="Push Notifications"
             titleStyle={styles.titleStyle}

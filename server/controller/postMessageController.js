@@ -34,7 +34,7 @@ const createMessageHandler = async (req, res) => { // Make handler async
             timePosted: new Date().toISOString(),
             content,
             contentImage,
-            initialLikes: 0,
+            likes: [], // Başlangıçta boş bir like dizisi
             commentCount: 0,
             shareCount: 0
         };
@@ -75,8 +75,50 @@ const deleteMessageHandler = async (req, res) => { // Make handler async
     }
 };
 
+const likeMessageHandler = async (req, res) => {
+    try {
+        const messageIdToLike = req.params.id;
+        const userId = req.user.id;
+
+        if (!messageIdToLike) {
+            return res.status(400).json({ message: 'Mesaj ID\'si gereklidir.' });
+        }
+
+        const updatedMessage = await likeMessage(req, messageIdToLike, userId);
+        if (updatedMessage) {
+            res.status(200).json(updatedMessage);
+        } else {
+            res.status(404).json({ message: 'Mesaj bulunamadı veya like işlemi başarısız oldu.' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Mesaj beğenilirken bir hata oluştu', error: error.message, backendMessage: error.message });
+    }
+};
+
+const shareMessageHandler = async (req, res) => {
+    try {
+        const messageIdToShare = req.params.id;
+
+        if (!messageIdToShare) {
+            return res.status(400).json({ message: 'Mesaj ID\'si gereklidir.' });
+        }
+
+        const updatedMessage = await shareMessage(req, messageIdToShare);
+        if (updatedMessage) {
+            res.status(200).json(updatedMessage);
+        } else {
+            res.status(404).json({ message: 'Mesaj bulunamadı veya paylaşım işlemi başarısız oldu.' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Mesaj paylaşılırken bir hata oluştu', error: error.message, backendMessage: error.message });
+    }
+};
+
+
 module.exports = {
     createMessageHandler,
     getMessageHandler,
     deleteMessageHandler,
+    likeMessageHandler,
+    shareMessageHandler
 };
