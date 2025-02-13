@@ -11,9 +11,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@notifee/react-native": "^9.1.8",
     "@react-native-clipboard/clipboard": "^1.15.0",
     "@react-native-community/blur": "^4.4.1",
     "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-firebase/app": "^21.7.2",
+    "@react-native-firebase/messaging": "^21.7.2",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-navigation/material-top-tabs": "^7.1.0",
     "@react-navigation/native": "^7.0.14",
@@ -41,7 +44,8 @@
     "react-native-screens": "^4.4.0",
     "react-native-svg": "^15.10.1",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-vision-camera": "^4.6.3"
+    "react-native-vision-camera": "^4.6.3",
+    "react-navigation-shared-element": "^3.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, IconButton, Avatar, PaperProvider } from 'react-native-paper';
+import { Text, IconButton, Avatar} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/Ionicons'; // veya istediğiniz icon seti (örneğin FontAwesome)
+import formatDate from '../../../../utils/FormatDate';
 
 const MessageItem = ({ message }) => {
   const [liked, setLiked] = useState(false);
@@ -13,11 +13,11 @@ const MessageItem = ({ message }) => {
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
 
+
   return (
     <View style={styles.container}>
-      <View style={styles.line} /> {/* Üst çizgi */}
+      <View style={styles.line} /> 
       <View style={styles.messageContent}>
-        {/* Profile Header */}
         <View style={styles.headerContainer}>
           <Avatar.Image
             size={50}
@@ -27,15 +27,13 @@ const MessageItem = ({ message }) => {
           <View style={styles.userInfo}>
             <View style={styles.usernameTimeContainer}>
               <Text variant="titleMedium" style={styles.username}>{message.username}</Text>
-              <Text variant="bodySmall" style={styles.timestamp}>{message.timePosted}</Text>
+              <Text variant="bodySmall" style={styles.timestamp}>{formatDate(message.timePosted)}</Text>
             </View>
           </View>
         </View>
 
-        {/* Content */}
         <Text variant="bodyMedium" style={styles.contentText}>{message.content}</Text>
 
-        {/* Optional Image */}
         {message.contentImage && (
           <FastImage
             source={{ uri: message.contentImage }}
@@ -44,7 +42,6 @@ const MessageItem = ({ message }) => {
           />
         )}
 
-        {/* Interaction Buttons */}
         <View style={styles.actionsContainer}>
           <View style={styles.actionItemLeft}>
             <View style={styles.interactionButton}>
@@ -140,8 +137,8 @@ const styles = StyleSheet.create({
     paddingLeft: 62, // Eklendi: username hizalaması için
   },
   contentImage: {
-    width: '100%',
-    height: 200,
+    width: 200,
+    height: 300,
     borderRadius: 8,
     marginBottom: 12, // Resim alt boşluğu
   },

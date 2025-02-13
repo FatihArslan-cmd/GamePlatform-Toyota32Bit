@@ -5,7 +5,7 @@ import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/VideoP
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
 import Message from './Message';
 import GradientDivider from '../../../../components/GradientDivider';
-import { G } from 'react-native-svg';
+import ErrorComponents from '../../../../components/ErrorComponents';
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,8 @@ const RoomsScreen = () => {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>Error: {error}</Text>
+        <ErrorComponents></ErrorComponents>
+        <Text style={styles.errorText}>{error}</Text>
       </View>
     );
   }
@@ -51,6 +52,7 @@ const RoomsScreen = () => {
           style={styles.scrollView}
           contentContainerStyle={styles.contentContainer}
           showsHorizontalScrollIndicator={false}
+          fadingEdgeLength={50} // ADDED fadingEdgeLength HERE
         >
           {rooms.map((room, index) => (
             <View key={room.id} style={styles.roomItem}>
@@ -64,15 +66,15 @@ const RoomsScreen = () => {
         </ScrollView>
         <GradientDivider    colors={['#6610F2', '#EA047E']} // Mor - Pembe
  horizontalMargin={'%10'} height={1} />
+        <Message /> 
         </>
       ) : (
         !loading && !error && (
           <>
-          
+
           </>
         )
       )}
-      <Message />
     </View>
   );
 };

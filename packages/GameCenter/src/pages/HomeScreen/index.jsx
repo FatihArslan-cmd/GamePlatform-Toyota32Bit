@@ -9,8 +9,6 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { getGamesFromStorage } from '../../utils/api';
-import ToastMessage from '../../components/ToastMessage/Toast';
-import useToast from '../../components/ToastMessage/hooks/useToast';
 import Header from './components/Header/Header';
 import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
 import MiniGamesBlock from './components/MiniGames/MiniGames';
@@ -19,11 +17,11 @@ import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 import useDisableBackButton from './hooks/useDisableBackButton';
 import { hideNavigationBar } from '../../utils/NavBarManager';
 import useHeaderAnimation from './hooks/useHeaderAnimation';
+import { ToastService } from '../../context/ToastService';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const HomeScreen = () => {
-  const { currentToast, showToast, hideToast } = useToast();
   const [games, setGames] = useState([]);
   const appBarHeight = useSharedValue(0);
   const scrollY = useSharedValue(0);
@@ -57,7 +55,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      showToast('success', 'Successfully logged in!');
+      ToastService.show('success', 'Successfully logged in!');
     }, 1250);
     return () => clearTimeout(timer);
   }, []);
@@ -89,18 +87,11 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <UpperBigAnimatedImages games={games} />
-        <MiniGamesBlock games={games} />
         <FromTheCreator />
         <VideoPlayBlock />
       </AnimatedScrollView>
 
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
+   
     </View>
   );
 };

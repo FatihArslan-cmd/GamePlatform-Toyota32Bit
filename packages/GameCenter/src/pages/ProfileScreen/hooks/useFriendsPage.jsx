@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTheme } from 'react-native-paper';
-import * as FriendService from '../services/service'; 
+import * as FriendService from '../services/service';
+import { ToastService } from '../../../context/ToastService';
 
 const useFriendsPage = () => {
     const { colors } = useTheme();
@@ -13,11 +14,24 @@ const useFriendsPage = () => {
     const [error, setError] = useState('');
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [friendModalVisible, setFriendModalVisible] = useState(false);
-    const [snackbarVisible, setSnackbarVisible] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
     const [searchText, setSearchText] = useState('');
 
-    const handleInvitePress = async () => {
+    const fetchFriendsList = useCallback(async () => {
+        setError('');
+        try {
+            const data = await FriendService.fetchFriends();
+            setFriends(data.friends);
+        } catch (err) {
+            console.log("Error fetching friends:", err);
+            setError(err.message || 'Failed to fetch friends');
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchFriendsList();
+    }, [fetchFriendsList]);
+
+    const handleInvitePress = useCallback(async () => {
         setLoading(true);
         setError('');
         try {
@@ -29,20 +43,20 @@ const useFriendsPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const handleCopyCode = async () => {
+    const handleCopyCode = useCallback(async () => {
         Clipboard.setString(friendCode);
-        setSnackbarMessage('Code copied to clipboard');
-        setSnackbarVisible(true);
-    };
+        setModalVisible(false);
+        ToastService.show("success", 'Code copied to clipboard'); // Show toast
+    }, [friendCode]);
 
-    const handleModalDismiss = () => {
+    const handleModalDismiss = useCallback(() => {
         setModalVisible(false);
         setFriendCode('');
-    };
+    }, []);
 
-    const handleShareCode = async () => {
+    const handleShareCode = useCallback(async () => {
         try {
             const shareOptions = {
                 message: `Here is my friend code: ${friendCode}`,
@@ -53,67 +67,52 @@ const useFriendsPage = () => {
             setError("Failed to share code");
         }
         handleModalDismiss();
-    };
+    }, [friendCode, handleModalDismiss]);
 
-    const fetchFriendsList = async () => {
-        setError('');
-        try {
-            const data = await FriendService.fetchFriends();
-            setFriends(data.friends);
-        } catch (err) {
-            setError(err.message || 'Failed to fetch friends');
-        }
-    };
-
-    useEffect(() => {
-        fetchFriendsList();
-    }, []);
-
-    const handleFriendPress = (friend) => {
+    const handleFriendPress = useCallback((friend) => {
         setSelectedFriend(friend);
         setFriendModalVisible(true);
-    };
+    }, []);
 
-    const handleFriendModalDismiss = () => {
+    const handleFriendModalDismiss = useCallback(() => {
         setFriendModalVisible(false);
         setSelectedFriend(null);
-    };
+    }, []);
 
-    const handleRemoveFriend = async () => {
+    const handleRemoveFriend = useCallback(async () => {
         setLoading(true);
         setError('');
         try {
             await FriendService.removeFriend(selectedFriend.id);
             setFriendModalVisible(false);
             setSelectedFriend(null);
-            fetchFriendsList();
-             setSnackbarMessage('Friend Removed Successfully!');
-              setSnackbarVisible(true);
+            await fetchFriendsList();
+             ToastService.show("success", 'Friend Removed Successfully!'); // Show toast
         } catch (err) {
             setError(err.message || 'Failed to remove friend.');
         } finally {
             setLoading(false);
         }
-    };
+    }, [selectedFriend, fetchFriendsList]);
 
-    const handleAddFriend = async (code) => {
+    const handleAddFriend = useCallback(async (code) => {
         setLoading(true);
         setError('');
         try {
             await FriendService.addFriend(code);
-            fetchFriendsList();
-            setSnackbarMessage('Friend added successfully!');
-            setSnackbarVisible(true);
+            await fetchFriendsList();
+            handleModalDismiss();
+            ToastService.show("success", 'Friend added successfully!'); // Show toast
         } catch (err) {
             setError(err.message || 'Failed to add friend.');
         } finally {
             setLoading(false);
         }
-    };
+    }, [fetchFriendsList]);
 
-    const handleSearchChange = (text) => {
+    const handleSearchChange = useCallback((text) => {
         setSearchText(text);
-    };
+    }, []);
 
     return {
         colors,
@@ -131,15 +130,11 @@ const useFriendsPage = () => {
         setSelectedFriend,
         friendModalVisible,
         setFriendModalVisible,
-        snackbarVisible,
-        setSnackbarVisible,
-        snackbarMessage,
-        setSnackbarMessage,
         handleInvitePress,
         handleCopyCode,
         handleModalDismiss,
         handleShareCode,
-        fetchFriends: fetchFriendsList, 
+        fetchFriends: fetchFriendsList,
         handleFriendPress,
         handleFriendModalDismiss,
         handleRemoveFriend,

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -42,13 +42,14 @@ const Buttons = () => {
         animateSlider(newIndex);
     };
 
-    const handleFriendCountChange = (count) => {
-        setFriendCount(count);
-    };
-
-    const handleAchievementCountChange = (count) => {
+    const handleAchievementCountChange = useCallback((count) => {
         setAchievementCount(count);
-    };
+    }, []); 
+
+    const handleFriendCountChange = useCallback((count) => {
+        setFriendCount(count);
+    }, []);
+
 
     useEffect(() => {
         setTabs(prevTabs => {
@@ -113,6 +114,7 @@ const Buttons = () => {
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -133,13 +135,13 @@ const styles = StyleSheet.create({
     tabNumber: {
         fontSize: 22,
         color: 'gray',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
         paddingVertical: 10
     },
     tabText: {
         fontSize: 16,
         color: 'gray',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
     },
     activeTabText: {
         color: 'white',

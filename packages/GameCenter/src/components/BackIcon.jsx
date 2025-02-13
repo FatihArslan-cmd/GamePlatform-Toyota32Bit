@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { isTablet } from './isTablet';
 
-const BackButton = ({ color = '#000', size }) => {
+const BackButton = ({ color = '#000', size, top = 24, left = 16, padding = 8 }) => {
   const navigation = useNavigation();
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(-20);
@@ -41,7 +41,7 @@ const BackButton = ({ color = '#000', size }) => {
   };
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
+    <Animated.View style={[styles.container, animatedStyle, { top, left, padding }]}>
       <TouchableRipple
         onPress={handleGoBack}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -55,9 +55,6 @@ const BackButton = ({ color = '#000', size }) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 24,
-    left: 16,
-    padding: 8,
     zIndex: 10,
   },
 });

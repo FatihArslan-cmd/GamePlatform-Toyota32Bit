@@ -1,7 +1,6 @@
 import { getToken } from '../../../shared/states/api';
 import api from '../../../shared/states/api';
 
-// Helper function to add the token to the headers
 const getHeaders = () => {
   const token = getToken();
   return {

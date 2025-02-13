@@ -1,5 +1,5 @@
 const express = require('express');
-const { login, refreshAccessToken } = require('../controller/authController');
+const { login, refreshAccessToken,updateUser } = require('../controller/authController');
 const router = express.Router();
 
 router.post('/login', login);

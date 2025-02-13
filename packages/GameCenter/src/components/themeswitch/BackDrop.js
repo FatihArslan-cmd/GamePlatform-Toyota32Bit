@@ -40,5 +40,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     display: 'none',
+    position: 'absolute',
+
   },
 });

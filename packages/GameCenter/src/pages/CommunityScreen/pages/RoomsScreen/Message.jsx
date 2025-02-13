@@ -1,35 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import MessageItem from './MessageItem';
+import { getMessagesFromApi } from '../../services/postMessageApi';
+import { View, Text } from 'react-native';
 
-// Ağır liste verisi - 150 adet öğe (MessageItem için uygun veri yapısıyla)
-const DATA = Array.from({ length: 150 }, (_, index) => ({
-  id: String(index),
-  username: `Kullanıcı ${index + 1}`,
-  userAvatar: `https://randomuser.me/api/portraits/men/${index + 1}.jpg`, // randomuser.me'den erkek portreleri
-  timePosted: `${Math.floor(Math.random() * 24)} saat önce`,
-  content: `Bu bir örnek mesaj içeriğidir ${index + 1}. Bu mesaj uzun ve karmaşık olabilir. Performansı test etmek için tasarlandı. Örneğin, bu mesaj çok satırlı ve farklı stil özelliklerine sahip olabilir. Hatta burada daha fazla metin olabilir ki listenin ne kadar performanslı olduğunu görelim.`,
-  contentImage: index % 3 === 0 ? `https://via.placeholder.com/200x150/fedcba?text=Resim${index+1}` : null, // Bazı öğeler için örnek resim
-  initialLikes: Math.floor(Math.random() * 100),
-  commentCount: Math.floor(Math.random() * 20),
-  shareCount: Math.floor(Math.random() * 5),
-}));
+const Message = ({ onScroll, listRef }) => {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-// Her bir öğeyi render eden fonksiyon, şimdi MessageItem kullanıyor
-const renderItem = ({ item }) => (
-  <MessageItem message={item} />
-);
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const data = await getMessagesFromApi();
+        setMessages(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch messages');
+        setLoading(false);
+      }
+    };
 
-const Message = () => {
+    fetchMessages();
+  }, []);
+
+ 
+
   return (
     <SafeAreaView style={styles.container}>
-      <FlashList
-        data={DATA}
-        renderItem={renderItem}
-        estimatedItemSize={150} // MessageItem'ın tahmini yüksekliği, ayarlanabilir
-        // contentContainerStyle={styles.listContentContainer} // İsteğe bağlı: Liste içeriği için stil
-      />
+      {messages.length > 0 ? (
+        <FlashList
+          ref={listRef}
+          data={messages}
+          renderItem={({ item }) => <MessageItem message={item} />}
+          estimatedItemSize={150}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+        />
+      ) : (
+        !loading && !error && (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No messages to display.</Text>
+          </View>
+        )
+      )}
     </SafeAreaView>
   );
 };
@@ -37,10 +52,22 @@ const Message = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white', // Arka plan rengi daha hoş bir görünüm için
+    backgroundColor: 'white',
   },
-  listContentContainer: {
-    paddingVertical: 10, // Liste içeriğinin etrafında dikey boşluk
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: 'gray',
   },
 });
 

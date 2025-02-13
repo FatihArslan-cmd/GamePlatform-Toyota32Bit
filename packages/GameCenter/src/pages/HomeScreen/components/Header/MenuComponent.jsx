@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Menu, Divider, Appbar } from 'react-native-paper';
+import { Menu, Divider, Appbar ,Tooltip} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible, openBottomSheet, setJoinLobbyModalVisible }) => { // openBottomSheet prop olarak alındı, setJoinLobbyModalVisible eklendi
@@ -11,11 +11,13 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       visible={menuVisible}
       onDismiss={closeMenu}
       anchor={
+        <Tooltip title="Options">
         <Appbar.Action
           icon="dots-vertical"
           onPress={openMenu}
           color="gray"
         />
+        </Tooltip>
       }
       style={styles.menu}
     >

@@ -8,9 +8,11 @@ import PagerView from 'react-native-pager-view';
 import Header from './components/Header/Header';
 import RoomsScreen from './pages/RoomsScreen/RoomsScreen';
 import Buttons from './components/Buttons/Buttons';
-import ExplorerScreen from './pages/ExplorerScreen';
+import ExplorerScreen from './pages/ExplorerScreen/ExplorerScreen';
 import { useHeaderAnimatedStyle, useButtonsAnimatedStyle } from './components/Animations/HeaderAnimation'; // Import animation styles
-
+import MakePost from './components/Buttons/MakePost';
+import BackButton from './components/Buttons/UpIcon';
+import { ScrollProvider } from './context/ScrollContext';
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const CommunityScreen = () => {
@@ -61,6 +63,9 @@ const CommunityScreen = () => {
 
   return (
     <View style={styles.safeArea}>
+    <BackButton />
+    <MakePost />
+
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onHeaderLayout}

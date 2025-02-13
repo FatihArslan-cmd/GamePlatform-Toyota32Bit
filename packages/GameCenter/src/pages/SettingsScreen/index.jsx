@@ -1,108 +1,93 @@
-import React, { useRef, useState,useContext} from 'react';
-import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import CustomModal from '../../components/CustomModal';
-import BackButton from '../../components/BackIcon';
-import BottomSheet from '../../components/themeswitch/BottomSheet'; // Ensure the path is correct
+import React, { useRef, useState } from 'react';
+import { View, StyleSheet, ScrollView, useColorScheme } from 'react-native';
+import { Surface } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useColorScheme } from 'react-native';
-import ThemeButton from '../../components/themeswitch/Button';
-import { UserContext } from '../../context/UserContext';
+import Animated, {
+  FadeIn,
+} from 'react-native-reanimated';
+import ProfileSection from './components/ProfileSection';
+import NotificationSection from './components/NotificationSection';
+import AboutSection from './components/AboutSection';
+import Header from './components/Header/Header';
+import ThemeSection from './components/ThemeSection';
+import BottomSheet from '../../components/themeswitch/BottomSheet';
+import LanguageSection from './components/LanguageSection';
+import { AnimatedSection } from '../../components/Animations/EnteringAnimation';
 
-const SettingScreen = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const colorScheme = useColorScheme();
-  const navigation = useNavigation();
-  const bottomSheetRef = useRef(null); // Ref for the BottomSheet
+const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
-    const [theme, setTheme] = useState(colorScheme);
+  const bottomSheetRef = useRef(null);
+  const colorScheme = useColorScheme();
+  const [theme, setTheme] = useState(colorScheme);
   const [themeSwitch, setThemeSwitch] = useState('system');
-  const { logoutUser } = useContext(UserContext);
 
-
-  
-  const handleLogout = () => {
-    logoutUser();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+  const handleThemePress = () => {
+    bottomSheetRef.current?.expand();
   };
 
-  const backgroundColorAnimation = useAnimatedStyle(() => {
-    return {
-      backgroundColor:
-        theme === 'dark' ? withTiming('black') : withTiming('white'),
-    };
-  });
- 
+  const sections = [
+    { component: ProfileSection, props: {} },
+    { component: ThemeSection, props: { handleThemePress } },
+    { component: LanguageSection, props: {} },
+    { component: NotificationSection, props: {} },
+    { component: AboutSection, props: {} },
+  ];
+
   return (
-        <GestureHandlerRootView style={{flex: 1}}>
-              <SafeAreaProvider>
-    <Animated.View
-      style={[
-        styles.container,
-        { paddingTop: insets.top },
-        backgroundColorAnimation,
-      ]}
-    >      <BackButton size={32} color="white" />
-      <Button
-      
-        mode="contained"
-        onPress={() => setModalVisible(true)}
-        style={styles.logoutButton}>
-        Logout
-      </Button>
-      <ThemeButton bottomSheetRef={bottomSheetRef} theme={theme} />
+    <GestureHandlerRootView>
+      <Surface style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.fixedHeader}>
+          <Animated.View entering={FadeIn.duration(500)}>
+            <Header />
+          </Animated.View>
+        </View>
 
+        <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scrollView}>
+          <View style={styles.content}>
+            {sections.map((Section, index) => (
+              <AnimatedSection key={index} index={index}>
+                <Section.component {...Section.props} />
+              </AnimatedSection>
+            ))}
+          </View>
+        </ScrollView>
 
-      <CustomModal
-        visible={isModalVisible}
-        onDismiss={() => setModalVisible(false)}
-        title="Logout"
-        text="Are you sure you want to log out?"
-        showConfirmButton="false"
-        onConfirm={handleLogout}
-      />
-
-      <BottomSheet
-        ref={bottomSheetRef} // Pass the ref to BottomSheet
-        setTheme={setTheme}
-        theme={theme}
-        setThemeSwitch={setThemeSwitch}
-        themeSwitch={themeSwitch}
-      />
-    
-    </Animated.View>
-    </SafeAreaProvider>
-      </GestureHandlerRootView>
+        <BottomSheet
+          ref={bottomSheetRef}
+          setTheme={setTheme}
+          theme={theme}
+          setThemeSwitch={setThemeSwitch}
+          themeSwitch={themeSwitch}
+        />
+      </Surface>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#121212',
   },
-  logoutButton: {
-    backgroundColor: '#8a2be2',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
+  fixedHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex:2
   },
-  themeButton: {
-    backgroundColor: '#8a2be2',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 20,
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 32,
+    paddingTop: 70, // Add paddingTop to account for header height, adjust as needed. Assuming header height is around 70.
+  },
+  content: {
+    flex: 1,
+    gap: 16,
+    padding: 16,
   },
 });
 
-export default SettingScreen;
+export default SettingsScreen;

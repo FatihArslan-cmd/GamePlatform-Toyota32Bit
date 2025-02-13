@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
-import RoomList from '../components/Rooms/RoomList';
-import {   becomeSupporter, leaveSupporter,getOthersRoom } from '../services/api';
-import CommunityTopics from '../components/Buttons/CommunityTopics';
-import EmptyState from '../../../components/EmptyState';
+import RoomList from '../../components/Rooms/RoomList';
+import {   becomeSupporter, leaveSupporter,getOthersRoom } from '../../services/api';
+import CommunityTopics from '../../components/Buttons/CommunityTopics';
+import EmptyState from '../../../../components/EmptyState';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
-import { ExplorerLoadingSkeleton } from '../components/Loading/ExplorerLoadingScreen';
+import { ExplorerLoadingSkeleton } from '../../components/Loading/ExplorerLoadingScreen';
 
 const ExplorerScreen = () => {
   const [rooms, setRooms] = useState([]);

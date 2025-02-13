@@ -1,7 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services' 
 
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
@@ -115,7 +116,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation 'androidx.biometric:biometric:1.1.0'
       implementation 'com.google.mlkit:barcode-scanning:17.3.0'
-
+    implementation("androidx.palette:palette-ktx:1.0.0") // veya en son sürümü kontrol edin
 implementation ('androidx.core:core:1.9.0') {
     exclude group: 'com.android.support'
 }

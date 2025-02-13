@@ -6,7 +6,7 @@ import { Text } from 'react-native-paper';
 
 const GradientText = ({
     text = 'Colorful Text',
-    colors = ['#FF6B6B', '#FFD93D'],
+    colors = ['#FF6B6B', '#FFD93D','red','blue','green','purple'],
     start = { x: 0, y: 0 },
     end = { x: 1, y: 1 },
     fontFamily = 'Orbitron-ExtraBold',

@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   divider: {
     height: 2,
     width: '100%',
-    marginTop: 7,
   },
   indicatorContainer: {
     width: '100%',
