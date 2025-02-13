@@ -1,109 +1,114 @@
-const { createLobby, joinLobby, leaveLobby, deleteLobby, updateLobby, getLobbies } = require('../memory/lobbyStore');
+const lobbyStore = require('../memory/lobbyStore');
 
 const createLobbyHandler = (req, res) => {
-  try {
     const userId = req.user.id;
     const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate } = req.body;
 
     if (!lobbyName) {
-      return res.status(400).json({ message: 'Lobby name is required' });
+        return res.status(400).json({ message: 'Lobby name is required' });
     }
 
     if (!lobbyType) {
-      return res.status(400).json({ message: 'Lobby type is required' });
+        return res.status(400).json({ message: 'Lobby type is required' });
     }
 
-    const lobby = createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate);
-    res.status(201).json({ message: 'Lobby created successfully', lobby });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+    lobbyStore.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(201).json({ message: 'Lobby created successfully', lobby });
+    });
 };
 
 const joinLobbyHandler = (req, res) => {
-  try {
     const userId = req.user.id;
     const { code, password } = req.body;
 
     if (!code) {
-      return res.status(400).json({ message: 'Lobby code is required' });
+        return res.status(400).json({ message: 'Lobby code is required' });
     }
 
-    const lobby = joinLobby(userId, code, password);
-    res.status(200).json({ message: 'Joined lobby successfully', lobby });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+    lobbyStore.joinLobby(userId, code, password, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Joined lobby successfully', lobby });
+    });
 };
 
 const leaveLobbyHandler = (req, res) => {
-  try {
     const userId = req.user.id;
 
-    const lobby = leaveLobby(userId);
+    lobbyStore.leaveLobby(userId, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
 
-    const isOwnerLeaving = lobby.ownerId === userId;
-    const timeoutMessage = isOwnerLeaving
-      ? 'Owner has left the lobby. The lobby will be deleted after 8 hours unless the owner rejoins.'
-      : null;
+        const isOwnerLeaving = lobby.ownerId === userId;
+        const timeoutMessage = isOwnerLeaving
+            ? 'Owner has left the lobby. The lobby will be deleted after 8 hours if inactive.'
+            : null;
 
-    const sanitizedLobby = { ...lobby };
-    delete sanitizedLobby.timeout;
+        const sanitizedLobby = { ...lobby };
+        delete sanitizedLobby.timeout;
 
-    res.status(200).json({
-      message: 'Left lobby successfully',
-      lobby: sanitizedLobby,
-      timeoutMessage,
+        res.status(200).json({
+            message: 'Left lobby successfully',
+            lobby: sanitizedLobby,
+            timeoutMessage,
+        });
     });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
 };
 
 
 const deleteLobbyHandler = (req, res) => {
-  try {
     const userId = req.user.id;
 
-    deleteLobby(userId);
-    res.status(200).json({ message: 'Lobby deleted successfully' });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+    lobbyStore.deleteLobby(userId, (err, success) => { // success parametresi eklendi
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        if(success) {
+            res.status(200).json({ message: 'Lobby deleted successfully' });
+        } else {
+            res.status(500).json({ message: 'Lobby deletion failed' }); // veya başka bir hata mesajı
+        }
+
+    });
 };
 
 const updateLobbyHandler = (req, res) => {
-  try {
     const userId = req.user.id;
     const updates = req.body;
 
-    const lobby = updateLobby(userId, updates);
-    res.status(200).json({ message: 'Lobby updated successfully', lobby });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
+    lobbyStore.updateLobby(userId, updates, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Lobby updated successfully', lobby });
+    });
 };
 
 const listLobbiesHandler = (req, res) => {
-  try {
-    const lobbies = getLobbies();
+    lobbyStore.getLobbies((err, lobbies) => {
+        if (err) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
 
-    const sanitizedLobbies = lobbies.map((lobby) => {
-      const { password, ...rest } = lobby;
-      return rest;
+        const sanitizedLobbies = lobbies.map((lobby) => {
+            const { password, ...rest } = lobby;
+            return rest;
+        });
+
+        res.status(200).json({ lobbies: sanitizedLobbies });
     });
-
-    res.status(200).json({ lobbies: sanitizedLobbies });
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
-  }
 };
 
 module.exports = {
-  createLobbyHandler,
-  joinLobbyHandler,
-  leaveLobbyHandler,
-  deleteLobbyHandler,
-  updateLobbyHandler,
-  listLobbiesHandler,
+    createLobbyHandler,
+    joinLobbyHandler,
+    leaveLobbyHandler,
+    deleteLobbyHandler,
+    updateLobbyHandler,
+    listLobbiesHandler,
 };
