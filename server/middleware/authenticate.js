@@ -12,7 +12,6 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  // Verify the token
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
       console.error('JWT Verification Error:', err); // Hata detayını gör
@@ -22,11 +21,9 @@ const authenticate = (req, res, next) => {
 
     const userId = decoded.id;
 
-    // Create a hashed version of the user information
     const userInfo = JSON.stringify({ id: userId });
     const hashedInfo = crypto.createHmac('sha256', HMAC_SECRET).update(userInfo).digest('hex');
 
-    // Attach user details to the request object
     req.user = { id: userId, encryptedInfo: hashedInfo };
     next();
   });

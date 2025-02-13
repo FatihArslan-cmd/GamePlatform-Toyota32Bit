@@ -3,6 +3,7 @@ import { Linking,StyleSheet } from 'react-native';
 import { Card, List, RadioButton } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import GradientDivider from '../../../components/GradientDivider';
+import { ToastService } from '../../../context/ToastService'; // Import ToastService
 
 const LanguageSection = () => {
   const [expanded, setExpanded] = useState(false);
@@ -11,8 +12,13 @@ const LanguageSection = () => {
   const handlePress = () => setExpanded(!expanded);
 
   const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
-    setExpanded(false); // Close the accordion after language selection
+    if (selectedLanguage === language) {
+      ToastService.show('info', 'This language is already selected'); // Show toast message if language is already selected
+    } else {
+      setSelectedLanguage(language);
+      setExpanded(false); // Close the accordion after language selection
+      ToastService.show('success', `Language changed to ${language}`); // Show toast message for language change
+    }
   };
 
   const getFlagEmoji = (language) => {
@@ -37,8 +43,7 @@ const LanguageSection = () => {
           textStyle={{ fontSize: 22 }}
           gradientDirection="horizontal"
         />
-  <GradientDivider horizontalMargin='%10'  colorProps={['black', '#778899']}
-                    />
+        <GradientDivider horizontalMargin='%10'  colorProps={['black', '#778899']}/>
         <List.Accordion
           expanded={expanded}
           onPress={handlePress}
