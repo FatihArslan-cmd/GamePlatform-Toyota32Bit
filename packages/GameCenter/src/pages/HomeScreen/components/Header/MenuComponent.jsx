@@ -1,10 +1,24 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Linking, Alert } from 'react-native';
 import { Menu, Divider, Appbar ,Tooltip} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-
-const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible, openBottomSheet, setJoinLobbyModalVisible }) => { // openBottomSheet prop olarak alındı, setJoinLobbyModalVisible eklendi
+import { ToastService } from '../../../../context/ToastService';
+const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible, openBottomSheet, setJoinLobbyModalVisible }) => {
   const navigation = useNavigation();
+
+  const handleHelpAndDisplay = () => {
+    closeMenu();
+    const recipientEmail = 'fatiharslan1459@gmail.com'; 
+    const subject = 'Help & Display Inquiry'; 
+    const body = 'Dear Support Team,\n\nI am writing to you regarding...\n';
+
+    const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    Linking.openURL(mailtoUrl)
+      .catch((err) => {
+        ToastService.show('error', 'Failed to open email client');
+      });
+  };
 
   return (
     <Menu
@@ -31,7 +45,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       />
       <Divider />
       <Menu.Item
-        onPress={() => {}}
+        onPress={handleHelpAndDisplay}
         title="Help & Display"
         titleStyle={styles.menuItemText}
       />
@@ -48,7 +62,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       <Menu.Item
         onPress={() => {
           closeMenu();
-          openBottomSheet(); // bottom sheet'i aç
+          openBottomSheet();
         }}
         title="Active Lobbies"
         titleStyle={styles.menuItemText}

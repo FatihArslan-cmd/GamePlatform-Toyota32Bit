@@ -1,107 +1,130 @@
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
 import CustomModal from '../../../../components/CustomModal';
 import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import Clipboard from '@react-native-clipboard/clipboard';
 import lobbyService from './services/lobbyService';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
+import { ToastService } from '../../../../context/ToastService';
 
 const JoinLobbyModal = ({ visible, onDismiss }) => {
-  const [lobbyCode, setLobbyCode] = useState('');
-  const { currentToast, showToast, hideToast } = useToast();
+    const [lobbyCode, setLobbyCode] = useState('');
+    const [lobbyPassword, setLobbyPassword] = useState(''); // Keep password state
 
-  const handleJoinLobby = useCallback(async () => {
-    try {
-      await lobbyService.joinLobby(lobbyCode);
+    const handleJoinLobby = useCallback(async () => {
+        try {
+            await lobbyService.joinLobby(lobbyCode, lobbyPassword); // Always send password (can be empty string)
 
-      onDismiss();
-      showToast('success', 'Successfully joined lobby!');
-    } catch (error) {
-      console.error('Error joining lobby:', error);
-      showToast('error', 'Failed to join lobby. Please try again.');
-    }
-  }, [lobbyCode, onDismiss, showToast]);
+            onDismiss();
+            ToastService.show('success', 'Successfully joined lobby!');
+        } catch (error) {
+            console.error('Error joining lobby:', error);
+            if (error.response && error.response.data && error.response.data.message) {
+                ToastService.show('error', error.response.data.message); // Show server error message
+            }
+            else {
+                ToastService.show('error', 'Failed to join lobby. Please try again.');
+            }
+        }
+    }, [lobbyCode, lobbyPassword, onDismiss]); // Keep lobbyPassword in dependencies
 
-  const handlePaste = useCallback(async () => {
-    try {
-      const text = await Clipboard.getString();
-      setLobbyCode(text);
-    } catch (error) {
-      console.error('Error pasting from clipboard:', error);
-      showToast('error', 'Failed to paste from clipboard.');
-    }
-  }, [showToast]);
+    const handlePaste = useCallback(async () => {
+        try {
+            const text = await Clipboard.getString();
+            setLobbyCode(text);
+        } catch (error) {
+            console.error('Error pasting from clipboard:', error);
+            ToastService.show('error', 'Failed to paste from clipboard.');
+        }
+    }, []);
 
-  const handleClear = useCallback(() => {
-    setLobbyCode('');
-  }, []);
+    const handleClearCode = useCallback(() => {
+        setLobbyCode('');
+    }, []);
 
-  return (
-    <CustomModal
-      visible={visible}
-      onDismiss={onDismiss}
-      title="Join Lobby"
-      text="Enter the lobby code:"
-      showConfirmButton={true}
-      confirmText="Join"
-      onConfirm={handleJoinLobby}
-    >
-      <View style={styles.inputContainer}>
-        <View style={styles.inputWrapper}>
-          <InputField
-            label="Lobby Code"
-            value={lobbyCode}
-            onChangeText={setLobbyCode}
-            style={styles.input}
-          />
-          {lobbyCode.length > 0 && (
-            <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
-              <Icon name="cancel" size={24} color="#fff" />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity style={styles.pasteButton} onPress={handlePaste}>
-            <Icon name="content-paste" size={24} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
-    </CustomModal>
-  );
+    const handleClearPassword = useCallback(() => {
+        setLobbyPassword('');
+    }, []);
+
+    return (
+        <CustomModal
+            visible={visible}
+            onDismiss={onDismiss}
+            title="Join Lobby"
+            text="Enter the lobby code and password (if required):" // Updated text
+            showConfirmButton={true}
+            confirmText="Join"
+            onConfirm={handleJoinLobby}
+        >
+            <View style={styles.inputContainer}>
+                <View style={styles.inputWrapper}>
+                    <InputField
+                        label="Lobby Code"
+                        value={lobbyCode}
+                        onChangeText={setLobbyCode}
+                        style={styles.input}
+                    />
+                    {lobbyCode.length > 0 && (
+                        <TouchableRipple style={styles.clearButton} onPress={handleClearCode}>
+                            <Icon name="cancel" size={24} color="#fff" />
+                        </TouchableRipple>
+                    )}
+                    <TouchableRipple style={styles.pasteButton} onPress={handlePaste}>
+                        <Icon name="content-paste" size={24} color="#fff" />
+                    </TouchableRipple>
+                </View>
+
+                <View style={styles.passwordInputWrapper}>
+                    <InputField
+                        label="Lobby Password (Optional)" // Updated label
+                        value={lobbyPassword}
+                        onChangeText={setLobbyPassword}
+                        secureTextEntry // Keep secure text entry if desired
+                        style={styles.input}
+                    />
+                     {lobbyPassword.length > 0 && (
+                        <TouchableRipple style={styles.clearButton} onPress={handleClearPassword}>
+                            <Icon name="cancel" size={24} color="#fff" />
+                        </TouchableRipple>
+                    )}
+                </View>
+            </View>
+        </CustomModal>
+    );
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    width: '100%',
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-  input: {
-    backgroundColor: 'transparent',
-    color: '#fff',
-    flex: 1,
-  },
-  clearButton: {
-    padding: 10,
-    marginLeft: 8,
-    borderRadius: 5,
-  },
-  pasteButton: {
-    padding: 10,
-    marginLeft: 8,
-    backgroundColor: '#3498db',
-    borderRadius: 5,
-  },
+    inputContainer: {
+        width: '100%',
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+    },
+    passwordInputWrapper: { // Style for password input wrapper
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        marginTop: 10, // Add some margin to separate from code input
+    },
+    input: {
+        backgroundColor: 'transparent',
+        color: '#fff',
+        flex: 1,
+    },
+    clearButton: {
+        padding: 10,
+        marginLeft: 8,
+        borderRadius: 5,
+    },
+    pasteButton: {
+        padding: 10,
+        marginLeft: 8,
+        backgroundColor: '#3498db',
+        borderRadius: 5,
+    },
 });
 
 export default JoinLobbyModal;

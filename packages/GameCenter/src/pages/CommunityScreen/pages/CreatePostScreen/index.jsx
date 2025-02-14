@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Alert,View } from 'react-native';
+import { Keyboard} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PostHeader from './components/PostHeader';
 import PostInput from './components/PostInput';
@@ -47,17 +47,17 @@ const CreatePostScreen = ({ navigation }) => {
       ToastService.show("success", "Gönderi başarıyla oluşturuldu.");
     } catch (error) {
       setIsPosting(false);
-      Alert.alert("Hata", "Gönderi oluşturulamadı: " + error.message);
+      ToastService.show("error", error.message || "Gönderi oluşturulurken bir hata oluştu.");
       console.error("Post creation error:", error);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <PostHeader navigation={navigation} onPost={handlePost} isPosting={isPosting} /> {/* Pass handlePost and isPosting */}
       <PostInput selectedImage={selectedImage} setSelectedImage={setSelectedImage} postText={postText} setPostText={setPostText} /> {/* Pass postText and setPostText */}
       <PostToolbar setSelectedImage={setSelectedImage} />
-    </View>
+    </SafeAreaView>
   );
 };
 

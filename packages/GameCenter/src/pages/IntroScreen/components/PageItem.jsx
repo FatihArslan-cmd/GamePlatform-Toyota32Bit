@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     textShadowColor: '#8a2be2',
     textShadowRadius: 10,
-    fontFamily: 'RussoOne-Regular',
+    fontFamily: 'Orbitron-ExtraBold',
   },
   divider: {
     width: '40%', // Yüzde 50 genişlik

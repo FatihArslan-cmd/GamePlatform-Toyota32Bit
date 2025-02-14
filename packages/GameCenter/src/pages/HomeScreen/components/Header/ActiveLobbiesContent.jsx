@@ -1,45 +1,39 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import lobbyService from './services/lobbyService';
-import useToast from '../../../../components/ToastMessage/hooks/useToast';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
 import LobbyCard from './components/LobbyCard';
 import NoLobby from './components/NoLobby';
+import { ToastService } from '../../../../context/ToastService';
 
 const ActiveLobbiesContent = () => {
   const [userLobby, setUserLobby] = useState(null);
-  const userId = 1; // Or retrieve user ID from your state/context
-  const { currentToast, showToast, hideToast } = useToast();
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const fetchLobbies = useCallback(async () => {
+    setLoading(true); // Start loading
     try {
-      const data = await lobbyService.listLobbies();
-
-      if (data?.lobbies) {
-        const ownerLobby = data.lobbies.find((lobby) => lobby.ownerId === userId);
-        setUserLobby(ownerLobby);
-      }
+      const lobby = await lobbyService.getUserLobby(); // Use getUserLobby
+      setUserLobby(lobby); // Directly set the fetched lobby
     } catch (error) {
-      console.error('Error fetching lobby data:', error);
-      showToast('error', 'Failed to fetch lobby data.');
+      console.error('Error fetching user lobby data:', error);
+      ToastService.show('error', 'Failed to fetch lobby data.');
+    } finally {
+      setLoading(false); // End loading regardless of success or failure
     }
-  }, [userId, showToast]); 
+  }, []); 
 
   useEffect(() => {
     fetchLobbies();
   }, [fetchLobbies]);
 
+  if (loading) {
+    return <View style={styles.container}><NoLobby loading={true} /></View>; // Or a loading spinner
+  }
+
   return (
     <View style={styles.container}>
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
       {userLobby ? (
-        <LobbyCard lobby={userLobby} showToast={showToast} hideToast={hideToast} />
+        <LobbyCard lobby={userLobby} />
       ) : (
         <NoLobby />
       )}

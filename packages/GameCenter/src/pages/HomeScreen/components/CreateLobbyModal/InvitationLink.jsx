@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Animated, Linking, Alert } from 'react-native';
 import { Surface, Text, IconButton, useTheme, TouchableRipple } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
-import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import { ToastService } from '../../../../context/ToastService';
 
 const InvitationLink = ({code}) => {
   const [copied, setCopied] = useState(false);
   const [animation] = useState(new Animated.Value(0));
-  const { currentToast, showToast, hideToast } = useToast();
 
   const theme = useTheme();
 
@@ -19,8 +16,7 @@ const InvitationLink = ({code}) => {
     Clipboard.setString(code);
 
     setCopied(true);
-    showToast('success', 'Link copied to clipboard!');
-
+    ToastService.show('success', 'Copied to clipboard');
     Animated.sequence([
       Animated.spring(animation, {
         toValue: 1,
@@ -61,8 +57,8 @@ const InvitationLink = ({code}) => {
     }
 
     Linking.openURL(url).catch((err) => {
-      Alert.alert("Error", "Failed to open the app.");
-      console.error(err);
+      
+      ToastService.show('error', 'Failed to open link');
     });
   };
 
@@ -137,13 +133,7 @@ const InvitationLink = ({code}) => {
           onPress={() => handleShare('instagram')}
         />
       </View>
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
+
     </View>
   );
 };

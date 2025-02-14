@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
+    zIndex:5
   },
   blurView: {
     position: 'absolute',
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily:'Orbitron-VariableFont_wght'
+    fontFamily: 'Orbitron-ExtraBold',
   },
   content: {
     flex: 1,

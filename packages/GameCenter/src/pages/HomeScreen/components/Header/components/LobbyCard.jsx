@@ -3,15 +3,16 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, Title, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { ToastService } from '../../../../../context/ToastService'; // Import ToastService
 
-const LobbyCard = ({ lobby, showToast, hideToast }) => {
+const LobbyCard = ({ lobby }) => { // Removed showToast and hideToast props
   const copyLobbyCodeToClipboard = async (code) => {
     try {
       await Clipboard.setString(code);
-      showToast('Lobby code successfully copied!', 'success');
+      ToastService.show('success', 'Lobby code successfully copied!'); // Use ToastService.show
     } catch (error) {
       console.error("Error copying to clipboard:", error);
-      showToast('Failed to copy lobby code.', 'error');
+      ToastService.show('error', 'Failed to copy lobby code.'); // Use ToastService.show
     }
   };
 

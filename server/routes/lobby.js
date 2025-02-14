@@ -5,7 +5,8 @@ const {
   leaveLobbyHandler,
   deleteLobbyHandler,
   listLobbiesHandler,
-  updateLobbyHandler
+  updateLobbyHandler,
+  getUserLobbyHandler
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -17,5 +18,7 @@ router.put('/update', authenticate, updateLobbyHandler);
 router.post('/leave', authenticate, leaveLobbyHandler);
 router.delete('/delete', authenticate, deleteLobbyHandler);
 router.get('/list', authenticate, listLobbiesHandler);
+router.get('/listUserLobby', authenticate, getUserLobbyHandler);
 
 module.exports = router;
+

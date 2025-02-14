@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-paper';
 
 const PasswordInput = ({ password, isPasswordVisible, onPasswordChange, onToggleVisibility }) => {
   return (
+    
     <TextInput
       label="Lobby Password (Optional)"
       mode="outlined"

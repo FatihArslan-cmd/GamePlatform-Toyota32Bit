@@ -268,6 +268,18 @@ const lobbyStore = {
         });
     },
 
+    getUserLobby: (userId, callback) => {
+      lobbyStore.getLobbiesFromSession((err, lobbies) => {
+          if (err) return callback(err);
+
+          const userLobby = Object.values(lobbies).find((lobby) =>
+              lobby.members.some(member => member.id === userId)
+          );
+
+          callback(null, userLobby || null); // Return null if user is not in any lobby
+      });
+  },
+  
     cleanupInactiveLobbies: () => { // Yeni temizlik fonksiyonu
         lobbyStore.getLobbiesFromSession((err, lobbies) => {
             if (err) {

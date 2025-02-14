@@ -19,6 +19,7 @@ const ErrorComponents = ({ errorMessage, width = 200, height = 200 }) => {
       fontSize: 16,
       color: 'red',
       textAlign: 'center',
+      fontFamily: 'Orbitron-ExtraBold',
     },
   }), [width, height]); 
 

@@ -21,7 +21,8 @@ const AboutSection = () => {
             textStyle={{ fontSize: 22 }}
             gradientDirection="horizontal"
           />
-                    
+                    <GradientDivider height={1} horizontalMargin='%10'  colorProps={['black', '#778899']}
+                    />
 
         <List.Item
         titleStyle={{fontFamily:'Orbitron-ExtraBold'}}

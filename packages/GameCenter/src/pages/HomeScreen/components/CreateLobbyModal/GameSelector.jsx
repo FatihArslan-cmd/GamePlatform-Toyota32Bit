@@ -22,7 +22,7 @@ const GameSelector = ({
         style={styles.input}
         onChangeText={onLobbyNameChange}
       />
-
+ 
       <TextInput
         label={gameName ? "Selected Game" : "Select Game"}
         mode="outlined"

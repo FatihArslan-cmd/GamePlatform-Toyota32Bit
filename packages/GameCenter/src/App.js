@@ -17,13 +17,14 @@ const App = () => {
   }, []);
 
   return (
+    <ToastProvider>
     <PaperProvider theme={theme}>
-      <ToastProvider>
         <UserProvider>
           <Navigation />
         </UserProvider>
-      </ToastProvider>
     </PaperProvider>
+    </ToastProvider>
+
   );
 };
 

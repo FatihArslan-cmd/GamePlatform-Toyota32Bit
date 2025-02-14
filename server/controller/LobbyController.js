@@ -88,7 +88,16 @@ const updateLobbyHandler = (req, res) => {
         res.status(200).json({ message: 'Lobby updated successfully', lobby });
     });
 };
+const getUserLobbyHandler = (req, res) => {
+  const userId = req.user.id; // Assuming user ID is available in req.user
 
+  lobbyStore.getUserLobby(userId, (err, lobby) => {
+      if (err) {
+          return res.status(500).json({ message: 'Internal server error' });
+      }
+      res.status(200).json({ lobby: lobby }); // Respond with the lobby or null
+  });
+};
 const listLobbiesHandler = (req, res) => {
     lobbyStore.getLobbies((err, lobbies) => {
         if (err) {
@@ -111,4 +120,5 @@ module.exports = {
     deleteLobbyHandler,
     updateLobbyHandler,
     listLobbiesHandler,
+    getUserLobbyHandler
 };

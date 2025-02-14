@@ -12,7 +12,7 @@ import ExplorerScreen from './pages/ExplorerScreen/ExplorerScreen';
 import { useHeaderAnimatedStyle, useButtonsAnimatedStyle } from './components/Animations/HeaderAnimation'; // Import animation styles
 import MakePost from './components/Buttons/MakePost';
 import BackButton from './components/Buttons/UpIcon';
-import { ScrollProvider } from './context/ScrollContext';
+
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const CommunityScreen = () => {

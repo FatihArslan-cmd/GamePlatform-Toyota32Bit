@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     color: '#ffffff',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 10,
     textAlign: 'center',
   },
