@@ -9,8 +9,6 @@ const ActiveLobbiesContent = () => {
   const [userLobby, setUserLobby] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // useCallback is important here to prevent re-creation of the function on every render
-  // which would cause unnecessary re-renders in child components if passed as props.
   const fetchLobbies = useCallback(async () => {
     setLoading(true);
     try {
