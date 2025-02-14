@@ -39,6 +39,44 @@ const lobbyService = {
         throw error; // Re-throw for the component to handle
     }
 },
+
+  leaveLobby: async (lobbyId) => {
+    try {
+      const token = await getToken();
+      const response = await api.post( // Assuming a POST request for leaving lobby
+        `/lobby/leave`, // Endpoint for leaving lobby
+        { lobbyId }, // Sending lobbyId in the request body
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error leaving lobby:', error);
+      throw error;
+    }
+  },
+
+  deleteLobby: async () => {
+    try {
+      const token = await getToken();
+      const response = await api.delete( // Using DELETE request for deleting lobby
+        `/lobby/delete`, // Endpoint for deleting lobby, using lobbyId in path param (can be adjusted if needed)
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting lobby:', error);
+      throw error;
+    }
+  },
 };
 
 export default lobbyService;

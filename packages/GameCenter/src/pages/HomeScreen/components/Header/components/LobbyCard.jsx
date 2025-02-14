@@ -1,20 +1,40 @@
-import React from 'react';
+import React , {useContext, useState, useCallback} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, Title, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { ToastService } from '../../../../../context/ToastService'; // Import ToastService
+import { ToastService } from '../../../../../context/ToastService';
+import { UserContext } from '../../../../../context/UserContext';
+import CustomModal from '../../../../../components/CustomModal';
+import useLobbyActions from './hooks/useLobbyActions';
+import LobbyDetails from './LobbyDetails';
 
-const LobbyCard = ({ lobby }) => { // Removed showToast and hideToast props
-  const copyLobbyCodeToClipboard = async (code) => {
+const LobbyCard = ({ lobby, onLobbyAction }) => {
+  const { user } = useContext(UserContext);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [leaveModalVisible, setLeaveModalVisible] = useState(false);
+  const { handleDeleteLobby, handleLeaveLobby } = useLobbyActions(onLobbyAction);
+
+  const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
       await Clipboard.setString(code);
-      ToastService.show('success', 'Lobby code successfully copied!'); // Use ToastService.show
+      ToastService.show('success', 'Lobby code successfully copied!');
     } catch (error) {
       console.error("Error copying to clipboard:", error);
-      ToastService.show('error', 'Failed to copy lobby code.'); // Use ToastService.show
+      ToastService.show('error', 'Failed to copy lobby code.');
     }
-  };
+  }, []);
+
+  const onDeleteConfirmation = useCallback(async () => {
+    setDeleteModalVisible(false);
+    await handleDeleteLobby(lobby.id);
+  }, [handleDeleteLobby, lobby.id]);
+
+  const onLeaveConfirmation = useCallback(async () => {
+    setLeaveModalVisible(false);
+    await handleLeaveLobby(lobby.id);
+  }, [handleLeaveLobby, lobby.id]);
+
 
   return (
     <Card style={styles.lobbyCard}>
@@ -27,69 +47,57 @@ const LobbyCard = ({ lobby }) => { // Removed showToast and hideToast props
           <Text style={styles.lobbyCode}>{lobby.code}</Text>
         </TouchableOpacity>
         <View style={styles.headerIcons}>
-          <Icon
-            name="update"
-            size={24}
-            color="#4a148c"
-            onPress={() => {/* Update lobby */}}
-            style={styles.iconButton}
-          />
-          <Icon
-            name="close"
-            size={24}
-            color="red"
-            onPress={() => {/* Close lobby */}}
-            style={styles.iconButton}
-          />
+          {user && user.username === lobby.ownerUsername ? (
+            <TouchableOpacity onPress={() => setDeleteModalVisible(true)}>
+              <Icon
+                name="close"
+                size={24}
+                color="red"
+                style={styles.iconButton}
+              />
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
 
       <Card.Content>
         <Title style={styles.lobbyName}>{lobby.lobbyName}</Title>
-
-        <View style={styles.typeBadge}>
-          <Icon name="tag" size={16} color="#666" />
-          <Text style={styles.lobbyType}>{lobby.lobbyType.toUpperCase()}</Text>
-        </View>
-
-        <View style={styles.lobbyDetails}>
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Icon name="crown" size={20} color="#FFD700" />
-              <Text style={styles.detailLabel}>Owner</Text>
-            </View>
-            <Text>{lobby.ownerId}</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Icon name="account-group" size={20} color="#4a148c" />
-              <Text style={styles.detailLabel}>Players</Text>
-            </View>
-            <Text>
-              {lobby.members.length}/{lobby.maxCapacity}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.actionButtons}>
+        <LobbyDetails lobby={lobby} /> 
+        <View style={[
+          styles.actionButtons,
+          !(user && user.username === lobby.ownerUsername) && styles.actionButtonsCenter
+        ]}>
           <Button
             mode="contained"
-            onPress={() => {/* Leave lobby */}}
+            onPress={() => setLeaveModalVisible(true)}
             style={styles.leaveButton}
           >
             <Icon name="exit-run" size={20} color="white" />
             Leave
           </Button>
-          <Button
-            mode="contained"
-            onPress={() => {/* Join lobby */}}
-            style={styles.joinButton}
-          >
-            <Icon name="account-plus" size={20} color="white" />
-            Join
-          </Button>
         </View>
+
       </Card.Content>
+
+      <CustomModal
+        visible={deleteModalVisible}
+        onDismiss={() => setDeleteModalVisible(false)}
+        onConfirm={onDeleteConfirmation}
+        title="Delete Lobby?"
+        text="Are you sure you want to delete this lobby? This action cannot be undone."
+        confirmText="Delete Lobby"
+        showConfirmButton={true}
+      />
+
+      <CustomModal
+        visible={leaveModalVisible}
+        onDismiss={() => setLeaveModalVisible(false)}
+        onConfirm={onLeaveConfirmation}
+        title="Leave Lobby?"
+        text="Are you sure you want to leave this lobby?"
+        confirmText="Leave Lobby"
+        showConfirmButton={true}
+      />
     </Card>
   );
 };
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
   },
   lobbyCode: {
     marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
+      fontFamily: 'Orbitron-ExtraBold',
   },
   headerIcons: {
     flexDirection: 'row',
@@ -120,7 +128,7 @@ const styles = StyleSheet.create({
   },
   lobbyName: {
     textAlign: 'center',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
   },
   typeBadge: {
     flexDirection: 'row',
@@ -154,13 +162,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 15,
   },
+  actionButtonsCenter: { // New style for centering buttons
+    justifyContent: 'center',
+  },
   leaveButton: {
-    width: '48%',
+    width: '100%', // Full width when centered
     backgroundColor: '#FF5722',
+    marginBottom: 10, // Added bottom margin here
   },
   joinButton: {
-    width: '48%',
-    backgroundColor: '#4CAF50',
+    width: '48%', // Not used anymore, but kept for reference
+    backgroundColor: '#4CAF50', // Not used anymore, but kept for reference
   },
 });
 

@@ -18,11 +18,13 @@ const App = () => {
 
   return (
     <ToastProvider>
+              <UserProvider>
+
     <PaperProvider theme={theme}>
-        <UserProvider>
-          <Navigation />
-        </UserProvider>
+,          <Navigation />
     </PaperProvider>
+    </UserProvider>
+
     </ToastProvider>
 
   );

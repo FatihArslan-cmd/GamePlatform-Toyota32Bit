@@ -62,6 +62,7 @@ const lobbyStore = {
             const lobby = {
                 lobbyName,
                 ownerId: userId,
+                ownerUsername: getUserDetails(userId).username,
                 code,
                 members: [getUserDetails(userId)], // Üye listesini kullanıcı detayları objesiyle başlat
                 blockedMembers: [],
