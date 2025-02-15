@@ -1,4 +1,3 @@
-// LobbyCardHeaderActions.js
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
@@ -16,20 +15,35 @@ const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, user, own
       </TouchableOpacity>
       <View style={styles.headerIcons}>
         {user && user.username === ownerUsername ? (
-          <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
-            <Icon
-              name="close"
-              size={24}
-              color="red"
-              style={styles.iconButton}
-            />
-          </TouchableRipple>
+          <>
+            <TouchableRipple onPress={() => {}}>
+                <>
+                <Icon
+                name="account-plus"
+                size={24}
+                color="green"
+                style={styles.iconButton}
+              />
+              </>
+              
+            </TouchableRipple>
+
+            <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
+              <Icon
+                name="close"
+                size={24}
+                color="red"
+                style={styles.iconButton}
+              />
+            </TouchableRipple>
+          </>
         ) : null}
       </View>
     </View>
   );
 };
 
+// Stiller aynı kalıyor
 const styles = StyleSheet.create({
   cardHeaderActions: {
     flexDirection: 'row',

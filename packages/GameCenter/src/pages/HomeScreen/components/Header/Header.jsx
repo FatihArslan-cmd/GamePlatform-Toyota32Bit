@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { Appbar } from 'react-native-paper'; // IconButton'ı import et
 import GradientText from '../../../../components/GrandientText';
 import SearchBar from './SearchBar';
 import MenuComponent from './MenuComponent';
@@ -8,6 +8,7 @@ import CreateLobbyModal from '../CreateLobbyModal/CreateLobbyModal';
 import BottomSheet from '../../../../components/BottomSheet';
 import ActiveLobbiesContent from './ActiveLobbiesContent';
 import JoinLobbyModal from './JoinLobbyModal';
+import MessageIconWithBadge from './MessageIconWithBadge';
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -15,11 +16,11 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-  const [joinLobbyModalVisible, setJoinLobbyModalVisible] = useState(false); // Yeni state
+  const [joinLobbyModalVisible, setJoinLobbyModalVisible] = useState(false);
 
   const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
-  
+
   const openBottomSheet = () => setIsBottomSheetVisible(true);
   const closeBottomSheet = () => setIsBottomSheetVisible(false);
 
@@ -41,13 +42,15 @@ const Header = () => {
               gradientDirection="horizontal"
             />
             <View style={styles.rightActions}>
+            <MessageIconWithBadge navigateTo="PersonalMessagePage" unreadCount={5} />
+
               <MenuComponent
                 menuVisible={menuVisible}
                 openMenu={openMenu}
                 closeMenu={closeMenu}
                 setLobbyModalVisible={setLobbyModalVisible}
-                openBottomSheet={openBottomSheet} // openBottomSheet prop olarak geçirildi
-                setJoinLobbyModalVisible={setJoinLobbyModalVisible} //join lobby modalını açmak için
+                openBottomSheet={openBottomSheet}
+                setJoinLobbyModalVisible={setJoinLobbyModalVisible}
               />
             </View>
           </>
@@ -66,7 +69,7 @@ const Header = () => {
       >
         <ActiveLobbiesContent />
       </BottomSheet>
-      <JoinLobbyModal // Join Lobby modalını ekle
+      <JoinLobbyModal
         visible={joinLobbyModalVisible}
         onDismiss={() => setJoinLobbyModalVisible(false)}
       />
@@ -87,6 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+
 });
 
 export default Header;

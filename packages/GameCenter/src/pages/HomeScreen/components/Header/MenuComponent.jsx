@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Linking, Alert } from 'react-native';
+import { StyleSheet, Linking } from 'react-native';
 import { Menu, Divider, Appbar ,Tooltip} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { ToastService } from '../../../../context/ToastService';

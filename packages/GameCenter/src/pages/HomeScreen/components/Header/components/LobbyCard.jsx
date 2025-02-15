@@ -15,7 +15,8 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [leaveModalVisible, setLeaveModalVisible] = useState(false);
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
-  const { handleDeleteLobby, handleLeaveLobby } = useLobbyActions(onLobbyAction);
+  const [currentLobby, setCurrentLobby] = useState(lobby);
+  const { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer } = useLobbyActions(onLobbyAction);
 
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
@@ -41,22 +42,54 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
     setPlayerModalVisible(!playerModalVisible);
   }, [playerModalVisible]);
 
+  const handlePlayerAction = useCallback(async (playerId, actionType) => {
+    if (user.username !== currentLobby.ownerUsername) {
+      ToastService.show('error', 'Only the lobby owner can perform player actions.');
+      setPlayerModalVisible(false); // Optionally close the modal after showing error
+      return; // Stop further execution if not the owner
+    }
+
+    try {
+      let success = false;
+      if (actionType === 'kick') {
+        success = await handleKickPlayer(currentLobby.id, playerId);
+      } else if (actionType === 'kickAndBlock') {
+        success = await handleKickAndBlockPlayer(currentLobby.id, playerId);
+      }
+
+      if (success) {
+        setCurrentLobby(prevLobby => ({
+          ...prevLobby,
+          members: prevLobby.members.filter(member => member.id !== playerId),
+        }));
+        ToastService.show('success', `Player ${actionType === 'kick' ? 'kicked' : 'kicked and blocked'} successfully!`);
+      } else {
+        ToastService.show('error', `Failed to ${actionType === 'kick' ? 'kick' : 'kick and block'} player.`);
+      }
+    } catch (error) {
+      console.error(`Error performing player action (${actionType}):`, error);
+      ToastService.show('error', `Failed to ${actionType === 'kick' ? 'kick' : 'kick and block'} player.`);
+    } finally {
+      setPlayerModalVisible(false);
+    }
+  }, [handleKickPlayer, handleKickAndBlockPlayer, currentLobby.id, currentLobby.ownerUsername, user.username]);
+ 
 
   return (
     <Card style={styles.lobbyCard}>
       <LobbyCardHeaderActions
         copyLobbyCodeToClipboard={copyLobbyCodeToClipboard}
-        lobbyCode={lobby.code}
+        lobbyCode={currentLobby.code}
         user={user}
-        ownerUsername={lobby.ownerUsername}
+        ownerUsername={currentLobby.ownerUsername}
         setDeleteModalVisible={setDeleteModalVisible}
       />
 
       <Card.Content>
         <LobbyCardContent
-          lobby={lobby}
+          lobby={currentLobby}
           user={user}
-          ownerUsername={lobby.ownerUsername}
+          ownerUsername={currentLobby.ownerUsername}
           setLeaveModalVisible={setLeaveModalVisible}
           togglePlayerModal={togglePlayerModal}
         />
@@ -89,9 +122,8 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
         onConfirm={togglePlayerModal}
       >
         <PlayerModalContent
-          lobby={lobby}
-          user={user}
-          togglePlayerModal={togglePlayerModal}
+          lobby={currentLobby}
+          onPlayerAction={handlePlayerAction}
         />
       </CustomModal>
     </Card>

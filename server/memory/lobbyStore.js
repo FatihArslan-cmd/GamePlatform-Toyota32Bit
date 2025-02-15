@@ -85,48 +85,53 @@ const lobbyStore = {
     },
 
     joinLobby: (userId, code, password = null, callback) => {
-        lobbyStore.getLobbiesFromSession((err, lobbies) => {
-            if (err) return callback(err);
-
-            const userLobby = Object.values(lobbies).find((l) => l.members.some(member => member.id === userId));
-            if (userLobby) {
-                return callback(new Error('User is already in a lobby. Leave the lobby to join another.'));
-            }
-
-            const lobby = Object.values(lobbies).find((l) => l.code === code);
-
-            if (!lobby) {
-                return callback(new Error('Lobby not found'));
-            }
-
-            if (lobby.password && lobby.password !== password) {
-                return callback(new Error('Invalid password'));
-            }
-
-            if (lobby.members.length >= lobby.maxCapacity) {
-                return callback(new Error('Lobby is full'));
-            }
-
-            if (lobby.members.some(member => member.id === userId)) {
-                return callback(new Error('User is already in this lobby'));
-            }
-
-            if (lobby.ownerId === userId) {
-                lobby.lastOwnerLeave = null;
-                if (lobby.timeout) {
-                    clearTimeout(lobby.timeout); // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
-                    lobby.timeout = null;
-                }
-            }
-
-            lobby.members.push(getUserDetails(userId)); // Yeni üye detaylarını listeye ekle
-            lobbies[lobby.ownerId] = lobby;
-            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
-                if (err) return callback(err);
-                callback(null, lobby);
-            });
-        });
-    },
+      lobbyStore.getLobbiesFromSession((err, lobbies) => {
+          if (err) return callback(err);
+  
+          const userLobby = Object.values(lobbies).find((l) => l.members.some(member => member.id === userId));
+          if (userLobby) {
+              return callback(new Error('User is already in a lobby. Leave the lobby to join another.'));
+          }
+  
+          const lobby = Object.values(lobbies).find((l) => l.code === code);
+  
+          if (!lobby) {
+              return callback(new Error('Lobby not found'));
+          }
+  
+          // **Yeni eklenen kontrol: Engellenmiş üyeleri kontrol et**
+          if (lobby.blockedMembers.includes(userId)) {
+              return callback(new Error('You are blocked from joining this lobby.'));
+          }
+  
+          if (lobby.password && lobby.password !== password) {
+              return callback(new Error('Invalid password'));
+          }
+  
+          if (lobby.members.length >= lobby.maxCapacity) {
+              return callback(new Error('Lobby is full'));
+          }
+  
+          if (lobby.members.some(member => member.id === userId)) {
+              return callback(new Error('User is already in this lobby'));
+          }
+  
+          if (lobby.ownerId === userId) {
+              lobby.lastOwnerLeave = null;
+              if (lobby.timeout) {
+                  clearTimeout(lobby.timeout); // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
+                  lobby.timeout = null;
+              }
+          }
+  
+          lobby.members.push(getUserDetails(userId)); // Yeni üye detaylarını listeye ekle
+          lobbies[lobby.ownerId] = lobby;
+          lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+              if (err) return callback(err);
+              callback(null, lobby);
+          });
+      });
+  },
 
     leaveLobby: (userId, callback) => {
         lobbyStore.getLobbiesFromSession((err, lobbies) => {

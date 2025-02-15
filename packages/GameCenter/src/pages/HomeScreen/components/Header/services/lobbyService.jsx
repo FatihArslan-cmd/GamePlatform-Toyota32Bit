@@ -77,6 +77,46 @@ const lobbyService = {
       throw error;
     }
   },
+
+  kickPlayer: async (lobbyId, playerId) => {
+    try {
+      const token = await getToken();
+      const response = await api.put( // Using PUT request to update lobby
+        `/lobby/update`,
+        { removeMember: playerId }, // Send removeMember to kick
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error kicking player:', error);
+      throw error;
+    }
+  },
+
+  kickAndBlockPlayer: async (lobbyId, playerId) => {
+    try {
+      const token = await getToken();
+      const response = await api.put( // Using PUT request to update lobby
+        `/lobby/update`,
+        { blockMember: playerId }, // Send blockMember to kick and block
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error kicking and blocking player:', error);
+      throw error;
+    }
+  },
 };
 
 export default lobbyService;

@@ -1,17 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Animated } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import LinearGradient from 'react-native-linear-gradient';
-import { Divider } from 'react-native-paper';
+import { BlurView } from '@react-native-community/blur';
+import { Divider,Text } from 'react-native-paper';
+
 const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
-  <LinearGradient
-    colors={['#1a1b2e', '#2d0a3e', '#1a1b2e']}
-    locations={[0, 0.5, 1]}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.gradient}
-  >
+  <View style={styles.container}>
+    <View style={styles.backgroundImageContainer}>
+      <FastImage
+        source={page.icon ? { uri: page.icon } : page.image}
+        style={styles.backgroundImage}
+        resizeMode={FastImage.resizeMode.cover}
+      />
+      <BlurView
+        style={styles.blur}
+        blurType="light"
+        blurAmount={200}
+        reducedTransparencyFallbackColor="black"
+      />
+    </View>
+
     <Animated.View
       style={[
         styles.page,
@@ -23,14 +32,10 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         },
       ]}
     >
-  <FastImage
-  source={
-    page.icon
-      ? { uri: page.icon, priority: FastImage.priority.high } 
-      : page.image
-  }
-  style={[styles.image, { borderColor: '#8a2be250' }]}
-/>
+      <FastImage
+        source={page.icon ? { uri: page.icon } : page.image}
+        style={[styles.image, { borderColor: '#8a2be250' }]}
+      />
 
       <Text style={styles.title}>{page.title}</Text>
       <View style={styles.dividerContainer}>
@@ -51,12 +56,30 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         </TouchableOpacity>
       )}
     </Animated.View>
-  </LinearGradient>
+  </View>
 );
 
 const styles = StyleSheet.create({
-  gradient: { flex: 1 },
-  page: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  container: {
+    flex: 1,
+  },
+  backgroundImageContainer: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  blur: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  page: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    zIndex: 1,
+  },
   image: {
     width: 250,
     height: 250,
@@ -74,11 +97,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   divider: {
-    height: 2,
+    width: '40%',
+    height: 1,
     backgroundColor: '#8a2be2',
-    width: '100%',
-    elevation: 4,
-    boxShadow:'0 0 10px #8a2be2',
+    marginVertical: 10,
+    borderRadius: 1,
+    shadowColor: '#8a2be2',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 5,
   },
   title: {
     fontSize: 28,
@@ -90,22 +121,14 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
     fontFamily: 'Orbitron-ExtraBold',
   },
-  divider: {
-    width: '40%', // Yüzde 50 genişlik
-    height: 1, // Divider kalınlığı
-    backgroundColor: '#8a2be2', // Divider rengi
-    marginVertical: 10, // Divider üst-alt boşluğu
-    borderRadius: 1, // Divider kenar yuvarlatması
-    boxShadow:'0 0 10px #8a2be2',
-  },
   subtitle: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#8a2be2',
+    color: '#fff',
     marginTop: 10,
     marginHorizontal: 20,
     lineHeight: 24,
-    fontFamily: 'RussoOne-Regular',
+    fontFamily: 'Orbitron-ExtraBold',
   },
   startButton: {
     marginTop: 30,
@@ -114,10 +137,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#8a2be2',
     borderRadius: 30,
     elevation: 5,
+    shadowColor: '#8a2be2',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
   },
-  startButtonContent: { flexDirection: 'row', alignItems: 'center' },
-  startButtonText: { color: '#fff', fontSize: 16, letterSpacing: 1, fontFamily: 'RussoOne-Regular' },
-  buttonIcon: { marginLeft: 8 },
+  startButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  startButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    letterSpacing: 1,
+    fontFamily: 'Orbitron-ExtraBold',
+  },
+  buttonIcon: {
+    marginLeft: 8,
+  },
 });
 
 export default PageItem;

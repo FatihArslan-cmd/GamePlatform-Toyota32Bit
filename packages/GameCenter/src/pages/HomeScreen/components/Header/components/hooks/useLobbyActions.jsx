@@ -34,7 +34,36 @@ const useLobbyActions = (onLobbyAction) => { // onLobbyAction to trigger refresh
     }
   }, [onLobbyAction]); // Dependencies for useCallback
 
-  return { handleDeleteLobby, handleLeaveLobby };
+  const handleKickPlayer = useCallback(async (lobbyId, playerId) => {
+    try {
+      await lobbyService.kickPlayer(lobbyId, playerId); // Call kickPlayer in lobbyService
+      if (onLobbyAction) {
+        onLobbyAction(); // Refresh lobby list in parent if needed
+      }
+      return true;
+    } catch (error) {
+      console.error("Error kicking player:", error);
+      ToastService.show('error', error.response?.data?.message || 'Failed to kick player.');
+      return false;
+    }
+  }, [onLobbyAction]);
+
+  const handleKickAndBlockPlayer = useCallback(async (lobbyId, playerId) => {
+    try {
+      await lobbyService.kickAndBlockPlayer(lobbyId, playerId); // Call kickAndBlockPlayer in lobbyService
+      if (onLobbyAction) {
+        onLobbyAction(); // Refresh lobby list if needed
+      }
+      return true;
+    } catch (error) {
+      console.error("Error kicking and blocking player:", error);
+      ToastService.show('error', error.response?.data?.message || 'Failed to kick and block player.');
+      return false;
+    }
+  }, [onLobbyAction]);
+
+
+  return { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer }; // Include new handlers
 };
 
 export default useLobbyActions;

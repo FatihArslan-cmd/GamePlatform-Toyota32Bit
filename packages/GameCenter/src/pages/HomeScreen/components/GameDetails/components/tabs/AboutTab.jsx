@@ -11,6 +11,7 @@ export default function AboutTab({ about }) {
   const formattedAbout = Array.isArray(about) ? about : [about];
   const userId = 1;
   const navigation = useNavigation();
+  
   useEffect(() => {
     const fetchLobbies = async () => {
       const token = getToken();

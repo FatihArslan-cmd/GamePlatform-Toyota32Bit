@@ -39,7 +39,7 @@ const ActiveLobbiesContent = () => {
   return (
     <View style={styles.container}>
       {userLobby ? (
-        <LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} />
+        <LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate}  />
       ) : (
         <NoLobby />
       )}
