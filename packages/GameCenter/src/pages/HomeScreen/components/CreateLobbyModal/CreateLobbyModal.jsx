@@ -10,7 +10,7 @@ import InvitationLink from './InvitationLink';
 import { ToastService } from '../../../../context/ToastService';
 import { createLobby } from './service/service';
 
-const CreateLobbyModal = ({ visible, onDismiss }) => {
+const CreateLobbyModal = ({ visible, onDismiss,routeGameName }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
     const [lobbyName, setLobbyName] = useState('');
     const [gameName, setGameName] = useState('');
@@ -20,7 +20,9 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [error, setError] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isCodeGenerated, setIsCodeGenerated] = useState(false);
-    const [hasPassword, setHasPassword] = useState(false); // hasPassword state'i eklendi
+    const [hasPassword, setHasPassword] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
 
     const toggleLobbyType = useCallback(() => {
@@ -42,10 +44,16 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
             return;
         }
 
-        if (hasPassword && !password.trim()) { // Yeni validasyon kontrolü
+        if (hasPassword && !password.trim()) {
             ToastService.show("error", "Password cannot be empty for a password-protected lobby.");
-            return; // Şifre boşsa fonksiyonu burada sonlandır
+            return;
         }
+
+        if (lobbyType === 'Event' && (!startDate || !endDate)) {
+            ToastService.show("error", "Event lobbies require start and end date.");
+            return;
+        }
+
 
         const requestBody = {
             lobbyName,
@@ -53,12 +61,13 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
             gameName,
             code,
             maxCapacity: parseInt(maxCapacity, 10),
-            password: hasPassword ? password : null, // hasPassword true ise şifreyi gönder, değilse null
-            hasPassword: hasPassword, // hasPassword değerini request body'e ekle
+            password: hasPassword ? password : null,
+            hasPassword: hasPassword,
+            ...(lobbyType === 'Event' && { startDate: startDate.toISOString(), endDate: endDate.toISOString() }),
         };
 
         try {
-            const data = await createLobby(requestBody); // Use the service function
+            const data = await createLobby(requestBody);
             console.log(data);
             setCode(`${data.lobby.code}`);
             setIsCodeGenerated(true);
@@ -66,7 +75,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         } catch (error) {
             ToastService.show("error", error.message);
         }
-    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword]); // hasPassword dependency eklendi
+    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate]);
 
     const resetLobby = useCallback(() => {
         setLobbyType('Normal');
@@ -77,7 +86,9 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         setGameName('');
         setLobbyName('');
         setIsCodeGenerated(false);
-        setHasPassword(false); // hasPassword resetlendi
+        setHasPassword(false);
+        setStartDate(new Date());
+        setEndDate(new Date());
     }, [gameName]);
 
     const handleDismiss = useCallback(() => {
@@ -86,7 +97,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
     }, [onDismiss, resetLobby]);
 
 
-    const bottomSheetHeight = lobbyType === 'Normal' ? '50%' : '70%';
+    const bottomSheetHeight = isCodeGenerated ? '50%' : (lobbyType === 'Normal' ? '50%' : '70%'); // Dynamic height calculation
 
     return (
         <BottomSheet
@@ -100,7 +111,19 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                 {!isCodeGenerated ? (
                     <>
                         <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} />
-                        {lobbyType === 'Event' && <CustomDateTimeSelector />}
+                        {lobbyType === 'Event' && (
+                            <CustomDateTimeSelector
+                                initialStartDate={startDate}
+                                initialEndDate={endDate}
+                                onDateTimeChange={(type, date) => {
+                                    if (type === 'startDate') {
+                                        setStartDate(date);
+                                    } else if (type === 'endDate') {
+                                        setEndDate(date);
+                                    }
+                                }}
+                            />
+                        )}
                         <GameSelector
                             gameName={gameName}
                             lobbyName={lobbyName}
@@ -110,13 +133,13 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             onMaxCapacityChange={setMaxCapacity}
                         />
                     <PasswordInput
-  password={password}
-  isPasswordVisible={isPasswordVisible}
-  onPasswordChange={setPassword}
-  onToggleVisibility={() => setIsPasswordVisible(!isPasswordVisible)}
-  hasPassword={hasPassword}
-  onPasswordToggle={setHasPassword}
-/>
+                      password={password}
+                      isPasswordVisible={isPasswordVisible}
+                      onPasswordChange={setPassword}
+                      onToggleVisibility={() => setIsPasswordVisible(!isPasswordVisible)}
+                      hasPassword={hasPassword}
+                      onPasswordToggle={setHasPassword}
+                       />
                         <Button
                             mode="contained"
                             onPress={handleSave}
@@ -172,7 +195,7 @@ const styles = StyleSheet.create({
     resetButton: {
         marginTop: 'auto',
     },
-    passwordSwitchContainer: { // Yeni stil eklendi
+    passwordSwitchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

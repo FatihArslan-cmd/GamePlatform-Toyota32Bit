@@ -289,7 +289,7 @@ export const styles = StyleSheet.create({
       },
       resultText: {
           fontSize: 18,
-          fontFamily: 'Orbitron-VariableFont_wght',
+          fontFamily: 'Orbitron-ExtraBold',
           marginBottom: 4,
       },
       dateText: {
@@ -304,9 +304,8 @@ export const styles = StyleSheet.create({
       },
       scoreText: {
           fontSize: 16,
-          fontWeight: '600',
           color: '#4a148c',
-          fontFamily: 'Orbitron-VariableFont_wght',
+          fontFamily: 'Orbitron-ExtraBold',
       },
       durationText: {
           fontSize: 14,
@@ -345,7 +344,7 @@ export const styles = StyleSheet.create({
       settingLabel: {
           fontSize: 16,
           color: '#333',
-          fontFamily: 'Orbitron-VariableFont_wght',
+          fontFamily: 'Orbitron-ExtraBold',
 
       },
       settingControls: {

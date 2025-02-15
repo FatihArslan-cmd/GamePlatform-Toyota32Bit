@@ -11,9 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import FadeIn from './Animations/FadeInAnimation';
-
-const EmptyStateComponent = React.memo(({ message }) => {
+const EmptyStateComponent = React.memo(({ message }) => { // React.memo ile sarıyoruz
   const fadeAnim = useSharedValue(0);
 
   useEffect(() => {
@@ -27,22 +25,20 @@ const EmptyStateComponent = React.memo(({ message }) => {
   });
 
   return (
-    <FadeIn>
-      <Animated.View
-        style={[
-          styles.container,
-          animatedStyle, // Artık gerekmese de kalabilir, FadeIn kendi animasyonunu yapıyor
-        ]}
-      >
-        <LottieView
-          source={emptyStateAnimation}
-          autoPlay
-          loop
-          style={styles.lottieAnimation}
-        />
-        <Text style={styles.textStyle} >{message}</Text>
-      </Animated.View>
-    </FadeIn>
+    <Animated.View
+      style={[
+        styles.container,
+        animatedStyle,
+      ]}
+    >
+      <LottieView
+        source={emptyStateAnimation}
+        autoPlay
+        loop
+        style={styles.lottieAnimation}
+      />
+      <Text style={styles.textStyle} >{message}</Text>
+    </Animated.View>
   );
 });
 
@@ -64,5 +60,6 @@ const styles = StyleSheet.create({
   }
 });
 
+// React.memo ile sarmalanmış componenti export ediyoruz
 const EmptyState = EmptyStateComponent;
 export default EmptyState;

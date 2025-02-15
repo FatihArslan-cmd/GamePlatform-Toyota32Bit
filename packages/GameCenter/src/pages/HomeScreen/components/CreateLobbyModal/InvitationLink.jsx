@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 8,
-    fontFamily:'Orbitron-VariableFont_wght'
+    fontFamily: 'Orbitron-ExtraBold',
   },
   subtitle: {
     fontSize: 16,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   linkText: {
     flex: 1,
     fontSize: 16,
-    fontFamily:'Orbitron-VariableFont_wght'
+    fontFamily: 'Orbitron-ExtraBold',
 
   },
   copyIcon: {

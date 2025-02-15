@@ -19,7 +19,7 @@ const ThemeSection = ({ handleThemePress }) => { // Receive handleThemePress as 
             textStyle={{ fontSize: 22 }}
             gradientDirection="horizontal"
           />
-  <GradientDivider height={1} horizontalMargin='%10'  colorProps={['black', '#778899']} />      <List.Item
+      <List.Item
         titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
           title="Choose Theme"
           descriptionStyle={{fontFamily:'Orbitron-VariableFont_wght'}}

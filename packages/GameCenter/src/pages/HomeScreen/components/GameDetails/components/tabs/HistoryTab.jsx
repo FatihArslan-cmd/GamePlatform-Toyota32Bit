@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text, IconButton } from 'react-native-paper';
 import { styles } from '../../styles';
-
+import FadeIn from '../../../../../../components/Animations/FadeInAnimation';
 const mockHistory = [
   { id: 1, date: "2024-01-05", result: "Won", score: 2500, duration: "15m" },
   { id: 2, date: "2024-01-04", result: "Lost", score: 1800, duration: "12m" },
@@ -11,11 +11,13 @@ const mockHistory = [
 
 export default function HistoryTab() {
   return (
-    <View style={styles.historyContainer}>
-      {mockHistory.map((game) => (
-        <GameHistoryCard key={game.id} game={game} />
-      ))}
-    </View>
+    <FadeIn>
+      <View style={styles.historyContainer}>
+        {mockHistory.map((game) => (
+          <GameHistoryCard key={game.id} game={game} />
+        ))}
+      </View>
+    </FadeIn>
   );
 }
 

@@ -35,7 +35,7 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   if (loading) {
     return (
       <View style={styles.container}>
-        {showNoLobby ? <FadeIn><NoLobby loading={true} /></FadeIn> : null}
+        {showNoLobby ? <NoLobby loading={true} />: null}
       </View>
     );
   }
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    justifyContent: 'center',
   },
 });
 

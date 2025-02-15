@@ -4,7 +4,7 @@ import { useGameDetails } from '../context/GameDetailsContext';
 import AboutTab from './tabs/AboutTab';
 import LobbiesTab from './tabs/LobbiesTab';
 import HistoryTab from './tabs/HistoryTab';
-import SettingsTab from './tabs/SettingsTab';
+import SettingsTab from './tabs/SettingsTab/SettingsTab';
 import { styles } from '../styles';
 
 export default function TabContent({ about }) {

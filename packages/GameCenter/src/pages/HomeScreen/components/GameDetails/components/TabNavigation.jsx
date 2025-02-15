@@ -13,6 +13,7 @@ export default function TabNavigation() {
         mode={activeTab === 'about' ? 'contained' : 'text'}
         onPress={() => setActiveTab('about')}
         style={styles.tabButton}
+        labelStyle={{fontFamily: 'Orbitron-ExtraBold'}}
         icon="information"
       >
         Start
@@ -21,6 +22,7 @@ export default function TabNavigation() {
         mode={activeTab === 'lobbies' ? 'contained' : 'text'}
         onPress={() => setActiveTab('lobbies')}
         style={styles.tabButton}
+        labelStyle={{fontFamily: 'Orbitron-ExtraBold'}}
         icon="account-group"
       >
         Lobbies
@@ -29,6 +31,7 @@ export default function TabNavigation() {
         mode={activeTab === 'history' ? 'contained' : 'text'}
         onPress={() => setActiveTab('history')}
         style={styles.tabButton}
+        labelStyle={{fontFamily: 'Orbitron-ExtraBold'}}
         icon="history"
       >
         History
@@ -37,6 +40,7 @@ export default function TabNavigation() {
         mode={activeTab === 'settings' ? 'contained' : 'text'}
         onPress={() => setActiveTab('settings')}
         style={styles.tabButton}
+        labelStyle={{fontFamily: 'Orbitron-ExtraBold'}}
         icon="cog"
       >
         Settings
