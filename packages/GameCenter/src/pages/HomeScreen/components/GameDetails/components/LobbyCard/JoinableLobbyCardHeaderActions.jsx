@@ -3,12 +3,9 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, isPasswordProtected=true }) => {
+const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, lobby }) => {
   return (
     <View style={styles.cardHeaderActions}>
-      {isPasswordProtected && ( 
-        <Icon name="lock" size={24} color="black" style={styles.lockIcon} /> 
-      )}
       <TouchableOpacity
         style={styles.codeContainer}
         onPress={() => copyLobbyCodeToClipboard(lobbyCode)}
@@ -16,6 +13,9 @@ const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, i
         <Icon name="code-tags" size={20} color="#666" />
         <Text style={styles.lobbyCode}>{lobbyCode}</Text>
       </TouchableOpacity>
+      {lobby.hasPassword && (
+        <Icon name="lock" size={24} color="black" style={styles.lockIcon} />
+      )}
     </View>
   );
 };

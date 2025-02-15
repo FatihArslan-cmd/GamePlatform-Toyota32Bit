@@ -1,8 +1,9 @@
-const lobbyStore = require('../memory/lobbyStore');
+// lobbyController.js
+const lobbyStore = require('../memory/lobbyStore'); // Doğru yolu kullandığınızdan emin olun
 
 const createLobbyHandler = (req, res) => {
     const userId = req.user.id;
-    const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate } = req.body;
+    const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword } = req.body; // hasPassword eklendi
 
     if (!lobbyName) {
         return res.status(400).json({ message: 'Lobby name is required' });
@@ -12,7 +13,7 @@ const createLobbyHandler = (req, res) => {
         return res.status(400).json({ message: 'Lobby type is required' });
     }
 
-    lobbyStore.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, (err, lobby) => {
+    lobbyStore.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword, (err, lobby) => { // hasPassword parametresi eklendi
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -30,7 +31,7 @@ const joinLobbyHandler = (req, res) => {
 
     lobbyStore.joinLobby(userId, code, password, (err, lobby) => {
         if (err) {
-            return res.status(400).json({ message: err.message });
+            return res.status(400).json({ message: err.message }); // Error message will be sent to frontend
         }
         res.status(200).json({ message: 'Joined lobby successfully', lobby });
     });
@@ -68,7 +69,7 @@ const deleteLobbyHandler = (req, res) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
-        if(success) {
+        if (success) {
             res.status(200).json({ message: 'Lobby deleted successfully' });
         } else {
             res.status(500).json({ message: 'Lobby deletion failed' }); // veya başka bir hata mesajı
@@ -89,14 +90,14 @@ const updateLobbyHandler = (req, res) => {
     });
 };
 const getUserLobbyHandler = (req, res) => {
-  const userId = req.user.id; // Assuming user ID is available in req.user
+    const userId = req.user.id; // Assuming user ID is available in req.user
 
-  lobbyStore.getUserLobby(userId, (err, lobby) => {
-      if (err) {
-          return res.status(500).json({ message: 'Internal server error' });
-      }
-      res.status(200).json({ lobby: lobby }); // Respond with the lobby or null
-  });
+    lobbyStore.getUserLobby(userId, (err, lobby) => {
+        if (err) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.status(200).json({ lobby: lobby }); // Respond with the lobby or null
+    });
 };
 const listLobbiesHandler = (req, res) => {
     lobbyStore.getLobbies((err, lobbies) => {

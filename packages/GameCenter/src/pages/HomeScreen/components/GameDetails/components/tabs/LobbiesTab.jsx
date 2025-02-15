@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import { Button, Text,} from 'react-native-paper';
+import { View, ScrollView } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { styles } from '../../styles';
 import { useGameDetails } from '../../context/GameDetailsContext';
 import lobbyService from '../../service/service'; // Import lobbyService
 import JoinableLobbyCard from '../LobbyCard/JoinableLobbyCard';
+import LoadingIndicator from '../../../../../../components/LoadingIndicator';
+import FadeIn from '../../../../../../components/Animations/FadeInAnimation'; // Import FadeInAnimation
 
 export default function LobbiesTab() {
     const { setLobbyModalVisible } = useGameDetails();
@@ -33,29 +35,30 @@ export default function LobbiesTab() {
     }, []);
 
     return (
-        <View style={styles.lobbiesContainer}>
+        <ScrollView style={styles.lobbiesContainer}>
             <Button
                 mode="contained"
                 icon="plus-circle"
                 onPress={() => setLobbyModalVisible(true)}
                 style={styles.createLobbyButton}
-                disabled={loading}
             >
                 Create Lobby
             </Button>
             {loading ? (
                 <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#0000ff" />
+                    <LoadingIndicator size="large" color="#0000ff" />
                 </View>
             ) : error ? (
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorText}>{error}</Text>
                 </View>
             ) : (
-                lobbies.map((lobby) => (
-                    <JoinableLobbyCard key={lobby.code} lobby={lobby} /> // Using the imported LobbyCard here
+                lobbies.map((lobby, index) => (
+                    <FadeIn key={lobby.code} delay={index * 50}>
+                        <JoinableLobbyCard lobby={lobby} />
+                    </FadeIn>
                 ))
             )}
-        </View>
+        </ScrollView>
     );
 }

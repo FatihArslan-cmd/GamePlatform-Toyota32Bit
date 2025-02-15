@@ -4,6 +4,7 @@ import lobbyService from './services/lobbyService';
 import LobbyCard from './components/LobbyCard';
 import NoLobby from './components/NoLobby';
 import { ToastService } from '../../../../context/ToastService';
+import FadeIn from '../../../../components/Animations/FadeInAnimation';
 
 const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   const [userLobby, setUserLobby] = useState(null);
@@ -34,7 +35,7 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   if (loading) {
     return (
       <View style={styles.container}>
-        {showNoLobby ? <NoLobby loading={true} /> : null}
+        {showNoLobby ? <FadeIn><NoLobby loading={true} /></FadeIn> : null}
       </View>
     );
   }
@@ -42,9 +43,9 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   return (
     <View style={styles.container}>
       {userLobby ? (
-        <LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} />
+        <FadeIn><LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} /></FadeIn>
       ) : (
-        showNoLobby ? <NoLobby /> : null
+        showNoLobby ? <FadeIn><NoLobby /></FadeIn> : null
       )}
     </View>
   );

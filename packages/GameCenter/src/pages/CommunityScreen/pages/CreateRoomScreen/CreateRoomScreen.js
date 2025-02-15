@@ -16,7 +16,7 @@ import ImageSelector from './ImageSelector';
 import CreateButton from './CreateButton';
 import BackButton from '../../../../components/BackIcon';
 import { ToastService } from '../../../../context/ToastService'; // Import ToastService
-import { AnimatedSection } from '../../../../components/Animations/EnteringAnimation';
+import { AnimatedSection } from '../../../../components/Animations/EnteringPageAnimation';
 
 const CreateRoomScreen = () => {
   const [roomName, setRoomName] = useState('');

@@ -5,14 +5,15 @@ import { Text } from 'react-native-paper';
 
 import emptyStateAnimation from '../locales/lottie/EmptyState.json';
 
-// Reanimated importlarını ekliyoruz
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
 
-const EmptyStateComponent = React.memo(({ message }) => { // React.memo ile sarıyoruz
+import FadeIn from './Animations/FadeInAnimation';
+
+const EmptyStateComponent = React.memo(({ message }) => {
   const fadeAnim = useSharedValue(0);
 
   useEffect(() => {
@@ -26,20 +27,22 @@ const EmptyStateComponent = React.memo(({ message }) => { // React.memo ile sar�
   });
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        animatedStyle,
-      ]}
-    >
-      <LottieView
-        source={emptyStateAnimation}
-        autoPlay
-        loop
-        style={styles.lottieAnimation}
-      />
-      <Text style={styles.textStyle} >{message}</Text>
-    </Animated.View>
+    <FadeIn>
+      <Animated.View
+        style={[
+          styles.container,
+          animatedStyle, // Artık gerekmese de kalabilir, FadeIn kendi animasyonunu yapıyor
+        ]}
+      >
+        <LottieView
+          source={emptyStateAnimation}
+          autoPlay
+          loop
+          style={styles.lottieAnimation}
+        />
+        <Text style={styles.textStyle} >{message}</Text>
+      </Animated.View>
+    </FadeIn>
   );
 });
 
@@ -61,6 +64,5 @@ const styles = StyleSheet.create({
   }
 });
 
-// React.memo ile sarmalanmış componenti export ediyoruz
 const EmptyState = EmptyStateComponent;
 export default EmptyState;

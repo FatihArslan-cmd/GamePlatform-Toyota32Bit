@@ -13,7 +13,7 @@ import Header from './components/Header/Header';
 import ThemeSection from './components/ThemeSection';
 import BottomSheet from '../../components/themeswitch/BottomSheet';
 import LanguageSection from './components/LanguageSection';
-import { AnimatedSection } from '../../components/Animations/EnteringAnimation';
+import { AnimatedSection } from '../../components/Animations/EnteringPageAnimation';
 
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
