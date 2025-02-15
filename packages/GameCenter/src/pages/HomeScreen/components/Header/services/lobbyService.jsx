@@ -20,12 +20,12 @@ const lobbyService = {
   },
 
 
-  joinLobby: async (code, password = null) => { // Password is optional now
+  joinLobby: async (code, password = null) => {
     try {
         const token = await getToken();
         const response = await api.post(
             `/lobby/join`,
-            { code, password }, // Include password, might be null initially
+            { code, password }, 
             {
                 headers: {
                     'Content-Type': 'application/json',

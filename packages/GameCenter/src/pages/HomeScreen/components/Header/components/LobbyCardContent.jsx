@@ -1,4 +1,3 @@
-// LobbyCardContent.js
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Title, Button } from 'react-native-paper';
@@ -20,14 +19,17 @@ const LobbyCardContent = ({ lobby, user, ownerUsername, setLeaveModalVisible, to
           mode="contained"
           onPress={() => setLeaveModalVisible(true)}
           style={styles.leaveButton}
+          labelStyle={styles.buttonLabel} // Added labelStyle to apply font family
         >
           <Icon name="exit-run" size={20} color="white" />
-          Leave
+          <Text style={styles.buttonText}>Leave</Text> 
         </Button>
       </View>
     </View>
   );
 };
+
+import { Text } from 'react-native'; // Import Text component
 
 const styles = StyleSheet.create({
   lobbyName: {
@@ -37,15 +39,22 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 15,
+    marginTop: 20,
   },
-  actionButtonsCenter: { // New style for centering buttons
-    justifyContent: 'center',
-  },
+ 
   leaveButton: {
     width: '100%', // Full width when centered
-    backgroundColor: '#FF5722',
+    backgroundColor: '#D32F2F', // Changed to a darker, more meaningful red
     marginBottom: 10, // Added bottom margin here
+    justifyContent: 'center', // Center content horizontally
+    alignItems: 'center',     // Center content vertically
+  },
+  buttonLabel: { // Style for the button label (text)
+    fontFamily: 'Orbitron-ExtraBold',
+    fontSize: 16, // Optional: Adjust font size if needed
+  },
+  buttonText: { // Style for the Text component inside Button
+    color: 'white', // Keep text color white
   },
 });
 

@@ -64,7 +64,7 @@ const lobbyStore = {
                 ownerId: userId,
                 ownerUsername: getUserDetails(userId).username,
                 code,
-                members: [getUserDetails(userId)], // Üye listesini kullanıcı detayları objesiyle başlat
+                members: [getUserDetails(userId)], 
                 blockedMembers: [],
                 maxCapacity,
                 lobbyType,
@@ -192,72 +192,80 @@ const lobbyStore = {
     },
 
     updateLobby: (userId, updates, callback) => {
-        lobbyStore.getLobbiesFromSession((err, lobbies) => {
-            if (err) return callback(err);
-
-            const lobby = lobbies[userId];
-
-            if (!lobby) {
-                return callback(new Error('Lobby not found'));
-            }
-
-            if (lobby.ownerId !== userId) {
-                return callback(new Error('Only the lobby owner can update the lobby'));
-            }
-
-            if (updates.lobbyType && !['Normal', 'Event'].includes(updates.lobbyType)) {
-                return callback(new Error('Invalid lobby type'));
-            }
-
-            if (updates.lobbyType === 'Normal' && lobby.lobbyType === 'Event') {
-                lobby.startDate = null;
-                lobby.endDate = null;
-            }
-
-            if (updates.lobbyType === 'Event' && (!updates.startDate || !updates.endDate)) {
-                return callback(new Error('Event lobbies require startDate and endDate'));
-            }
-
-            if (updates.addMember) {
-                const parsedUserId = parseInt(updates.addMember);
-                if(lobby.members.some(member => member.id === parsedUserId)) {
-                    return callback(new Error('Member already in lobby'));
-                }
-                if (lobby.blockedMembers.includes(parsedUserId)) {
-                    return callback(new Error('Member is blocked and cannot be added'));
-                }
-                if (lobby.members.length >= lobby.maxCapacity) {
-                    return callback(new Error('Lobby is full'));
-                }
-                lobby.members.push(getUserDetails(parsedUserId)); // Eklenen üye detaylarını ekle
-            }
-
-            if (updates.removeMember) {
-                lobby.members = lobby.members.filter(member => member.id !== parseInt(updates.removeMember)); // Çıkarılan üyeyi ID'ye göre filtrele
-            }
-
-            if (updates.blockMember) {
-                const parsedBlockUserId = parseInt(updates.blockMember);
-                if (lobby.members.some(member => member.id === parsedBlockUserId)) {
-                    lobby.members = lobby.members.filter(member => member.id !== parsedBlockUserId); // Engellenen üyeyi ID'ye göre filtrele
-                }
-                if (!lobby.blockedMembers.includes(parsedBlockUserId)) {
-                    lobby.blockedMembers.push(parsedBlockUserId);
-                }
-            }
-
-            if (updates.unblockMember) {
-                lobby.blockedMembers = lobby.blockedMembers.filter(memberId => memberId !== parseInt(updates.unblockMember));
-            }
-
-            Object.assign(lobby, updates);
-            lobbies[userId] = lobby;
-            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
-                if (err) return callback(err);
-                callback(null, lobby);
-            });
-        });
-    },
+      lobbyStore.getLobbiesFromSession((err, lobbies) => {
+          if (err) return callback(err);
+  
+          const lobby = lobbies[userId];
+  
+          if (!lobby) {
+              return callback(new Error('Lobby not found'));
+          }
+  
+          if (lobby.ownerId !== userId) {
+              return callback(new Error('Only the lobby owner can update the lobby'));
+          }
+  
+          if (updates.lobbyType && !['Normal', 'Event'].includes(updates.lobbyType)) {
+              return callback(new Error('Invalid lobby type'));
+          }
+  
+          if (updates.lobbyType === 'Normal' && lobby.lobbyType === 'Event') {
+              lobby.startDate = null;
+              lobby.endDate = null;
+          }
+  
+          if (updates.lobbyType === 'Event' && (!updates.startDate || !updates.endDate)) {
+              return callback(new Error('Event lobbies require startDate and endDate'));
+          }
+  
+          if (updates.addMember) {
+              const parsedUserId = parseInt(updates.addMember);
+              if(lobby.members.some(member => member.id === parsedUserId)) {
+                  return callback(new Error('Member already in lobby'));
+              }
+              if (lobby.blockedMembers.includes(parsedUserId)) {
+                  return callback(new Error('Member is blocked and cannot be added'));
+              }
+              if (lobby.members.length >= lobby.maxCapacity) {
+                  return callback(new Error('Lobby is full'));
+              }
+              lobby.members.push(getUserDetails(parsedUserId));
+          }
+  
+          if (updates.removeMember) {
+              const parsedUserId = parseInt(updates.removeMember);
+              // **Yeni eklenen validasyon: Sahibi kicklemeyi engelle**
+              if (parsedUserId === lobby.ownerId) {
+                  return callback(new Error('Lobby owner cannot kick themselves'));
+              }
+              lobby.members = lobby.members.filter(member => member.id !== parsedUserId);
+          }
+  
+          if (updates.blockMember) {
+              const parsedBlockUserId = parseInt(updates.blockMember);
+              if (parsedBlockUserId === lobby.ownerId) {
+                  return callback(new Error('Lobby owner cannot block themselves'));
+              }
+              if (lobby.members.some(member => member.id === parsedBlockUserId)) {
+                  lobby.members = lobby.members.filter(member => member.id !== parsedBlockUserId);
+              }
+              if (!lobby.blockedMembers.includes(parsedBlockUserId)) {
+                  lobby.blockedMembers.push(parsedBlockUserId);
+              }
+          }
+  
+          if (updates.unblockMember) {
+              lobby.blockedMembers = lobby.blockedMembers.filter(memberId => memberId !== parseInt(updates.unblockMember));
+          }
+  
+          Object.assign(lobby, updates);
+          lobbies[userId] = lobby;
+          lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+              if (err) return callback(err);
+              callback(null, lobby);
+          });
+      });
+  },
 
 
     getLobbies: (callback) => {

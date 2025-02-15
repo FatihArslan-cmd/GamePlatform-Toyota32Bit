@@ -73,7 +73,7 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
       setPlayerModalVisible(false);
     }
   }, [handleKickPlayer, handleKickAndBlockPlayer, currentLobby.id, currentLobby.ownerUsername, user.username]);
- 
+
 
   return (
     <Card style={styles.lobbyCard}>
@@ -132,7 +132,8 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
 
 const styles = StyleSheet.create({
   lobbyCard: {
-    elevation: 4,
+    elevation: 2,
+    borderRadius: 20, // Added border radius here
   },
 });
 

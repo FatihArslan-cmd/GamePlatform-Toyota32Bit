@@ -58,8 +58,7 @@ export const styles = StyleSheet.create({
       tabContent: {
         flex: 1,
       },
-      
-      // Instructions styles
+    
       instructionContainer: {
         marginBottom: 20,
         backgroundColor: '#fffff',
@@ -78,8 +77,9 @@ export const styles = StyleSheet.create({
       },
       aboutContainer: {
         flex: 1,
-        justifyContent: 'space-between', // Alanı eşit şekilde dağıt
         padding: 16,
+        position: 'relative', // Add position: 'relative' here
+
       },
 
       instructionWrapper: {
@@ -168,7 +168,7 @@ export const styles = StyleSheet.create({
       buttonLabel: {
         fontSize: 16,
         letterSpacing: 1,
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
       },
       startGameButton: {
         borderColor: '#4a148c',
@@ -186,14 +186,14 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 28,
         marginRight: 12,
-        fontFamily: 'Orbitron-VariableFont_wght',
-    },
+        fontFamily: 'Orbitron-ExtraBold',
+      },
       instructionText: {
         flex: 1,
         fontSize: 16,
         lineHeight: 24,
         color: '#1a1a1a',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
       },
       // Lobbies styles
       lobbiesContainer: {
