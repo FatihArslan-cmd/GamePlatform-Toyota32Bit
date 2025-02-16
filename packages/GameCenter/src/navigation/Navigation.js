@@ -16,8 +16,8 @@ import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.
 import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js';
 import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/index.jsx';
 import ProfileDetailsScreen from '../pages/SettingsScreen/pages/ProfileDetailsScreen.jsx';
-import FriendInvitePage from '../pages/HomeScreen/components/Header/pages/FriendInvitePage/FriendInvitePage.jsx';
-import PersonalMessagePage from '../pages/HomeScreen/components/Header/pages/PersonalMessagePage/index.jsx';
+import FriendInvitePage from '../pages/FriendInvitePage/FriendInvitePage.jsx';
+import PersonalMessagePage from '../pages/PersonalMessagePage/index.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {

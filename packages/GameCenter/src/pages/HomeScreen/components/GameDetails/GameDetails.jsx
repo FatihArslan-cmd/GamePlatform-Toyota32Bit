@@ -6,7 +6,7 @@ import { GameDetailsProvider } from './context/GameDetailsContext';
 export default function GameDetails() {
   const route = useRoute();
   const { gameName, about, imageSource } = route.params;
-  
+
   return (
     <GameDetailsProvider>
       <GameDetailsLayout 

@@ -38,53 +38,68 @@ const lobbyStore = {
     },
 
     createLobby: (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = null, password = null, startDate = null, endDate = null, hasPassword = false, callback) => {
-        lobbyStore.getLobbiesFromSession((err, lobbies) => {
-            if (err) return callback(err);
+      lobbyStore.getLobbiesFromSession((err, lobbies) => {
+          if (err) return callback(err);
 
-            if (lobbies[userId]) {
-                return callback(new Error('User already owns a lobby'));
-            }
+          if (lobbies[userId]) {
+              return callback(new Error('User already owns a lobby'));
+          }
 
-            const userLobby = Object.values(lobbies).find((l) => l.members.some(member => member.id === userId));
-            if (userLobby) {
-                return callback(new Error('User is already in a lobby. Leave the lobby to create a new one.'));
-            }
+          const userLobby = Object.values(lobbies).find((l) => l.members.some(member => member.id === userId));
+          if (userLobby) {
+              return callback(new Error('User is already in a lobby. Leave the lobby to create a new one.'));
+          }
 
-            if (!['Normal', 'Event'].includes(lobbyType)) {
-                return callback(new Error('Invalid lobby type'));
-            }
+          if (!['Normal', 'Event'].includes(lobbyType)) {
+              return callback(new Error('Invalid lobby type'));
+          }
 
-            if (lobbyType === 'Event' && (!startDate || !endDate)) {
-                return callback(new Error('Event lobbies require startDate and endDate'));
-            }
+          if (lobbyType === 'Event') {
+              if (!startDate || !endDate) {
+                  return callback(new Error('Event lobbies require startDate and endDate'));
+              }
 
-            const code = Math.random().toString(36).substr(2, 6).toUpperCase();
+              const start = new Date(startDate);
+              const end = new Date(endDate);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0); // Saat, dakika, saniye ve milisaniyeyi sıfırla, sadece tarihi karşılaştır
 
-            const lobby = {
-                lobbyName,
-                ownerId: userId,
-                ownerUsername: getUserDetails(userId).username,
-                code,
-                members: [getUserDetails(userId)],
-                blockedMembers: [],
-                maxCapacity,
-                lobbyType,
-                gameName,
-                password,
-                startDate: lobbyType === 'Event' ? startDate : null,
-                endDate: lobbyType === 'Event' ? endDate : null,
-                lastOwnerLeave: null,
-                timeout: null, // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
-                hasPassword: hasPassword, // Yeni alan eklendi
-            };
+              if (start > end) {
+                  return callback(new Error('Start date cannot be after end date'));
+              }
 
-            lobbies[userId] = lobby;
-            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
-                if (err) return callback(err);
-                callback(null, lobby);
-            });
-        });
-    },
+              if (start < today) {
+                  return callback(new Error('Start date cannot be before today'));
+              }
+          }
+
+          const code = Math.random().toString(36).substr(2, 6).toUpperCase();
+
+          const lobby = {
+              lobbyName,
+              ownerId: userId,
+              ownerUsername: getUserDetails(userId).username,
+              code,
+              members: [getUserDetails(userId)],
+              blockedMembers: [],
+              maxCapacity,
+              lobbyType,
+              gameName,
+              password,
+              startDate: lobbyType === 'Event' ? startDate : null,
+              endDate: lobbyType === 'Event' ? endDate : null,
+              lastOwnerLeave: null,
+              timeout: null, // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
+              hasPassword: hasPassword, // Yeni alan eklendi
+          };
+
+          lobbies[userId] = lobby;
+          lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+              if (err) return callback(err);
+              callback(null, lobby);
+          });
+      });
+  },
 
     joinLobby: (userId, code, password = null, callback) => {
         lobbyStore.getLobbiesFromSession((err, lobbies) => {
@@ -303,7 +318,7 @@ const lobbyStore = {
             }
 
             const now = Date.now();
-            const timeoutDuration = 8 * 60 * 60 * 1000; // 8 saat
+            const timeoutDuration = 2 * 60 * 1000; // 2 dakika
 
             let updated = false;
             Object.keys(lobbies).forEach(ownerId => {

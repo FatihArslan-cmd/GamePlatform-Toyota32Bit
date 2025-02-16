@@ -19,7 +19,7 @@ const LobbyCardContent = ({ lobby, user, ownerUsername, setLeaveModalVisible, to
           mode="contained"
           onPress={() => setLeaveModalVisible(true)}
           style={styles.leaveButton}
-          labelStyle={styles.buttonLabel} // Added labelStyle to apply font family
+          labelStyle={styles.buttonLabel}
         >
           <Icon name="exit-run" size={20} color="white" />
           <Text style={styles.buttonText}>Leave</Text> 

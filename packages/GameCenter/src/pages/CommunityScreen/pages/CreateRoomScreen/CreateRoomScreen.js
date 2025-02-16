@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ImageBackground, // Import ImageBackground
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createRoom } from '../../services/api';
@@ -57,56 +58,65 @@ const CreateRoomScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.content}>
-            <BackButton />
+    <ImageBackground // Wrap the SafeAreaView with ImageBackground
+      source={require('../../../../locales/bgImages/purpleImage.jpg')} // Adjust path if necessary
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <View style={styles.content}>
+              <BackButton />
 
-            <AnimatedSection index={0}>
-              <RoomHeader />
-            </AnimatedSection>
-
-            <View style={styles.inputContainer}>
-              <AnimatedSection index={1}>
-                <RoomNameInput value={roomName} onChangeText={setRoomName} />
+              <AnimatedSection index={0}>
+                <RoomHeader />
               </AnimatedSection>
 
-              <View style={styles.topicSelectorContainer}>
-                <AnimatedSection index={2}>
-                  <CommunityTopics
-                    onTopicSelect={handleTopicSelectAndCreate}
-                    selectedTopic={topic}
+              <View style={styles.inputContainer}>
+                <AnimatedSection index={1}>
+                  <RoomNameInput value={roomName} onChangeText={setRoomName} />
+                </AnimatedSection>
+
+                <View style={styles.topicSelectorContainer}>
+                  <AnimatedSection index={2}>
+                    <CommunityTopics
+                      onTopicSelect={handleTopicSelectAndCreate}
+                      selectedTopic={topic}
+                    />
+                  </AnimatedSection>
+                </View>
+
+                <AnimatedSection index={3}>
+                  <ImageSelector
+                    imageUri={imageUri}
+                    onImageSelected={setImageUri}
                   />
                 </AnimatedSection>
+
               </View>
 
-              <AnimatedSection index={3}>
-                <ImageSelector
-                  imageUri={imageUri}
-                  onImageSelected={setImageUri}
-                />
+              <AnimatedSection index={4}>
+                <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} />
               </AnimatedSection>
-
             </View>
-
-            <AnimatedSection index={4}>
-              <CreateButton onPress={handleCreateRoom} loading={loading} disabled={loading || isCreateSuccess} />
-            </AnimatedSection>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: { // Style for ImageBackground
+    flex: 1,
+    resizeMode: 'cover',
+  },
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f4f8',
+    backgroundColor: 'rgba(201, 209, 218, 0.8)', // Semi-transparent background for SafeAreaView
   },
   container: {
     flex: 1,

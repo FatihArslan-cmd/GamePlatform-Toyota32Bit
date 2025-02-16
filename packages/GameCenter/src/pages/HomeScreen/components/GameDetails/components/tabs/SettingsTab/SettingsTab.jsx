@@ -7,12 +7,16 @@ import FadeIn from '../../../../../../../components/Animations/FadeInAnimation';
 import { VolumeControl } from './VolumeControl';
 import { RadioGroupSetting } from './RadioGroupSetting';
 import { SwitchSetting } from './SwitchSetting';
+import { ToastService } from '../../../../../../../context/ToastService';
 
 export default function SettingsTab() {
   const { gameSettings, setGameSettings } = useGameDetails();
 
   const handleSettingChange = (key, value) => {
     setGameSettings({ ...gameSettings, [key]: value });
+    if (key === 'gameSpeed') {
+      ToastService.show('info', 'Hatırlatma! Oyun hızını sadece lobi sahibi ayarlar.');
+    }
   };
 
   return (

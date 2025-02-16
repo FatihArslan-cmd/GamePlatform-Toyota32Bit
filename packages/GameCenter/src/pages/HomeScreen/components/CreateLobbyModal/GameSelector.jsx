@@ -13,6 +13,16 @@ const GameSelector = ({
 }) => {
   return (
     <>
+         <TextInput
+        label={gameName ? "Selected Game" : "Select Game"}
+        mode="outlined"
+        value={gameName}
+        placeholder="Search for a game..."
+        left={<TextInput.Icon icon="gamepad-variant" />}
+        style={styles.input}
+        editable={editableGameName}
+        onChangeText={onGameNameChange}
+      />
       <TextInput
         label="Lobby Name"
         mode="outlined"
@@ -23,17 +33,6 @@ const GameSelector = ({
         onChangeText={onLobbyNameChange}
       />
  
-      <TextInput
-        label={gameName ? "Selected Game" : "Select Game"}
-        mode="outlined"
-        value={gameName}
-        placeholder="Search for a game..."
-        left={<TextInput.Icon icon="gamepad-variant" />}
-        style={styles.input}
-        editable={editableGameName}
-        onChangeText={onGameNameChange}
-      />
-
       <TextInput
         label="Max Capacity"
         mode="outlined"

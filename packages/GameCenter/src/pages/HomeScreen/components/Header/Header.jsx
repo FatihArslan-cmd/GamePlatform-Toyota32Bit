@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Appbar } from 'react-native-paper'; // IconButton'ı import et
+import { Appbar,TouchableRipple } from 'react-native-paper';
 import GradientText from '../../../../components/GrandientText';
 import SearchBar from './SearchBar';
 import MenuComponent from './MenuComponent';
@@ -9,6 +9,8 @@ import BottomSheet from '../../../../components/BottomSheet';
 import ActiveLobbiesContent from './ActiveLobbiesContent';
 import JoinLobbyModal from './JoinLobbyModal';
 import MessageIconWithBadge from './MessageIconWithBadge';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -17,7 +19,7 @@ const Header = () => {
   const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [joinLobbyModalVisible, setJoinLobbyModalVisible] = useState(false);
-
+  const navigation = useNavigation();
   const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
 
@@ -67,7 +69,17 @@ const Header = () => {
         title="Active Lobbies"
         height="50%"
       >
-        <ActiveLobbiesContent />
+           <TouchableRipple
+            onPress={() => {navigation.navigate('FriendInvitePage'),closeBottomSheet()} }
+            style={styles.bottomSheetIconTouchable} // Apply style to TouchableRipple
+          >
+              <Icon
+                name="account-plus"
+                size={28}
+                color="green"
+              />
+            </TouchableRipple>
+          <ActiveLobbiesContent />
       </BottomSheet>
       <JoinLobbyModal
         visible={joinLobbyModalVisible}
@@ -89,6 +101,9 @@ const styles = StyleSheet.create({
   rightActions: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  bottomSheetIconTouchable: {
+    padding: 5, // Increased padding for touchable area
   },
 
 });

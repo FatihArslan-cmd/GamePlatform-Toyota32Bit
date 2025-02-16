@@ -70,7 +70,6 @@ const HomeScreen = () => {
     <View style={styles.container}>
       
       <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onLayout}

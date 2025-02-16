@@ -88,6 +88,8 @@ const useFriendsPage = () => {
             setSelectedFriend(null);
             await fetchFriendsList();
              ToastService.show("success", 'Friend Removed Successfully!'); // Show toast
+             setModalVisible(false);
+
         } catch (err) {
             setError(err.message || 'Failed to remove friend.');
         } finally {

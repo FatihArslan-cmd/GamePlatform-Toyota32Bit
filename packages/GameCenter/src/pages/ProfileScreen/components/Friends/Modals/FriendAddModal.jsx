@@ -3,12 +3,13 @@ import InputField from '../../../../LoginScreen/components/FormSectionItem/Input
 import CustomModal from '../../../../../components/CustomModal';
 import styles from '../../../styles/FriendPageStyles';
 import { View } from 'react-native';
-const FriendAddModal = ({ visible, onDismiss, onAddFriend }) => {
+const FriendAddModal = ({ visible, onDismiss, onAddFriend,setAddModalVisible }) => {
 
     const [friendCode, setFriendCode] = useState('');
 
     const handleAdd = () => {
         onAddFriend(friendCode);
+        setAddModalVisible(false);
         setFriendCode('');
     };
 

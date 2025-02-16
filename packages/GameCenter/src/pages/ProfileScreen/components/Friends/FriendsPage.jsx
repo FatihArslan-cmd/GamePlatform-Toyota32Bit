@@ -93,6 +93,7 @@ const FriendsPage = ({ onFriendCountChange }) => {
                 visible={addModalVisible}
                 onDismiss={handleCloseAddModal}
                 onAddFriend={handleAddFriend}
+                setAddModalVisible={setAddModalVisible}
             />
             <Button
                 mode="contained"
