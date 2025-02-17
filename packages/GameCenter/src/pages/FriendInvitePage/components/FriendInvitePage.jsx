@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import Header from '../Header/Header';
-import ErrorComponents from '../../../components/ErrorComponents';
 import EmptyState from '../../../components/EmptyState';
 import FadeIn from '../../../components/Animations/FadeInAnimation';
 import LoadingIndicator from '../../../components/LoadingIndicator';
@@ -13,10 +12,8 @@ const FriendInvitePage = () => {
     const {
         friends,
         loading,
-        error,
         userLobby,
         lobbyLoading,
-        lobbyError,
         noLobbyError,
         handleInvite,
     } = useFriendInvite();
@@ -29,13 +26,7 @@ const FriendInvitePage = () => {
         );
     }
 
-    if (error || lobbyError) {
-        return (
-            <View style={styles.centerContainer}>
-                <ErrorComponents errorMessage={error || lobbyError} />
-            </View>
-        );
-    }
+ 
 
     if (noLobbyError) {
         return (

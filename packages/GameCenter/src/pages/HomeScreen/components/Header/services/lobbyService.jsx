@@ -117,6 +117,27 @@ const lobbyService = {
       throw error;
     }
   },
+
+  inviteFriendToLobby: async (invitedUserId, lobbyCode) => {
+    try {
+        const token = await getToken();
+        const response = await api.post(
+            `/lobby/invite-friend`, // Yeni invite endpoint'i
+            { invitedUserId: invitedUserId, lobbyCode: lobbyCode }, // Body'de gerekli veriler
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        return response.data; // Başarı durumunda response verisini dön
+    } catch (error) {
+        console.error('Error inviting friend to lobby:', error);
+        throw error; // Hatayı component tarafında işlemek için yeniden fırlat
+    }
+},
+
 };
 
 export default lobbyService;

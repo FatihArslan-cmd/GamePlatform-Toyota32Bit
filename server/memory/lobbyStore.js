@@ -101,7 +101,9 @@ const lobbyStore = {
         });
     },
 
-    joinLobby: (userId, code, password = null, callback) => {
+    joinLobby: (userId, code, options, callback) => {
+        const { password = null, isInvite = false } = options;
+
         lobbyStore.getLobbiesFromSession((err, lobbies) => {
             if (err) return callback(err);
 
@@ -116,12 +118,12 @@ const lobbyStore = {
                 return callback(new Error('Lobby not found'));
             }
 
-            // **Yeni eklenen kontrol: Engellenmiş üyeleri kontrol et**
             if (lobby.blockedMembers.includes(userId)) {
                 return callback(new Error('You are blocked from joining this lobby.'));
             }
 
-            if (lobby.password && lobby.password !== password) {
+            // Şifre kontrolünü sadece davet değilse yap
+            if (!isInvite && lobby.hasPassword && lobby.password !== password) { // hasPassword kontrolü eklendi
                 return callback(new Error('Invalid password'));
             }
 
@@ -136,12 +138,12 @@ const lobbyStore = {
             if (lobby.ownerId === userId) {
                 lobby.lastOwnerLeave = null;
                 if (lobby.timeout) {
-                    clearTimeout(lobby.timeout); // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
+                    clearTimeout(lobby.timeout);
                     lobby.timeout = null;
                 }
             }
 
-            lobby.members.push(getUserDetails(userId)); // Yeni üye detaylarını listeye ekle
+            lobby.members.push(getUserDetails(userId));
             lobbies[lobby.ownerId] = lobby;
             lobbyStore.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
@@ -149,6 +151,7 @@ const lobbyStore = {
             });
         });
     },
+
 
     leaveLobby: (userId, callback) => {
         lobbyStore.getLobbiesFromSession((err, lobbies) => {
@@ -351,13 +354,13 @@ const lobbyStore = {
             }
 
             const now = Date.now();
-            const timeoutDuration = 2 * 60 * 1000; // 2 dakika
+            const timeoutDuration = 2 * 60 * 60 * 1000; // 2 hours
 
             let updated = false;
             Object.keys(lobbies).forEach(ownerId => {
                 const lobby = lobbies[ownerId];
                 if (lobby.lobbyType === 'Normal' && lobby.lastOwnerLeave) { // Normal lobi ve lastOwnerLeave varsa
-                    if (now - lobby.lastOwnerLeave >= timeoutDuration) { // 8 saat geçmiş mi?
+                    if (now - lobby.lastOwnerLeave >= timeoutDuration) { // 2 hours geçmiş mi?
                         delete lobbies[ownerId];
                         updated = true;
                         console.log(`Normal lobby ${lobby.lobbyName} owned by ${ownerId} has been deleted due to inactivity timeout.`);
@@ -403,48 +406,43 @@ const lobbyStore = {
     },
 
     sendLobbyInvite: (inviterUserId, invitedUserId, lobbyCode, callback) => {
-        lobbyStore.getLobbiesFromSession((err, lobbies) => {
-            if (err) return callback(err);
+      lobbyStore.getLobbiesFromSession((err, lobbies) => {
+          if (err) return callback(err);
 
-            const inviterLobby = Object.values(lobbies).find(l => l.members.some(member => member.id === inviterUserId));
-            if (!inviterLobby) {
-                return callback(new Error('Inviter is not in any lobby'));
-            }
+          const inviterLobby = Object.values(lobbies).find(l => l.members.some(member => member.id === inviterUserId));
+          if (!inviterLobby) {
+              return callback(new Error('Inviter is not in a lobby or does not own a lobby'));
+          }
+          if (inviterLobby.code !== lobbyCode) {
+              return callback(new Error('Lobby code does not match inviter\'s current lobby'));
+          }
 
-            if (inviterLobby.code !== lobbyCode) {
-                return callback(new Error('Inviter is not in the specified lobby'));
-            }
 
-            if (inviterLobby.members.some(member => member.id === invitedUserId)) {
-                return callback(new Error('Invited user is already in the lobby'));
-            }
+          sessionStore.get(invitedUserId, (err, invitedUserSession) => {
+              if (err) return callback(err);
 
-            sessionStore.get(invitedUserId, (err, invitedUserSession) => {
-                if (err) return callback(err);
+              const invitations = invitedUserSession?.lobbyInvitations || [];
+              // Aynı lobiden zaten bir davet var mı kontrol et
+              if (invitations.some(invite => invite.lobbyCode === lobbyCode && invite.inviterUserId === inviterUserId)) {
+                  return callback(new Error('Invitation already sent to this user for this lobby'));
+              }
 
-                const invitations = invitedUserSession?.lobbyInvitations || [];
-                // Aynı lobiden zaten bir davet var mı kontrol et
-                if (invitations.some(invite => invite.lobbyCode === lobbyCode && invite.inviterUserId === inviterUserId)) {
-                    return callback(new Error('Invitation already sent to this user for this lobby'));
-                }
+              const newInvitation = {
+                  lobbyCode: lobbyCode,
+                  inviterUserId: inviterUserId,
+                  inviterUsername: getUserDetails(inviterUserId).username, // Davet eden kullanıcının adını ekle
+                  timestamp: Date.now(),
+                  status: 'pending',
+              };
+              invitations.push(newInvitation);
 
-                const newInvitation = {
-                    lobbyCode: lobbyCode,
-                    lobbyName: inviterLobby.lobbyName,
-                    inviterUserId: inviterUserId,
-                    inviterUsername: getUserDetails(inviterUserId).username, // Davet eden kullanıcının adını ekle
-                    timestamp: Date.now(),
-                    status: 'pending', // 'pending', 'accepted', 'rejected'
-                };
-                invitations.push(newInvitation);
-
-                sessionStore.set(invitedUserId, { ...invitedUserSession, lobbyInvitations: invitations }, (err) => {
-                    if (err) return callback(err);
-                    callback(null, newInvitation);
-                });
-            });
-        });
-    },
+              sessionStore.set(invitedUserId, { ...invitedUserSession, lobbyInvitations: invitations }, (err) => {
+                  if (err) return callback(err);
+                  callback(null, newInvitation);
+              });
+          });
+      });
+  },
 
     getLobbyInvitesForUser: (userId, callback) => {
         sessionStore.get(userId, (err, userSession) => {
@@ -457,41 +455,40 @@ const lobbyStore = {
     },
 
     acceptLobbyInvite: (userId, lobbyCode, callback) => {
-        lobbyStore.getLobbyInvitesForUser(userId, (err, pendingInvitations) => {
+        lobbyStore.getLobbiesFromSession((err, lobbies) => {
             if (err) return callback(err);
 
-            const invitation = pendingInvitations.find(invite => invite.lobbyCode === lobbyCode);
-            if (!invitation) {
-                return callback(new Error('No pending invitation found for this lobby'));
+            const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
+            if (!lobby) {
+                return callback(new Error('Lobby not found'));
             }
 
-            lobbyStore.joinLobby(userId, lobbyCode, null, (err, lobby) => { // Şifre gerekmiyor, joinLobby'i direkt çağırıyoruz
-                if (err) {
-                    return callback(err);
+            sessionStore.get(userId, (err, userSession) => {
+                if (err) return callback(err);
+                let invitations = userSession?.lobbyInvitations || [];
+                const invitationIndex = invitations.findIndex(invite => invite.lobbyCode === lobbyCode && invite.status === 'pending');
+
+                if (invitationIndex === -1) {
+                    return callback(new Error('No pending invitation found for this lobby'));
                 }
 
-                sessionStore.get(userId, (err, userSession) => {
-                    if (err) return callback(err);
-                    let invitations = userSession?.lobbyInvitations || [];
-                    // Kabul edilen davetin durumunu güncelle ve diğer aynı lobby kodlu davetleri sil (isteğe bağlı)
-                    invitations = invitations.map(invite => {
-                        if (invite.lobbyCode === lobbyCode) {
-                            return { ...invite, status: 'accepted' };
-                        }
-                        return invite;
-                    });
-                    // İsteğe bağlı: Aynı lobby kodlu diğer pending davetleri silmek için filtreleme yapılabilir
-                    // invitations = invitations.filter(invite => invite.lobbyCode !== lobbyCode || invite.status !== 'pending');
+                const invitation = invitations[invitationIndex];
+                invitations[invitationIndex].status = 'accepted'; // Davet durumunu 'accepted' olarak güncelle
 
+                lobbyStore.joinLobby(userId, lobbyCode, { isInvite: true }, (joinErr, joinedLobby) => { // isInvite true olarak ayarlandı
+                    if (joinErr) {
+                        return callback(joinErr); // joinLobby hatasını callback'e ilet
+                    }
 
-                    sessionStore.set(userId, { ...userSession, lobbyInvitations: invitations }, (err) => {
-                        if (err) return callback(err);
-                        callback(null, lobby);
+                    sessionStore.set(userId, { ...userSession, lobbyInvitations: invitations }, (setErr) => { // Güncellenmiş davet listesini oturuma kaydet
+                        if (setErr) return callback(setErr);
+                        callback(null, joinedLobby); // Başarılı katılım ve davet güncellemesi sonrası lobiyi döndür
                     });
                 });
             });
         });
     },
+
 
     rejectLobbyInvite: (userId, lobbyCode, callback) => {
         sessionStore.get(userId, (err, userSession) => {
