@@ -6,7 +6,11 @@ const {
   deleteLobbyHandler,
   listLobbiesHandler,
   updateLobbyHandler,
-  getUserLobbyHandler
+  getUserLobbyHandler,
+  inviteFriendToLobbyHandler, 
+  getLobbyInvitesHandler,    
+  acceptLobbyInviteHandler,   
+  rejectLobbyInviteHandler   
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -20,5 +24,9 @@ router.delete('/delete', authenticate, deleteLobbyHandler);
 router.get('/list', authenticate, listLobbiesHandler);
 router.get('/listUserLobby', authenticate, getUserLobbyHandler);
 
-module.exports = router;
+router.post('/invite-friend', authenticate, inviteFriendToLobbyHandler);
+router.get('/invitations', authenticate, getLobbyInvitesHandler);
+router.post('/invitations/accept', authenticate, acceptLobbyInviteHandler);
+router.post('/invitations/reject', authenticate, rejectLobbyInviteHandler);
 
+module.exports = router;

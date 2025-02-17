@@ -38,68 +38,68 @@ const lobbyStore = {
     },
 
     createLobby: (userId, lobbyName, lobbyType, maxCapacity = 8, gameName = null, password = null, startDate = null, endDate = null, hasPassword = false, callback) => {
-      lobbyStore.getLobbiesFromSession((err, lobbies) => {
-          if (err) return callback(err);
+        lobbyStore.getLobbiesFromSession((err, lobbies) => {
+            if (err) return callback(err);
 
-          if (lobbies[userId]) {
-              return callback(new Error('User already owns a lobby'));
-          }
+            if (lobbies[userId]) {
+                return callback(new Error('User already owns a lobby'));
+            }
 
-          const userLobby = Object.values(lobbies).find((l) => l.members.some(member => member.id === userId));
-          if (userLobby) {
-              return callback(new Error('User is already in a lobby. Leave the lobby to create a new one.'));
-          }
+            const userLobby = Object.values(lobbies).find((l) => l.members.some(member => member.id === userId));
+            if (userLobby) {
+                return callback(new Error('User is already in a lobby. Leave the lobby to create a new one.'));
+            }
 
-          if (!['Normal', 'Event'].includes(lobbyType)) {
-              return callback(new Error('Invalid lobby type'));
-          }
+            if (!['Normal', 'Event'].includes(lobbyType)) {
+                return callback(new Error('Invalid lobby type'));
+            }
 
-          if (lobbyType === 'Event') {
-              if (!startDate || !endDate) {
-                  return callback(new Error('Event lobbies require startDate and endDate'));
-              }
+            if (lobbyType === 'Event') {
+                if (!startDate || !endDate) {
+                    return callback(new Error('Event lobbies require startDate and endDate'));
+                }
 
-              const start = new Date(startDate);
-              const end = new Date(endDate);
-              const today = new Date();
-              today.setHours(0, 0, 0, 0); // Saat, dakika, saniye ve milisaniyeyi sıfırla, sadece tarihi karşılaştır
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Saat, dakika, saniye ve milisaniyeyi sıfırla, sadece tarihi karşılaştır
 
-              if (start > end) {
-                  return callback(new Error('Start date cannot be after end date'));
-              }
+                if (start > end) {
+                    return callback(new Error('Start date cannot be after end date'));
+                }
 
-              if (start < today) {
-                  return callback(new Error('Start date cannot be before today'));
-              }
-          }
+                if (start < today) {
+                    return callback(new Error('Start date cannot be before today'));
+                }
+            }
 
-          const code = Math.random().toString(36).substr(2, 6).toUpperCase();
+            const code = Math.random().toString(36).substr(2, 6).toUpperCase();
 
-          const lobby = {
-              lobbyName,
-              ownerId: userId,
-              ownerUsername: getUserDetails(userId).username,
-              code,
-              members: [getUserDetails(userId)],
-              blockedMembers: [],
-              maxCapacity,
-              lobbyType,
-              gameName,
-              password,
-              startDate: lobbyType === 'Event' ? startDate : null,
-              endDate: lobbyType === 'Event' ? endDate : null,
-              lastOwnerLeave: null,
-              timeout: null, // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
-              hasPassword: hasPassword, // Yeni alan eklendi
-          };
+            const lobby = {
+                lobbyName,
+                ownerId: userId,
+                ownerUsername: getUserDetails(userId).username,
+                code,
+                members: [getUserDetails(userId)],
+                blockedMembers: [],
+                maxCapacity,
+                lobbyType,
+                gameName,
+                password,
+                startDate: lobbyType === 'Event' ? startDate : null,
+                endDate: lobbyType === 'Event' ? endDate : null,
+                lastOwnerLeave: null,
+                timeout: null, // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
+                hasPassword: hasPassword, // Yeni alan eklendi
+            };
 
-          lobbies[userId] = lobby;
-          lobbyStore.saveLobbiesToSession(lobbies, (err) => {
-              if (err) return callback(err);
-              callback(null, lobby);
-          });
-      });
-  },
+            lobbies[userId] = lobby;
+            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+                if (err) return callback(err);
+                callback(null, lobby);
+            });
+        });
+    },
 
     joinLobby: (userId, code, password = null, callback) => {
         lobbyStore.getLobbiesFromSession((err, lobbies) => {
@@ -188,25 +188,58 @@ const lobbyStore = {
     },
 
     deleteLobby: (userId, callback) => {
-        lobbyStore.getLobbiesFromSession((err, lobbies) => {
-            if (err) return callback(err);
+      lobbyStore.getLobbiesFromSession((err, lobbies) => {
+          if (err) return callback(err);
 
-            if (!lobbies[userId]) {
-                return callback(new Error('User does not own any lobby'));
-            }
+          if (!lobbies[userId]) {
+              return callback(new Error('User does not own any lobby'));
+          }
 
-            const lobby = lobbies[userId];
-            if (lobby.ownerId !== userId) {
-                return callback(new Error('Only the lobby owner can delete the lobby'));
-            }
+          const lobby = lobbies[userId];
+          if (lobby.ownerId !== userId) {
+              return callback(new Error('Only the lobby owner can delete the lobby'));
+          }
 
-            delete lobbies[userId];
-            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
-                if (err) return callback(err);
-                callback(null, true); // Başarılı silme durumunda true dönüyoruz
-            });
-        });
-    },
+          const deletedLobbyCode = lobby.code; // Silinen lobinin kodunu al
+
+          delete lobbies[userId]; // Lobiyi sil
+
+          // **Davetleri temizleme kısmı başlıyor**
+          sessionStore.all((err, sessions) => { // Tüm oturumları al
+              if (err) {
+                  console.error('Error getting all sessions:', err);
+                  return callback(err); // Oturumları alırken hata olursa callback ile hatayı döndür
+              }
+
+              let updatedSessions = 0;
+              for (const sessionId in sessions) {
+                  const session = sessions[sessionId];
+                  if (session && session.lobbyInvitations) { // Oturumda lobbyInvitations varsa
+                      let invitations = session.lobbyInvitations;
+                      const initialInvitationCount = invitations.length;
+                      invitations = invitations.filter(invite => invite.lobbyCode !== deletedLobbyCode); // Silinen lobiye ait davetleri filtrele
+                      if (invitations.length !== initialInvitationCount) { // Eğer davetler silindiyse oturumu güncelle
+                          session.lobbyInvitations = invitations;
+                          sessionStore.set(sessionId, session, (err) => { // Oturumu güncelle
+                              if (err) {
+                                  console.error('Error updating session after lobby deletion:', err);
+                                  // Oturum güncelleme hatasını burada nasıl yöneteceğinize karar verin.
+                                  // Belki hatayı callback'e döndürmek veya sadece loglamak istersiniz.
+                              } else {
+                                  updatedSessions++;
+                              }
+                          });
+                      }
+                  }
+              }
+              console.log(`Lobby ${lobby.lobbyName} and related invitations cleaned up from ${updatedSessions} user sessions.`);
+              lobbyStore.saveLobbiesToSession(lobbies, (err) => { // Güncellenmiş lobi listesini kaydet
+                  if (err) return callback(err);
+                  callback(null, true); // Başarılı silme durumunda true dönüyoruz
+              });
+          });
+      });
+  },
 
     updateLobby: (userId, updates, callback) => {
         lobbyStore.getLobbiesFromSession((err, lobbies) => {
@@ -366,6 +399,115 @@ const lobbyStore = {
                     }
                 });
             }
+        });
+    },
+
+    sendLobbyInvite: (inviterUserId, invitedUserId, lobbyCode, callback) => {
+        lobbyStore.getLobbiesFromSession((err, lobbies) => {
+            if (err) return callback(err);
+
+            const inviterLobby = Object.values(lobbies).find(l => l.members.some(member => member.id === inviterUserId));
+            if (!inviterLobby) {
+                return callback(new Error('Inviter is not in any lobby'));
+            }
+
+            if (inviterLobby.code !== lobbyCode) {
+                return callback(new Error('Inviter is not in the specified lobby'));
+            }
+
+            if (inviterLobby.members.some(member => member.id === invitedUserId)) {
+                return callback(new Error('Invited user is already in the lobby'));
+            }
+
+            sessionStore.get(invitedUserId, (err, invitedUserSession) => {
+                if (err) return callback(err);
+
+                const invitations = invitedUserSession?.lobbyInvitations || [];
+                // Aynı lobiden zaten bir davet var mı kontrol et
+                if (invitations.some(invite => invite.lobbyCode === lobbyCode && invite.inviterUserId === inviterUserId)) {
+                    return callback(new Error('Invitation already sent to this user for this lobby'));
+                }
+
+                const newInvitation = {
+                    lobbyCode: lobbyCode,
+                    lobbyName: inviterLobby.lobbyName,
+                    inviterUserId: inviterUserId,
+                    inviterUsername: getUserDetails(inviterUserId).username, // Davet eden kullanıcının adını ekle
+                    timestamp: Date.now(),
+                    status: 'pending', // 'pending', 'accepted', 'rejected'
+                };
+                invitations.push(newInvitation);
+
+                sessionStore.set(invitedUserId, { ...invitedUserSession, lobbyInvitations: invitations }, (err) => {
+                    if (err) return callback(err);
+                    callback(null, newInvitation);
+                });
+            });
+        });
+    },
+
+    getLobbyInvitesForUser: (userId, callback) => {
+        sessionStore.get(userId, (err, userSession) => {
+            if (err) return callback(err);
+            const invitations = userSession?.lobbyInvitations || [];
+            // Sadece 'pending' durumundaki davetleri döndür
+            const pendingInvitations = invitations.filter(invite => invite.status === 'pending');
+            callback(null, pendingInvitations);
+        });
+    },
+
+    acceptLobbyInvite: (userId, lobbyCode, callback) => {
+        lobbyStore.getLobbyInvitesForUser(userId, (err, pendingInvitations) => {
+            if (err) return callback(err);
+
+            const invitation = pendingInvitations.find(invite => invite.lobbyCode === lobbyCode);
+            if (!invitation) {
+                return callback(new Error('No pending invitation found for this lobby'));
+            }
+
+            lobbyStore.joinLobby(userId, lobbyCode, null, (err, lobby) => { // Şifre gerekmiyor, joinLobby'i direkt çağırıyoruz
+                if (err) {
+                    return callback(err);
+                }
+
+                sessionStore.get(userId, (err, userSession) => {
+                    if (err) return callback(err);
+                    let invitations = userSession?.lobbyInvitations || [];
+                    // Kabul edilen davetin durumunu güncelle ve diğer aynı lobby kodlu davetleri sil (isteğe bağlı)
+                    invitations = invitations.map(invite => {
+                        if (invite.lobbyCode === lobbyCode) {
+                            return { ...invite, status: 'accepted' };
+                        }
+                        return invite;
+                    });
+                    // İsteğe bağlı: Aynı lobby kodlu diğer pending davetleri silmek için filtreleme yapılabilir
+                    // invitations = invitations.filter(invite => invite.lobbyCode !== lobbyCode || invite.status !== 'pending');
+
+
+                    sessionStore.set(userId, { ...userSession, lobbyInvitations: invitations }, (err) => {
+                        if (err) return callback(err);
+                        callback(null, lobby);
+                    });
+                });
+            });
+        });
+    },
+
+    rejectLobbyInvite: (userId, lobbyCode, callback) => {
+        sessionStore.get(userId, (err, userSession) => {
+            if (err) return callback(err);
+            let invitations = userSession?.lobbyInvitations || [];
+            const invitationIndex = invitations.findIndex(invite => invite.lobbyCode === lobbyCode && invite.status === 'pending');
+            if (invitationIndex === -1) {
+                return callback(new Error('No pending invitation found for this lobby'));
+            }
+
+            invitations[invitationIndex].status = 'rejected';
+
+            sessionStore.set(userId, { ...userSession, lobbyInvitations: invitations }, (err) => {
+                if (err) return callback(err);
+                callback(null, { message: 'Invitation rejected' });
+            });
         });
     },
 };

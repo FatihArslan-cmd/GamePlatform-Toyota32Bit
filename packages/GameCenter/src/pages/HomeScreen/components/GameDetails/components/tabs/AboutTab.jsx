@@ -4,7 +4,7 @@ import { Button, Surface } from 'react-native-paper';
 import { styles } from '../../styles';
 import { useNavigation } from '@react-navigation/native';
 import ActiveLobbiesContent from '../../../Header/ActiveLobbiesContent';
-
+import AddFriendToLobbyIcon from '../../../Header/components/AddFriendToLobbyIcon';
 export default function AboutTab({ about }) {
   const formattedAbout = Array.isArray(about) ? about : [about];
   const navigation = useNavigation();
@@ -19,6 +19,9 @@ export default function AboutTab({ about }) {
           </Surface>
         ))}
       </View>
+      <AddFriendToLobbyIcon
+              onPress={() => {navigation.navigate('FriendInvitePage')} }
+            />
      <ActiveLobbiesContent showNoLobby = {false} />
      <View style={{marginTop:55}}>
        <Button

@@ -4,7 +4,8 @@ import { Text, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, user, ownerUsername, setDeleteModalVisible }) => {
-  return (
+
+    return (
     <View style={styles.cardHeaderActions}>
       <TouchableOpacity
         style={styles.codeContainer}

@@ -2,10 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { List, Avatar, Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
+import { useFriendInvite } from '../context/FriendInviteContext'; // Import context hook
 
-const FriendList = ({ friends, handleInvite }) => {
+const FriendList = () => {
     const { colors } = useTheme();
-    const styles = createStyles(colors); // Create styles within the component scope
+    const styles = createStyles(colors);
+    const { friends, handleInvite } = useFriendInvite(); // Get friends and handleInvite from context
 
     return (
         <List.Section>
@@ -40,7 +42,7 @@ const FriendList = ({ friends, handleInvite }) => {
     );
 };
 
-const createStyles = (colors) => StyleSheet.create({ // Styles are now function based
+const createStyles = () => StyleSheet.create({
     listItem: {
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         borderRadius: 25,

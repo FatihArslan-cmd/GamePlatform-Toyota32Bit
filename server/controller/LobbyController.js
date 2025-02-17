@@ -114,6 +114,67 @@ const listLobbiesHandler = (req, res) => {
     });
 };
 
+const inviteFriendToLobbyHandler = (req, res) => {
+    const inviterUserId = req.user.id;
+    const { invitedUserId, lobbyCode } = req.body;
+
+    if (!invitedUserId || !lobbyCode) {
+        return res.status(400).json({ message: 'Invited user ID and lobby code are required' });
+    }
+
+    lobbyStore.sendLobbyInvite(inviterUserId, parseInt(invitedUserId), lobbyCode, (err, invitation) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Lobby invitation sent successfully', invitation });
+    });
+};
+
+const getLobbyInvitesHandler = (req, res) => {
+    const userId = req.user.id;
+
+    lobbyStore.getLobbyInvitesForUser(userId, (err, invitations) => {
+        if (err) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.status(200).json({ invitations });
+    });
+};
+
+const acceptLobbyInviteHandler = (req, res) => {
+    const userId = req.user.id;
+    const { lobbyCode } = req.body;
+
+    if (!lobbyCode) {
+        return res.status(400).json({ message: 'Lobby code is required to accept invitation' });
+    }
+
+    lobbyStore.acceptLobbyInvite(userId, lobbyCode, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Lobby invitation accepted. Joined lobby successfully', lobby });
+    });
+};
+
+
+const rejectLobbyInviteHandler = (req, res) => {
+    const userId = req.user.id;
+    const { lobbyCode } = req.body;
+
+    if (!lobbyCode) {
+        return res.status(400).json({ message: 'Lobby code is required to reject invitation' });
+    }
+
+    lobbyStore.rejectLobbyInvite(userId, lobbyCode, (err, result) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Lobby invitation rejected' });
+    });
+};
+
+
 module.exports = {
     createLobbyHandler,
     joinLobbyHandler,
@@ -121,5 +182,9 @@ module.exports = {
     deleteLobbyHandler,
     updateLobbyHandler,
     listLobbiesHandler,
-    getUserLobbyHandler
+    getUserLobbyHandler,
+    inviteFriendToLobbyHandler,
+    getLobbyInvitesHandler,
+    acceptLobbyInviteHandler,
+    rejectLobbyInviteHandler
 };

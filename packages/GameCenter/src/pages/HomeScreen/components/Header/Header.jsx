@@ -11,6 +11,7 @@ import JoinLobbyModal from './JoinLobbyModal';
 import MessageIconWithBadge from './MessageIconWithBadge';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import AddFriendToLobbyIcon from './components/AddFriendToLobbyIcon';
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -69,16 +70,9 @@ const Header = () => {
         title="Active Lobbies"
         height="50%"
       >
-           <TouchableRipple
-            onPress={() => {navigation.navigate('FriendInvitePage'),closeBottomSheet()} }
-            style={styles.bottomSheetIconTouchable} // Apply style to TouchableRipple
-          >
-              <Icon
-                name="account-plus"
-                size={28}
-                color="green"
-              />
-            </TouchableRipple>
+            <AddFriendToLobbyIcon
+              onPress={() => {navigation.navigate('FriendInvitePage'),closeBottomSheet()} }
+            />
           <ActiveLobbiesContent />
       </BottomSheet>
       <JoinLobbyModal
