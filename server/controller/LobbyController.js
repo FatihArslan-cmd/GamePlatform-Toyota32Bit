@@ -138,7 +138,7 @@ const inviteFriendToLobbyHandler = (req, res) => {
           return res.status(500).json({ message: 'Internal server error' });
       }
 
-  
+
       lobbyStore.sendLobbyInvite(inviterUserId, invitedUserId, lobbyCode, (err, invitation) => {
           if (err) {
               return res.status(400).json({ message: err.message });

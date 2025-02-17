@@ -1,4 +1,3 @@
-// lobbyStore.js
 const { sessionStore } = require('../config/sessionConfig');
 const users = require('../utils/users'); // users objesini import et
 
@@ -145,9 +144,33 @@ const lobbyStore = {
 
             lobby.members.push(getUserDetails(userId));
             lobbies[lobby.ownerId] = lobby;
-            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
-                if (err) return callback(err);
-                callback(null, lobby);
+
+            // Invitation temizleme işlemini burada yapıyoruz
+            sessionStore.get(userId, (sessionErr, userSession) => {
+                if (sessionErr) {
+                    console.error('Session error getting user session:', sessionErr);
+                    // Session hatası durumunda ne yapılacağına karar verin, belki hatayı callback ile döndürmek istersiniz.
+                    // Şimdilik sadece logluyoruz ve lobiye katılımı devam ettiriyoruz.
+                } else {
+                    if (userSession && userSession.lobbyInvitations) {
+                        userSession.lobbyInvitations = userSession.lobbyInvitations.filter(
+                            invite => !(invite.lobbyCode === code && invite.status === 'pending')
+                        );
+                        sessionStore.set(userId, userSession, (setErr) => {
+                            if (setErr) {
+                                console.error('Session error updating invitations:', setErr);
+                                // Session güncelleme hatası durumunda ne yapılacağına karar verin.
+                            } else {
+                                console.log(`Pending invitations for lobby ${code} removed for user ${userId} after joining.`);
+                            }
+                        });
+                    }
+                }
+
+                lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+                    if (err) return callback(err);
+                    callback(null, lobby);
+                });
             });
         });
     },
@@ -207,7 +230,6 @@ const lobbyStore = {
 
           delete lobbies[userId]; // Lobiyi sil
 
-          // **Davetleri temizleme kısmı başlıyor**
           sessionStore.all((err, sessions) => { // Tüm oturumları al
               if (err) {
                   console.error('Error getting all sessions:', err);
@@ -444,15 +466,32 @@ const lobbyStore = {
       });
   },
 
-    getLobbyInvitesForUser: (userId, callback) => {
-        sessionStore.get(userId, (err, userSession) => {
+  getLobbyInvitesForUser: (userId, callback) => {
+    sessionStore.get(userId, (err, userSession) => {
+        if (err) return callback(err);
+        const invitations = userSession?.lobbyInvitations || [];
+        const pendingInvitations = invitations.filter(invite => invite.status === 'pending');
+
+        lobbyStore.getLobbiesFromSession((err, lobbies) => { // Lobbies'i buradan alıyoruz
             if (err) return callback(err);
-            const invitations = userSession?.lobbyInvitations || [];
-            // Sadece 'pending' durumundaki davetleri döndür
-            const pendingInvitations = invitations.filter(invite => invite.status === 'pending');
-            callback(null, pendingInvitations);
+
+            const enrichedInvitations = pendingInvitations.map(invite => {
+                const lobby = Object.values(lobbies).find(l => l.code === invite.lobbyCode);
+                const inviterDetails = getUserDetails(invite.inviterUserId); // Get inviter details
+
+                const enrichedInvite = { ...invite, lobbyName: lobby?.lobbyName }; // lobbyName'i ekliyoruz
+
+                if (inviterDetails) {
+                    enrichedInvite.inviterProfilePhoto = inviterDetails.profilePhoto; // Add inviter's profile photo
+                } else {
+                    enrichedInvite.inviterProfilePhoto = null; // or some default if user not found
+                }
+                return enrichedInvite;
+            });
+            callback(null, enrichedInvitations);
         });
-    },
+    });
+},
 
     acceptLobbyInvite: (userId, lobbyCode, callback) => {
         lobbyStore.getLobbiesFromSession((err, lobbies) => {

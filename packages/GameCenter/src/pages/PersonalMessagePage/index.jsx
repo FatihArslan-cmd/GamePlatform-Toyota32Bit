@@ -1,10 +1,12 @@
-import { View } from 'react-native'
 import React from 'react'
+import { LobbyInviteProvider } from './context/LobbyInviteContext'
+import Page from './components/PersonalMessagePage'
 
 const PersonalMessagePage = () => {
   return (
-    <View>
-    </View>
+     <LobbyInviteProvider>
+    <Page />
+    </LobbyInviteProvider>
   )
 }
 
