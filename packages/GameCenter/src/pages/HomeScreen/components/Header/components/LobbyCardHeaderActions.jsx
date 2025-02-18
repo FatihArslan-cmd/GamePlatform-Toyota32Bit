@@ -17,6 +17,14 @@ const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, user, own
       <View style={styles.headerIcons}>
         {user && user.username === ownerUsername ? (
           <>
+          <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
+              <Icon
+                name="close"
+                size={24}
+                color="red"
+                style={styles.iconButton}
+              />
+            </TouchableRipple>
             <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
               <Icon
                 name="close"

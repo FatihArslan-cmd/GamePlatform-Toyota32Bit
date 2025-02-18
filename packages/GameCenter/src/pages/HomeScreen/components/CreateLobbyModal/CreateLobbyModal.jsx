@@ -97,7 +97,7 @@ const CreateLobbyModal = ({ visible, onDismiss,routeGameName }) => {
     }, [onDismiss, resetLobby]);
 
 
-    const bottomSheetHeight = isCodeGenerated ? '50%' : (lobbyType === 'Normal' ? '50%' : '70%'); // Dynamic height calculation
+    const bottomSheetHeight = isCodeGenerated ? '50%' : (lobbyType === 'Normal' ? '55%' : '76%'); // Dynamic height calculation
 
     return (
         <BottomSheet
@@ -184,13 +184,14 @@ const styles = StyleSheet.create({
     },
     createButton: {
         marginTop: 'auto',
-        paddingVertical: 8,
+        paddingVertical: 5,
+        borderRadius: 20,
     },
     createButtonWithLink: {
         marginTop: 16,
     },
     createButtonContent: {
-        height: 48,
+        height: 36,
     },
     resetButton: {
         marginTop: 'auto',

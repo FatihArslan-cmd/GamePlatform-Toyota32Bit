@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   typeButton: {
     marginTop: 8,
+    borderRadius: 20,
   },
 });
 

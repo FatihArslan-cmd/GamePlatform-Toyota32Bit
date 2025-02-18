@@ -44,7 +44,7 @@ const MessageIconWithBadge = ({ navigateTo }) => {
         icon="message-outline"
         color="gray"
         size={24}
-        style={{margin: 0}}
+        style={{margin: 0, opacity: 0.8}}
       />
       {unreadCount > 0 && (
         <View style={styles.badge}>

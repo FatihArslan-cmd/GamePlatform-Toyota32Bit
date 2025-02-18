@@ -98,7 +98,9 @@ export default function Navigation() {
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
-        
+            options={{
+              animation: 'fade',
+            }}
           />
           <Stack.Screen
             name="GameDetails"

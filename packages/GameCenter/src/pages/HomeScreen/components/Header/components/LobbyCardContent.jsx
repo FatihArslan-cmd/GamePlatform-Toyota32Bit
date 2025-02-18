@@ -48,10 +48,12 @@ const styles = StyleSheet.create({
     marginBottom: 10, // Added bottom margin here
     justifyContent: 'center', // Center content horizontally
     alignItems: 'center',     // Center content vertically
+    borderRadius: 20, // Optional: Adjust border radius if needed
+
   },
   buttonLabel: { // Style for the button label (text)
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 16, // Optional: Adjust font size if needed
+    fontSize: 16, // Optional: Adjust font size if neededb
   },
   buttonText: { // Style for the Text component inside Button
     color: 'white', // Keep text color white
