@@ -1,29 +1,50 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native'; // TouchableOpacity ekledik
+import React, { useState } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native'; // useFocusEffect import edildi
+import lobbyService from './services/lobbyService';
+import { useCallback } from 'react'; // useCallback import edildi
 
-const MessageIconWithBadge = ({ unreadCount = 0, navigateTo }) => { // navigateTo prop eklendi
+const MessageIconWithBadge = ({ navigateTo }) => {
   const navigation = useNavigation();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const fetchInvitationCount = useCallback(async () => { // useCallback ile fonksiyonu sar
+    try {
+      const count = await lobbyService.getInvitationCount();
+      setUnreadCount(count);
+    } catch (error) {
+      console.error("Failed to fetch invitation count:", error);
+    }
+  }, []); // useCallback için boş bağımlılık dizisi, fonksiyon referansı sabit kalsın
+
+  useFocusEffect( // useEffect yerine useFocusEffect kullanılıyor
+    useCallback(() => {
+      fetchInvitationCount();
+      return () => {
+        // Component focus dışına çıktığında yapılacak işlemler (isteğe bağlı)
+        // Örneğin, bir temizleme işlemi veya state resetleme
+      };
+    }, [fetchInvitationCount]) // useCallback ile oluşturulan fetchInvitationCount fonksiyonunu bağımlılık olarak ekle
+  );
 
   const handlePress = () => {
     if (navigateTo) {
-      navigation.navigate(navigateTo); // navigateTo prop ile belirtilen ekrana git
+      navigation.navigate(navigateTo);
     }
   };
 
   return (
-    <TouchableOpacity // IconButton yerine TouchableOpacity kullanıyoruz
+    <TouchableOpacity
       style={styles.container}
-      onPress={handlePress} // onPress olayını handlePress fonksiyonuna bağlıyoruz
-      activeOpacity={0.7} // Basıldığında hafifçe solma efekti (isteğe bağlı)
+      onPress={handlePress}
+      activeOpacity={0.7}
     >
       <IconButton
         icon="message-outline"
         color="gray"
         size={24}
-        // onPress prop'unu kaldırıyoruz çünkü TouchableOpacity onPress'i kullanıyoruz
-        style={{margin: 0}} // IconButton margin'ini sıfırlıyoruz, TouchableOpacity ile daha iyi kontrol için
+        style={{margin: 0}}
       />
       {unreadCount > 0 && (
         <View style={styles.badge}>
@@ -32,14 +53,13 @@ const MessageIconWithBadge = ({ unreadCount = 0, navigateTo }) => { // navigateT
           </Text>
         </View>
       )}
-    </TouchableOpacity> // TouchableOpacity ile sarıyoruz
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    // IconButton'ı TouchableOpacity içinde daha iyi hizalamak için flexbox kullanabiliriz
     justifyContent: 'center',
     alignItems: 'center',
   },

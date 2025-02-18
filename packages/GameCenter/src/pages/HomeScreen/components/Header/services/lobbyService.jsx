@@ -137,7 +137,21 @@ const lobbyService = {
         throw error; // Hatayı component tarafında işlemek için yeniden fırlat
     }
 },
-
+getInvitationCount: async () => {
+  try {
+    const token = await getToken();
+    const response = await api.get(`/lobby/invitations/count`, { // Yeni endpoint çağrıldı
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.invitationCount; // invitationCount değerini dön
+  } catch (error) {
+    console.error('Error fetching invitation count:', error);
+    throw error;
+  }
+},
 };
 
 export default lobbyService;

@@ -5,6 +5,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import EmptyState from '../../../components/EmptyState';
 import InviteCard from '../components/InviteCard';
 import { pageStyles } from '../styles/InvitationsPageStyles'; // Import styles specific to Page
+import BackButton from '../../../components/BackIcon';
 
 const Page = () => {
   const { invitations, loading, handleAcceptInvite, handleRejectInvite } = useLobbyInvite();
@@ -13,6 +14,7 @@ const Page = () => {
     <>
       <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
       <View style={pageStyles.safeArea}>
+        <BackButton />
         <ImageBackground
           source={require('../../../locales/bgImages/darkblurredimage.jpg')}
           style={pageStyles.backgroundImage}

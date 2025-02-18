@@ -86,6 +86,7 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <UpperBigAnimatedImages games={games} />
+        <MiniGamesBlock games={games} />  
         <FromTheCreator />
         <VideoPlayBlock />
       </AnimatedScrollView>

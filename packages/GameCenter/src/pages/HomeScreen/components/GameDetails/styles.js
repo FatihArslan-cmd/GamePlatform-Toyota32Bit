@@ -54,6 +54,7 @@ export const styles = StyleSheet.create({
       tabButton: {
         flex: 1,
         marginHorizontal: 4,
+        borderRadius: 20,
       },
       tabContent: {
         flex: 1,
@@ -202,6 +203,7 @@ export const styles = StyleSheet.create({
       createLobbyButton: {
         marginBottom: 16,
         backgroundColor: '#4a148c',
+        borderRadius: 20,
       },
       lobbyCard: {
         marginBottom: 12,

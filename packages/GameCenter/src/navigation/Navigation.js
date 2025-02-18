@@ -104,7 +104,6 @@ export default function Navigation() {
             name="GameDetails"
             component={GameDetails}
             options={{
-              presentation: 'transparentModal',
               animation: 'fade',
             }}
           />

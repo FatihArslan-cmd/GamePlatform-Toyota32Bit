@@ -21,7 +21,7 @@ export const invitationCardStyles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 20,
     backgroundColor: 'white',
-    marginTop: 20,
+    marginTop: 75,
   },
   inviterAvatar: {
     width: 75,

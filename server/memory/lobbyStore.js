@@ -546,6 +546,15 @@ const lobbyStore = {
             });
         });
     },
+
+    getInvitationCountForUser: (userId, callback) => {
+        sessionStore.get(userId, (err, userSession) => {
+            if (err) return callback(err);
+            const invitations = userSession?.lobbyInvitations || [];
+            const pendingInvitationsCount = invitations.filter(invite => invite.status === 'pending').length;
+            callback(null, pendingInvitationsCount);
+        });
+    },
 };
 
 

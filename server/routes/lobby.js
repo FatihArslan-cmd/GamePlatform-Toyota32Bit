@@ -7,10 +7,11 @@ const {
   listLobbiesHandler,
   updateLobbyHandler,
   getUserLobbyHandler,
-  inviteFriendToLobbyHandler, 
-  getLobbyInvitesHandler,    
-  acceptLobbyInviteHandler,   
-  rejectLobbyInviteHandler   
+  inviteFriendToLobbyHandler,
+  getLobbyInvitesHandler,
+  acceptLobbyInviteHandler,
+  rejectLobbyInviteHandler,
+  getLobbyInvitationCountHandler // Import the new handler
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -28,5 +29,6 @@ router.post('/invite-friend', authenticate, inviteFriendToLobbyHandler);
 router.get('/invitations', authenticate, getLobbyInvitesHandler);
 router.post('/invitations/accept', authenticate, acceptLobbyInviteHandler);
 router.post('/invitations/reject', authenticate, rejectLobbyInviteHandler);
+router.get('/invitations/count', authenticate, getLobbyInvitationCountHandler);
 
 module.exports = router;

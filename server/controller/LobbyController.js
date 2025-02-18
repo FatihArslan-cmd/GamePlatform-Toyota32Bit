@@ -193,6 +193,17 @@ const rejectLobbyInviteHandler = (req, res) => {
   });
 };
 
+const getLobbyInvitationCountHandler = (req, res) => {
+    const userId = req.user.id;
+
+    lobbyStore.getInvitationCountForUser(userId, (err, invitationCount) => {
+        if (err) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.status(200).json({ invitationCount });
+    });
+};
+
 
 module.exports = {
     createLobbyHandler,
@@ -205,5 +216,6 @@ module.exports = {
     inviteFriendToLobbyHandler,
     getLobbyInvitesHandler,
     acceptLobbyInviteHandler,
-    rejectLobbyInviteHandler
+    rejectLobbyInviteHandler,
+    getLobbyInvitationCountHandler // Yeni eklenen handler
 };
