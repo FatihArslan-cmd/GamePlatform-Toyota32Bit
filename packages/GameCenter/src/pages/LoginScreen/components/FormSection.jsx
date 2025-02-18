@@ -1,9 +1,10 @@
+// FormSection.js
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import InputField from './FormSectionItem/InputField';
 import OptionsSection from './FormSectionItem/OptionsSection';
 import ActionButtons from './FormSectionItem/ActionButtons';
-import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection';
+import ForgotPasswordSection from './FormSectionItem/ForgotPasswordSection'; // Import ForgotPasswordSection
 import CustomModal from '../../../components/CustomModal';
 import BioModalContent from './ModalItem/BioModalContent';
 import { useNavigation } from '@react-navigation/native';
@@ -15,14 +16,13 @@ import { deleteIfExists } from '../../../utils/api';
 import useModal from '../../../hooks/useModal';
 
 
-const FormSection = ({ onSendCode }) => {
-    const { modalVisible, modalType, modalMessage, modalTitle, showModal, closeModal } = useModal(); // Use the hook
+const FormSection = () => {
+    const { modalVisible, modalType, modalMessage, modalTitle, showModal, closeModal } = useModal();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const [isForgotPassword, setIsForgotPassword] = useState(false);
-    const [countdown, setCountdown] = useState(0);
+    const [isForgotPassword, setIsForgotPassword] = useState(false); // State to control ForgotPasswordSection visibility
     const navigation = useNavigation();
     const slideAnim = useRef(new Animated.Value(0)).current;
     const opacityAnim = useRef(new Animated.Value(1)).current;
@@ -89,26 +89,6 @@ const FormSection = ({ onSendCode }) => {
         ]).start();
     };
 
-    const handleSendCodeWithCountdown = () => {
-        if (!username.trim()) {
-           showModal('error', 'Validation Error', 'Username field cannot be empty');
-           return;
-        }
-        if (countdown === 0) {
-            setCountdown(30);
-            onSendCode();
-        }
-    };
-
-    useEffect(() => {
-        let timer;
-        if (countdown > 0) {
-            timer = setTimeout(() => {
-                setCountdown((prev) => prev - 1);
-            }, 1000);
-        }
-        return () => clearTimeout(timer);
-    }, [countdown]);
 
     const handleConfirmBioModal = async () => {
         closeModal();
@@ -166,9 +146,8 @@ const FormSection = ({ onSendCode }) => {
                     </>
                 ) : (
                     <ForgotPasswordSection
-                        onSendCode={handleSendCodeWithCountdown}
+                        username={username} // Pass username to ForgotPasswordSection
                         onBackToLogin={() => handleForgotPasswordToggle(false)}
-                        countdown={countdown}
                     />
                 )}
             </Animated.View>
