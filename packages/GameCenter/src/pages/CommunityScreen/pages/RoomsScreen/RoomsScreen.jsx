@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { meJoinedRooms } from '../../services/api';
 import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/VideoPlayItems';
@@ -6,25 +6,40 @@ import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
 import Message from './Message';
 import GradientDivider from '../../../../components/GradientDivider';
 import ErrorComponents from '../../../../components/ErrorComponents';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        const data = await meJoinedRooms();
-        setRooms(data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'Failed to fetch rooms');
-        setLoading(false);
-      }
-    };
+  // useCallback is used to memoize fetchRooms function.
+  // This is a good practice for functions used in dependency arrays of useEffect/useFocusEffect
+  const fetchRooms = useCallback(async () => {
+    setLoading(true); // Set loading to true when fetch starts
+    setError(null); // Reset error state at the beginning of fetch
+    try {
+      const data = await meJoinedRooms();
+      setRooms(data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message || 'Failed to fetch rooms');
+      setLoading(false);
+    }
+  }, []); // Dependency array is empty as fetchRooms doesn't depend on any props or state
 
-    fetchRooms();
-  }, []);
+  // useFocusEffect from @react-navigation/native is used to trigger the API call
+  // whenever the screen comes into focus. This ensures data is refreshed when the user navigates back to this screen.
+  useFocusEffect(
+    useCallback(() => {
+      fetchRooms(); // Call fetchRooms when the screen is focused
+      // Optionally, return a cleanup function if needed.
+      // In this case, no specific cleanup is required when the screen loses focus.
+      return () => {
+        // Component is unfocused, any cleanup logic can be placed here if needed.
+      };
+    }, [fetchRooms]) // Dependency array includes fetchRooms because the effect depends on it.
+  );
 
   if (loading) {
     return (
@@ -37,44 +52,34 @@ const RoomsScreen = () => {
   if (error) {
     return (
       <View style={styles.container}>
-        <ErrorComponents></ErrorComponents>
-        <Text style={styles.errorText}>{error}</Text>
+        <ErrorComponents  errorMessage={error} />
       </View>
     );
   }
 
+  
   return (
     <View style={styles.container}>
-      {rooms.length > 0 ? (
-        <>
-        <ScrollView
-          horizontal
-          style={styles.scrollView}
-          contentContainerStyle={styles.contentContainer}
-          showsHorizontalScrollIndicator={false}
-          fadingEdgeLength={50} // ADDED fadingEdgeLength HERE
-        >
-          {rooms.map((room, index) => (
-            <View key={room.id} style={styles.roomItem}>
-              <VideoPlayItems
-                title={room.name}
-                imageUri={room.imageUrl}
-                index={index}
-              />
-            </View>
-          ))}
-        </ScrollView>
-        <GradientDivider    colors={['#6610F2', '#EA047E']} // Mor - Pembe
- horizontalMargin={'%10'} height={1} />
-        <Message /> 
-        </>
-      ) : (
-        !loading && !error && (
-          <>
-
-          </>
-        )
-      )}
+      <ScrollView
+        horizontal
+        style={styles.scrollView}
+        contentContainerStyle={styles.contentContainer}
+        showsHorizontalScrollIndicator={false}
+        fadingEdgeLength={50} // fadingEdgeLength is correctly placed here to add fade effect at the edges of horizontal scroll.
+      >
+        {rooms.map((room, index) => (
+          <View key={room.id} style={styles.roomItem}>
+            <VideoPlayItems
+              title={room.name}
+              imageUri={room.imageUrl}
+              index={index}
+            />
+       <GradientDivider colors={['#6610F2', '#EA047E']} horizontalMargin={'%10'} height={1} />
+          </View>
+          
+        ))}
+      </ScrollView>
+      <Message />
     </View>
   );
 };

@@ -12,10 +12,12 @@ const InputField = ({
   style,
   textColor, // Yeni textColor prop'u eklendi
 }) => (
+  
   <TextInput
     mode="flat"
     label={label}
     value={value}
+    fontFamily={"Orbitron-ExtraBold"}                        
     onChangeText={onChangeText}
     secureTextEntry={secureTextEntry}
     style={style}
@@ -29,7 +31,7 @@ const InputField = ({
         />
       )
     }
-    theme={{ colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: textColor || '#fff' } }} // textColor prop'unu kullandık
+    theme={{fonts: { bold: "Orbitron-ExtraBold" }, colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: textColor || '#fff' } }} // textColor prop'unu kullandık
   />
 );
 

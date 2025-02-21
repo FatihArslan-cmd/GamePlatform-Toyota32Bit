@@ -10,7 +10,6 @@ const AdvancedPagerView = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    // Set navigation bar color to blue with light icons
     setNavigationBar('#1a1b2e', true);
   }, []);
 

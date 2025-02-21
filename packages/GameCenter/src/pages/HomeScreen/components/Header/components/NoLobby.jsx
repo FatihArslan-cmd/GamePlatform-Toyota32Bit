@@ -1,14 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button, Surface } from 'react-native-paper';
+import {  StyleSheet } from 'react-native';
+import {  Surface } from 'react-native-paper';
+import EmptyState from '../../../../../components/EmptyState';
 
 const NoLobby = () => {
   return (
     <Surface style={styles.noLobbyContainer}>
-      <Text style={styles.noLobbyText}>No Active Lobby</Text>
-      <Button mode="contained" onPress={() => {}}>
-        Create Lobby
-      </Button>
+      <EmptyState message='No lobby you joined'/>
     </Surface>
   );
 };

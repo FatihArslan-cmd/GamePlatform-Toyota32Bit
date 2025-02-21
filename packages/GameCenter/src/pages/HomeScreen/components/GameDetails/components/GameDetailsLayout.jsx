@@ -19,7 +19,6 @@ export default function GameDetailsLayout({ gameName, about, imageSource }) {
   const contentTranslateY = useSharedValue(100);
   const contentOpacity = useSharedValue(0);
 
-  // useGameDetails hook'u ile context verilerini alıyoruz
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();
 
   useEffect(() => {
@@ -80,7 +79,7 @@ export default function GameDetailsLayout({ gameName, about, imageSource }) {
   visible={lobbyModalVisible}
   onDismiss={() => setLobbyModalVisible(false)}
   height="50%"
-  gameName={gameName}
+  routeGameName={gameName}
 />
 
     </View>

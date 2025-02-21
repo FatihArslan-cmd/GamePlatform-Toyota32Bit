@@ -3,9 +3,6 @@ import { View, StyleSheet, ScrollView, useColorScheme } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, {
-  FadeIn,
-} from 'react-native-reanimated';
 import ProfileSection from './components/ProfileSection';
 import NotificationSection from './components/NotificationSection';
 import AboutSection from './components/AboutSection';
@@ -13,7 +10,7 @@ import Header from './components/Header/Header';
 import ThemeSection from './components/ThemeSection';
 import BottomSheet from '../../components/themeswitch/BottomSheet';
 import LanguageSection from './components/LanguageSection';
-import { AnimatedSection } from '../../components/Animations/EnteringAnimation';
+import { AnimatedSection } from '../../components/Animations/EnteringPageAnimation';
 
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
@@ -26,30 +23,36 @@ const SettingsScreen = () => {
     bottomSheetRef.current?.expand();
   };
 
-  const sections = [
-    { component: ProfileSection, props: {} },
-    { component: ThemeSection, props: { handleThemePress } },
-    { component: LanguageSection, props: {} },
-    { component: NotificationSection, props: {} },
-    { component: AboutSection, props: {} },
-  ];
-
   return (
     <GestureHandlerRootView>
       <Surface style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.fixedHeader}>
-          <Animated.View entering={FadeIn.duration(500)}>
             <Header />
-          </Animated.View>
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scrollView}>
           <View style={styles.content}>
-            {sections.map((Section, index) => (
-              <AnimatedSection key={index} index={index}>
-                <Section.component {...Section.props} />
-              </AnimatedSection>
-            ))}
+
+            <AnimatedSection index={0}>
+              <ProfileSection />
+            </AnimatedSection>
+
+            <AnimatedSection index={1}>
+              <ThemeSection handleThemePress={handleThemePress} />
+            </AnimatedSection>
+
+            <AnimatedSection index={2}>
+              <LanguageSection />
+            </AnimatedSection>
+
+            <AnimatedSection index={3}>
+              <NotificationSection />
+            </AnimatedSection>
+
+            <AnimatedSection index={4}>
+              <AboutSection />
+            </AnimatedSection>
+
           </View>
         </ScrollView>
 

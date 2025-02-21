@@ -1,165 +1,139 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Card, Text, Title, Button } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React , {useContext, useState, useCallback} from 'react';
+import { StyleSheet} from 'react-native';
+import { Card } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { ToastService } from '../../../../../context/ToastService';
+import { UserContext } from '../../../../../context/UserContext';
+import CustomModal from '../../../../../components/CustomModal';
+import useLobbyActions from './hooks/useLobbyActions';
+import LobbyCardHeaderActions from './LobbyCardHeaderActions';
+import LobbyCardContent from './LobbyCardContent';
+import PlayerModalContent from './PlayerModalContent'; // Import PlayerModalContent
 
-const LobbyCard = ({ lobby, showToast, hideToast }) => {
-  const copyLobbyCodeToClipboard = async (code) => {
+const LobbyCard = ({ lobby, onLobbyAction }) => {
+  const { user } = useContext(UserContext);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [leaveModalVisible, setLeaveModalVisible] = useState(false);
+  const [playerModalVisible, setPlayerModalVisible] = useState(false);
+  const [currentLobby, setCurrentLobby] = useState(lobby);
+  const { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer } = useLobbyActions(onLobbyAction);
+
+  const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
       await Clipboard.setString(code);
-      showToast('Lobby code successfully copied!', 'success');
+      ToastService.show('success', 'Lobby code successfully copied!');
     } catch (error) {
       console.error("Error copying to clipboard:", error);
-      showToast('Failed to copy lobby code.', 'error');
+      ToastService.show('error', 'Failed to copy lobby code.');
     }
-  };
+  }, []);
+
+  const onDeleteConfirmation = useCallback(async () => {
+    setDeleteModalVisible(false);
+    await handleDeleteLobby(lobby.id);
+  }, [handleDeleteLobby, lobby.id]);
+
+  const onLeaveConfirmation = useCallback(async () => {
+    setLeaveModalVisible(false);
+    await handleLeaveLobby(lobby.id);
+  }, [handleLeaveLobby, lobby.id]);
+
+  const togglePlayerModal = useCallback(() => {
+    setPlayerModalVisible(!playerModalVisible);
+  }, [playerModalVisible]);
+
+  const handlePlayerAction = useCallback(async (playerId, actionType) => {
+    if (user.username !== currentLobby.ownerUsername) {
+      ToastService.show('error', 'Only the lobby owner can perform player actions.');
+      setPlayerModalVisible(false); // Optionally close the modal after showing error
+      return; // Stop further execution if not the owner
+    }
+
+    try {
+      let success = false;
+      if (actionType === 'kick') {
+        success = await handleKickPlayer(currentLobby.id, playerId);
+      } else if (actionType === 'kickAndBlock') {
+        success = await handleKickAndBlockPlayer(currentLobby.id, playerId);
+      }
+
+      if (success) {
+        setCurrentLobby(prevLobby => ({
+          ...prevLobby,
+          members: prevLobby.members.filter(member => member.id !== playerId),
+        }));
+        ToastService.show('success', `Player ${actionType === 'kick' ? 'kicked' : 'kicked and blocked'} successfully!`);
+      } else {
+        ToastService.show('error', `Failed to ${actionType === 'kick' ? 'kick' : 'kick and block'} player.`);
+      }
+    } catch (error) {
+      console.error(`Error performing player action (${actionType}):`, error);
+      ToastService.show('error', `Failed to ${actionType === 'kick' ? 'kick' : 'kick and block'} player.`);
+    } finally {
+      setPlayerModalVisible(false);
+    }
+  }, [handleKickPlayer, handleKickAndBlockPlayer, currentLobby.id, currentLobby.ownerUsername, user.username]);
+
 
   return (
     <Card style={styles.lobbyCard}>
-      <View style={styles.cardHeaderActions}>
-        <TouchableOpacity
-          style={styles.codeContainer}
-          onPress={() => copyLobbyCodeToClipboard(lobby.code)}
-        >
-          <Icon name="code-tags" size={20} color="#666" />
-          <Text style={styles.lobbyCode}>{lobby.code}</Text>
-        </TouchableOpacity>
-        <View style={styles.headerIcons}>
-          <Icon
-            name="update"
-            size={24}
-            color="#4a148c"
-            onPress={() => {/* Update lobby */}}
-            style={styles.iconButton}
-          />
-          <Icon
-            name="close"
-            size={24}
-            color="red"
-            onPress={() => {/* Close lobby */}}
-            style={styles.iconButton}
-          />
-        </View>
-      </View>
+      <LobbyCardHeaderActions
+        copyLobbyCodeToClipboard={copyLobbyCodeToClipboard}
+        lobbyCode={currentLobby.code}
+        user={user}
+        ownerUsername={currentLobby.ownerUsername}
+        setDeleteModalVisible={setDeleteModalVisible}
+      />
 
       <Card.Content>
-        <Title style={styles.lobbyName}>{lobby.lobbyName}</Title>
-
-        <View style={styles.typeBadge}>
-          <Icon name="tag" size={16} color="#666" />
-          <Text style={styles.lobbyType}>{lobby.lobbyType.toUpperCase()}</Text>
-        </View>
-
-        <View style={styles.lobbyDetails}>
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Icon name="crown" size={20} color="#FFD700" />
-              <Text style={styles.detailLabel}>Owner</Text>
-            </View>
-            <Text>{lobby.ownerId}</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Icon name="account-group" size={20} color="#4a148c" />
-              <Text style={styles.detailLabel}>Players</Text>
-            </View>
-            <Text>
-              {lobby.members.length}/{lobby.maxCapacity}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.actionButtons}>
-          <Button
-            mode="contained"
-            onPress={() => {/* Leave lobby */}}
-            style={styles.leaveButton}
-          >
-            <Icon name="exit-run" size={20} color="white" />
-            Leave
-          </Button>
-          <Button
-            mode="contained"
-            onPress={() => {/* Join lobby */}}
-            style={styles.joinButton}
-          >
-            <Icon name="account-plus" size={20} color="white" />
-            Join
-          </Button>
-        </View>
+        <LobbyCardContent
+          lobby={currentLobby}
+          user={user}
+          ownerUsername={currentLobby.ownerUsername}
+          setLeaveModalVisible={setLeaveModalVisible}
+          togglePlayerModal={togglePlayerModal}
+        />
       </Card.Content>
+
+      <CustomModal
+        visible={deleteModalVisible}
+        onDismiss={() => setDeleteModalVisible(false)}
+        onConfirm={onDeleteConfirmation}
+        title="Delete Lobby?"
+        text="Are you sure you want to delete this lobby? This action cannot be undone."
+        confirmText="Delete Lobby"
+        showConfirmButton={true}
+      />
+
+      <CustomModal
+        visible={leaveModalVisible}
+        onDismiss={() => setLeaveModalVisible(false)}
+        onConfirm={onLeaveConfirmation}
+        title="Leave Lobby?"
+        text="Are you sure you want to leave this lobby?"
+        confirmText="Leave Lobby"
+        showConfirmButton={true}
+      />
+
+      <CustomModal
+        visible={playerModalVisible}
+        onDismiss={togglePlayerModal}
+        title="Players in Lobby"
+        onConfirm={togglePlayerModal}
+      >
+        <PlayerModalContent
+          lobby={currentLobby}
+          onPlayerAction={handlePlayerAction}
+        />
+      </CustomModal>
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   lobbyCard: {
-    elevation: 4,
-  },
-  cardHeaderActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-  },
-  codeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  lobbyCode: {
-    marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    marginLeft: 10,
-  },
-  lobbyName: {
-    textAlign: 'center',
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  typeBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
-  },
-  lobbyType: {
-    marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  lobbyDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 15,
-  },
-  detailItem: {
-    alignItems: 'center',
-  },
-  detailHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  detailLabel: {
-    marginLeft: 5,
-    fontFamily: 'Orbitron-VariableFont_wght',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 15,
-  },
-  leaveButton: {
-    width: '48%',
-    backgroundColor: '#FF5722',
-  },
-  joinButton: {
-    width: '48%',
-    backgroundColor: '#4CAF50',
+    elevation: 2,
+    borderRadius: 20, // Added border radius here
   },
 });
 

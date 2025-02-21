@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import GrandientText from '../../../components/GrandientText';

@@ -1,47 +1,51 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import lobbyService from './services/lobbyService';
-import useToast from '../../../../components/ToastMessage/hooks/useToast';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
 import LobbyCard from './components/LobbyCard';
 import NoLobby from './components/NoLobby';
+import { ToastService } from '../../../../context/ToastService';
+import FadeIn from '../../../../components/Animations/FadeInAnimation';
 
-const ActiveLobbiesContent = () => {
+const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   const [userLobby, setUserLobby] = useState(null);
-  const userId = 1; // Or retrieve user ID from your state/context
-  const { currentToast, showToast, hideToast } = useToast();
+  const [loading, setLoading] = useState(true);
 
   const fetchLobbies = useCallback(async () => {
+    setLoading(true);
     try {
-      const data = await lobbyService.listLobbies();
-
-      if (data?.lobbies) {
-        const ownerLobby = data.lobbies.find((lobby) => lobby.ownerId === userId);
-        setUserLobby(ownerLobby);
-      }
+      const lobby = await lobbyService.getUserLobby();
+      setUserLobby(lobby);
     } catch (error) {
-      console.error('Error fetching lobby data:', error);
-      showToast('error', 'Failed to fetch lobby data.');
+      console.error('Error fetching user lobby data:', error);
+      ToastService.show('error', 'Failed to fetch lobby data.');
+      setUserLobby(null); // Set userLobby to null in case of error to show NoLobby component or handle no lobby case
+    } finally {
+      setLoading(false);
     }
-  }, [userId, showToast]); 
+  }, []);
 
   useEffect(() => {
     fetchLobbies();
   }, [fetchLobbies]);
 
+  const handleLobbyUpdate = useCallback(() => {
+    fetchLobbies();
+  }, [fetchLobbies]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        {showNoLobby ? <NoLobby loading={true} />: null}
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
       {userLobby ? (
-        <LobbyCard lobby={userLobby} showToast={showToast} hideToast={hideToast} />
+        <FadeIn><LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} /></FadeIn>
       ) : (
-        <NoLobby />
+        showNoLobby ? <FadeIn><NoLobby /></FadeIn> : null
       )}
     </View>
   );
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
   },
 });
 

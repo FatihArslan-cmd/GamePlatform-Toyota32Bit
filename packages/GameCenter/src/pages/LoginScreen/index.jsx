@@ -3,26 +3,15 @@ import { StyleSheet, Animated,Linking,StatusBar, Button } from 'react-native';
 import FormSection from './components/FormSection';
 import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';
-import ToastMessage from '../../components/ToastMessage/Toast';
-import useToast from '../../components/ToastMessage/hooks/useToast';
 import SavedUserSection from './components/ProfileSection/SavedUserSection';
 import { hideNavigationBar } from '../../utils/NavBarManager';
+
 const LoginScreen = () => {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
-  const { currentToast, showToast, hideToast } = useToast();
 
   useEffect(() => {
     hideNavigationBar();
   }, []);
-
-  const handleSendCode = () => {
-
-    showToast('success', 'Verification code sent!');
-    setTimeout(() => {
-      Linking.openURL('https://gmail.app.goo.gl');
-    }, 2000);
-
-  };
 
   return (
       <>
@@ -36,18 +25,10 @@ const LoginScreen = () => {
       >
         <LogoSection />
         <FormSection
-          onSendCode={handleSendCode}
           scaleAnim={scaleAnim}
         />
         <SavedUserSection />  
       </LinearGradient>
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
       </>
     
   );

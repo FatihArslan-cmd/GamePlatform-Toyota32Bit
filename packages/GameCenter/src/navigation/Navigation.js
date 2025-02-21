@@ -16,6 +16,8 @@ import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.
 import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js';
 import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/index.jsx';
 import ProfileDetailsScreen from '../pages/SettingsScreen/pages/ProfileDetailsScreen.jsx';
+import index from '../pages/FriendInvitePage/index.jsx';
+import PersonalMessagePage from '../pages/PersonalMessagePage/index.jsx';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -96,13 +98,14 @@ export default function Navigation() {
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
-        
+            options={{
+              animation: 'fade',
+            }}
           />
           <Stack.Screen
             name="GameDetails"
             component={GameDetails}
             options={{
-              presentation: 'transparentModal',
               animation: 'fade',
             }}
           />
@@ -136,7 +139,20 @@ export default function Navigation() {
             }}
           />
         <Stack.Screen name="GameScreen"
-         component={GameScreen}   options={{
+         component={GameScreen}
+            options={{
+              animation: 'fade',
+            }}
+         />
+          <Stack.Screen name="FriendInvitePage"
+         component={index}  
+          options={{
+              animation: 'fade',
+            }}
+         />
+               <Stack.Screen name="PersonalMessagePage"
+         component={PersonalMessagePage}  
+          options={{
               animation: 'fade',
             }}
          />

@@ -5,7 +5,6 @@ import { Text } from 'react-native-paper';
 
 import emptyStateAnimation from '../locales/lottie/EmptyState.json';
 
-// Reanimated importlarını ekliyoruz
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -57,6 +56,7 @@ const styles = StyleSheet.create({
     color:"black",
     fontSize:18,
     marginTop:20,
+    fontFamily: 'Orbitron-ExtraBold',
   }
 });
 

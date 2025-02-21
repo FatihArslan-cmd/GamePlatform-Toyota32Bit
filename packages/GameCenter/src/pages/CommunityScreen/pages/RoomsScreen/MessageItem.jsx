@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, IconButton, Avatar} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import formatDate from '../../../../utils/FormatDate';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const MessageItem = ({ message }) => {
   const [liked, setLiked] = useState(false);
@@ -13,10 +14,23 @@ const MessageItem = ({ message }) => {
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
 
+  // Reanimated Fade In Animation
+  const opacity = useSharedValue(0);
+
+  useEffect(() => {
+    opacity.value = withTiming(1, { duration: 300 }); // Fade in over 300ms
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    };
+  });
+
 
   return (
-    <View style={styles.container}>
-      <View style={styles.line} /> 
+    <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.line} />
       <View style={styles.messageContent}>
         <View style={styles.headerContainer}>
           <Avatar.Image
@@ -86,8 +100,8 @@ const MessageItem = ({ message }) => {
           </View>
         </View>
       </View>
-      <View style={styles.line} /> {/* Alt çizgi */}
-    </View>
+      <View style={styles.line} />
+    </Animated.View>
   );
 };
 
@@ -97,15 +111,15 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 1,
-    backgroundColor: '#E0E0E0', // Çizgi rengi
+    backgroundColor: '#E0E0E0',
   },
   messageContent: {
-    paddingHorizontal: 20, // Card.Content padding'i kaldırıldı
+    paddingHorizontal: 20,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10, // Header marginBottom kaldırıldı
+    marginTop: 10,
   },
   avatar: {
     marginRight: 12,
@@ -130,24 +144,24 @@ const styles = StyleSheet.create({
   contentText: {
     color: '#333',
     lineHeight: 20,
-    marginVertical: 12, // Mesaj içeriği dikey boşluğu
+    marginVertical: 12,
     fontSize: 20,
     fontWeight:'600',
     fontFamily:'Orbitron-ExtragBold',
-    paddingLeft: 62, // Eklendi: username hizalaması için
+    paddingLeft: 62,
   },
   contentImage: {
     width: 200,
     height: 300,
     borderRadius: 8,
-    marginBottom: 12, // Resim alt boşluğu
+    marginBottom: 12,
   },
   actionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10, // Actions üst boşluğu ayarlandı
-    paddingLeft: 50, // Eklendi: iconların username hizalaması için
+    marginTop: 10,
+    paddingLeft: 50,
   },
   actionItemLeft: {
     flex: 1,

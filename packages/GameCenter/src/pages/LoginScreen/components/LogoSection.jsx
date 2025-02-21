@@ -19,13 +19,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 40,
   },
-  welcomeText: {
-    fontSize: 32,
-    color: '#fff',
-    fontFamily: 'Anton-Regular',
-    marginTop: 10,
-    letterSpacing: 2,
-  },
   subtitleText: {
     fontSize: 16,
     color: '#8a2be2',

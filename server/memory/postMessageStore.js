@@ -65,56 +65,8 @@ const deleteMessage = (req, messageId) => {
     });
 };
 
-const likeMessage = (req, messageId, userId) => {
-    return new Promise((resolve, reject) => {
-        const messageIndex = globalMessages.findIndex(msg => msg.id === messageId);
-        if (messageIndex === -1) {
-            return resolve(null); // Mesaj bulunamadı
-        }
-
-        const message = globalMessages[messageIndex];
-        const userLikedIndex = message.likes.indexOf(userId);
-
-        if (userLikedIndex === -1) {
-            // Kullanıcı beğenmemiş, beğeniyi ekle
-            message.likes.push(userId);
-        } else {
-            // Kullanıcı beğenmiş, beğeniyi kaldır
-            message.likes.splice(userLikedIndex, 1);
-        }
-
-        globalMessages[messageIndex] = message; // Dizideki mesajı güncelle
-
-        // Session'da da güncellemek isterseniz benzer bir işlem yapabilirsiniz.
-        // (Şu anda oturum sadece kullanıcının kendi mesajlarını tutuyor gibi görünüyor)
-
-        resolve(message); // Güncellenmiş mesajı döndür
-    });
-};
-
-
-const shareMessage = (req, messageId) => {
-    return new Promise((resolve, reject) => {
-        const messageIndex = globalMessages.findIndex(msg => msg.id === messageId);
-        if (messageIndex === -1) {
-            return resolve(null); // Mesaj bulunamadı
-        }
-
-        globalMessages[messageIndex].shareCount += 1; // Paylaşım sayısını artır
-
-        const updatedMessage = globalMessages[messageIndex];
-
-        // Session'da da güncellemek isterseniz benzer bir işlem yapabilirsiniz.
-
-        resolve(updatedMessage); // Güncellenmiş mesajı döndür
-    });
-};
-
-
 module.exports = {
     createMessage,
     getMessages,
     deleteMessage,
-    likeMessage,
-    shareMessage
 };

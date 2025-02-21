@@ -10,6 +10,8 @@ const LobbyTypeSelector = ({ lobbyType, onToggle }) => {
         mode={lobbyType === 'Normal' ? 'contained' : 'outlined'}
         onPress={onToggle}
         style={styles.typeButton}
+        labelStyle={{   fontFamily: 'Orbitron-ExtraBold',
+        }}
       >
         {lobbyType === 'Normal' ? '🎮 Normal' : '📅 Event'}
       </Button>
@@ -24,11 +26,12 @@ const styles = StyleSheet.create({
   label: {
     color: '#8a2be2',
     fontSize: 16,
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },
   typeButton: {
     marginTop: 8,
+    borderRadius: 20,
   },
 });
 

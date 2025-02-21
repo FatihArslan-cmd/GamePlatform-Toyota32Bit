@@ -1,12 +1,12 @@
-import React, { useEffect, memo, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect, memo } from 'react';
+import { View, StyleSheet,  } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { Text } from 'react-native-paper';
 import games from './games';
 import VideoPlayItems from './VideoPlayItems';
 import { useIsFocused } from '@react-navigation/native';
 import GradientDivider from '../../../../components/GradientDivider';
 import GrandientText from '../../../../components/GrandientText';
+
 const VideoPlayBlock = memo(() => {
   const isFocused = useIsFocused();
 

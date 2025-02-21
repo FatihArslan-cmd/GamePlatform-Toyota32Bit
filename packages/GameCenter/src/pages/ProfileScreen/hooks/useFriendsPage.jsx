@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useTheme } from 'react-native-paper';
 import * as FriendService from '../services/service';
 import { ToastService } from '../../../context/ToastService';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
 
 const useFriendsPage = () => {
     const { colors } = useTheme();
@@ -26,6 +27,14 @@ const useFriendsPage = () => {
             setError(err.message || 'Failed to fetch friends');
         }
     }, []);
+
+    // Use useFocusEffect to fetch friends list when the screen comes into focus
+    useFocusEffect(
+        useCallback(() => {
+            fetchFriendsList();
+            // No cleanup function needed in this case, but you can add one if necessary
+        }, [fetchFriendsList])
+    );
 
     useEffect(() => {
         fetchFriendsList();
@@ -88,6 +97,8 @@ const useFriendsPage = () => {
             setSelectedFriend(null);
             await fetchFriendsList();
              ToastService.show("success", 'Friend Removed Successfully!'); // Show toast
+             setModalVisible(false);
+
         } catch (err) {
             setError(err.message || 'Failed to remove friend.');
         } finally {

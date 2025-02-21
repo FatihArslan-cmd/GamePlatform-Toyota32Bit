@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useImperativeHandle, forwardRef, useState } from "react";
-import { StyleSheet, View, Animated, TouchableOpacity, Dimensions, PanResponder } from "react-native";
+import React, {  useRef, useImperativeHandle, forwardRef, useState } from "react";
+import { StyleSheet, View, Animated, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Text } from "react-native-paper";
-const { width } = Dimensions.get('window');
 
 const ToastMessage = forwardRef(({ action: initialAction }, ref) => {
   const translateY = useRef(new Animated.Value(-100)).current;

@@ -32,23 +32,19 @@ const CustomDateTimeSelector = ({ onDateTimeChange, initialStartDate, initialEnd
   const onChange = useCallback((event, selectedDate) => {
     if (Platform.OS !== 'ios') closePicker();
     if (selectedDate) {
-      const updatedDate =
-        pickerConfig.mode === 'date'
-          ? new Date(
-            selectedDate.setHours(
-              pickerConfig.type === 'start'
-                ? startDate.getHours()
-                : endDate.getHours(),
-              pickerConfig.type === 'start'
-                ? startDate.getMinutes()
-                : endDate.getMinutes()
-            )
-          )
-          : new Date(
-            pickerConfig.type === 'start' ? startDate : endDate
-          ).setHours(selectedDate.getHours(), selectedDate.getMinutes());
+      let updatedDate;
+      if (pickerConfig.mode === 'date') {
+        updatedDate = new Date(selectedDate);
+        updatedDate.setHours(pickerConfig.type === 'start' ? startDate.getHours() : endDate.getHours());
+        updatedDate.setMinutes(pickerConfig.type === 'start' ? startDate.getMinutes() : endDate.getMinutes());
+      } else { // mode === 'time'
+        updatedDate = new Date(pickerConfig.type === 'start' ? startDate : endDate);
+        updatedDate.setHours(selectedDate.getHours());
+        updatedDate.setMinutes(selectedDate.getMinutes());
+      }
 
-      const newDate = new Date(updatedDate)
+
+      const newDate = new Date(updatedDate);
       if(pickerConfig.type === 'start'){
         setStartDate(newDate);
         onDateTimeChange('startDate', newDate);
@@ -117,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     color: '#8a2be2',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     marginVertical: 12,
   },
   selectors: {
@@ -152,7 +148,7 @@ const styles = StyleSheet.create({
   selectedText: {
     fontSize: 16,
     color: '#8a2be2',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
   },
 });
 

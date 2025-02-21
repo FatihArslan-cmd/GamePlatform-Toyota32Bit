@@ -4,7 +4,7 @@ import { Linking,StyleSheet } from 'react-native';
 import { Card, List,Snackbar} from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import LogoutButton from './LogOutButton';
-import GradientDivider from '../../../components/GradientDivider';
+
 const AboutSection = () => {
     const [visible, setVisible] = React.useState(false);
 
@@ -21,8 +21,7 @@ const AboutSection = () => {
             textStyle={{ fontSize: 22 }}
             gradientDirection="horizontal"
           />
-                    
-
+                  
         <List.Item
         titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
           title="App Version"

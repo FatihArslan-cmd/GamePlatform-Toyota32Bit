@@ -11,7 +11,7 @@ const ToastProvider = ({ children }) => {
   return (
     <>
       {children}
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10000, alignItems: 'center' }}>
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1000000, alignItems: 'center' }}>
         <ToastMessage ref={toastRef} onVisibilityChange={(visible) => isToastVisible = visible} />
       </View>
     </>

@@ -54,12 +54,12 @@ export const styles = StyleSheet.create({
       tabButton: {
         flex: 1,
         marginHorizontal: 4,
+        borderRadius: 20,
       },
       tabContent: {
         flex: 1,
       },
-      
-      // Instructions styles
+    
       instructionContainer: {
         marginBottom: 20,
         backgroundColor: '#fffff',
@@ -78,8 +78,9 @@ export const styles = StyleSheet.create({
       },
       aboutContainer: {
         flex: 1,
-        justifyContent: 'space-between', // Alanı eşit şekilde dağıt
         padding: 16,
+        position: 'relative', // Add position: 'relative' here
+
       },
 
       instructionWrapper: {
@@ -168,7 +169,7 @@ export const styles = StyleSheet.create({
       buttonLabel: {
         fontSize: 16,
         letterSpacing: 1,
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
       },
       startGameButton: {
         borderColor: '#4a148c',
@@ -186,14 +187,14 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 28,
         marginRight: 12,
-        fontFamily: 'Orbitron-VariableFont_wght',
-    },
+        fontFamily: 'Orbitron-ExtraBold',
+      },
       instructionText: {
         flex: 1,
         fontSize: 16,
         lineHeight: 24,
         color: '#1a1a1a',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
       },
       // Lobbies styles
       lobbiesContainer: {
@@ -202,6 +203,7 @@ export const styles = StyleSheet.create({
       createLobbyButton: {
         marginBottom: 16,
         backgroundColor: '#4a148c',
+        borderRadius: 20,
       },
       lobbyCard: {
         marginBottom: 12,
@@ -289,7 +291,7 @@ export const styles = StyleSheet.create({
       },
       resultText: {
           fontSize: 18,
-          fontFamily: 'Orbitron-VariableFont_wght',
+          fontFamily: 'Orbitron-ExtraBold',
           marginBottom: 4,
       },
       dateText: {
@@ -304,9 +306,8 @@ export const styles = StyleSheet.create({
       },
       scoreText: {
           fontSize: 16,
-          fontWeight: '600',
           color: '#4a148c',
-          fontFamily: 'Orbitron-VariableFont_wght',
+          fontFamily: 'Orbitron-ExtraBold',
       },
       durationText: {
           fontSize: 14,
@@ -345,7 +346,7 @@ export const styles = StyleSheet.create({
       settingLabel: {
           fontSize: 16,
           color: '#333',
-          fontFamily: 'Orbitron-VariableFont_wght',
+          fontFamily: 'Orbitron-ExtraBold',
 
       },
       settingControls: {
