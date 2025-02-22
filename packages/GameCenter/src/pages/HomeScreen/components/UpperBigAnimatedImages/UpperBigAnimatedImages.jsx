@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import GameHeader from './GameHeader';
-import GameCard from './GameCard';
-import PaginationDots from './PaginationDots';
+import GameHeader from './components/GameHeader';
+import GameCard from './components/GameCard';
+import PaginationDots from './components/PaginationDots';
 import TopRatedImagePlaceHolder from '../../../../components/SkeletonPlaceHolder/TopRatedImagePlaceHolder';
 
 const FeaturedGames = React.memo(({ games }) => {

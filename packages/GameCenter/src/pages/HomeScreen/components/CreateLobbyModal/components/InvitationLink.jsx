@@ -3,7 +3,7 @@ import { StyleSheet, View, Animated, Linking, Alert } from 'react-native';
 import { Surface, Text, IconButton, useTheme, TouchableRipple } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { ToastService } from '../../../../context/ToastService';
+import { ToastService } from '../../../../../context/ToastService';
 
 const InvitationLink = ({code}) => {
   const [copied, setCopied] = useState(false);
@@ -72,7 +72,7 @@ const InvitationLink = ({code}) => {
       </Text>
 
       <LottieView
-        source={require('../../../../locales/lottie/ShareLink.json')}
+        source={require('../../../../../locales/lottie/ShareLink.json')}
         autoPlay
         loop={true}
         style={styles.lottieAnimation}

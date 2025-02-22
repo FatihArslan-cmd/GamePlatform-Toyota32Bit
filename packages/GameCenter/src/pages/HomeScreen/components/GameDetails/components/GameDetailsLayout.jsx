@@ -9,11 +9,11 @@ import TabContent from './TabContent';
 import { styles } from '../styles';
 import GradientDivider from '../../../../../components/GradientDivider';
 import CreateLobbyModal from '../../CreateLobbyModal/CreateLobbyModal';
-import { useGameDetails } from '../context/GameDetailsContext'; // useGameDetails Hook kullanımı
+import { useGameDetails } from '../context/GameDetailsContext';
 
 const { height } = Dimensions.get('window');
 
-export default function GameDetailsLayout({ gameName, about, imageSource }) {
+export default function GameDetailsLayout({ gameName, about, imageSource, backgroundColors }) {
   const translateY = useSharedValue(height - 275);
   const scale = useSharedValue(1);
   const contentTranslateY = useSharedValue(100);
@@ -22,7 +22,7 @@ export default function GameDetailsLayout({ gameName, about, imageSource }) {
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();
 
   useEffect(() => {
-    // Animasyonlar
+    // Animations
     translateY.value = withTiming(-height / 2 + 250, {
       duration: 1200,
       easing: Easing.bezier(0.25, 0.1, 0.25, 1),
@@ -53,10 +53,15 @@ export default function GameDetailsLayout({ gameName, about, imageSource }) {
     opacity: contentOpacity.value,
   }));
 
+  // Default background colors if not provided
+  const defaultBackgroundColors = ['#4a148c', '#7c43bd', '#9b6bf5'];
+  const gradientColors = backgroundColors || defaultBackgroundColors;
+
+
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#4a148c', '#7c43bd', '#9b6bf5']}
+        colors={gradientColors} // Use backgroundColors prop here
         style={styles.gradient}
       >
         <BackButton style={styles.backButton} color="white" size={32} />
@@ -76,12 +81,11 @@ export default function GameDetailsLayout({ gameName, about, imageSource }) {
         </Animated.View>
       </LinearGradient>
       <CreateLobbyModal
-  visible={lobbyModalVisible}
-  onDismiss={() => setLobbyModalVisible(false)}
-  height="50%"
-  routeGameName={gameName}
-/>
-
+        visible={lobbyModalVisible}
+        onDismiss={() => setLobbyModalVisible(false)}
+        height="50%"
+        routeGameName={gameName}
+      />
     </View>
   );
 }

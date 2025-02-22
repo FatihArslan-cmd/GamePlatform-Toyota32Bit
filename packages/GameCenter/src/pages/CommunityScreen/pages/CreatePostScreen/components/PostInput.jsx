@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, ScrollView } from 'react-native';
 import { Avatar, Card, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserContext } from '../../../../../context/UserContext';
@@ -16,12 +16,13 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
       <View style={styles.postArea}>
         <View style={styles.userSection}>
-          <Avatar.Image size={60} source={{ uri: user.profilePhoto }} style={styles.avatar} />
+          <Avatar.Image size={60} source={{ uri: user.profilePhoto }} style={styles.avatar}               resizeMode="contain"
+          />
           <TouchableRipple
             style={styles.dropdownButton}
             borderless={true}
             rippleColor="rgba(0,0,0,0.1)"
-            onPress={() => { /* Handle dropdown press */ }}
+            onPress={() => { }}
           >
             <>
               <Text style={styles.dropdownText}>Everyone</Text>
@@ -49,9 +50,9 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
         {selectedImage && (
           <View style={styles.postMediaContainer}>
             <Image source={{ uri: selectedImage }} style={styles.postMediaImage} />
-            <TouchableOpacity style={styles.removeMediaButton} onPress={handleRemoveImage}>
+            <TouchableRipple style={styles.removeMediaButton} onPress={handleRemoveImage}>
               <Icon name="close" size={18} style={styles.removeMediaIcon} />
-            </TouchableOpacity>
+            </TouchableRipple>
           </View>
         )}
       </View>

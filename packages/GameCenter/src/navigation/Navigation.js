@@ -18,6 +18,9 @@ import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/in
 import ProfileDetailsScreen from '../pages/SettingsScreen/pages/ProfileDetailsScreen.jsx';
 import index from '../pages/FriendInvitePage/index.jsx';
 import PersonalMessagePage from '../pages/PersonalMessagePage/index.jsx';
+import ChatWithFriendsScreen from '../pages/ChatWithFriendsScreen/index.jsx';
+import ChatScreen from '../pages/ChatWithFriendsScreen/pages/ChatScreen.jsx';
+
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
@@ -152,6 +155,18 @@ export default function Navigation() {
          />
                <Stack.Screen name="PersonalMessagePage"
          component={PersonalMessagePage}  
+          options={{
+              animation: 'fade',
+            }}
+         />
+         <Stack.Screen name="ChatWithFriendsScreen"
+         component={ChatWithFriendsScreen}  
+          options={{
+              animation: 'fade',
+            }}
+         />
+               <Stack.Screen name="ChatScreen"
+         component={ChatScreen}  
           options={{
               animation: 'fade',
             }}

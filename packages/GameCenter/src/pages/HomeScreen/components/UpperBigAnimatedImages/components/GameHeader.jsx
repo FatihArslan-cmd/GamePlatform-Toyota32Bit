@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Divider } from 'react-native-paper';
-import getFormattedDate from '../../../../utils/getFormattedDate';
+import getFormattedDate from '../../../../../utils/getFormattedDate';
 
 const GameHeader = () => (
   <View style={styles.headerContainer}>

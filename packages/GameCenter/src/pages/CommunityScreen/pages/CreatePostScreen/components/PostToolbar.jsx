@@ -47,7 +47,7 @@ const PostToolbar = ({ setSelectedImage }) => {
           style={styles.toolbarButton}
           borderless={true}
           rippleColor="rgba(0,0,0,0.1)"
-          onPress={() => { /* Handle list options */ }}
+          onPress={() => {  }}
         >
           <Icon name="format-list-bulleted" size={28} color="#1DA1F2" />
         </TouchableRipple>
@@ -55,7 +55,7 @@ const PostToolbar = ({ setSelectedImage }) => {
           style={styles.toolbarButton}
           borderless={true}
           rippleColor="rgba(0,0,0,0.1)"
-          onPress={() => { /* Handle location selection */ }}
+          onPress={() => {  }}
         >
           <Icon name="map-marker" size={28} color="#1DA1F2" />
         </TouchableRipple>

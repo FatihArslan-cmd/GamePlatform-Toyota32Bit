@@ -54,8 +54,8 @@ const CreatePostScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <PostHeader navigation={navigation} onPost={handlePost} isPosting={isPosting} /> {/* Pass handlePost and isPosting */}
-      <PostInput selectedImage={selectedImage} setSelectedImage={setSelectedImage} postText={postText} setPostText={setPostText} /> {/* Pass postText and setPostText */}
+      <PostHeader navigation={navigation} onPost={handlePost} isPosting={isPosting} /> 
+      <PostInput selectedImage={selectedImage} setSelectedImage={setSelectedImage} postText={postText} setPostText={setPostText} />
       <PostToolbar setSelectedImage={setSelectedImage} />
     </SafeAreaView>
   );

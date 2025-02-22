@@ -2,11 +2,11 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Switch, Text } from 'react-native-paper'; // Switch ve Text'i import et
 import BottomSheet from '../../../../components/BottomSheet';
-import LobbyTypeSelector from './LobbyTypeSelector';
-import CustomDateTimeSelector from './DateTimeSelector';
-import GameSelector from './GameSelector';
-import PasswordInput from './PasswordInput';
-import InvitationLink from './InvitationLink';
+import LobbyTypeSelector from './components/LobbyTypeSelector';
+import CustomDateTimeSelector from './components/DateTimeSelector';
+import GameSelector from './components/GameSelector';
+import PasswordInput from './components/PasswordInput';
+import InvitationLink from './components/InvitationLink';
 import { ToastService } from '../../../../context/ToastService';
 import { createLobby } from './service/service';
 

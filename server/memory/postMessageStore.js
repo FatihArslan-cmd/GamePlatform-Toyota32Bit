@@ -1,6 +1,5 @@
 const { sessionStore } = require('../config/sessionConfig'); // Import sessionStore
 
-// Global mesaj dizisi (bellekte tutulur, sunucu yeniden başlatılınca kaybolur)
 let globalMessages = [];
 
 const createMessage = (req, messageData) => {

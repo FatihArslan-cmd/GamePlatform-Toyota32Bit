@@ -47,11 +47,12 @@ const GameItem = memo(({ item, onPress }) => {
               cache: FastImage.cacheControl.immutable,
             }}
             style={styles.backgroundImage}
+            
           />
           <BlurView
             style={styles.absoluteFill}
             blurType="light"
-            blurAmount={8}
+            blurAmount={50}
             reducedTransparencyFallbackColor="white"
           />
         </View>
@@ -62,8 +63,10 @@ const GameItem = memo(({ item, onPress }) => {
               uri: item.image_background,
               priority: FastImage.priority.high,
               cache: FastImage.cacheControl.immutable,
+
             }}
             style={styles.cardCover}
+            
           />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.8)']}

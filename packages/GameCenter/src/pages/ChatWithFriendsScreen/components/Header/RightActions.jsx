@@ -2,33 +2,16 @@ import React from 'react';
 import { View } from 'react-native';
 import { IconButton,Tooltip } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import MessageIcon from './MessageIcon';
 
 const RightActions = () => {
   const navigation = useNavigation();
   return (
     <View style={{ flexDirection: 'row' }}>
-
-        <MessageIcon navigateTo="ChatWithFriendsScreen"/>
-        <Tooltip title="Create Community">
-
-      <IconButton
-        icon="plus"
-        size={24}
-        style={{ opacity: 0.7 }}
-
-        onPress={() => {
-          navigation.navigate('CreateRoom');
-        }}
-      />
-        </Tooltip>
-        
+    
         <Tooltip title="Search">
       <IconButton
         icon="magnify"
-        size={24}
-        style={{ opacity: 0.7 }}
-
+        size={28}
         onPress={() => {
           navigation.navigate('SearchScreen');
         }}

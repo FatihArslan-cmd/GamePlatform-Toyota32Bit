@@ -36,7 +36,8 @@ const ImageSelector = ({ imageUri, onImageSelected, onError }) => {
         <FastImage 
           source={{ uri: imageUri, priority: FastImage.priority.high }} // Add priority for better caching
           style={styles.imagePreview}
-          resizeMode={FastImage.resizeMode.cover} 
+          resizeMode={FastImage.resizeMode.contain} 
+
         />
       ) : (
         <View style={styles.imagePlaceholder}>

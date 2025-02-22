@@ -1,8 +1,8 @@
 import React, { useEffect, memo } from 'react';
 import { View, StyleSheet,  } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import games from './games';
-import VideoPlayItems from './VideoPlayItems';
+import games from './components/games';
+import VideoPlayItems from './components/VideoPlayItems';
 import { useIsFocused } from '@react-navigation/native';
 import GradientDivider from '../../../../components/GradientDivider';
 import GrandientText from '../../../../components/GrandientText';
