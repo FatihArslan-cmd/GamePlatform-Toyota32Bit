@@ -41,7 +41,7 @@ const MessageIconWithBadge = ({ navigateTo }) => {
       activeOpacity={0.7}
     >
       <IconButton
-        icon="message-outline"
+        icon="bell-outline"
         color="gray"
         size={24}
         style={{margin: 0, opacity: 0.8}}

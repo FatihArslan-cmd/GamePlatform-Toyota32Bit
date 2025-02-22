@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { meJoinedRooms } from '../../services/api';
-import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/VideoPlayItems';
+import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/components/VideoPlayItems';
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
 import Message from './Message';
 import GradientDivider from '../../../../components/GradientDivider';

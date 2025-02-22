@@ -1,4 +1,3 @@
-// PostHeader.js
 import React from 'react';
 import { View } from 'react-native';
 import { Button, TouchableRipple } from 'react-native-paper';

@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { Text, Chip } from 'react-native-paper';
 import { LinearGradient } from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import formatDate from '../../../../utils/FormatDate';
+import formatDate from '../../../../../utils/FormatDate';
 
 const { height } = Dimensions.get('window'); // Ekran boyutlarını al
 

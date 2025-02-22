@@ -49,11 +49,13 @@ const MessageItem = ({ message }) => {
         <Text variant="bodyMedium" style={styles.contentText}>{message.content}</Text>
 
         {message.contentImage && (
-          <FastImage
-            source={{ uri: message.contentImage }}
-            style={styles.contentImage}
-            resizeMode={FastImage.resizeMode.cover}
-          />
+          <View style={styles.imageContainer}>
+            <FastImage
+              source={{ uri: message.contentImage }}
+              style={styles.contentImage}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+          </View>
         )}
 
         <View style={styles.actionsContainer}>
@@ -150,11 +152,15 @@ const styles = StyleSheet.create({
     fontFamily:'Orbitron-ExtragBold',
     paddingLeft: 62,
   },
+  imageContainer: {
+    alignItems: 'center', // Center the image horizontally
+  },
   contentImage: {
     width: 200,
     height: 300,
     borderRadius: 8,
     marginBottom: 12,
+    // alignSelf: 'center', // alternative way to center image
   },
   actionsContainer: {
     flexDirection: 'row',
