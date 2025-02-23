@@ -20,6 +20,8 @@ import index from '../pages/FriendInvitePage/index.jsx';
 import PersonalMessagePage from '../pages/PersonalMessagePage/index.jsx';
 import ChatWithFriendsScreen from '../pages/ChatWithFriendsScreen/index.jsx';
 import ChatScreen from '../pages/ChatWithFriendsScreen/pages/ChatScreen.jsx';
+import RoomChatScreen from '../pages/RoomChatScreen/index.jsx';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -167,6 +169,12 @@ export default function Navigation() {
          />
                <Stack.Screen name="ChatScreen"
          component={ChatScreen}  
+          options={{
+              animation: 'fade',
+            }}
+         />
+          <Stack.Screen name="RoomChatScreen"
+         component={RoomChatScreen}  
           options={{
               animation: 'fade',
             }}

@@ -12,7 +12,6 @@ const InputArea = ({ newMessageText, setNewMessageText, sendMessage }) => {
                 onChangeText={setNewMessageText}
                 onSubmitEditing={sendMessage}
                 returnKeyType="send"
-                blurOnSubmit={false}
             />
             <TouchableOpacity
                 style={styles.sendButton}

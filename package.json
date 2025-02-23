@@ -46,7 +46,8 @@
       "**/@react-native-firebase/app",
       "**/@react-native-firebase/messaging",
       "**/@notifee/react-native",
-      "**/react-navigation-shared-element"
+      "**/react-navigation-shared-element",
+      "**/@bam.tech/react-native-image-resizer"
 
 
 

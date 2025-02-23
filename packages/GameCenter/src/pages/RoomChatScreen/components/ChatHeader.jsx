@@ -1,16 +1,22 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
 import BackButton from '../../../components/BackIcon';
+import GrandientText from '../../../components/GrandientText';
 
 const ChatHeader = ({ roomName }) => {
-    const name = roomName;
 
     return (
         <View style={styles.header}>
-            <BackButton top={0} left={0} />
-            <Text style={styles.headerText}>{name}</Text>
-        </View>
+     <BackButton top={0} left={0} />
+    <GrandientText
+      text={ roomName }
+      colors={['black', 'gray']} // Gold to Bronze
+      textStyle={{ fontSize: 23}}
+      gradientDirection="horizontal"
+      width={400}
+      height={30}
+      />  
+    </View>
     );
 };
 

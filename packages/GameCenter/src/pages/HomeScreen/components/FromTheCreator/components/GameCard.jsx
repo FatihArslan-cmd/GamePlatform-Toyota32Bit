@@ -35,7 +35,7 @@ const GameCard = ({ gameName, instructions, imageSource, buttonText, onButtonPre
             labelStyle={styles.buttonText}
             onPress={() => {
               navigation.navigate('GameDetails', {
-                gameName,
+                gameName:"Bingo",
                 about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
                 imageSource,
                 buttonText,

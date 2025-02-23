@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
     },
     currentLevelText: {
           color: '#FFFFFF',
-      fontFamily: 'Orbitron-VariableFont_wght',
-        fontSize: 16,
+          fontFamily: 'Orbitron-ExtraBold',
+          fontSize: 16,
     },
     nextLevelText: {
       color: '#FFFFFF',
-      fontFamily: 'Orbitron-VariableFont_wght',
+      fontFamily: 'Orbitron-ExtraBold',
       fontSize: 16,
     },
   progressSection: {
@@ -117,11 +117,10 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   xpText: {
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     textAlign: 'center',
     color: '#FFFFFF',
     fontSize: 12,
-    opacity: 0.9,
   },
 });
 

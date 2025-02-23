@@ -60,7 +60,7 @@ const Page = () => {
         </List.Section>
       ) : (
         <View style={styles.noFriendsContainer}>
-          <EmptyState/>
+          <EmptyState message="You don't have any friend"/>
         </View>
       )}
     </View>

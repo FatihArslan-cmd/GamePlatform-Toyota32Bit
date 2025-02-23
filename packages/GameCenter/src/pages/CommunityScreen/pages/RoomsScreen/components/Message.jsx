@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import MessageItem from './MessageItem';
-import { getMessagesFromApi } from '../../services/postMessageApi';
+import { getMessagesFromApi } from '../../../services/postMessageApi';
 import { View, Text } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import EmptyState from '../../../../components/EmptyState';
-import ErrorComponents from '../../../../components/ErrorComponents';
-import { ExplorerLoadingSkeleton } from '../../components/Loading/ExplorerLoadingScreen';
+import EmptyState from '../../../../../components/EmptyState';
+import ErrorComponents from '../../../../../components/ErrorComponents';
+import { ExplorerLoadingSkeleton } from '../../../components/Loading/ExplorerLoadingScreen';
 
 const Message = ({ onScroll, listRef }) => {
   const [messages, setMessages] = useState([]);

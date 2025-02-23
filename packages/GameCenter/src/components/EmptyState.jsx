@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const EmptyStateComponent = React.memo(({ message }) => { // React.memo ile sarıyoruz
+const EmptyStateComponent = React.memo(({ message, textColor = 'black' }) => { // textColor prop'unu ekledik ve default değeri 'black' olarak ayarladık
   const fadeAnim = useSharedValue(0);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const EmptyStateComponent = React.memo(({ message }) => { // React.memo ile sar�
         loop
         style={styles.lottieAnimation}
       />
-      <Text style={styles.textStyle} >{message}</Text>
+      <Text style={[styles.textStyle, { color: textColor }]} >{message}</Text> {/* textColor prop'unu style'a uyguluyoruz */}
     </Animated.View>
   );
 });
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     height: 250,
   },
   textStyle:{
-    color:"black",
     fontSize:18,
     marginTop:20,
     fontFamily: 'Orbitron-ExtraBold',

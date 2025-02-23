@@ -1,17 +1,20 @@
+// RoomsScreen.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { meJoinedRooms } from '../../services/api';
 import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/components/VideoPlayItems';
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
-import Message from './Message';
+import Message from './components/Message';
 import GradientDivider from '../../../../components/GradientDivider';
 import ErrorComponents from '../../../../components/ErrorComponents';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigation = useNavigation(); // Initialize navigation
 
   // useCallback is used to memoize fetchRooms function.
   // This is a good practice for functions used in dependency arrays of useEffect/useFocusEffect
@@ -57,7 +60,7 @@ const RoomsScreen = () => {
     );
   }
 
-  
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -74,10 +77,11 @@ const RoomsScreen = () => {
               imageUri={room.imageUrl}
               index={index}
               resizeMode="contain"
+              onPress={() => navigation.navigate('RoomChatScreen', { roomId: room.id, roomName: room.name })} // Navigate on press
             />
        <GradientDivider colors={['#6610F2', '#EA047E']} horizontalMargin={'%10'} height={1} />
           </View>
-          
+
         ))}
       </ScrollView>
       <Message />

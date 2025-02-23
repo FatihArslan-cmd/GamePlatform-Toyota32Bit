@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const users = require('../utils/users');
 const { sessionStore } = require('../config/sessionConfig');
 
-const friendCodes = {}; 
+const friendCodes = {};
 
 const generateFriendCode = (req, res) => {
     const userId = req.user.id;
@@ -25,6 +25,13 @@ const generateFriendCode = (req, res) => {
         }
 
         requestCounts.generateFriendCode.push(now);
+
+        // Önceki kodları silme mekanizması
+        for (const code in friendCodes) {
+            if (friendCodes[code].userId === userId) {
+                delete friendCodes[code]; // Kullanıcının önceki kodunu sil
+            }
+        }
 
         const code = crypto.randomBytes(4).toString('hex');
         const expiresAt = Date.now() + 5 * 60 * 1000; // Kodun geçerlilik süresi (5 dakika)
@@ -68,7 +75,7 @@ const addFriend = (req, res) => {
         if (currentUserId === targetUserId) {
             return res.status(400).json({ message: 'You cannot add yourself as a friend' })
         }
-          
+
         const friendLists = session?.friendLists || {};
 
         friendLists[currentUserId] = friendLists[currentUserId] || [];
@@ -83,23 +90,23 @@ const addFriend = (req, res) => {
         delete friendCodes[friendCode];
 
         sessionStore.set(currentUserId, { ...session, friendLists }, (err) => {
-           if (err) {
+            if (err) {
                 console.error('Session error', err);
                 return res.status(500).json({ message: 'Internal Server Error' });
             }
-             sessionStore.get(targetUserId, (err, targetSession) => {
-            if(err) {
-                console.error('Session error',err)
-                return res.status(500).json({message:'Internal server error'})
-            }
-                
-                  sessionStore.set(targetUserId, {...targetSession, friendLists}, (err) =>{
-                       if (err) {
-                            console.error('Session error', err);
-                            return res.status(500).json({ message: 'Internal Server Error' });
-                        }
-                        res.status(200).json({ message: 'Friend added successfully.' });
-                  })
+            sessionStore.get(targetUserId, (err, targetSession) => {
+                if (err) {
+                    console.error('Session error', err)
+                    return res.status(500).json({ message: 'Internal server error' })
+                }
+
+                sessionStore.set(targetUserId, { ...targetSession, friendLists }, (err) => {
+                    if (err) {
+                        console.error('Session error', err);
+                        return res.status(500).json({ message: 'Internal Server Error' });
+                    }
+                    res.status(200).json({ message: 'Friend added successfully.' });
+                })
             })
         });
     });
