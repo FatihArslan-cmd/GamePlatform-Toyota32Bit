@@ -3,30 +3,36 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { topics } from './topics';
 
-const CommunityTopics = ({ onTopicSelect, selectedTopic }) => {
+const CommunityTopics = ({ onTopicSelect, selectedTopic, showAllButton }) => {
+  const allButtonTitle = "All";
 
   const handleTopicPress = (topic) => {
     console.log("Selected Topic:", topic);
     onTopicSelect(topic);
   };
 
+  let renderTopics = topics;
+  if (showAllButton) {
+    renderTopics = [allButtonTitle, ...topics];
+  }
+
   return (
     <ScrollView
       horizontal={true}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.container}
-      fadingEdgeLength={50} // ADDED fadingEdgeLength HERE
+      fadingEdgeLength={50}
     >
-      {topics.map((topic, index) => (
+      {renderTopics.map((topic, index) => (
         <Chip
           key={index}
           style={[
             styles.chip,
-            topic === selectedTopic ? styles.selectedChip : null,
+            topic === selectedTopic || (selectedTopic === null && topic === allButtonTitle) ? styles.selectedChip : null,
           ]}
           textStyle={[
             styles.chipText,
-            topic === selectedTopic ? styles.selectedChipText : null,
+            topic === selectedTopic || (selectedTopic === null && topic === allButtonTitle) ? styles.selectedChipText : null,
           ]}
           onPress={() => handleTopicPress(topic)}
         >
@@ -55,7 +61,7 @@ const styles = StyleSheet.create({
   },
   selectedChip: {
     backgroundColor: '#007bff',
-    borderColor: '#007bff',
+     borderColor: '#007bff',
   },
   selectedChipText: {
     color: 'white',

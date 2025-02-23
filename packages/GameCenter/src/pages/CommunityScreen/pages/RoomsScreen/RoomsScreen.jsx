@@ -73,6 +73,7 @@ const RoomsScreen = () => {
               title={room.name}
               imageUri={room.imageUrl}
               index={index}
+              resizeMode="contain"
             />
        <GradientDivider colors={['#6610F2', '#EA047E']} horizontalMargin={'%10'} height={1} />
           </View>

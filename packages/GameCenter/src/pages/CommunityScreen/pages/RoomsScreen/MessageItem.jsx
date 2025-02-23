@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 8,
     marginBottom: 12,
-    // alignSelf: 'center', // alternative way to center image
   },
   actionsContainer: {
     flexDirection: 'row',
