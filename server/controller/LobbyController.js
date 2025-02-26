@@ -47,6 +47,7 @@ const joinLobbyHandler = (req, res) => {
       res.status(200).json({ message: 'Joined lobby successfully', lobby });
   });
 };
+
 const leaveLobbyHandler = (req, res) => {
     const userId = req.user.id;
 
@@ -99,6 +100,7 @@ const updateLobbyHandler = (req, res) => {
         res.status(200).json({ message: 'Lobby updated successfully', lobby });
     });
 };
+
 const getUserLobbyHandler = (req, res) => {
     const userId = req.user.id; // Assuming user ID is available in req.user
 
@@ -109,6 +111,7 @@ const getUserLobbyHandler = (req, res) => {
         res.status(200).json({ lobby: lobby }); // Respond with the lobby or null
     });
 };
+
 const listLobbiesHandler = (req, res) => {
     lobbyStore.getLobbies((err, lobbies) => {
         if (err) {
@@ -204,6 +207,42 @@ const getLobbyInvitationCountHandler = (req, res) => {
     });
 };
 
+const startGameHandler = (req, res) => {
+    const userId = req.user.id;
+
+    lobbyStore.getUserLobby(userId, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+
+        if (!lobby) {
+            return res.status(404).json({ message: 'Lobby not found' });
+        }
+
+        if (lobby.ownerId !== userId) {
+            return res.status(403).json({ message: 'Only the lobby owner can start the game' });
+        }
+
+        if (lobby.gameStarted) {
+            return res.status(400).json({ message: 'Game already started' });
+        }
+
+        lobbyStore.startGame(lobby.code, (err, updatedLobby) => {
+            if (err) {
+                return res.status(400).json({ message: err.message });
+            }
+
+            const websocketManager = req.app.get('WebsocketManager');
+            if (websocketManager) {
+                websocketManager.broadcastBingoGameMessage(lobby.code, { type: 'game-started' }); // Call the new method
+            } else {
+                console.error("websocketManager is not defined in app.js, WebSocket broadcast will not work.");
+            }
+
+            res.status(200).json({ message: 'Game started successfully', lobby: updatedLobby });
+        });
+    });
+};
 
 module.exports = {
     createLobbyHandler,
@@ -217,5 +256,7 @@ module.exports = {
     getLobbyInvitesHandler,
     acceptLobbyInviteHandler,
     rejectLobbyInviteHandler,
-    getLobbyInvitationCountHandler // Yeni eklenen handler
+    getLobbyInvitationCountHandler,
+    startGameHandler
+
 };

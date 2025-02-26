@@ -90,6 +90,7 @@ const lobbyStore = {
                 lastOwnerLeave: null,
                 timeout: null, // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
                 hasPassword: hasPassword, // Yeni alan eklendi
+                gameStarted: false
             };
 
             lobbies[userId] = lobby;
@@ -309,7 +310,6 @@ const lobbyStore = {
 
             if (updates.removeMember) {
                 const parsedUserId = parseInt(updates.removeMember);
-                // **Yeni eklenen validasyon: Sahibi kicklemeyi engelle**
                 if (parsedUserId === lobby.ownerId) {
                     return callback(new Error('Lobby owner cannot kick themselves'));
                 }
@@ -553,6 +553,26 @@ const lobbyStore = {
             const invitations = userSession?.lobbyInvitations || [];
             const pendingInvitationsCount = invitations.filter(invite => invite.status === 'pending').length;
             callback(null, pendingInvitationsCount);
+        });
+    },
+
+    startGame: (lobbyCode, callback) => {
+        lobbyStore.getLobbiesFromSession((err, lobbies) => {
+            if (err) return callback(err);
+
+            const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
+            if (!lobby) {
+                return callback(new Error('Lobby not found'));
+            }
+            if (lobby.gameStarted) {
+                return callback(new Error('Game already started'));
+            }
+            lobby.gameStarted = true;
+
+            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+                if (err) return callback(err);
+                callback(null, lobby);
+            });
         });
     },
 };
