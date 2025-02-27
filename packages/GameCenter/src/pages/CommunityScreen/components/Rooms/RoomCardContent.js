@@ -9,7 +9,7 @@ const RoomCardContent = ({ room }) => {
       <FastImage
         source={{ uri: room.imageUrl, priority: FastImage.priority.high }}
         style={styles.image}
-        resizeMode={FastImage.resizeMode.cover}
+        resizeMode={FastImage.resizeMode.contain}
       />
 
       <View style={styles.content}>

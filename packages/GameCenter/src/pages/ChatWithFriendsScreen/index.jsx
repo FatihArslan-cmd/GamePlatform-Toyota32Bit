@@ -4,9 +4,11 @@ import { FriendsProvider } from './context/FriendsContext'
 
 const ChatWithFriendsScreen = () => {
   return (
+
     <FriendsProvider>
-        <Page />
+      <Page />
     </FriendsProvider>
+
   )
 }
 

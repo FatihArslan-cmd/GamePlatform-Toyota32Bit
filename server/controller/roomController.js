@@ -1,13 +1,7 @@
 const { createRoom, getRoom, getAllRooms, joinRoom, leaveRoom, deleteRoom, becomeSupporter, leaveSupporter, topics, isValidTopic, getRoomsByCreator, getRoomsNotByCreator, getRoomsBySupporter} = require('../memory/chatRoomStore');
+const { isURL } = require('../utils/isURL'); // Import isURL from utils.js
 
-const isURL = (string) => {
-  try {
-    new URL(string);
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
+
 
 const createRoomHandler = (req, res) => {
     const { name, topic, imageUrl } = req.body;

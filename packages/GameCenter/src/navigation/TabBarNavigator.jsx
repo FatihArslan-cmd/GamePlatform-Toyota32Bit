@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useReducer, useMemo, useCallback } from 'react';
+import React, { useEffect, useRef, useReducer, useMemo, useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Svg, { Path } from 'react-native-svg';
@@ -7,11 +7,24 @@ import Lottie from 'lottie-react-native';
 import HomeScreen from '../pages/HomeScreen/index';
 import ProfileScreen from '../pages/ProfileScreen/index';
 import CommunityScreen from '../pages/CommunityScreen/index';
+import { useBingoWebSocket } from '../context/BingoWebSocket';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const Tab = createMaterialTopTabNavigator();
 
 const TabNavigator = () => {
+  const { messages } = useBingoWebSocket(); // Get messages from WebSocket context
+  const navigation = useNavigation(); // Get navigation object
+
+  useEffect(() => {
+    const gameStartMessage = messages.find(msg => msg.type === 'game-started');
+    if (gameStartMessage) {
+      console.log("Game started message detected in TabNavigator, navigating to GameScreen...");
+      navigation.navigate('CountDownSplashScreen');
+    }
+  }, [messages, navigation ]);
+
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
@@ -43,7 +56,7 @@ const TabNavigator = () => {
             ),
           }}
         />
-                <Tab.Screen
+        <Tab.Screen
           name="CommunityScreen"
           component={CommunityScreen}
           options={{

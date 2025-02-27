@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
 import lobbyService from '../../services/lobbyService';
 import { ToastService } from '../../../../../../context/ToastService';
+import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket'; // Import the hook
 
-const useLobbyActions = (onLobbyAction) => { // onLobbyAction to trigger refresh in parent
+const useLobbyActions = (onLobbyAction) => {
+  const { closeWebSocket } = useBingoWebSocket(); // Get closeWebSocket function from context
 
   const handleDeleteLobby = useCallback(async (lobbyId) => {
     try {
@@ -11,13 +13,14 @@ const useLobbyActions = (onLobbyAction) => { // onLobbyAction to trigger refresh
       if (onLobbyAction) {
         onLobbyAction(); // Refresh lobby list in parent component after deletion
       }
+      closeWebSocket(); // Close websocket connection on lobby deletion
       return true; // Indicate success
     } catch (error) {
       console.error("Error deleting lobby:", error);
       ToastService.show('error', error.response?.data?.message || 'Failed to delete lobby.');
       return false; // Indicate failure
     }
-  }, [onLobbyAction]); // Dependencies for useCallback
+  }, [onLobbyAction, closeWebSocket]); // Add closeWebSocket to dependencies
 
   const handleLeaveLobby = useCallback(async (lobbyId) => {
     try {
@@ -26,13 +29,14 @@ const useLobbyActions = (onLobbyAction) => { // onLobbyAction to trigger refresh
       if (onLobbyAction) {
         onLobbyAction(); // Refresh lobby list in parent component after leaving
       }
+      closeWebSocket(); // Close websocket connection on leaving lobby
       return true; // Indicate success
     } catch (error) {
       console.error("Error leaving lobby:", error);
       ToastService.show('error', error.response?.data?.message || 'Failed to leave lobby.');
       return false; // Indicate failure
     }
-  }, [onLobbyAction]); // Dependencies for useCallback
+  }, [onLobbyAction, closeWebSocket]); // Add closeWebSocket to dependencies
 
   const handleKickPlayer = useCallback(async (lobbyId, playerId) => {
     try {

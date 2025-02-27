@@ -1,5 +1,5 @@
 import React ,{ useEffect } from 'react';
-import { StyleSheet, Animated,Linking,StatusBar, Button } from 'react-native';
+import { StyleSheet, Animated,StatusBar } from 'react-native';
 import FormSection from './components/FormSection';
 import LogoSection from './components/LogoSection';
 import LinearGradient from 'react-native-linear-gradient';

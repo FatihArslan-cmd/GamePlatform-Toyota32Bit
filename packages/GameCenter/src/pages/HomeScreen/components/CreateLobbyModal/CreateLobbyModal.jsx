@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Switch, Text } from 'react-native-paper'; // Switch ve Text'i import et
+import { Button } from 'react-native-paper'; // Switch ve Text'i import et
 import BottomSheet from '../../../../components/BottomSheet';
 import LobbyTypeSelector from './components/LobbyTypeSelector';
 import CustomDateTimeSelector from './components/DateTimeSelector';
@@ -9,8 +9,9 @@ import PasswordInput from './components/PasswordInput';
 import InvitationLink from './components/InvitationLink';
 import { ToastService } from '../../../../context/ToastService';
 import { createLobby } from './service/service';
+import { useBingoWebSocket } from '../../../../context/BingoWebSocket';
 
-const CreateLobbyModal = ({ visible, onDismiss,routeGameName }) => {
+const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
     const [lobbyName, setLobbyName] = useState('');
     const [gameName, setGameName] = useState('');
@@ -23,7 +24,7 @@ const CreateLobbyModal = ({ visible, onDismiss,routeGameName }) => {
     const [hasPassword, setHasPassword] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-
+    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
 
     const toggleLobbyType = useCallback(() => {
         setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
@@ -68,7 +69,7 @@ const CreateLobbyModal = ({ visible, onDismiss,routeGameName }) => {
 
         try {
             const data = await createLobby(requestBody);
-            console.log(data);
+            connectWebSocket(data.lobby.code);
             setCode(`${data.lobby.code}`);
             setIsCodeGenerated(true);
             ToastService.show("success", "Lobby created successfully!");

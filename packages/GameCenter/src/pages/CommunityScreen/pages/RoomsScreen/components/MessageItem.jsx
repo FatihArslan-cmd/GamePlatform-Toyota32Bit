@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, IconButton, Avatar} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import formatDate from '../../../../utils/FormatDate';
+import formatDate from '../../../../../utils/FormatDate';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const MessageItem = ({ message }) => {
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 8,
     marginBottom: 12,
-    // alignSelf: 'center', // alternative way to center image
   },
   actionsContainer: {
     flexDirection: 'row',

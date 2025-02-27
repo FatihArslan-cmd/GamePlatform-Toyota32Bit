@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, IconButton, useTheme } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { addAchievement } from '../services/service';
+import { ToastService } from '../../../../../context/ToastService';
 
-const AchievementCardBase = ({ item}) => {
+const AchievementCardBase = ({ item, isOwned }) => {
     const theme = useTheme();
 
     const getRarityStyle = () => {
@@ -17,6 +20,20 @@ const AchievementCardBase = ({ item}) => {
                 return { color: '#f1c40f', fontWeight: 'bold' };
             default:
                 return { color: theme.colors.surfaceVariant };
+        }
+    };
+
+    const handleAddAchievement = async () => {
+        try {
+            const response = await addAchievement(item.id);
+            if (response.message === 'Achievement updated successfully.' || response.message === "User already has this achievement.") {
+                ToastService.show("success", "Achievement added successfully");
+            } else {
+                ToastService.show("error", "Failed to add achievement. Please try again later.");
+            }
+        } catch (error) {
+            console.error("Error adding achievement:", error);
+            ToastService.show("error", "Failed to add achievement. Please try again later.");
         }
     };
 
@@ -51,6 +68,13 @@ const AchievementCardBase = ({ item}) => {
                         </View>
                     </View>
                 </View>
+                {!isOwned && (
+                    <IconButton
+                        icon={() => <Icon name="plus" size={24} color={theme.colors.primary} />}
+                        onPress={handleAddAchievement}
+                        style={styles.addButton}
+                    />
+                )}
             </Card.Content>
         </Card>
     );
@@ -60,12 +84,13 @@ const styles = StyleSheet.create({
     card: {
         marginBottom: 12,
         backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        borderRadius:20
+        borderRadius: 20
     },
     cardContent: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 12,
+        justifyContent: 'space-between'
     },
     iconContainer: {
         marginRight: 12,
@@ -115,6 +140,10 @@ const styles = StyleSheet.create({
         marginLeft: -4,
         fontFamily: 'SQR721B',
     },
+    addButton: {
+        margin: 0,
+        padding: 0,
+    }
 });
 
 export default AchievementCardBase;

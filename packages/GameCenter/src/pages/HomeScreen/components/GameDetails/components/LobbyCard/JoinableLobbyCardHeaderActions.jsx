@@ -13,9 +13,17 @@ const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, l
         <Icon name="code-tags" size={20} color="#666" />
         <Text style={styles.lobbyCode}>{lobbyCode}</Text>
       </TouchableOpacity>
-      {lobby.hasPassword && (
-        <Icon name="lock" size={24} color="black" style={styles.lockIcon} />
-      )}
+      <View style={styles.headerIcons}>
+        {lobby.hasPassword && (
+          <Icon name="lock" size={24} color="black" style={styles.headerIcon} />
+        )}
+        {lobby.gameStarted && (
+          <View style={styles.gameStartedContainer}>
+            <Icon name="run-fast" size={24} color="#FF6F61" style={styles.headerIcon} />
+            <Text style={styles.gameStartedText}>Started</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -38,13 +46,21 @@ const styles = StyleSheet.create({
   },
   headerIcons: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  iconButton: {
+  headerIcon: {
     marginLeft: 10,
   },
-  lockIcon: { // Kilit ikonunun stili
-    marginRight: 5, // Kod ile ikon arasında boşluk
+  gameStartedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
   },
+  gameStartedText: {
+    marginLeft: 5,
+    color: '#FF6F61',
+    fontFamily: 'Orbitron-ExtraBold',
+  }
 });
 
 export default JoinableLobbyCardHeaderActions;

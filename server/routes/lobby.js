@@ -11,7 +11,8 @@ const {
   getLobbyInvitesHandler,
   acceptLobbyInviteHandler,
   rejectLobbyInviteHandler,
-  getLobbyInvitationCountHandler // Import the new handler
+  getLobbyInvitationCountHandler,
+  startGameHandler,
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -25,6 +26,7 @@ router.delete('/delete', authenticate, deleteLobbyHandler);
 router.get('/list', authenticate, listLobbiesHandler);
 router.get('/listUserLobby', authenticate, getUserLobbyHandler);
 
+router.post('/start-game', authenticate, startGameHandler);
 router.post('/invite-friend', authenticate, inviteFriendToLobbyHandler);
 router.get('/invitations', authenticate, getLobbyInvitesHandler);
 router.post('/invitations/accept', authenticate, acceptLobbyInviteHandler);

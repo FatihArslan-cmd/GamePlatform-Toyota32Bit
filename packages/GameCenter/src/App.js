@@ -5,27 +5,29 @@ import { theme } from './utils/FontConfig.js';
 import { UserProvider } from './context/UserContext.jsx';
 import { ToastProvider } from './context/ToastService.jsx';
 import { createDefaultChannel, requestUserPermission, setupForegroundNotifications, setupBackgroundNotifications, checkInitialNotification } from './utils/Firebase/notificationHandlers.js';
+import { LogBox } from 'react-native';
+import { BingoWebSocketProvider } from './context/BingoWebSocket.jsx';
 
 const App = () => {
-  
+  LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
   useEffect(() => {
-    createDefaultChannel(); // Kanalı oluştur
-    requestUserPermission(); // İzinleri iste
-    setupForegroundNotifications(); // Foreground bildirimlerini dinle
-    setupBackgroundNotifications(); // Arkaplan bildirimlerini dinle
-    checkInitialNotification(); // Uygulama açılış bildirimini kontrol et
+    createDefaultChannel();
+    requestUserPermission();
+    setupForegroundNotifications();
+    setupBackgroundNotifications();
+    checkInitialNotification();
   }, []);
 
   return (
-    <ToastProvider>
-              <UserProvider>
-
-    <PaperProvider theme={theme}>
-,          <Navigation />
-    </PaperProvider>
-    </UserProvider>
-
-    </ToastProvider>
+    <BingoWebSocketProvider> 
+     <ToastProvider>
+      <UserProvider>
+       <PaperProvider theme={theme}>
+          <Navigation />
+-      </PaperProvider>
+       </UserProvider>
+     </ToastProvider>
+   </BingoWebSocketProvider>
 
   );
 };

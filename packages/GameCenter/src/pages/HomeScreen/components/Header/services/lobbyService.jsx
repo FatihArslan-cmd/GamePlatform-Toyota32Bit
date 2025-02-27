@@ -25,7 +25,7 @@ const lobbyService = {
         const token = await getToken();
         const response = await api.post(
             `/lobby/join`,
-            { code, password }, 
+            { code, password },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,6 +152,26 @@ getInvitationCount: async () => {
     throw error;
   }
 },
+
+  updateLobby: async (updates) => { // updates parametresi eklendi
+    try {
+      const token = await getToken();
+      const response = await api.put(
+        `/lobby/update`,
+        updates, // Güncelleme verileri body olarak gönderiliyor
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error updating lobby:', error);
+      throw error;
+    }
+  },
 };
 
 export default lobbyService;

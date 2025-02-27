@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { storage } from '../utils/storage';
-
+import { useBingoWebSocket } from './BingoWebSocket';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null); // Token durumunu da yönetiyoruz
+  const { closeWebSocket } = useBingoWebSocket(); // Get closeWebSocket function from context
 
   const loginUser = async (userData, newToken) => {
       setUser(userData);
@@ -19,6 +20,7 @@ export const UserProvider = ({ children }) => {
     setToken(null); // Token'ı da sıfırla
     await storage.delete('user');
     await storage.delete('token'); // Token'ı da storage'den sil
+    closeWebSocket(); // Close the WebSocket connection
   };
 
   useEffect(() => {

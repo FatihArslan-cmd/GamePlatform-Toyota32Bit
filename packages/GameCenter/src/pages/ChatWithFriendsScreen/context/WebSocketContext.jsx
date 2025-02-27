@@ -1,72 +1,93 @@
-import React, { createContext, useContext, useRef, useEffect, useCallback } from 'react';
-import { getToken } from '../../../shared/states/api.js';
-import { ToastService } from '../../../context/ToastService.jsx';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { getToken } from '../../../shared/states/api';
+import { ToastService } from '../../../context/ToastService';
 
-const WebSocketContext = createContext();
+const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
-    const ws = useRef(null);
-    const messageHandlers = useRef([]);
-
-    const addMessageHandler = useCallback((handler) => {
-        messageHandlers.current.push(handler);
-    }, []);
-
-    const removeMessageHandler = useCallback((handler) => {
-        messageHandlers.current = messageHandlers.current.filter(h => h !== handler);
-    }, []);
-
-    const send = useCallback((message) => {
-        if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-            ws.current.send(JSON.stringify(message));
-        }
-    }, []);
+    const socket = useRef(null);
+    const [userId, setUserId] = useState(null);
+    const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
+        const ws = new WebSocket('ws://10.0.2.2:3000/friendchat'); // "/friendchat" yolunu ekleyin
+        socket.current = ws;
         const accessToken = getToken();
-        const newWs = new WebSocket('ws://10.0.2.2:3000');
 
-        newWs.onopen = () => {
-            newWs.send(JSON.stringify({
+        ws.onopen = () => {
+            console.log('WebSocket connected');
+            ws.send(JSON.stringify({
                 type: 'auth',
                 token: accessToken,
             }));
+            setIsConnected(true);
         };
 
-        newWs.onmessage = (event) => {
+        ws.onmessage = (event) => {
             try {
                 const message = JSON.parse(event.data);
-                messageHandlers.current.forEach(handler => handler(message));
+                if (message.type === 'connected') {
+                    console.log('WebSocket authenticated');
+                    console.log('Authenticated User ID:', message.payload.userId);
+                    setUserId(message.payload.userId);
+                } else if (message.type === 'error') {
+                    console.error('WebSocket Error:', message.message);
+                    ToastService.show('error', message.message);
+                }
             } catch (error) {
                 console.error('Failed to parse message:', error);
+                ToastService.show('error', 'Failed to process WebSocket message.');
             }
         };
 
-        newWs.onerror = (error) => {
-            ToastService.show('error', 'WebSocket connection error');
+        ws.onerror = (error) => {
             console.error('WebSocket error:', error);
+            ToastService.show('error', 'Failed to connect to chat server.');
+            setIsConnected(false);
         };
 
-        newWs.onclose = () => {
-            console.log('WebSocket connection closed');
+        ws.onclose = () => {
+            console.log('WebSocket closed');
+            setIsConnected(false);
         };
-
-        ws.current = newWs;
 
         return () => {
-            if (newWs.readyState === WebSocket.OPEN) {
-                newWs.close();
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.close();
             }
         };
     }, []);
 
+    const sendMessage = (payload) => {
+        if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+            socket.current.send(JSON.stringify(payload));
+        }
+    };
+
+    const subscribeToMessages = (callback) => {
+        if (socket.current) {
+            socket.current.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    callback(message);
+                } catch (error) {
+                    console.error('Failed to parse message:', error);
+                }
+            };
+        }
+    };
+
     return (
-        <WebSocketContext.Provider value={{ send, addMessageHandler, removeMessageHandler }}>
+        <WebSocketContext.Provider value={{ userId, isConnected, sendMessage, subscribeToMessages }}>
             {children}
         </WebSocketContext.Provider>
     );
 };
 
 export const useWebSocket = () => {
-    return useContext(WebSocketContext);
+    const context = useContext(WebSocketContext);
+    if (!context) {
+        throw new Error('useWebSocket must be used within a WebSocketProvider');
+    }
+    return context;
 };

@@ -7,6 +7,8 @@ import OwnedAchievementCard from './components/OwnedAchievementCard';
 import ErrorComponents from '../../../../components/ErrorComponents';
 import EmptyState from '../../../../components/EmptyState';
 import { getAchievements, getOwnedAchievements } from './services/service';
+import useLevelCalculation from './hooks/useLevelCalculation';
+import LevelProgressBar from './components/LevelProgressBar';
 
 const AchievementsPage = ({ onAchievementCountChange }) => {
     const [activeTab, setActiveTab] = useState('all');
@@ -23,15 +25,21 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
                 getAchievements(),
                 getOwnedAchievements(),
             ]);
-
-            setAllAchievements(allAchievementsData);
+    
+            // Her başarıya isOwned özelliği ekle
+            const enhancedAllAchievements = allAchievementsData.map(achievement => ({
+                ...achievement,
+                isOwned: ownedAchievementsData.some(owned => owned.id === achievement.id)
+            }));
+    
+            setAllAchievements(enhancedAllAchievements);
             setOwnedAchievements(ownedAchievementsData);
-             const ownedCount = ownedAchievementsData.length;
+            console.log("Owned Achievements Data:", ownedAchievementsData);
+            const ownedCount = ownedAchievementsData.length;
             onAchievementCountChange(ownedCount);
-
         } catch (err) {
             console.error("Error fetching achievements:", err);
-             setError(err.message || 'An unexpected error occurred');
+            setError(err.message || 'An unexpected error occurred');
         } finally {
             setLoading(false);
         }
@@ -41,23 +49,29 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
         fetchAchievements();
     }, [fetchAchievements]);
 
-  const renderItem = useCallback(({ item }) => {
-      if (activeTab === 'all') {
-          return <AchievementCard item={item} />;
-      } else {
-          return <OwnedAchievementCard item={item} />;
-      }
-  }, [activeTab]);
+    // Toplam XP’yi hesapla
+    const totalXp = useMemo(() => {
+        return ownedAchievements.reduce((sum, achievement) => sum + parseInt(achievement.xp), 0);
+    }, [ownedAchievements]);
 
+    // Toplam XP’ye göre seviye bilgilerini al
+    const { level, xpForNextLevel, xpProgress } = useLevelCalculation(totalXp);
 
-  const filteredData = useMemo(() => {
-    if (activeTab === 'all') {
-        return allAchievements;
-    } else {
-        return ownedAchievements;
-    }
-}, [activeTab, allAchievements, ownedAchievements]);
+    const renderItem = useCallback(({ item }) => {
+        if (activeTab === 'all') {
+            return <AchievementCard item={item} />;
+        } else {
+            return <OwnedAchievementCard item={item} />;
+        }
+    }, [activeTab]);
 
+    const filteredData = useMemo(() => {
+        if (activeTab === 'all') {
+            return allAchievements;
+        } else {
+            return ownedAchievements;
+        }
+    }, [activeTab, allAchievements, ownedAchievements]);
 
     return (
         <View style={[styles.container, { backgroundColor: '#1e1e1e' }]}>
@@ -65,11 +79,18 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
                 value={activeTab}
                 onValueChange={setActiveTab}
                 buttons={[
-                    { value: 'all', label: 'All Achievements', labelStyle: styles.buttonLabel }, // labelStyle eklendi
-                    { value: 'owned', label: 'Your Achievements', labelStyle: styles.buttonLabel }, // labelStyle eklendi
+                    { value: 'all', label: 'All Achievements', labelStyle: styles.buttonLabel },
+                    { value: 'owned', label: 'Your Achievements', labelStyle: styles.buttonLabel },
                 ]}
                 style={styles.segmentedButtons}
             />
+            {activeTab === 'owned' && (
+                <LevelProgressBar
+                    level={level}
+                    currentXP={xpProgress}
+                    nextLevelXP={xpForNextLevel}
+                />
+            )}
             {loading ? (
                 <></>
             ) : error ? (
@@ -81,10 +102,9 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
                     keyExtractor={(item) => item.id.toString()}
                     estimatedItemSize={15}
                     contentContainerStyle={styles.listContainer}
-                    ListEmptyComponent={() => <EmptyState message="Henüz bir başarımınız bulunmamaktadır." />}
+                    ListEmptyComponent={() => <EmptyState textColor="white" message="Henüz bir başarımınız bulunmamaktadır." />}
                 />
             )}
-
         </View>
     );
 };
@@ -94,7 +114,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 20,
     },
-
     segmentedButtons: {
         marginHorizontal: 16,
         marginBottom: 16,
@@ -103,7 +122,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 16,
     },
-    buttonLabel: { // buttonLabel stil tanımı
+    buttonLabel: {
         fontFamily: 'Orbitron-ExtraBold',
     }
 });

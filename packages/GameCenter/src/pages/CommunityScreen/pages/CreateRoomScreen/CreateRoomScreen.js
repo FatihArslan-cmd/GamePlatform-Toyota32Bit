@@ -11,10 +11,10 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { createRoom } from '../../services/api';
 import CommunityTopics from '../../components/Buttons/CommunityTopics';
-import RoomHeader from './RoomHeader';
-import RoomNameInput from './RoomNameInput';
-import ImageSelector from './ImageSelector';
-import CreateButton from './CreateButton';
+import RoomHeader from './components/RoomHeader';
+import RoomNameInput from './components/RoomNameInput';
+import ImageSelector from './components/ImageSelector';
+import CreateButton from './components/CreateButton';
 import BackButton from '../../../../components/BackIcon';
 import { ToastService } from '../../../../context/ToastService'; // Import ToastService
 import { AnimatedSection } from '../../../../components/Animations/EnteringPageAnimation';

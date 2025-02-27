@@ -26,7 +26,6 @@ export const RoomLoading = ({ props }) => {
         foregroundColor="#E0E0E0"
         {...props}
       >
-        {/* Only one row with two rectangles */}
         <React.Fragment>
           <Rect
             x={startX + CARD_SPACING} // Add CARD_SPACING for left padding

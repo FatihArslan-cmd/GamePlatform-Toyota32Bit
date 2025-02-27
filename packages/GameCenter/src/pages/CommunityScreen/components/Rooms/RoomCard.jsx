@@ -3,16 +3,14 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
 import { useSharedValue, withTiming, Easing } from 'react-native-reanimated';
 import { becomeSupporter } from '../../services/api';
-import ToastMessage from '../../../../components/ToastMessage/Toast';
-import useToast from '../../../../components/ToastMessage/hooks/useToast';
 import RoomCardContent from './RoomCardContent'; // Import RoomCardContent
 import BlurOverlay from './BlurOverlay'; // Import BlurOverlay
+import { ToastService } from '../../../../context/ToastService';
 
 const RoomCard = ({ room }) => {
   const [isBlurred, setIsBlurred] = useState(false);
   const blurRadius = useSharedValue(0);
   const buttonOpacity = useSharedValue(0);
-  const { showToast, currentToast, hideToast } = useToast();
 
   const handlePress = () => {
     setIsBlurred(!isBlurred);
@@ -30,15 +28,15 @@ const RoomCard = ({ room }) => {
       await becomeSupporter(room.id);
       setIsBlurred(false);
       handlePress();
-      showToast('success', "You are now a supporter!");
+      ToastService.show('success', "You have become a supporter of this room.");
     } catch (error) {
       setIsBlurred(false);
       handlePress();
       if (error.message === "Zaten supportersiniz") {
-        showToast('warning', "You are already a supporter of this room.");
+        ToastService.show('info', "You are already a supporter of this room.");
       }
       else {
-        showToast('error', "Failed to become a supporter. Please try again.");
+        ToastService.show('error', error.message || "Failed to become a supporter of this room.");
       }
     }
   };
@@ -53,20 +51,13 @@ const RoomCard = ({ room }) => {
         <RoomCardContent room={room} /> 
       </Card>
 
-      <BlurOverlay // Use BlurOverlay here
+      <BlurOverlay 
         isBlurred={isBlurred}
         blurRadiusValue={blurRadius}
         buttonOpacityValue={buttonOpacity}
         handleBecomeMemberPress={handleBecomeMemberPress}
       />
 
-      {currentToast && (
-        <ToastMessage
-          type={currentToast.type}
-          message={currentToast.message}
-          onHide={hideToast}
-        />
-      )}
     </TouchableOpacity>
   );
 };
@@ -78,6 +69,7 @@ const styles = StyleSheet.create({
   card: {
     elevation: 4,
     backgroundColor: '#ffffff',
+    borderRadius: 20,
   },
 });
 

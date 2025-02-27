@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback ,useEffect} from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import CustomModal from '../../../../components/CustomModal';
@@ -7,27 +7,34 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import lobbyService from './services/lobbyService';
 import { ToastService } from '../../../../context/ToastService';
+import { useBingoWebSocket } from '../../../../context/BingoWebSocket';
+
 
 const JoinLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyCode, setLobbyCode] = useState('');
-    const [lobbyPassword, setLobbyPassword] = useState(''); // Keep password state
+    const [lobbyPassword, setLobbyPassword] = useState('');
+    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
+
 
     const handleJoinLobby = useCallback(async () => {
         try {
-            await lobbyService.joinLobby(lobbyCode, lobbyPassword); // Always send password (can be empty string)
+            await lobbyService.joinLobby(lobbyCode, lobbyPassword);
 
-            onDismiss();
+            connectWebSocket(lobbyCode);
             ToastService.show('success', 'Successfully joined lobby!');
+            onDismiss();
+
         } catch (error) {
             console.error('Error joining lobby:', error);
             if (error.response && error.response.data && error.response.data.message) {
-                ToastService.show('error', error.response.data.message); // Show server error message
+                ToastService.show('error', error.response.data.message);
             }
             else {
                 ToastService.show('error', 'Failed to join lobby. Please try again.');
             }
         }
-    }, [lobbyCode, lobbyPassword, onDismiss]); // Keep lobbyPassword in dependencies
+    }, [lobbyCode, lobbyPassword, onDismiss, connectWebSocket]);
+
 
     const handlePaste = useCallback(async () => {
         try {
@@ -52,7 +59,7 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
             visible={visible}
             onDismiss={onDismiss}
             title="Join Lobby"
-            text="Enter the lobby code and password (if required):" // Updated text
+            text="Enter the lobby code and password (if required):"
             showConfirmButton={true}
             confirmText="Join"
             onConfirm={handleJoinLobby}
@@ -77,10 +84,10 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
 
                 <View style={styles.passwordInputWrapper}>
                     <InputField
-                        label="Lobby Password (Optional)" // Updated label
+                        label="Lobby Password (Optional)"
                         value={lobbyPassword}
                         onChangeText={setLobbyPassword}
-                        secureTextEntry // Keep secure text entry if desired
+                        secureTextEntry
                         style={styles.input}
                     />
                      {lobbyPassword.length > 0 && (
@@ -103,11 +110,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
     },
-    passwordInputWrapper: { // Style for password input wrapper
+    passwordInputWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        marginTop: 10, // Add some margin to separate from code input
+        marginTop: 10,
     },
     input: {
         backgroundColor: 'transparent',

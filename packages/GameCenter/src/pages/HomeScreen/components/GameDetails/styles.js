@@ -177,6 +177,8 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         alignSelf: 'center',
         width: '90%',
+        position: 'absolute',
+        bottom: 0,
       },
       instructionNumber: {
         width: 28,

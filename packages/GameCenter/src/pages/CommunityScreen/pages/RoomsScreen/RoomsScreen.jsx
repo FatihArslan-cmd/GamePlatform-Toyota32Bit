@@ -1,17 +1,20 @@
+// RoomsScreen.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { meJoinedRooms } from '../../services/api';
 import VideoPlayItems from '../../../HomeScreen/components/VideoPlayBlock/components/VideoPlayItems';
 import { RoomLoading } from '../../components/Loading/RoomsScreenloading';
-import Message from './Message';
+import Message from './components/Message';
 import GradientDivider from '../../../../components/GradientDivider';
 import ErrorComponents from '../../../../components/ErrorComponents';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigation = useNavigation(); // Initialize navigation
 
   // useCallback is used to memoize fetchRooms function.
   // This is a good practice for functions used in dependency arrays of useEffect/useFocusEffect
@@ -57,7 +60,25 @@ const RoomsScreen = () => {
     );
   }
 
-  
+  if (rooms.length === 0) {
+    return (
+      <>
+      <View style={{paddingTop: 80,paddingLeft:45}}>
+        <VideoPlayItems
+              title="Join a room to start chatting"
+              imageUri="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKni1sjgvtL6sHuH9nyUJhk7Y_Przzh1-iRQ&s"
+              resizeMode="contain"
+            />
+
+        </View>
+        <View>
+        <Message />
+        </View>
+        </>
+    );
+  }
+
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -73,10 +94,12 @@ const RoomsScreen = () => {
               title={room.name}
               imageUri={room.imageUrl}
               index={index}
+              resizeMode="contain"
+              onPress={() => navigation.navigate('RoomChatScreen', { roomId: room.id, roomName: room.name , roomTopic:room.topic })} // Navigate on press
             />
-       <GradientDivider colors={['#6610F2', '#EA047E']} horizontalMargin={'%10'} height={1} />
+         <GradientDivider colors={['#6610F2', '#EA047E']} horizontalMargin={'%10'} height={1} />
           </View>
-          
+
         ))}
       </ScrollView>
       <Message />
@@ -113,6 +136,16 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
+    color: 'gray',
+  },
+  emptyRoomsContainer: {
+    flex: 1, // Take up the available space
+    justifyContent: 'center', // Center vertically
+    alignItems: 'center',     // Center horizontally
+    paddingTop: 20,         // Add some top padding to separate from header if needed
+  },
+  emptyRoomsText: {
+    fontSize: 18,
     color: 'gray',
   },
 });

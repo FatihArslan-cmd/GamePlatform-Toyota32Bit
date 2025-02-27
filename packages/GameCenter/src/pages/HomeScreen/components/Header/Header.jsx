@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Appbar,TouchableRipple } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import GradientText from '../../../../components/GrandientText';
 import SearchBar from './SearchBar';
 import MenuComponent from './MenuComponent';
@@ -9,9 +9,8 @@ import BottomSheet from '../../../../components/BottomSheet';
 import ActiveLobbiesContent from './ActiveLobbiesContent';
 import JoinLobbyModal from './JoinLobbyModal';
 import MessageIconWithBadge from './MessageIconWithBadge';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import AddFriendToLobbyIcon from './components/AddFriendToLobbyIcon';
+import AddFriendToLobbyIcon from './components/AddFriendToLobbyIcon'; // Import the new component
 
 const Header = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -23,9 +22,18 @@ const Header = () => {
   const navigation = useNavigation();
   const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
   const closeMenu = () => setMenuVisible(false);
-
   const openBottomSheet = () => setIsBottomSheetVisible(true);
   const closeBottomSheet = () => setIsBottomSheetVisible(false);
+
+  const navigateToFriendInvite = () => {
+    navigation.navigate('FriendInvitePage');
+    closeBottomSheet();
+  };
+
+  const navigateToUpdateLobby = () => {
+    navigation.navigate('UpdateLobbyScreen');
+    closeBottomSheet();
+  };
 
   return (
     <>
@@ -70,9 +78,18 @@ const Header = () => {
         title="Active Lobbies"
         height="50%"
       >
-            <AddFriendToLobbyIcon
-              onPress={() => {navigation.navigate('FriendInvitePage'),closeBottomSheet()} }
-            />
+          <AddFriendToLobbyIcon
+            leftAction={{
+              onPress: navigateToFriendInvite,
+              iconName: 'account-plus',
+              buttonText: 'Add Friend',
+            }}
+            rightAction={{
+              onPress: navigateToUpdateLobby,
+              iconName: 'update',
+              buttonText: 'Update Lobby',
+            }}
+          />
           <ActiveLobbiesContent />
       </BottomSheet>
       <JoinLobbyModal

@@ -1,13 +1,14 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import lobbyService from '../service/service';
 import { ToastService } from '../../../context/ToastService'; // Adjust path if needed
-
+import { useBingoWebSocket } from '../../../context/BingoWebSocket';
 const LobbyInviteContext = createContext();
 
 const LobbyInviteProvider = ({ children }) => {
     const [invitations, setInvitations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
 
     useEffect(() => {
         const fetchInvitations = async () => {
@@ -31,6 +32,7 @@ const LobbyInviteProvider = ({ children }) => {
         try {
             setLoading(true); // Start loading when accepting
             await lobbyService.acceptLobbyInvite(lobbyCode);
+            connectWebSocket(lobbyCode);
             setInvitations(prevInvitations =>
                 prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode) // Optimistically remove from list
             );

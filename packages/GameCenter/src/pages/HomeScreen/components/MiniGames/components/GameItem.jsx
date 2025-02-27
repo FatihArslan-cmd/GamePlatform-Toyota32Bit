@@ -10,12 +10,13 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const AnimatedSurface = Animated.createAnimatedComponent(Surface);
 
 const GameItem = memo(({ item, onPress }) => {
   const scale = useSharedValue(1);
-
+  const navigation = useNavigation();
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: scale.value }],
@@ -37,7 +38,15 @@ const GameItem = memo(({ item, onPress }) => {
   };
 
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={onPress}>
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}   onPress={() => {
+      console.log("GameItem: ", item.image_background);
+      navigation.navigate('GameDetails', {
+        gameName:item.name,
+        about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
+        imageSource : {uri: item.image_background},
+        backgroundColors: ["#007BFF", "#66A7FF", "#B3D4FF"]
+      });
+    }}>
       <AnimatedSurface style={[styles.surface, animatedStyle]} elevation={4}>
         <View style={styles.backgroundContainer}>
           <FastImage
@@ -80,12 +89,11 @@ const GameItem = memo(({ item, onPress }) => {
         </Card>
         
         <View style={styles.playButtonContainer}>
-          <Pressable
+          <View
             style={styles.playButton}
-            onPress={onPress}
           >
             <Icon name="play-circle-outline" size={32} color="white" />
-          </Pressable>
+          </View>
         </View>
       </AnimatedSurface>
     </Pressable>

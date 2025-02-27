@@ -1,5 +1,5 @@
 import React from 'react';
-import GrandientText from '../../../../components/GrandientText';
+import GrandientText from '../../../../../components/GrandientText';
 
 const RoomHeader = () => (
        <GrandientText

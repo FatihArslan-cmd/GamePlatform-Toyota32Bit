@@ -1,14 +1,26 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text } from 'react-native'; // Import Alert
 import { Button, Surface } from 'react-native-paper';
 import { styles } from '../../styles';
-import { useNavigation } from '@react-navigation/native';
 import ActiveLobbiesContent from '../../../Header/ActiveLobbiesContent';
-import AddFriendToLobbyIcon from '../../../Header/components/AddFriendToLobbyIcon';
-export default function AboutTab({ about }) {
-  const formattedAbout = Array.isArray(about) ? about : [about];
-  const navigation = useNavigation();
+import lobbyService from '../../service/service';
+import { ToastService } from '../../../../../../context/ToastService';
 
+export default function AboutTab({ about }) { // Removed currentLobby prop
+  const formattedAbout = Array.isArray(about) ? about : [about];
+
+  const handleStartGame = async () => {
+    try {
+      await lobbyService.startGame();
+      // Optionally handle success here, e.g., navigate to the game screen
+    } catch (error) {
+      let errorMessage = "Failed to start the game. Please try again."; // Default generic message
+      if (error instanceof Error) {
+        errorMessage = error.message; // Use the specific error message from service
+      }
+      ToastService.show("error", errorMessage); // Show specific or generic error
+    }
+  };
 
   return (
     <View style={[styles.aboutContainer, { paddingBottom: 80 }]}>
@@ -19,16 +31,11 @@ export default function AboutTab({ about }) {
           </Surface>
         ))}
       </View>
-      <AddFriendToLobbyIcon
-              onPress={() => {navigation.navigate('FriendInvitePage')} }
-            />
-     <ActiveLobbiesContent showNoLobby = {false} />
-     <View style={{marginTop:55}}>
+     <ActiveLobbiesContent showNoLobby = {false}  />
+     <>
        <Button
         mode="contained"
-        onPress={() => {
-          navigation.navigate('GameScreen');
-        }}
+        onPress={handleStartGame}
         style={styles.startGameButton}
         contentStyle={styles.buttonContent}
         labelStyle={styles.buttonLabel}
@@ -36,7 +43,7 @@ export default function AboutTab({ about }) {
       >
         Start Game
       </Button>
-      </View>
+      </>
     </View>
   );
 }

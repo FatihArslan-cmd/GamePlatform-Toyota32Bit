@@ -45,7 +45,7 @@ export const getRoom = async (roomId) => {
 
 export const getOthersRoom = async () => {
   try {
-    const response = await api.get(`/rooms/other`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+    const response = await api.get(`/rooms/others`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;

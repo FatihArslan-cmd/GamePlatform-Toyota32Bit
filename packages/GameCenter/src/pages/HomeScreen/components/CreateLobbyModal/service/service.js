@@ -1,4 +1,3 @@
-// lobbyService.js
 import api from '../../../../../shared/states/api';
 import { getToken } from '../../../../../shared/states/api';
 

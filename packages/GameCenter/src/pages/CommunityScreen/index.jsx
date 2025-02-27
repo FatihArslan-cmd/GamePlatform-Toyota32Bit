@@ -63,7 +63,6 @@ const CommunityScreen = () => {
 
   return (
     <View style={styles.safeArea}>
-    <BackButton />
     <MakePost />
 
       <Animated.View

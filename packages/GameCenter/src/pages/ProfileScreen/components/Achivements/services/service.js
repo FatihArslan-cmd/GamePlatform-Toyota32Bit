@@ -30,4 +30,18 @@ const getOwnedAchievements = async () => {
   }
 };
 
-export { getAchievements, getOwnedAchievements };
+const addAchievement = async (achievementId) => {
+  try {
+    const token = await getToken();
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+    };
+    const response = await api.post('/achievements', { achievementId }, { headers });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding achievement:', error);
+    throw error;
+  }
+};
+
+export { getAchievements, getOwnedAchievements, addAchievement };
