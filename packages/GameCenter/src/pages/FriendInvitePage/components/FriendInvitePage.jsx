@@ -7,7 +7,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import FriendList from './FriendList';
 import LobbyInfo from './LobbyInfo';
 import { useFriendInvite } from '../context/FriendInviteContext';
-import BackButton from '../../../components/BackIcon';
+
 const FriendInvitePage = () => {
     const {
         friends,

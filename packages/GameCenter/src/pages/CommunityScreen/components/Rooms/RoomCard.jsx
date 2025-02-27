@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   card: {
     elevation: 4,
     backgroundColor: '#ffffff',
+    borderRadius: 20,
   },
 });
 

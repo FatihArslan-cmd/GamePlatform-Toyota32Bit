@@ -1,5 +1,5 @@
 import React, { useState, useCallback} from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { ToastService } from '../../../../../../context/ToastService';
@@ -8,11 +8,13 @@ import JoinableLobbyCardHeaderActions from './JoinableLobbyCardHeaderActions';
 import JoinableLobbyCardContent from './JoinableLobbyCardContent';
 import lobbyService from '../../../Header/services/lobbyService';
 import JoinLobbyModalContent from './JoinLobbyModalContent'; // Import the new component
+import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket';
 
 const JoinableLobbyCard = ({ lobby}) => {
   const [joinModalVisible, setJoinModalVisible] = useState(false);
   const [currentLobby] = useState(lobby);
   const [password, setPassword] = useState('');
+    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
 
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
@@ -32,6 +34,7 @@ const JoinableLobbyCard = ({ lobby}) => {
       } else {
         await lobbyService.joinLobby(currentLobby.code); // Call joinLobby service without password
       }
+      connectWebSocket(currentLobby.code);
       ToastService.show('success', 'Successfully joined lobby!');
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {

@@ -119,7 +119,7 @@ const FriendsPage = ({ onFriendCountChange }) => {
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 style={styles.friendsList}
-                ListEmptyComponent={() => <EmptyState message={"No friends Yet!"}/>}
+                ListEmptyComponent={() => <EmptyState textColor="white" message={"No friends Yet!"}/>}
             />
         </View>
     );

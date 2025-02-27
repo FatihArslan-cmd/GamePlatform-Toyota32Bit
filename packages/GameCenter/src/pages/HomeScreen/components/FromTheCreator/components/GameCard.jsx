@@ -5,7 +5,7 @@ import { Card, Button } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
-const GameCard = ({ gameName, instructions, imageSource, buttonText, onButtonPress, buttonColors,backgroundColors }) => { // Add buttonColors prop
+const GameCard = ({  instructions, imageSource, buttonText, onButtonPress, buttonColors,backgroundColors }) => { // Add buttonColors prop
   const navigation = useNavigation();
 
   // Default button colors if buttonColors prop is not provided

@@ -10,10 +10,10 @@ const GameSelector = ({
     onGameNameChange,
     onLobbyNameChange,
     onMaxCapacityChange,
-    editableGameName,
 }) => {
     const [pressedScale] = useState(new Animated.Value(1));
     const games = ['Bingo', 'Chess', 'Poker', 'Checkers', 'Monopoly', 'Scrabble', 'Clue', 'Risk', 'Catan', 'Ticket to Ride'];
+    console.log('GameSelector rendered'); // Add this line
 
     const handlePressIn = () => {
         Animated.spring(pressedScale, {

@@ -1,4 +1,3 @@
-// src/components/DatePickerInput.js
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';

@@ -1,4 +1,3 @@
-// src/components/LobbyTypeSegmentedButtons.js
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SegmentedButtons, Text } from 'react-native-paper';

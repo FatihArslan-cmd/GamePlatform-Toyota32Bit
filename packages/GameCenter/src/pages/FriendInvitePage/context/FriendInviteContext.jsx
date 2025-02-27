@@ -1,4 +1,3 @@
-// FriendInviteContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { fetchFriends } from '../../ProfileScreen/services/service';
 import lobbyService from '../../HomeScreen/components/Header/services/lobbyService';

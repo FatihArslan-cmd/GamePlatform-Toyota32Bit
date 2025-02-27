@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, List } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import CustomModal from '../../../components/CustomModal';
 import { UserContext } from '../../../context/UserContext';
 import { useNavigation } from '@react-navigation/native';

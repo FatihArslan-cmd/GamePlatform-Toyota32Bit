@@ -22,6 +22,7 @@ import ChatWithFriendsScreen from '../pages/ChatWithFriendsScreen/index.jsx';
 import ChatScreen from '../pages/ChatWithFriendsScreen/pages/ChatScreen.jsx';
 import RoomChatScreen from '../pages/RoomChatScreen/index.jsx';
 import UpdateLobbyScreen from '../pages/UpdateLobbyScreen/UpdateLobbyScreen.jsx';
+import CountDownSplashScreen from '../components/CountDownSplashScreen.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -181,6 +182,12 @@ export default function Navigation() {
          />
           <Stack.Screen name="UpdateLobbyScreen"
          component={UpdateLobbyScreen}  
+          options={{
+              animation: 'simple_push',
+            }}
+         />
+           <Stack.Screen name="CountDownSplashScreen"
+         component={CountDownSplashScreen}  
           options={{
               animation: 'simple_push',
             }}

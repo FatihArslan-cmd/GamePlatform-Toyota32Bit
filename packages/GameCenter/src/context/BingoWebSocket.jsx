@@ -91,8 +91,14 @@ export const BingoWebSocketProvider = ({ children }) => {
     const closeWebSocket = useCallback(() => {
         if (wsRef.current) {
             wsRef.current.close();
+            clearMessages();
             console.log("WebSocket bağlantısı manuel olarak kapatıldı.");
         }
+    }, []);
+
+    const clearMessages = useCallback(() => {
+        setMessages([]);
+        console.log("WebSocket messages cleared.");
     }, []);
 
     const contextValue = {

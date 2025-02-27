@@ -9,7 +9,7 @@ import { useWebSocket } from '../context/WebSocketContext';
 
 const Page = () => {
     const route = useRoute();
-    const { roomName } = route.params || {};
+    const { roomName,roomTopic } = route.params || {};
     const [newMessageText, setNewMessageText] = useState('');
     const messageListRef = useRef(null);
     const { messages, sendMessage, userId } = useWebSocket(); // Context'ten değerler alındı
@@ -25,7 +25,7 @@ const Page = () => {
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
-                <ChatHeader roomName={roomName || 'Oda Sohbeti'} onMoreActions={() => { }} />
+                <ChatHeader roomTopic={roomTopic} roomName={roomName || 'Oda Sohbeti'} onMoreActions={() => { }} />
                 <MessageList messages={messages} userId={userId} messageListRef={messageListRef} />
                 <InputArea
                     newMessageText={newMessageText}

@@ -46,7 +46,7 @@ export default function LobbiesTab() {
             </Button>
             {loading ? (
                 <View style={styles.loadingContainer}>
-                    <LoadingIndicator size="large" color="#0000ff" />
+                    <LoadingIndicator  />
                 </View>
             ) : error ? (
                 <View style={styles.errorContainer}>

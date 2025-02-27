@@ -1,4 +1,3 @@
-// src/components/LobbyUpdateButton.js
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';

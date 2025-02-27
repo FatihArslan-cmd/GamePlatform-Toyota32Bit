@@ -86,7 +86,6 @@ const LobbyUpdateProvider = ({ children }) => {
     }, [lobby, navigation]);
 
 
-    // Tarih değiştirme fonksiyonları (context içinde tanımlandı)
     const onStartDateChange = useCallback((event, selectedDate) => {
         const currentDate = selectedDate || startDate;
         setShowStartDatePicker(false);

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Surface, Text } from 'react-native-paper';
@@ -9,7 +9,7 @@ import LobbyTypeSegmentedButtons from './LobbyTypeSegmentedButtons';
 import DatePickerInput from './DatePickerInput';
 import LobbyUpdateButton from './LobbyUpdateButton';
 import TextInputWithIcon from './TextInputWithIcon';
-
+import { UserContext } from '../../../context/UserContext';
 
 const Page = () => {
   const {
@@ -28,7 +28,7 @@ const Page = () => {
   const [endDate, setEndDate] = useState(lobby?.endDate ? new Date(lobby.endDate) : new Date());
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
-
+  const { user } = useContext(UserContext);
   const handleUpdateLobby = useCallback(async () => {
     const updates = {
       lobbyName: lobbyName,
@@ -65,6 +65,16 @@ const Page = () => {
     return (
       <SafeAreaView style={styles.safeArea}>
         <EmptyState />
+      </SafeAreaView>
+    );
+  }
+
+  if (user.username !== lobby.ownerUsername) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.unauthorizedContainer}>
+          <Text style={styles.unauthorizedText}>You are not authorized to update this lobby.</Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -163,6 +173,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Orbitron-ExtraBold',
     marginLeft: 10,
     color: '#333',
+  },
+  unauthorizedContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  unauthorizedText: {
+    fontSize: 18,
+    color: 'red',
+    textAlign: 'center',
+    fontFamily: 'Orbitron-ExtraBold',
+
   },
 });
 

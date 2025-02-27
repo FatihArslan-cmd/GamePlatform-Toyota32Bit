@@ -19,15 +19,16 @@ const App = () => {
   }, []);
 
   return (
-    <ToastProvider>
-     <UserProvider>
+    <BingoWebSocketProvider> 
+     <ToastProvider>
+      <UserProvider>
        <PaperProvider theme={theme}>
-         <BingoWebSocketProvider> 
-            <Navigation />
-         </BingoWebSocketProvider>
-       </PaperProvider>
-     </UserProvider>
-   </ToastProvider>
+          <Navigation />
+-      </PaperProvider>
+       </UserProvider>
+     </ToastProvider>
+   </BingoWebSocketProvider>
+
   );
 };
 

@@ -21,7 +21,7 @@ const TabNavigator = () => {
     const gameStartMessage = messages.find(msg => msg.type === 'game-started');
     if (gameStartMessage) {
       console.log("Game started message detected in TabNavigator, navigating to GameScreen...");
-      navigation.navigate('GameScreen');
+      navigation.navigate('CountDownSplashScreen');
     }
   }, [messages, navigation ]);
 

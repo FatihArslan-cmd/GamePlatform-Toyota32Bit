@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useCallback, memo } from 'react';
-import { StyleSheet, Animated, Dimensions, View } from 'react-native';
+import { StyleSheet, Animated, Dimensions, View, TouchableWithoutFeedback } from 'react-native';
 import { Modal, Portal, Button, Text } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 
-const CustomModal = memo(({ 
+const CustomModal = memo(({
   visible,
   onDismiss,
-   onConfirm,
-    children,
-     title,
-      text,
-      confirmText = 'Confirm',
-       showConfirmButton = false
-       }) => {
+  onConfirm,
+  children,
+  title,
+  text,
+  confirmText = 'Confirm',
+  showConfirmButton = false,
+}) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const blurFadeAnim = useRef(new Animated.Value(0)).current;
@@ -73,52 +73,58 @@ const CustomModal = memo(({
     <Portal>
       <Animated.View style={[StyleSheet.absoluteFill, { opacity: blurFadeAnim }]}>
         <BlurView blurType="dark" blurAmount={2} style={StyleSheet.absoluteFill}>
-          <Modal
-            visible={visible}
-            onDismiss={handleDismiss}
-            contentContainerStyle={[
-              styles.modalContainer,
-              { transform: [{ translateY: slideAnim }] },
-            ]}>
-            <Animated.View
-              style={[
-                styles.content,
-                {
-                  opacity: fadeAnim,
-                  transform: [
+          {/* TouchableWithoutFeedback eklendi */}
+          <TouchableWithoutFeedback onPress={handleDismiss}>
+            <View style={StyleSheet.absoluteFill} >
+              <Modal
+                visible={visible}
+                onDismiss={() => {}} // onDismiss'i boşaltıyoruz çünkü dışarı tıklamayı TouchableWithoutFeedback ile kontrol ediyoruz.
+                dismissable={false} // Modal'ın kendi kendine kapanmasını engelliyoruz.
+                contentContainerStyle={[
+                  styles.modalContainer,
+                  { transform: [{ translateY: slideAnim }] },
+                ]}>
+                <Animated.View
+                  style={[
+                    styles.content,
                     {
-                      scale: fadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0.9, 1],
-                      }),
+                      opacity: fadeAnim,
+                      transform: [
+                        {
+                          scale: fadeAnim.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [0.9, 1],
+                          }),
+                        },
+                      ],
                     },
-                  ],
-                },
-              ]}>
-              {title && <Text style={styles.title}>{title}</Text>}
-              {text && <Text style={styles.text}>{text}</Text>}
-              {children}
-              <View style={styles.buttonContainer}>
-                <Button
-                  mode="outlined"
-                  onPress={handleDismiss}
-                  style={styles.closeButton}
-                  labelStyle={styles.closeButtonLabel}>
-                  Cancel
-                </Button>
+                  ]}>
+                  {title && <Text style={styles.title}>{title}</Text>}
+                  {text && <Text style={styles.text}>{text}</Text>}
+                  {children}
+                  <View style={styles.buttonContainer}>
+                    <Button
+                      mode="outlined"
+                      onPress={handleDismiss}
+                      style={styles.closeButton}
+                      labelStyle={styles.closeButtonLabel}>
+                      Cancel
+                    </Button>
 
-                {showConfirmButton && (
-                  <Button
-                    mode="contained"
-                    onPress={onConfirm}
-                    style={styles.confirmButton}
-                    labelStyle={styles.confirmButtonLabel}>
-                    {confirmText}
-                  </Button>
-                )}
-              </View>
-            </Animated.View>
-          </Modal>
+                    {showConfirmButton && (
+                      <Button
+                        mode="contained"
+                        onPress={onConfirm}
+                        style={styles.confirmButton}
+                        labelStyle={styles.confirmButtonLabel}>
+                        {confirmText}
+                      </Button>
+                    )}
+                  </View>
+                </Animated.View>
+              </Modal>
+            </View>
+          </TouchableWithoutFeedback>
         </BlurView>
       </Animated.View>
     </Portal>
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
   closeButtonLabel: {
     color: '#8a2be2',
     fontSize: 16,
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },
   confirmButton: {
@@ -180,7 +186,7 @@ const styles = StyleSheet.create({
   confirmButtonLabel: {
     color: '#ffffff',
     fontSize: 16,
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },
 });
