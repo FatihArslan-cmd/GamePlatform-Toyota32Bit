@@ -118,6 +118,10 @@ const lobbyStore = {
                 return callback(new Error('Lobby not found'));
             }
 
+            if (lobby.gameStarted) { 
+                return callback(new Error('Cannot join. Game has already started in this lobby.'));
+            }
+
             if (lobby.blockedMembers.includes(userId)) {
                 return callback(new Error('You are blocked from joining this lobby.'));
             }
@@ -562,7 +566,7 @@ const lobbyStore = {
 
             const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
             if (!lobby) {
-                return callback(new Error('Lobby not found'));
+                return callback(new Error('It is an obligation to have a lobby to start'));
             }
             if (lobby.gameStarted) {
                 return callback(new Error('Game already started'));

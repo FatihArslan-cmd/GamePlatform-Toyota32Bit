@@ -216,7 +216,7 @@ const startGameHandler = (req, res) => {
         }
 
         if (!lobby) {
-            return res.status(404).json({ message: 'Lobby not found' });
+            return res.status(404).json({ message: 'It is an obligation to have a lobby to start' });
         }
 
         if (lobby.ownerId !== userId) {
