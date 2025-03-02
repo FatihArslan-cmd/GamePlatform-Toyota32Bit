@@ -1,5 +1,6 @@
 const { sessionStore } = require('../config/sessionConfig');
 const users = require('../utils/users'); // users objesini import et
+const generateTombalaCard = require('../utils/generateTombalaCard'); // Yeni dosya oluşturulacak
 
 const getUserDetails = (userId) => {
     for (const username in users) {
@@ -566,17 +567,78 @@ const lobbyStore = {
 
             const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
             if (!lobby) {
-                return callback(new Error('It is an obligation to have a lobby to start'));
+                return callback(new Error('Lobby bulunamadı'));
             }
             if (lobby.gameStarted) {
-                return callback(new Error('Game already started'));
+                return callback(new Error('Oyun zaten başladı'));
             }
+            if (lobby.members.length < 2) { // Minimum oyuncu sayısı kontrolü
+                return callback(new Error('Oyunu başlatmak için en az 2 oyuncu gerekli'));
+            }
+
             lobby.gameStarted = true;
+            lobby.drawnNumbers = []; // Çekilen numaralar dizisi
+            lobby.currentNumber = null; // Şu anki numara
+            lobby.numberPool = Array.from({ length: 90 }, (_, i) => i + 1); // 1-90 arası sayılar
+            lobby.bingoCards = {}; // Oyuncuların tombala kartları
+
+            lobby.members.forEach(member => {
+                lobby.bingoCards[member.id] = generateTombalaCard(); // Her oyuncuya kart oluştur
+            });
 
             lobbyStore.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
                 callback(null, lobby);
             });
+        });
+    },
+
+    drawNumber: (lobbyCode, userId, callback) => {
+        lobbyStore.getLobbiesFromSession((err, lobbies) => {
+            if (err) return callback(err);
+
+            const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
+            if (!lobby) {
+                return callback(new Error('Lobby bulunamadı'));
+            }
+            if (!lobby.gameStarted) {
+                return callback(new Error('Oyun henüz başlamadı'));
+            }
+            if (lobby.ownerId !== userId) {
+                return callback(new Error('Sadece oda sahibi sayı çekebilir'));
+            }
+            if (lobby.numberPool.length === 0) {
+                return callback(new Error('Çekilecek sayı kalmadı'));
+            }
+
+            const randomIndex = Math.floor(Math.random() * lobby.numberPool.length);
+            const drawnNumber = lobby.numberPool.splice(randomIndex, 1)[0]; // Sayıyı havuzdan çek ve çıkar
+            lobby.drawnNumbers.push(drawnNumber);
+            lobby.currentNumber = drawnNumber;
+
+            lobbyStore.saveLobbiesToSession(lobbies, (err) => {
+                if (err) return callback(err);
+                callback(null, lobby, drawnNumber); // Çekilen sayıyı da geri döndür
+            });
+        });
+    },
+
+    getLobbyGameData: (lobbyCode, userId, callback) => {
+        lobbyStore.getLobbiesFromSession((err, lobbies) => {
+            if (err) return callback(err);
+    
+            const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
+            if (!lobby) {
+                return callback(new Error('Lobby bulunamadı'));
+            }
+    
+            const gameData = {
+                gameStarted: lobby.gameStarted,
+                drawnNumbers: lobby.drawnNumbers,
+                currentNumber: lobby.currentNumber,
+                bingoCard: lobby.bingoCards ? lobby.bingoCards[userId] || null : null, // bingoCards kontrolü eklendi
+            };
+            callback(null, gameData);
         });
     },
 };

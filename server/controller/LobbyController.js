@@ -135,12 +135,15 @@ const inviteFriendToLobbyHandler = (req, res) => {
       return res.status(400).json({ message: 'Invited user ID and lobby code are required' });
   }
 
-  lobbyStore.getUserLobby(invitedUserId, (err) => {
+  lobbyStore.getUserLobby(invitedUserId, (err, existingLobby) => { // Check if invited user is already in a lobby
       if (err) {
           console.error("Error getting invited user's lobby:", err);
           return res.status(500).json({ message: 'Internal server error' });
       }
 
+      if (existingLobby) {
+          return res.status(400).json({ message: 'Invited user is already in a lobby' });
+      }
 
       lobbyStore.sendLobbyInvite(inviterUserId, invitedUserId, lobbyCode, (err, invitation) => {
           if (err) {
@@ -244,6 +247,27 @@ const startGameHandler = (req, res) => {
     });
 };
 
+const drawNumberHandler = (req, res) => {
+    const userId = req.user.id; // Although userId is not used in drawNumber logic, it's kept for consistency or potential future use.
+    const lobbyCode = req.params.lobbyCode; // lobbyCode'u params'tan alıyoruz, route'da tanımlayacağız
+    const websocketManager = req.app.get('WebsocketManager'); // WebsocketManager'ı alın
+
+    lobbyStore.drawNumber(lobbyCode, userId, (err, lobby, drawnNumber) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+
+        if (websocketManager) {
+            websocketManager.broadcastBingoGameMessage(lobbyCode, { type: 'number-drawn', number: drawnNumber, drawnNumbers: lobby.drawnNumbers });
+        } else {
+            console.error("websocketManager tanımlı değil, WebSocket yayın çalışmayacak.");
+        }
+
+        res.status(200).json({ message: 'Sayı çekildi', drawnNumber: drawnNumber, drawnNumbers: lobby.drawnNumbers, lobby });
+    });
+};
+
+
 module.exports = {
     createLobbyHandler,
     joinLobbyHandler,
@@ -257,6 +281,7 @@ module.exports = {
     acceptLobbyInviteHandler,
     rejectLobbyInviteHandler,
     getLobbyInvitationCountHandler,
-    startGameHandler
+    startGameHandler,
+    drawNumberHandler, // drawNumberHandler moved outside and exported
 
 };

@@ -1,88 +1,102 @@
-const WebSocket = require('ws'); // Import WebSocket
-const jwt = require('jsonwebtoken'); // Import JWT
-require('dotenv').config(); // Load environment variables
+const WebSocket = require('ws');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
-const lobbySockets = {}; // Lobby koduna göre websocket bağlantılarını saklar
-
-const lobbyStore = require('../memory/lobbyStore'); // Import lobbyStore
+const lobbySockets = {};
+const lobbyStore = require('../memory/lobbyStore');
 
 function BingoGameWebsocket(ws, request) {
     const lobbyCode = new URLSearchParams(request.url.split('?')[1]).get('lobbyCode');
-    const token = new URLSearchParams(request.url.split('?')[1]).get('token'); // Get token from query parameters
+    const token = new URLSearchParams(request.url.split('?')[1]).get('token');
 
-    if (!lobbyCode) {
-        console.log("BingoGameWebsocket: Lobby kodu eksik.");
-        ws.send(JSON.stringify({ type: 'error', message: 'BingoGameWebsocket: Lobby kodu eksik' }));
-        ws.close();
-        return;
-    }
-
-    if (!token) {
-        console.log("BingoGameWebsocket: Authentication token is required.");
-        ws.send(JSON.stringify({ type: 'error', message: 'BingoGameWebsocket: Authentication token is required' }));
+    if (!lobbyCode || !token) {
+        ws.send(JSON.stringify({ type: 'error', message: 'Lobby kodu veya token eksik' }));
         ws.close();
         return;
     }
 
     jwt.verify(token, SECRET_KEY, (err, decoded) => {
         if (err) {
-            console.error('BingoGameWebsocket: JWT Verification Error:', err);
-            ws.send(JSON.stringify({ type: 'error', message: 'BingoGameWebsocket: Invalid or expired token' }));
+            ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz token' }));
             ws.close();
             return;
         }
 
-        const userId = decoded.id; // Extract userId from decoded token
+        const userId = decoded.id;
 
         lobbyStore.getLobbiesFromSession((sessionErr, lobbies) => {
             if (sessionErr) {
-                console.error('BingoGameWebsocket: Error fetching lobbies from session:', sessionErr);
-                ws.send(JSON.stringify({ type: 'error', message: 'BingoGameWebsocket: Internal server error' }));
+                ws.send(JSON.stringify({ type: 'error', message: 'Sunucu hatası' }));
                 ws.close();
                 return;
             }
 
             const lobby = Object.values(lobbies).find(l => l.code === lobbyCode);
-
-            if (!lobby) {
-                console.log(`BingoGameWebsocket: Lobby ${lobbyCode} not found.`);
-                ws.send(JSON.stringify({ type: 'error', message: 'BingoGameWebsocket: Lobby not found' }));
+            if (!lobby || !lobby.members.some(member => member.id === userId)) {
+                ws.send(JSON.stringify({ type: 'error', message: 'Lobby bulunamadı veya üye değilsiniz' }));
                 ws.close();
                 return;
             }
 
-            const isMember = lobby.members.some(member => member.id === userId);
-            if (!isMember) {
-                console.log(`BingoGameWebsocket: User ${userId} is not a member of Lobby ${lobbyCode}.`);
-                ws.send(JSON.stringify({ type: 'error', message: 'BingoGameWebsocket: You are not a member of this lobby' }));
-                ws.close();
-                return;
-            }
-
-            console.log(`BingoGameWebsocket: User ${userId} connected to Lobby ${lobbyCode} via WebSocket`);
+            console.log(`WebSocket: User ${userId} connected to Lobby ${lobbyCode}`);
 
             if (!lobbySockets[lobbyCode]) {
                 lobbySockets[lobbyCode] = [];
             }
             lobbySockets[lobbyCode].push(ws);
 
+            // Kullanıcıya oyun verilerini gönder (kart, çekilen sayılar vb.)
+            lobbyStore.getLobbyGameData(lobbyCode, userId, (gameDataErr, gameData) => {
+                if (gameDataErr) {
+                    console.error("Oyun verisi alınırken hata:", gameDataErr);
+                    ws.send(JSON.stringify({ type: 'error', message: 'Oyun verisi alınamadı' }));
+                    return; // WebSocket bağlantısını kapatma, sadece veri göndermeyi durdur
+                }
+                ws.send(JSON.stringify({ type: 'game-data', gameData })); // 'game-data' tipinde gönder
+            });
+
+
+            ws.on('message', message => {
+                try {
+                    const parsedMessage = JSON.parse(message);
+                    if (parsedMessage.type === 'draw-number') {
+                        if (lobby.ownerId === userId) {
+                            lobbyStore.drawNumber(lobbyCode, userId, (drawErr, updatedLobby, drawnNumber) => {
+                                if (drawErr) {
+                                    ws.send(JSON.stringify({ type: 'error', message: drawErr.message }));
+                                    return;
+                                }
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'number-drawn', number: drawnNumber, drawnNumbers: updatedLobby.drawnNumbers }); // Yeni sayı çekildi bilgisini yayınla
+                            });
+                        } else {
+                            ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi sayı çekebilir.' }));
+                        }
+                    }
+                    // ... Diğer mesaj tipleri buraya eklenebilir ...
+                } catch (e) {
+                    console.error("WebSocket mesaj hatası:", e);
+                    ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz mesaj formatı' }));
+                }
+            });
+
+
             ws.on('close', () => {
-                console.log(`BingoGameWebsocket: Bağlantı kesildi, Lobby Kodu: ${lobbyCode}, User ID: ${userId}`);
+                console.log(`WebSocket: Bağlantı kesildi, Lobby: ${lobbyCode}, User: ${userId}`);
                 if (lobbySockets[lobbyCode]) {
                     lobbySockets[lobbyCode] = lobbySockets[lobbyCode].filter(socket => socket !== ws);
                     if (lobbySockets[lobbyCode].length === 0) {
-                        delete lobbySockets[lobbyCode]; // Eğer lobiye ait kimse kalmadıysa, lobiyi sil
+                        delete lobbySockets[lobbyCode];
                     }
                 }
             });
 
             ws.on('error', error => {
-                console.error(`BingoGameWebsocket: WebSocket hatası, Lobby Kodu: ${lobbyCode}, User ID: ${userId}`, error);
+                console.error(`WebSocket: Hata, Lobby: ${lobbyCode}, User: ${userId}`, error);
                 if (lobbySockets[lobbyCode]) {
                     lobbySockets[lobbyCode] = lobbySockets[lobbyCode].filter(socket => socket !== ws);
                     if (lobbySockets[lobbyCode].length === 0) {
-                        delete lobbySockets[lobbyCode]; // Eğer lobiye ait kimse kalmadıysa, lobiyi sil
+                        delete lobbySockets[lobbyCode];
                     }
                 }
             });
@@ -101,4 +115,5 @@ BingoGameWebsocket.broadcast = (lobbyCode, message) => {
 };
 
 module.exports = BingoGameWebsocket;
-module.exports.lobbySockets = lobbySockets; // Export lobbySockets
+module.exports.broadcast = BingoGameWebsocket.broadcast;
+module.exports.lobbySockets = lobbySockets;
