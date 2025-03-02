@@ -1,18 +1,7 @@
 const { sessionStore } = require('../../config/sessionConfig');
 const users = require('../../utils/users'); // users objesini import et
+const { getUserDetails } = require('../../utils/getUserDetails'); // Import getUserDetails from usersUtil
 
-const getUserDetails = (userId) => {
-    for (const username in users) {
-        if (users[username].id === userId) {
-            return {
-                id: userId,
-                username: username,
-                profilePhoto: users[username].profilePhoto,
-            };
-        }
-    }
-    return null; // Kullanıcı bulunamazsa null dön
-};
 
 const lobbyManager = {
     getLobbiesFromSession: (callback) => {

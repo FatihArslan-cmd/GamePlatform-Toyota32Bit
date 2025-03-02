@@ -4,7 +4,10 @@ require('dotenv').config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const lobbySockets = {};
-const lobbyStore = require('../memory/lobbyStore');
+
+const lobbyManager = require('../memory/LobbyStore/lobbyManager'); // Correctly import lobbyManager
+const lobbyGameManager = require('../memory/LobbyStore/lobbyGameManager'); // Import lobbyGameManager
+const { getUserDetails } = require('../utils/getUserDetails'); // Import getUserDetails from usersUtil
 
 function BingoGameWebsocket(ws, request) {
     const lobbyCode = new URLSearchParams(request.url.split('?')[1]).get('lobbyCode');
@@ -25,7 +28,7 @@ function BingoGameWebsocket(ws, request) {
 
         const userId = decoded.id;
 
-        lobbyStore.getLobbiesFromSession((sessionErr, lobbies) => {
+        lobbyManager.getLobbiesFromSession((sessionErr, lobbies) => { // Use lobbyManager for getLobbiesFromSession
             if (sessionErr) {
                 ws.send(JSON.stringify({ type: 'error', message: 'Sunucu hatası' }));
                 ws.close();
@@ -47,7 +50,7 @@ function BingoGameWebsocket(ws, request) {
             lobbySockets[lobbyCode].push(ws);
 
             // Kullanıcıya oyun verilerini gönder (kart, çekilen sayılar vb.)
-            lobbyStore.getLobbyGameData(lobbyCode, userId, (gameDataErr, gameData) => {
+            lobbyGameManager.getLobbyGameData(lobbyCode, userId, (gameDataErr, gameData) => { // Use lobbyGameManager for getLobbyGameData
                 if (gameDataErr) {
                     console.error("Oyun verisi alınırken hata:", gameDataErr);
                     ws.send(JSON.stringify({ type: 'error', message: 'Oyun verisi alınamadı' }));
@@ -62,7 +65,7 @@ function BingoGameWebsocket(ws, request) {
                     const parsedMessage = JSON.parse(message);
                     if (parsedMessage.type === 'draw-number') {
                         if (lobby.ownerId === userId) {
-                            lobbyStore.drawNumber(lobbyCode, userId, (drawErr, updatedLobby, drawnNumber) => {
+                            lobbyGameManager.drawNumber(lobbyCode, userId, (drawErr, updatedLobby, drawnNumber) => { // Use lobbyGameManager for drawNumber
                                 if (drawErr) {
                                     ws.send(JSON.stringify({ type: 'error', message: drawErr.message }));
                                     return;
@@ -78,7 +81,7 @@ function BingoGameWebsocket(ws, request) {
                             ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz sayı formatı' }));
                             return;
                         }
-                        lobbyStore.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition) => {
+                        lobbyGameManager.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition) => { // Use lobbyGameManager for markNumberOnCard
                             if (markErr) {
                                 ws.send(JSON.stringify({ type: 'error', message: markErr.message }));
                                 return;
@@ -95,6 +98,22 @@ function BingoGameWebsocket(ws, request) {
                             if (isBingo) {
                                 BingoGameWebsocket.broadcast(lobbyCode, { type: 'bingo', userId: userId }); // Bingo mesajı
                             }
+                        });
+                    } else if (parsedMessage.type === 'send-emoji') { // Yeni mesaj tipi: send-emoji
+                        const emoji = parsedMessage.emoji;
+                        if (!emoji) {
+                            ws.send(JSON.stringify({ type: 'error', message: 'Emoji gönderilmedi' }));
+                            return;
+                        }
+
+                        const userDetails = getUserDetails(userId);
+                        const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı'; // Username al
+
+                        BingoGameWebsocket.broadcast(lobbyCode, {
+                            type: 'emoji-received', // Yeni mesaj tipi: emoji-received (istemcilere yayınlanacak)
+                            userId: userId,
+                            username: username, // Username'i de gönder
+                            emoji: emoji
                         });
                     }
                     // ... Diğer mesaj tipleri buraya eklenebilir ...

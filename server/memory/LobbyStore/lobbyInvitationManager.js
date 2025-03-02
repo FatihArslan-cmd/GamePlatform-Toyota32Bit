@@ -1,6 +1,6 @@
 const { sessionStore } = require('../../config/sessionConfig');
-const { getUserDetails } = require('./lobbyManager'); // Import getUserDetails from lobbyManager (assuming it will be in the same directory)
 const lobbyManager = require('./lobbyManager'); // Import lobbyManager to use getLobbiesFromSession and saveLobbiesToSession
+const { getUserDetails } = require('../../utils/getUserDetails'); // Import getUserDetails from usersUtil
 
 const lobbyInvitationManager = {
     sendLobbyInvite: (inviterUserId, invitedUserId, lobbyCode, callback) => {
