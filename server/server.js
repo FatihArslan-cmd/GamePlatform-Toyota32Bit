@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const cors = require('cors');
 const WebsocketManager = require('./websocket/websocketManager'); // Ensure path is correct
+const lobbyManager = require('./memory/LobbyStore/lobbyManager'); // Adjust path to your lobbyManager.js
 
 const app = express();
 const server = http.createServer(app);
@@ -18,6 +19,10 @@ app.use(cors({
     credentials: true,
 }));
 app.use('/api', routes);
+
+setInterval(lobbyManager.cleanupEventLobbies, 60 * 1000); // Clean event lobbies every minute
+setInterval(lobbyManager.cleanupInactiveLobbies, 60 * 1000); // Clean inactive lobbies every minute
+
 
 // 1. Instantiate WebsocketManager
 const websocketManagerInstance = new WebsocketManager(server); // Pass the server instance during creation

@@ -1,57 +1,59 @@
-const lobbyStore = require('../memory/lobbyStore'); // Doğru yolu kullandığınızdan emin olun
+const lobbyManager = require('../memory/LobbyStore/lobbyManager'); // Adjust path if necessary
+const lobbyInvitationManager = require('../memory/LobbyStore/lobbyInvitationManager'); // Adjust path if necessary
+const lobbyGameManager = require('../memory/LobbyStore/lobbyGameManager'); // Adjust path if necessary
 
 const createLobbyHandler = (req, res) => {
-  const userId = req.user.id;
-  const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword } = req.body; // hasPassword eklendi
+    const userId = req.user.id;
+    const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword } = req.body; // hasPassword eklendi
 
-  if (!lobbyName) {
-      return res.status(400).json({ message: 'Lobby name is required' });
-  }
+    if (!lobbyName) {
+        return res.status(400).json({ message: 'Lobby name is required' });
+    }
 
-  if (!lobbyType) {
-      return res.status(400).json({ message: 'Lobby type is required' });
-  }
+    if (!lobbyType) {
+        return res.status(400).json({ message: 'Lobby type is required' });
+    }
 
-  if (maxCapacity === undefined || maxCapacity === null) {
-      return res.status(400).json({ message: 'Max capacity is required' });
-  }
+    if (maxCapacity === undefined || maxCapacity === null) {
+        return res.status(400).json({ message: 'Max capacity is required' });
+    }
 
-  if (typeof maxCapacity !== 'number' || isNaN(maxCapacity)) {
-      return res.status(400).json({ message: 'Max capacity must be a number' });
-  }
+    if (typeof maxCapacity !== 'number' || isNaN(maxCapacity)) {
+        return res.status(400).json({ message: 'Max capacity must be a number' });
+    }
 
-  if (maxCapacity <= 0) {
-      return res.status(400).json({ message: 'Max capacity must be a positive number' });
-  }
+    if (maxCapacity <= 0) {
+        return res.status(400).json({ message: 'Max capacity must be a positive number' });
+    }
 
-  lobbyStore.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword, (err, lobby) => { // hasPassword parametresi eklendi
-      if (err) {
-          return res.status(400).json({ message: err.message });
-      }
-      res.status(201).json({ message: 'Lobby created successfully', lobby });
-  });
+    lobbyManager.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword, (err, lobby) => { // hasPassword parametresi eklendi
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(201).json({ message: 'Lobby created successfully', lobby });
+    });
 };
 
 const joinLobbyHandler = (req, res) => {
-  const userId = req.user.id;
-  const { code, password } = req.body;
+    const userId = req.user.id;
+    const { code, password } = req.body;
 
-  if (!code) {
-      return res.status(400).json({ message: 'Lobby code is required' });
-  }
+    if (!code) {
+        return res.status(400).json({ message: 'Lobby code is required' });
+    }
 
-  lobbyStore.joinLobby(userId, code, { password, isInvite: false }, (err, lobby) => {
-      if (err) {
-          return res.status(400).json({ message: err.message });
-      }
-      res.status(200).json({ message: 'Joined lobby successfully', lobby });
-  });
+    lobbyManager.joinLobby(userId, code, { password, isInvite: false }, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Joined lobby successfully', lobby });
+    });
 };
 
 const leaveLobbyHandler = (req, res) => {
     const userId = req.user.id;
 
-    lobbyStore.leaveLobby(userId, (err, lobby) => {
+    lobbyManager.leaveLobby(userId, (err, lobby) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -76,7 +78,7 @@ const leaveLobbyHandler = (req, res) => {
 const deleteLobbyHandler = (req, res) => {
     const userId = req.user.id;
 
-    lobbyStore.deleteLobby(userId, (err, success) => { // success parametresi eklendi
+    lobbyManager.deleteLobby(userId, (err, success) => { // success parametresi eklendi
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -93,7 +95,7 @@ const updateLobbyHandler = (req, res) => {
     const userId = req.user.id;
     const updates = req.body;
 
-    lobbyStore.updateLobby(userId, updates, (err, lobby) => {
+    lobbyManager.updateLobby(userId, updates, (err, lobby) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -104,7 +106,7 @@ const updateLobbyHandler = (req, res) => {
 const getUserLobbyHandler = (req, res) => {
     const userId = req.user.id; // Assuming user ID is available in req.user
 
-    lobbyStore.getUserLobby(userId, (err, lobby) => {
+    lobbyManager.getUserLobby(userId, (err, lobby) => {
         if (err) {
             return res.status(500).json({ message: 'Internal server error' });
         }
@@ -113,7 +115,7 @@ const getUserLobbyHandler = (req, res) => {
 };
 
 const listLobbiesHandler = (req, res) => {
-    lobbyStore.getLobbies((err, lobbies) => {
+    lobbyManager.getLobbies((err, lobbies) => {
         if (err) {
             return res.status(500).json({ message: 'Internal server error' });
         }
@@ -128,81 +130,81 @@ const listLobbiesHandler = (req, res) => {
 };
 
 const inviteFriendToLobbyHandler = (req, res) => {
-  const inviterUserId = req.user.id;
-  const { invitedUserId, lobbyCode } = req.body;
+    const inviterUserId = req.user.id;
+    const { invitedUserId, lobbyCode } = req.body;
 
-  if (!invitedUserId || !lobbyCode) {
-      return res.status(400).json({ message: 'Invited user ID and lobby code are required' });
-  }
+    if (!invitedUserId || !lobbyCode) {
+        return res.status(400).json({ message: 'Invited user ID and lobby code are required' });
+    }
 
-  lobbyStore.getUserLobby(invitedUserId, (err, existingLobby) => { // Check if invited user is already in a lobby
-      if (err) {
-          console.error("Error getting invited user's lobby:", err);
-          return res.status(500).json({ message: 'Internal server error' });
-      }
+    lobbyManager.getUserLobby(invitedUserId, (err, existingLobby) => { // Check if invited user is already in a lobby
+        if (err) {
+            console.error("Error getting invited user's lobby:", err);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
 
-      if (existingLobby) {
-          return res.status(400).json({ message: 'Invited user is already in a lobby' });
-      }
+        if (existingLobby) {
+            return res.status(400).json({ message: 'Invited user is already in a lobby' });
+        }
 
-      lobbyStore.sendLobbyInvite(inviterUserId, invitedUserId, lobbyCode, (err, invitation) => {
-          if (err) {
-              return res.status(400).json({ message: err.message });
-          }
-          res.status(200).json({ message: 'Lobby invitation sent successfully', invitation });
-      });
-  });
+        lobbyInvitationManager.sendLobbyInvite(inviterUserId, invitedUserId, lobbyCode, (err, invitation) => {
+            if (err) {
+                return res.status(400).json({ message: err.message });
+            }
+            res.status(200).json({ message: 'Lobby invitation sent successfully', invitation });
+        });
+    });
 };
 
 
 const getLobbyInvitesHandler = (req, res) => {
-  const userId = req.user.id;
+    const userId = req.user.id;
 
-  lobbyStore.getLobbyInvitesForUser(userId, (err, invitations) => {
-      if (err) {
-          return res.status(500).json({ message: 'Internal server error' });
-      }
-      res.status(200).json({ invitations });
-  });
+    lobbyInvitationManager.getLobbyInvitesForUser(userId, (err, invitations) => {
+        if (err) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.status(200).json({ invitations });
+    });
 };
 
 const acceptLobbyInviteHandler = (req, res) => {
-  const userId = req.user.id;
-  const { lobbyCode } = req.body;
+    const userId = req.user.id;
+    const { lobbyCode } = req.body;
 
-  if (!lobbyCode) {
-      return res.status(400).json({ message: 'Lobby code is required to accept invitation' });
-  }
+    if (!lobbyCode) {
+        return res.status(400).json({ message: 'Lobby code is required to accept invitation' });
+    }
 
-  lobbyStore.acceptLobbyInvite(userId, lobbyCode, (err, lobby) => {
-      if (err) {
-          return res.status(400).json({ message: err.message });
-      }
-      res.status(200).json({ message: 'Lobby invitation accepted. Joined lobby successfully', lobby });
-  });
+    lobbyInvitationManager.acceptLobbyInvite(userId, lobbyCode, (err, lobby) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Lobby invitation accepted. Joined lobby successfully', lobby });
+    });
 };
 
 
 const rejectLobbyInviteHandler = (req, res) => {
-  const userId = req.user.id;
-  const { lobbyCode } = req.body;
+    const userId = req.user.id;
+    const { lobbyCode } = req.body;
 
-  if (!lobbyCode) {
-      return res.status(400).json({ message: 'Lobby code is required to reject invitation' });
-  }
+    if (!lobbyCode) {
+        return res.status(400).json({ message: 'Lobby code is required to reject invitation' });
+    }
 
-  lobbyStore.rejectLobbyInvite(userId, lobbyCode, (err, result) => {
-      if (err) {
-          return res.status(400).json({ message: err.message });
-      }
-      res.status(200).json({ message: 'Lobby invitation rejected' });
-  });
+    lobbyInvitationManager.rejectLobbyInvite(userId, lobbyCode, (err, result) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'Lobby invitation rejected' });
+    });
 };
 
 const getLobbyInvitationCountHandler = (req, res) => {
     const userId = req.user.id;
 
-    lobbyStore.getInvitationCountForUser(userId, (err, invitationCount) => {
+    lobbyInvitationManager.getInvitationCountForUser(userId, (err, invitationCount) => {
         if (err) {
             return res.status(500).json({ message: 'Internal server error' });
         }
@@ -213,7 +215,7 @@ const getLobbyInvitationCountHandler = (req, res) => {
 const startGameHandler = (req, res) => {
     const userId = req.user.id;
 
-    lobbyStore.getUserLobby(userId, (err, lobby) => {
+    lobbyManager.getUserLobby(userId, (err, lobby) => { // Still using lobbyManager to get user lobby
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -230,7 +232,7 @@ const startGameHandler = (req, res) => {
             return res.status(400).json({ message: 'Game already started' });
         }
 
-        lobbyStore.startGame(lobby.code, (err, updatedLobby) => {
+        lobbyGameManager.startGame(lobby.code, (err, updatedLobby) => {
             if (err) {
                 return res.status(400).json({ message: err.message });
             }
@@ -252,7 +254,7 @@ const drawNumberHandler = (req, res) => {
     const lobbyCode = req.params.lobbyCode;
     const websocketManager = req.app.get('WebsocketManager');
 
-    lobbyStore.drawNumber(lobbyCode, userId, (err, lobby, drawnNumber) => {
+    lobbyGameManager.drawNumber(lobbyCode, userId, (err, lobby, drawnNumber) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -277,7 +279,7 @@ const markNumberHandler = (req, res) => {
         return res.status(400).json({ message: 'Geçersiz sayı formatı' });
     }
 
-    lobbyStore.markNumberOnCard(lobbyCode, userId, number, (err, lobby, isBingo, markedNumber, cellPosition) => {
+    lobbyGameManager.markNumberOnCard(lobbyCode, userId, number, (err, lobby, isBingo, markedNumber, cellPosition) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
