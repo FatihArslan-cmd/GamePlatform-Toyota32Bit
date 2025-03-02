@@ -51,9 +51,9 @@ function BingoGameWebsocket(ws, request) {
                 if (gameDataErr) {
                     console.error("Oyun verisi alınırken hata:", gameDataErr);
                     ws.send(JSON.stringify({ type: 'error', message: 'Oyun verisi alınamadı' }));
-                    return; // WebSocket bağlantısını kapatma, sadece veri göndermeyi durdur
+                    return;
                 }
-                ws.send(JSON.stringify({ type: 'game-data', gameData })); // 'game-data' tipinde gönder
+                ws.send(JSON.stringify({ type: 'game-data', gameData }));
             });
 
 
@@ -67,11 +67,35 @@ function BingoGameWebsocket(ws, request) {
                                     ws.send(JSON.stringify({ type: 'error', message: drawErr.message }));
                                     return;
                                 }
-                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'number-drawn', number: drawnNumber, drawnNumbers: updatedLobby.drawnNumbers }); // Yeni sayı çekildi bilgisini yayınla
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'number-drawn', number: drawnNumber, drawnNumbers: updatedLobby.drawnNumbers });
                             });
                         } else {
                             ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi sayı çekebilir.' }));
                         }
+                    } else if (parsedMessage.type === 'mark-number') { // Yeni mesaj tipi: mark-number
+                        const numberToMark = parsedMessage.number;
+                        if (typeof numberToMark !== 'number') {
+                            ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz sayı formatı' }));
+                            return;
+                        }
+                        lobbyStore.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition) => {
+                            if (markErr) {
+                                ws.send(JSON.stringify({ type: 'error', message: markErr.message }));
+                                return;
+                            }
+
+                            BingoGameWebsocket.broadcast(lobbyCode, {
+                                type: 'number-marked', // Sayı işaretlendi mesajı
+                                userId: userId,
+                                number: markedNumber,
+                                cellPosition: cellPosition,
+                                markedNumbers: updatedLobby.markedNumbers, // Tüm oyuncuların işaretlediği numaraları gönder
+                            });
+
+                            if (isBingo) {
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'bingo', userId: userId }); // Bingo mesajı
+                            }
+                        });
                     }
                     // ... Diğer mesaj tipleri buraya eklenebilir ...
                 } catch (e) {

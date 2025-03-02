@@ -248,9 +248,9 @@ const startGameHandler = (req, res) => {
 };
 
 const drawNumberHandler = (req, res) => {
-    const userId = req.user.id; // Although userId is not used in drawNumber logic, it's kept for consistency or potential future use.
-    const lobbyCode = req.params.lobbyCode; // lobbyCode'u params'tan alıyoruz, route'da tanımlayacağız
-    const websocketManager = req.app.get('WebsocketManager'); // WebsocketManager'ı alın
+    const userId = req.user.id;
+    const lobbyCode = req.params.lobbyCode;
+    const websocketManager = req.app.get('WebsocketManager');
 
     lobbyStore.drawNumber(lobbyCode, userId, (err, lobby, drawnNumber) => {
         if (err) {
@@ -264,6 +264,40 @@ const drawNumberHandler = (req, res) => {
         }
 
         res.status(200).json({ message: 'Sayı çekildi', drawnNumber: drawnNumber, drawnNumbers: lobby.drawnNumbers, lobby });
+    });
+};
+
+const markNumberHandler = (req, res) => {
+    const userId = req.user.id;
+    const lobbyCode = req.params.lobbyCode;
+    const { number } = req.body; // İşaretlenecek sayıyı body'den alıyoruz
+    const websocketManager = req.app.get('WebsocketManager');
+
+    if (typeof number !== 'number') {
+        return res.status(400).json({ message: 'Geçersiz sayı formatı' });
+    }
+
+    lobbyStore.markNumberOnCard(lobbyCode, userId, number, (err, lobby, isBingo, markedNumber, cellPosition) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+
+        if (websocketManager) {
+            websocketManager.broadcastBingoGameMessage(lobbyCode, {
+                type: 'number-marked',
+                userId: userId,
+                number: markedNumber,
+                cellPosition: cellPosition,
+                markedNumbers: lobby.markedNumbers, // Tüm oyuncuların işaretlediği numaraları yayınla
+            });
+            if (isBingo) {
+                websocketManager.broadcastBingoGameMessage(lobbyCode, { type: 'bingo', userId: userId }); // Bingo mesajını yayınla
+            }
+        } else {
+            console.error("websocketManager tanımlı değil, WebSocket yayın çalışmayacak.");
+        }
+
+        res.status(200).json({ message: 'Sayı işaretlendi', isBingo: isBingo, markedNumber: markedNumber, cellPosition: cellPosition });
     });
 };
 
@@ -282,6 +316,6 @@ module.exports = {
     rejectLobbyInviteHandler,
     getLobbyInvitationCountHandler,
     startGameHandler,
-    drawNumberHandler, // drawNumberHandler moved outside and exported
-
+    drawNumberHandler,
+    markNumberHandler
 };

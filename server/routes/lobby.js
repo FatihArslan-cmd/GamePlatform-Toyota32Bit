@@ -11,9 +11,10 @@ const {
   getLobbyInvitesHandler,
   acceptLobbyInviteHandler,
   rejectLobbyInviteHandler,
-  drawNumberHandler,
   getLobbyInvitationCountHandler,
   startGameHandler,
+  drawNumberHandler,
+  markNumberHandler, // Yeni eklenen handler'ı import et
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -34,6 +35,7 @@ router.post('/invitations/accept', authenticate, acceptLobbyInviteHandler);
 router.post('/invitations/reject', authenticate, rejectLobbyInviteHandler);
 router.get('/invitations/count', authenticate, getLobbyInvitationCountHandler);
 
-router.post('/lobbies/:lobbyCode/draw-number', authenticate, drawNumberHandler); // Yeni eklenen route
+router.post('/lobbies/:lobbyCode/draw-number', authenticate, drawNumberHandler);
+router.post('/lobbies/:lobbyCode/mark-number', authenticate, markNumberHandler); // Yeni eklenen route
 
 module.exports = router;
