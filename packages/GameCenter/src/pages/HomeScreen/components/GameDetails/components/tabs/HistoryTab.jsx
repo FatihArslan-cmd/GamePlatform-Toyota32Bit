@@ -1,20 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Card, Text, IconButton } from 'react-native-paper';
 import { styles } from '../../styles';
 import FadeIn from '../../../../../../components/Animations/FadeInAnimation';
-const mockHistory = [
-  { id: 1, date: "2024-01-05", result: "Won", score: 2500, duration: "15m" },
-  { id: 2, date: "2024-01-04", result: "Lost", score: 1800, duration: "12m" },
-  { id: 3, date: "2024-01-03", result: "Won", score: 3000, duration: "20m" },
-];
+import lobbyService from '../../service/service';
+import formatDate from '../../../../../../utils/FormatDate';
+import LoadingIndicator from '../../../../../../components/LoadingIndicator';
+import ErrorComponents from '../../../../../../components/ErrorComponents';
 
 export default function HistoryTab() {
+  const [gameHistory, setGameHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchGameHistory = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const historyData = await lobbyService.getGameHistory();
+        setGameHistory(historyData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGameHistory();
+  }, []);
+
+  if (loading) {
+    return <LoadingIndicator />
+     
+  }
+
+  if (error) {
+    return <ErrorComponents />;
+  }
+
   return (
     <FadeIn>
       <View style={styles.historyContainer}>
-        {mockHistory.map((game) => (
-          <GameHistoryCard key={game.id} game={game} />
+        {gameHistory.map((game, index) => (
+          <GameHistoryCard key={index} game={game} />
         ))}
       </View>
     </FadeIn>
@@ -22,26 +51,30 @@ export default function HistoryTab() {
 }
 
 function GameHistoryCard({ game }) {
+  const isWon = game.result === 'Bingo Kazandı';
+  const gameDate = formatDate(game.gameEndTime);
+  const gameTime = formatDate(game.gameEndTime, true).split(' ')[1]; // Extract time part
+
   return (
     <Card style={styles.historyCard}>
       <Card.Content style={styles.historyContent}>
         <View style={styles.historyLeft}>
           <Text style={[
             styles.resultText,
-            { color: game.result === 'Won' ? '#4CAF50' : '#F44336' }
+            { color: isWon ? '#4CAF50' : '#F44336' }
           ]}>
             {game.result}
           </Text>
-          <Text style={styles.dateText}>{game.date}</Text>
+          <Text style={styles.dateText}>{gameDate}</Text>
         </View>
         <View style={styles.historyRight}>
           <View style={styles.historyInfoItem}>
             <IconButton icon="trophy" size={20} color="#4a148c" />
-            <Text style={styles.scoreText}>{game.score}</Text>
+            <Text style={styles.scoreText}>{game.lobbyName}</Text>
           </View>
           <View style={styles.historyInfoItem}>
             <IconButton icon="clock" size={20} color="#4a148c" />
-            <Text style={styles.durationText}>{game.duration}</Text>
+            <Text style={styles.durationText}>{gameTime}</Text>
           </View>
         </View>
       </Card.Content>

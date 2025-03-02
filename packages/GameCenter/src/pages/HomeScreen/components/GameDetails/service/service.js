@@ -53,6 +53,27 @@ const lobbyService = {
       }
     }
   },
+  getGameHistory: async () => { // Add getGameHistory function
+    try {
+      const token = await getToken();
+      const response = await api.get(`/lobby/game/history`, { // GET request to get game history
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data; // Return the game history data from the response
+    } catch (error) {
+      console.error('Error fetching game history:', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        // Re-throw with the backend error message
+        throw new Error(error.response.data.message);
+      } else {
+        // Re-throw with a generic message if backend message is not available
+        throw new Error("Failed to fetch game history. Please try again.");
+      }
+    }
+  },
 };
 
 export default lobbyService;
