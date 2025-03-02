@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions,StatusBar } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Animated, {
   FadeIn,

@@ -6,7 +6,7 @@ import { UserProvider } from './context/UserContext.jsx';
 import { ToastProvider } from './context/ToastService.jsx';
 import { createDefaultChannel, requestUserPermission, setupForegroundNotifications, setupBackgroundNotifications, checkInitialNotification } from './utils/Firebase/notificationHandlers.js';
 import { LogBox } from 'react-native';
-import { BingoWebSocketProvider } from './context/BingoWebSocket.jsx';
+import { BingoWebSocketProvider } from './context/BingoWebSocket/BingoWebSocket.jsx';
 
 const App = () => {
   LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,7 +12,7 @@ import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const CountDownSplashScreen = ({ onComplete }) => {
+const CountDownSplashScreen = memo(({ onComplete }) => { // 1. Memoize the component
   const [count, setCount] = useState(5);
   const [started, setStarted] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -44,9 +44,7 @@ const CountDownSplashScreen = ({ onComplete }) => {
       }
       setStarted(true);
     });
-
-
-  }, []);
+  }, []); // 2. Empty dependency array for initial animation effect
 
   // Geri sayım efekti
   useEffect(() => {
@@ -75,7 +73,7 @@ const CountDownSplashScreen = ({ onComplete }) => {
         // Delay navigation to see the animation
         setTimeout(() => {
           navigation.navigate('GameScreen');
-        }, 500); // Wait for 1 second after animation completes
+        }, 500);
       });
       setCount(0);
       return;
@@ -105,9 +103,9 @@ const CountDownSplashScreen = ({ onComplete }) => {
     ]).start(() => {
       setCount(count - 1);
     });
-  }, [count, started, navigation, onComplete]);
+  }, [count, started, navigation, onComplete]); // 3. Dependency array is already optimized
 
-  // Animasyon enterpolasyonları
+  // Animasyon enterpolasyonları - These are already memoized by useRef and closure scope
   const countScale = animatedValue.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [1, 1.2, 1],
@@ -218,7 +216,7 @@ const CountDownSplashScreen = ({ onComplete }) => {
       </Animated.View>
     </View>
   );
-};
+}); // 1. Memoize the component
 
 const styles = StyleSheet.create({
   container: {
@@ -292,7 +290,7 @@ const styles = StyleSheet.create({
   readyText: {
     fontSize: 32,
     color: 'white',
-    fontFamily: 'Orbitron-Bold',
+    fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 6,
     textTransform: 'uppercase',
     marginTop: 20,
@@ -305,7 +303,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
 });
 
 export default CountDownSplashScreen;

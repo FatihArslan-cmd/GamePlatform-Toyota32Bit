@@ -303,6 +303,22 @@ const markNumberHandler = (req, res) => {
     });
 };
 
+const getGameHistoryHandler = async (req, res) => {
+    try {
+        const userId = req.user.id; // Kullanıcı kimliğini doğrulanmış istekten al
+        lobbyGameManager.getGameHistoryForUser(userId, (err, gameHistory) => {
+            if (err) {
+                console.error('Failed to get game history:', err);
+                return res.status(500).json({ message: 'Oyun geçmişi alınamadı', error: err.message });
+            }
+            res.status(200).json(gameHistory);
+        });
+    } catch (error) {
+        console.error('Error in getGameHistoryHandler:', error);
+        res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+    }
+};
+
 
 module.exports = {
     createLobbyHandler,
@@ -319,5 +335,6 @@ module.exports = {
     getLobbyInvitationCountHandler,
     startGameHandler,
     drawNumberHandler,
-    markNumberHandler
+    markNumberHandler,
+    getGameHistoryHandler // Export the new handler
 };

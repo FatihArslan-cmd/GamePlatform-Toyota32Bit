@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import lobbyService from '../../services/lobbyService';
 import { ToastService } from '../../../../../../context/ToastService';
-import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket'; // Import the hook
+import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket/BingoWebSocket'; // Import the hook
 
 const useLobbyActions = (onLobbyAction) => {
   const { closeWebSocket } = useBingoWebSocket(); // Get closeWebSocket function from context

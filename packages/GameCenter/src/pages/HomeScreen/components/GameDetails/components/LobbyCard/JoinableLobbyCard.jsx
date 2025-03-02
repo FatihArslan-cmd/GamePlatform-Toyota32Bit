@@ -8,7 +8,7 @@ import JoinableLobbyCardHeaderActions from './JoinableLobbyCardHeaderActions';
 import JoinableLobbyCardContent from './JoinableLobbyCardContent';
 import lobbyService from '../../../Header/services/lobbyService';
 import JoinLobbyModalContent from './JoinLobbyModalContent'; // Import the new component
-import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket';
+import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket/BingoWebSocket';
 
 const JoinableLobbyCard = ({ lobby}) => {
   const [joinModalVisible, setJoinModalVisible] = useState(false);

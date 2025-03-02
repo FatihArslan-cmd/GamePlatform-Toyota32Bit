@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { storage } from '../utils/storage';
-import { useBingoWebSocket } from './BingoWebSocket';
+import { useBingoWebSocket } from './BingoWebSocket/BingoWebSocket';
+import { ToastService } from './ToastService';
+
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -13,6 +15,7 @@ export const UserProvider = ({ children }) => {
       setToken(newToken); // Token'ı da state'e kaydet
       await storage.set('user', JSON.stringify(userData));
       await storage.set('token', newToken); // Token'ı da storage'e kaydet
+      ToastService.show('success', 'Logged in successfully');
   };
 
   const logoutUser = async () => {
@@ -21,6 +24,7 @@ export const UserProvider = ({ children }) => {
     await storage.delete('user');
     await storage.delete('token'); // Token'ı da storage'den sil
     closeWebSocket(); // Close the WebSocket connection
+    ToastService.show('success', 'Logged out successfully');
   };
 
   useEffect(() => {

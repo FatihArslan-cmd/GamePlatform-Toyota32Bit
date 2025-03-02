@@ -17,7 +17,6 @@ import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 import useDisableBackButton from './hooks/useDisableBackButton';
 import { hideNavigationBar } from '../../utils/NavBarManager';
 import useHeaderAnimation from './hooks/useHeaderAnimation';
-import { ToastService } from '../../context/ToastService';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
@@ -51,13 +50,6 @@ const HomeScreen = () => {
     };
 
     loadGames();
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      ToastService.show('success', 'Successfully logged in!');
-    }, 1250);
-    return () => clearTimeout(timer);
   }, []);
 
   useDisableBackButton();

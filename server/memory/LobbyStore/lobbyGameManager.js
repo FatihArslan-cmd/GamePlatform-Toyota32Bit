@@ -1,6 +1,6 @@
-const { sessionStore } = require('../../config/sessionConfig');
 const generateTombalaCard = require('../../utils/generateTombalaCard'); // Yeni dosya oluşturulacak
 const lobbyManager = require('./lobbyManager'); // Import lobbyManager to use getLobbiesFromSession and saveLobbiesToSession
+const { sessionStore } = require('../../config/sessionConfig');
 
 const lobbyGameManager = {
     startGame: (lobbyCode, callback) => {
@@ -23,11 +23,11 @@ const lobbyGameManager = {
             lobby.currentNumber = null;
             lobby.numberPool = Array.from({ length: 90 }, (_, i) => i + 1);
             lobby.bingoCards = {};
-            lobby.markedNumbers = {}; // Oyuncuların işaretlediği numaraları tutacak obje eklendi. UserID -> {row-col: true} şeklinde
+            lobby.markedNumbers = {};
 
             lobby.members.forEach(member => {
                 lobby.bingoCards[member.id] = generateTombalaCard();
-                lobby.markedNumbers[member.id] = {}; // Her oyuncu için işaretli numaralar objesi oluşturuluyor
+                lobby.markedNumbers[member.id] = {};
             });
 
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
@@ -52,7 +52,15 @@ const lobbyGameManager = {
                 return callback(new Error('Sadece oda sahibi sayı çekebilir'));
             }
             if (lobby.numberPool.length === 0) {
-                return callback(new Error('Çekilecek sayı kalmadı'));
+                lobbyGameManager.recordGameHistory(lobbyCode, lobbies, 'Oyunu Kaybetti', (historyErr) => { // Record loss for all users
+                    if (historyErr) console.error("Oyun geçmişi kaydetme hatası:", historyErr);
+                    lobby.gameStarted = false; // Oyun bitti flag'i ekleyelim.
+                    lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
+                        if (saveErr) return callback(saveErr);
+                        callback(new Error('Çekilecek sayı kalmadı'), lobby, null, true); // isGameOver true olarak işaretlendi
+                    });
+                });
+                return; // early return to prevent further processing
             }
 
             const randomIndex = Math.floor(Math.random() * lobby.numberPool.length);
@@ -62,7 +70,7 @@ const lobbyGameManager = {
 
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
-                callback(null, lobby, drawnNumber);
+                callback(null, lobby, drawnNumber, false); // isGameOver false
             });
         });
     },
@@ -92,31 +100,42 @@ const lobbyGameManager = {
                         break;
                     }
                 }
-                if (cellPosition) break; // Sayı bulunduysa döngüden çık
+                if (cellPosition) break;
             }
 
             if (!cellPosition) {
-                return callback(new Error('Sayı kullanıcının kartında bulunamadı')); // Sayı kartta yoksa hata
+                return callback(new Error('Sayı kullanıcının kartında bulunamadı'));
             }
 
             if (lobby.markedNumbers[userId][cellPosition]) {
-                return callback(new Error('Bu sayı zaten işaretli')); // Sayı zaten işaretliyse hata dön
+                return callback(new Error('Bu sayı zaten işaretli'));
             }
 
-            lobby.markedNumbers[userId][cellPosition] = true; // Sayıyı işaretle
+            lobby.markedNumbers[userId][cellPosition] = true;
 
+            const isBingo = lobbyGameManager.checkBingo(card, lobby.markedNumbers[userId]);
 
-            const isBingo = lobbyGameManager.checkBingo(card, lobby.markedNumbers[userId]); // Bingo kontrolü
-            lobbyManager.saveLobbiesToSession(lobbies, (err) => {
-                if (err) return callback(err);
-                callback(null, lobby, isBingo, number, cellPosition); // isBingo ve işaretlenen sayı ve pozisyonu callback ile geri döndür
-            });
+            if (isBingo) {
+                lobbyGameManager.recordGameHistory(lobbyCode, lobbies, 'Bingo Kazandı', (historyErr) => { // Record win for bingo player
+                    if (historyErr) console.error("Oyun geçmişi kaydetme hatası:", historyErr);
+                    lobby.gameStarted = false; // Oyun bitti flag'i ekleyelim.
+                    lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
+                        if (saveErr) return callback(saveErr);
+                        callback(null, lobby, isBingo, number, cellPosition);
+                    });
+                }, userId); // Pass userId of bingo player
+            } else {
+                lobbyManager.saveLobbiesToSession(lobbies, (err) => {
+                    if (err) return callback(err);
+                    callback(null, lobby, isBingo, number, cellPosition);
+                });
+            }
         });
     },
 
     checkBingo: (card, markedNumbersForUser) => {
         const markedPositions = Object.keys(markedNumbersForUser);
-        if (markedPositions.length < 15) return false; // 15 sayı işaretlenmeden bingo olmaz
+        if (markedPositions.length < 15) return false;
 
         let markedCount = 0;
         for (let row = 0; row < card.length; row++) {
@@ -126,9 +145,8 @@ const lobbyGameManager = {
                 }
             }
         }
-        return markedCount === 15; // Karttaki tüm sayılar işaretliyse bingo
+        return markedCount === 15;
     },
-
 
     getLobbyGameData: (lobbyCode, userId, callback) => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
@@ -144,9 +162,55 @@ const lobbyGameManager = {
                 drawnNumbers: lobby.drawnNumbers,
                 currentNumber: lobby.currentNumber,
                 bingoCard: lobby.bingoCards ? lobby.bingoCards[userId] || null : null,
-                markedNumbers: lobby.markedNumbers ? (lobby.markedNumbers[userId] || {}) : {}, // markedNumbers için kontrol eklendi
+                markedNumbers: lobby.markedNumbers ? (lobby.markedNumbers[userId] || {}) : {},
             };
             callback(null, gameData);
+        });
+    },
+
+    recordGameHistory: (lobbyCode, lobbies, resultMessage, callback, bingoUserId = null) => {
+        const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
+        if (!lobby) {
+            return callback(new Error('Lobby not found for game history recording'));
+        }
+
+        const gameEndTime = new Date();
+
+        lobby.members.forEach(member => {
+            sessionStore.get(member.id, (err, userSession) => {
+                if (err) {
+                    console.error(`Session error getting user ${member.id} for game history:`, err);
+                    return; // Continue to next member even if one fails
+                }
+                const gameHistory = userSession?.gameHistory || [];
+                let result = 'Oyunu Kaybetti'; // Default lose for everyone
+                if (bingoUserId && member.id === bingoUserId && resultMessage === 'Bingo Kazandı') {
+                    result = 'Bingo Kazandı'; // Override to win only for bingo user
+                } else if (resultMessage === 'Oyunu Kaybetti') {
+                    result = 'Oyunu Kaybetti'; // Ensure lose for non-bingo players when game over by number pool
+                }
+
+                gameHistory.push({
+                    lobbyCode: lobbyCode,
+                    lobbyName: lobby.lobbyName,
+                    gameEndTime: gameEndTime,
+                    result: result
+                });
+                sessionStore.set(member.id, { ...userSession, gameHistory: gameHistory }, (setErr) => {
+                    if (setErr) {
+                        console.error(`Session error saving game history for user ${member.id}:`, setErr);
+                    }
+                });
+            });
+        });
+        callback(null);
+    },
+
+    getGameHistoryForUser: (userId, callback) => {
+        sessionStore.get(userId, (err, userSession) => {
+            if (err) return callback(err);
+            const gameHistory = userSession?.gameHistory || [];
+            callback(null, gameHistory);
         });
     },
 };
