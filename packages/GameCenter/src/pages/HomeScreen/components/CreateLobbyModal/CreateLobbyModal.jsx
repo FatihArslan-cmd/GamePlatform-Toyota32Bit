@@ -9,7 +9,7 @@ import PasswordInput from './components/PasswordInput';
 import InvitationLink from './components/InvitationLink';
 import { ToastService } from '../../../../context/ToastService';
 import { createLobby } from './service/service';
-import { useBingoWebSocket } from '../../../../context/BingoWebSocket';
+import { useBingoWebSocket } from '../../../../context/BingoWebSocket/BingoWebSocket';
 
 const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
@@ -72,7 +72,6 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
             connectWebSocket(data.lobby.code);
             setCode(`${data.lobby.code}`);
             setIsCodeGenerated(true);
-            ToastService.show("success", "Lobby created successfully!");
         } catch (error) {
             ToastService.show("error", error.message);
         }

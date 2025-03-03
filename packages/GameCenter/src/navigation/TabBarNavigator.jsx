@@ -7,7 +7,7 @@ import Lottie from 'lottie-react-native';
 import HomeScreen from '../pages/HomeScreen/index';
 import ProfileScreen from '../pages/ProfileScreen/index';
 import CommunityScreen from '../pages/CommunityScreen/index';
-import { useBingoWebSocket } from '../context/BingoWebSocket';
+import { useBingoWebSocket } from '../context/BingoWebSocket/BingoWebSocket';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);

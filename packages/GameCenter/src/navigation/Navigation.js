@@ -117,7 +117,7 @@ export default function Navigation() {
           />
            <Stack.Screen
             name="Rooms"
-            component={RoomsScreen}ProfileDetailsScreen
+            component={RoomsScreen}
             options={{
               animation: 'fade',
             }}

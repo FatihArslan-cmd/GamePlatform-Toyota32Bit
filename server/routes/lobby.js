@@ -1,3 +1,5 @@
+// router.js
+
 const express = require('express');
 const {
   createLobbyHandler,
@@ -13,6 +15,9 @@ const {
   rejectLobbyInviteHandler,
   getLobbyInvitationCountHandler,
   startGameHandler,
+  drawNumberHandler,
+  markNumberHandler,
+  getGameHistoryHandler, // Import the new handler
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -32,5 +37,9 @@ router.get('/invitations', authenticate, getLobbyInvitesHandler);
 router.post('/invitations/accept', authenticate, acceptLobbyInviteHandler);
 router.post('/invitations/reject', authenticate, rejectLobbyInviteHandler);
 router.get('/invitations/count', authenticate, getLobbyInvitationCountHandler);
+
+router.post('/:lobbyCode/draw-number', authenticate, drawNumberHandler);
+router.post('/:lobbyCode/mark-number', authenticate, markNumberHandler);
+router.get('/game/history', authenticate, getGameHistoryHandler); // Yeni eklenen route for game history
 
 module.exports = router;

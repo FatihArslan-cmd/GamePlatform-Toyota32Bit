@@ -1,129 +1,222 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import {
   View,
   StyleSheet,
   Animated,
   Dimensions,
-  ImageBackground,
 } from 'react-native';
-import { Text } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native';
+import { hideNavigationBar } from '../utils/NavBarManager';
+import { LinearGradient } from 'react-native-linear-gradient';
+import LottieView from 'lottie-react-native';
+
 const { width, height } = Dimensions.get('window');
 
-const CountDownSplashScreen = ({ onComplete }) => {
+const CountDownSplashScreen = memo(({ onComplete }) => { // 1. Memoize the component
   const [count, setCount] = useState(5);
   const [started, setStarted] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const navigation = useNavigation(); // Use navigation hook
+  const circleScaleAnim = useRef(new Animated.Value(0)).current;
+  const progressAnim = useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation();
+  const lottieRef = useRef(null);
 
-  // Fade in the splash screen when component mounts and start countdown immediately
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start(() => {
-      setStarted(true); // Start countdown after fade-in
-    });
-  }, []);
+    hideNavigationBar();
 
-  // Start countdown effect
+    // Başlangıç animasyonu
+    Animated.sequence([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(circleScaleAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      })
+    ]).start(() => {
+      if (lottieRef.current) {
+        lottieRef.current.play();
+      }
+      setStarted(true);
+    });
+  }, []); // 2. Empty dependency array for initial animation effect
+
+  // Geri sayım efekti
   useEffect(() => {
     if (!started) return;
 
-    if (count <= 1 && count > 0) { // Countdown finished at 1, trigger completion
+    // Geri sayım tamamlandığında
+    if (count <= 1 && count > 0) {
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 800,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
-          toValue: 1.2,
-          duration: 800,
+          toValue: 1.5,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(circleScaleAnim, {
+          toValue: 2,
+          duration: 1000,
           useNativeDriver: true,
         }),
       ]).start(() => {
         if (onComplete) onComplete();
-        navigation.navigate('GameScreen'); // Navigate to GameScreen on completion
+        // Delay navigation to see the animation
+        setTimeout(() => {
+          navigation.navigate('GameScreen');
+        }, 500);
       });
-      setCount(0); // Set count to 0 to prevent further countdowns
+      setCount(0);
       return;
     }
 
-    if (count <= 0) return; // Stop if count is 0 or less
+    if (count <= 0) return;
 
-    // Countdown animation
+    // Her saniye için progress animasyonu
+    Animated.timing(progressAnim, {
+      toValue: (5 - count + 1) / 5,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+
+    // Sayı değişimi animasyonu
     Animated.sequence([
       Animated.timing(animatedValue, {
         toValue: 1,
-        duration: 200,
+        duration: 300,
         useNativeDriver: true,
       }),
       Animated.timing(animatedValue, {
         toValue: 0,
-        duration: 800,
+        duration: 700,
         useNativeDriver: true,
       }),
     ]).start(() => {
       setCount(count - 1);
     });
-  }, [count, started, navigation, onComplete]); // Added navigation and onComplete to dependency array
+  }, [count, started, navigation, onComplete]); // 3. Dependency array is already optimized
 
-
-  // Animation interpolations
+  // Animasyon enterpolasyonları - These are already memoized by useRef and closure scope
   const countScale = animatedValue.interpolate({
     inputRange: [0, 0.5, 1],
-    outputRange: [1, 1.5, 1],
+    outputRange: [1, 1.2, 1],
   });
 
+  const countOpacity = animatedValue.interpolate({
+    inputRange: [0, 0.2, 0.8, 1],
+    outputRange: [1, 0.7, 0.7, 1],
+  });
+
+  const progressRotation = progressAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  const progressColor = progressAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ['#3498db', '#9b59b6', '#f39c12'],
+  });
+
+  const glowOpacity = animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0.3, 0.7, 0.3],
+  });
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        {
-          opacity: fadeAnim,
-          transform: [{ scale: scaleAnim }]
-        }
-      ]}
-    >
-      <ImageBackground
-        source={require('../locales/bgImages/purpleImage.jpg')} // Replace with your image path
-        style={styles.backgroundImage}
-      >
-        <View style={styles.content}>
-          {started && count > 0 && (
-            <>
-              <Animated.Text
-                style={[
-                  styles.countdownText,
-                  { transform: [{ scale: countScale }] }
-                ]}
-              >
-                {count}
-              </Animated.Text>
-              <Text style={styles.readyText}>Get ready for the game</Text>
-            </>
-          )}
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#0f0c29', '#302b63', '#24243e']}
+        style={styles.backgroundGradient}
+      />
 
-          {started && count <= 1 && count === 0 && ( // Display "Başla!" when countdown finishes
+      <Animated.View style={[styles.particleContainer, { opacity: fadeAnim }]}>
+        <LottieView
+          ref={lottieRef}
+          source={require('../locales/lottie/particles.json')}
+          style={styles.lottieAnimation}
+          autoPlay={false}
+          loop
+        />
+      </Animated.View>
+
+      <Animated.View
+        style={[
+          styles.content,
+          {
+            opacity: fadeAnim,
+            transform: [{ scale: scaleAnim }]
+          }
+        ]}
+      >
+        {started && count > 0 && (
+          <Animated.View
+            style={[
+              styles.circleContainer,
+              {
+                transform: [
+                  { scale: circleScaleAnim },
+                ]
+              }
+            ]}
+          >
+            <Animated.View
+              style={[
+                styles.outerRing,
+                {
+                  borderColor: progressColor,
+                  transform: [{ rotateZ: progressRotation }]
+                }
+              ]}
+            />
+
+            <View style={styles.innerRing} />
+
+            <Animated.View
+              style={[
+                styles.glowEffect,
+                {
+                  opacity: glowOpacity,
+                  backgroundColor: progressColor
+                }
+              ]}
+            />
+
             <Animated.Text
               style={[
-                styles.startedText,
-                { opacity: animatedValue }
+                styles.countdownText,
+                {
+                  opacity: countOpacity,
+                  transform: [{ scale: countScale }]
+                }
               ]}
             >
-              Başla!
+              {count}
             </Animated.Text>
-          )}
-        </View>
-      </ImageBackground>
-    </Animated.View>
+          </Animated.View>
+        )}
+
+        <Animated.Text
+          style={[
+            styles.readyText,
+            { opacity: fadeAnim }
+          ]}
+        >
+          Get Ready!
+        </Animated.Text>
+
+      </Animated.View>
+    </View>
   );
-};
+}); // 1. Memoize the component
 
 const styles = StyleSheet.create({
   container: {
@@ -131,46 +224,84 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
+  backgroundGradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  particleContainer: {
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  lottieAnimation: {
+    width: width * 1.5,
+    height: height * 1.5,
+    position: 'absolute',
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)', // Optional: Add a semi-transparent overlay for better text visibility
+  },
+  circleContainer: {
+    width: width * 0.6,
+    height: width * 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  outerRing: {
+    position: 'absolute',
     width: '100%',
     height: '100%',
+    borderRadius: width,
+    borderWidth: 8,
+    borderColor: '#9b59b6',
+    borderStyle: 'dashed',
+  },
+  innerRing: {
+    position: 'absolute',
+    width: '85%',
+    height: '85%',
+    borderRadius: width,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  glowEffect: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: width,
+    backgroundColor: '#9b59b6',
+    opacity: 0.3,
   },
   countdownText: {
-    fontSize: 120, // Increased size
+    fontSize: 120,
     color: 'white',
-    textShadowColor: 'rgba(32, 32, 32, 0.5)',
-    textShadowOffset: { width: 3, height: 3 }, // Increased shadow offset
-    textShadowRadius: 8, // Increased shadow radius
     fontFamily: 'Orbitron-ExtraBold',
+    textShadowColor: 'rgba(149, 128, 255, 0.8)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 20,
   },
   readyText: {
-    fontSize: 24,
+    fontSize: 32,
     color: 'white',
-    marginTop: 10,
     fontFamily: 'Orbitron-ExtraBold',
-    textShadowColor: 'rgba(6, 5, 5, 0.5)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
+    letterSpacing: 6,
+    textTransform: 'uppercase',
+    marginTop: 20,
+    textShadowColor: 'rgba(149, 128, 255, 0.8)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
   },
-  startedText: {
-    marginTop: 20, // Increased margin
-    fontSize: 70, // Increased size
-    fontWeight: 'bold',
-    color: '#FFDF00',
-    textShadowColor: 'rgba(0, 0, 0, 0.7)', // Increased shadow intensity
-    textShadowOffset: { width: 3, height: 3 }, // Increased shadow offset
-    textShadowRadius: 10, // Increased shadow radius
-    fontFamily: 'Orbitron-ExtraBold',
+  startTextContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

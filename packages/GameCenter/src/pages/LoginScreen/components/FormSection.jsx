@@ -14,7 +14,7 @@ import LoadingFullScreen from '../../../components/LoadingFullScreen';
 import { UserContext } from '../../../context/UserContext';
 import { deleteIfExists } from '../../../utils/api';
 import useModal from '../../../hooks/useModal';
-
+import { ToastService } from '../../../context/ToastService';
 
 const FormSection = () => {
     const { modalVisible, modalType, modalMessage, modalTitle, showModal, closeModal } = useModal();
@@ -64,6 +64,7 @@ const FormSection = () => {
         if (elapsedTime < minimumDelay) {
             await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsedTime));
         }
+        ToastService.show('success', 'Login successful');
         navigation.navigate('Tabs');
     };
 

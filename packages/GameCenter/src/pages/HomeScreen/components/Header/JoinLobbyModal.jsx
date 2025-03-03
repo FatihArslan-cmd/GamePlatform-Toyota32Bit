@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import lobbyService from './services/lobbyService';
 import { ToastService } from '../../../../context/ToastService';
-import { useBingoWebSocket } from '../../../../context/BingoWebSocket';
+import { useBingoWebSocket } from '../../../../context/BingoWebSocket/BingoWebSocket';
 
 
 const JoinLobbyModal = ({ visible, onDismiss }) => {
