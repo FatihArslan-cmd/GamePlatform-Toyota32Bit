@@ -1,9 +1,7 @@
-// WebsocketManager.js
 const WebSocket = require('ws');
 const FriendChatWebsocketHandler = require('./FriendChatWebsocket');
 const RoomChatWebsocketHandler = require('./RoomChatWebsocket');
 const BingoGameWebsocket = require('./BingoGameWebsocket');
-const { lobbySockets } = require('./BingoGameWebsocket'); // Import lobbySockets
 
 function WebsocketManager(server) {
     const wss = new WebSocket.Server({ server });

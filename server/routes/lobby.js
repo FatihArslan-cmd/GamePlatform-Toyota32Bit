@@ -17,7 +17,8 @@ const {
   startGameHandler,
   drawNumberHandler,
   markNumberHandler,
-  getGameHistoryHandler, // Import the new handler
+  getGameHistoryHandler,
+  endGameHandler // Import the new handler
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 
@@ -40,6 +41,7 @@ router.get('/invitations/count', authenticate, getLobbyInvitationCountHandler);
 
 router.post('/:lobbyCode/draw-number', authenticate, drawNumberHandler);
 router.post('/:lobbyCode/mark-number', authenticate, markNumberHandler);
-router.get('/game/history', authenticate, getGameHistoryHandler); // Yeni eklenen route for game history
+router.get('/game/history', authenticate, getGameHistoryHandler);
+router.post('/end-game', authenticate, endGameHandler); // :lobbyCode kaldırıldı
 
 module.exports = router;

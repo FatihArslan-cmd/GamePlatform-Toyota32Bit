@@ -14,10 +14,7 @@ const lobbyGameManager = {
             if (lobby.gameStarted) {
                 return callback(new Error('Oyun zaten başladı'));
             }
-            if (lobby.members.length < 2) {
-                return callback(new Error('Oyunu başlatmak için en az 2 oyuncu gerekli'));
-            }
-
+        
             lobby.gameStarted = true;
             lobby.drawnNumbers = [];
             lobby.currentNumber = null;
@@ -188,7 +185,10 @@ const lobbyGameManager = {
                     result = 'Bingo Kazandı'; // Override to win only for bingo user
                 } else if (resultMessage === 'Oyunu Kaybetti') {
                     result = 'Oyunu Kaybetti'; // Ensure lose for non-bingo players when game over by number pool
+                } else if (resultMessage === 'Oyun Bitti') {
+                    result = 'Oyun Bitti'; // For manual game end
                 }
+
 
                 gameHistory.push({
                     lobbyCode: lobbyCode,
@@ -211,6 +211,32 @@ const lobbyGameManager = {
             if (err) return callback(err);
             const gameHistory = userSession?.gameHistory || [];
             callback(null, gameHistory);
+        });
+    },
+
+    endGame: (lobbyCode, userId, callback) => {
+        lobbyManager.getLobbiesFromSession((err, lobbies) => {
+            if (err) return callback(err);
+
+            const lobby = Object.values(lobbies).find((l) => l.code === lobbyCode);
+            if (!lobby) {
+                return callback(new Error('Lobby bulunamadı'));
+            }
+            if (!lobby.gameStarted) {
+                return callback(new Error('Oyun henüz başlamadı veya zaten bitti')); // Oyun başlamadıysa veya zaten bittiyse de izin verilebilir, isteğe bağlı hata mesajı
+            }
+            if (lobby.ownerId !== userId) {
+                return callback(new Error('Sadece oda sahibi oyunu bitirebilir'));
+            }
+
+            lobbyGameManager.recordGameHistory(lobbyCode, lobbies, 'Oyun Bitti', (historyErr) => {
+                if (historyErr) console.error("Oyun geçmişi kaydetme hatası:", historyErr);
+                lobby.gameStarted = false;
+                lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
+                    if (saveErr) return callback(saveErr);
+                    callback(null, lobby);
+                });
+            });
         });
     },
 };

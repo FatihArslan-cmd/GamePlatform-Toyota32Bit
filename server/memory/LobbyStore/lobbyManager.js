@@ -1,5 +1,4 @@
 const { sessionStore } = require('../../config/sessionConfig');
-const users = require('../../utils/users'); // users objesini import et
 const { getUserDetails } = require('../../utils/getUserDetails'); // Import getUserDetails from usersUtil
 
 
