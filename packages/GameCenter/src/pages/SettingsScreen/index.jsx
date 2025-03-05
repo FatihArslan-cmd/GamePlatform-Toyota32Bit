@@ -7,28 +7,19 @@ import ProfileSection from './components/ProfileSection';
 import NotificationSection from './components/NotificationSection';
 import AboutSection from './components/AboutSection';
 import Header from './components/Header/Header';
-import ThemeSection from './components/ThemeSection';
-import BottomSheet from '../../components/themeswitch/BottomSheet';
 import LanguageSection from './components/LanguageSection';
 import { AnimatedSection } from '../../components/Animations/EnteringPageAnimation';
-
+import ThemeSection from './components/ThemeSection';
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
-  const bottomSheetRef = useRef(null);
   const colorScheme = useColorScheme();
-  const [theme, setTheme] = useState(colorScheme);
-  const [themeSwitch, setThemeSwitch] = useState('system');
 
-  const handleThemePress = () => {
-    bottomSheetRef.current?.expand();
-  };
+  
 
   return (
     <GestureHandlerRootView>
       <Surface style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.fixedHeader}>
             <Header />
-        </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scrollView}>
           <View style={styles.content}>
@@ -38,7 +29,7 @@ const SettingsScreen = () => {
             </AnimatedSection>
 
             <AnimatedSection index={1}>
-              <ThemeSection handleThemePress={handleThemePress} />
+              <ThemeSection />
             </AnimatedSection>
 
             <AnimatedSection index={2}>
@@ -52,17 +43,9 @@ const SettingsScreen = () => {
             <AnimatedSection index={4}>
               <AboutSection />
             </AnimatedSection>
-
-          </View>
+          </View>    
         </ScrollView>
-
-        <BottomSheet
-          ref={bottomSheetRef}
-          setTheme={setTheme}
-          theme={theme}
-          setThemeSwitch={setThemeSwitch}
-          themeSwitch={themeSwitch}
-        />
+       
       </Surface>
     </GestureHandlerRootView>
   );
@@ -77,14 +60,13 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex:2
+    zIndex:20
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
     paddingBottom: 32,
-    paddingTop: 70, // Add paddingTop to account for header height, adjust as needed. Assuming header height is around 70.
   },
   content: {
     flex: 1,
