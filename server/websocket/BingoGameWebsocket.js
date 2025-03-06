@@ -52,7 +52,8 @@ function BingoGameWebsocket(ws, request) {
             // Kullanıcı bağlandığında broadcast yap
             const userDetails = getUserDetails(userId);
             const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
-            BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-connected', userId: userId, username: username });
+            const profilePhoto = userDetails ? userDetails.profilePhoto : null; // Kullanıcının profil fotoğrafını al
+            BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-connected', userId: userId, username: username, profilePhoto: profilePhoto });
 
 
             // Kullanıcıya oyun verilerini gönder (kart, çekilen sayılar vb.)
@@ -119,7 +120,7 @@ function BingoGameWebsocket(ws, request) {
                             type: 'emoji-received', // Yeni mesaj tipi: emoji-received (istemcilere yayınlanacak)
                             userId: userId,
                             username: username, // Username'i de gönder
-                            emoji: emoji
+                            emoji: emoji,
                         });
                     } else if (parsedMessage.type === 'end-game') { // Yeni mesaj tipi: end-game
                         if (lobby.ownerId === userId) {
@@ -133,6 +134,27 @@ function BingoGameWebsocket(ws, request) {
                         } else {
                             ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi oyunu bitirebilir.' }));
                         }
+                    } else if (parsedMessage.type === 'chat-message') { // Yeni mesaj tipi: chat-message
+                        const messageText = parsedMessage.message;
+                        if (!messageText) {
+                            ws.send(JSON.stringify({ type: 'error', message: 'Mesaj içeriği boş olamaz' }));
+                            return;
+                        }
+
+                        const userDetails = getUserDetails(userId);
+                        const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
+                        const profilePhoto = userDetails ? userDetails.profilePhoto : null; // Kullanıcının profil fotoğrafını al
+
+                        const timestamp = new Date().toISOString(); // Anlık timestamp
+
+                        BingoGameWebsocket.broadcast(lobbyCode, {
+                            type: 'chat-message-received', // Yeni mesaj tipi: chat-message-received (istemcilere yayınlanacak)
+                            userId: userId,
+                            username: username,
+                            profilePhoto: profilePhoto,
+                            message: messageText,
+                            timestamp: timestamp
+                        });
                     }
                     // ... Diğer mesaj tipleri buraya eklenebilir ...
                 } catch (e) {
@@ -148,7 +170,7 @@ function BingoGameWebsocket(ws, request) {
                 // Kullanıcı ayrıldığında broadcast yap
                 const userDetails = getUserDetails(userId);
                 const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
-                BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-disconnected', userId: userId, username: username });
+                BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-disconnected', userId: userId, username: username});
 
 
                 if (lobbySockets[lobbyCode]) {

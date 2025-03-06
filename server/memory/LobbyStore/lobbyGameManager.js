@@ -48,13 +48,26 @@ const lobbyGameManager = {
             if (lobby.ownerId !== userId) {
                 return callback(new Error('Sadece oda sahibi sayı çekebilir'));
             }
+
+            // Validation: Check if 6 seconds have passed since the last draw
+            if (lobby.lastDrawTime) {
+                const lastDraw = new Date(lobby.lastDrawTime);
+                const now = new Date();
+                const timeDiff = now - lastDraw; // Difference in milliseconds
+                if (timeDiff < 6000) { // 6000 milliseconds = 6 seconds
+                    const secondsRemaining = Math.ceil((6000 - timeDiff) / 1000);
+                    return callback(new Error(`Lütfen ${secondsRemaining} saniye sonra tekrar deneyin`), secondsRemaining); // <----- Pass secondsRemaining here
+                }
+            }
+
+
             if (lobby.numberPool.length === 0) {
                 lobbyGameManager.recordGameHistory(lobbyCode, lobbies, 'Oyunu Kaybetti', (historyErr) => { // Record loss for all users
                     if (historyErr) console.error("Oyun geçmişi kaydetme hatası:", historyErr);
                     lobby.gameStarted = false; // Oyun bitti flag'i ekleyelim.
                     lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
                         if (saveErr) return callback(saveErr);
-                        callback(new Error('Çekilecek sayı kalmadı'), lobby, null, true); // isGameOver true olarak işaretlendi
+                        callback(new Error('Çekilecek sayı kalmadı'), null, true); // isGameOver true olarak işaretlendi
                     });
                 });
                 return; // early return to prevent further processing
@@ -64,6 +77,7 @@ const lobbyGameManager = {
             const drawnNumber = lobby.numberPool.splice(randomIndex, 1)[0];
             lobby.drawnNumbers.push(drawnNumber);
             lobby.currentNumber = drawnNumber;
+            lobby.lastDrawTime = new Date(); // Update last draw timestamp
 
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
@@ -71,7 +85,7 @@ const lobbyGameManager = {
             });
         });
     },
-
+    
     markNumberOnCard: (lobbyCode, userId, number, callback) => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) return callback(err);
