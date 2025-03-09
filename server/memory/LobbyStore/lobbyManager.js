@@ -138,8 +138,6 @@ const lobbyManager = {
             lobby.members.push(getUserDetails(userId));
             lobbies[lobby.ownerId] = lobby;
 
-            // Invitation temizleme işlemini burada yapıyoruz - Moved to lobbyInvitationManager.js for better separation of concerns
-            // sessionStore.get(userId, (sessionErr, userSession) => { ... });
 
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
@@ -323,7 +321,8 @@ const lobbyManager = {
                 const { password, ...sanitizedLobby } = lobby; // password'u çıkarıyoruz, hasPassword kalıyor
                 return {
                     ...sanitizedLobby,
-                    members: lobby.members // Üye listesi zaten detaylarla zenginleştirilmiş durumda
+                    members: lobby.members, // Üye listesi zaten detaylarla zenginleştirilmiş durumda
+                    bingoCards: lobby.bingoCards // bingoCards'ı da ekliyoruz
                 };
             });
             callback(null, lobbiesArray);
