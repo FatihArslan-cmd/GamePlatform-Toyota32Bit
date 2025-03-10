@@ -92,14 +92,17 @@ function BingoGameWebsocket(ws, request) {
                                 return;
                             }
 
+                            const markingUserDetails = getUserDetails(userId); // Kullanıcı detaylarını al
+
                             BingoGameWebsocket.broadcast(lobbyCode, {
                                 type: 'number-marked',
-                                userId: userId,
+                                username: markingUserDetails.username,
+                                profilePhoto: markingUserDetails.profilePhoto,
                                 number: markedNumber,
                                 cellPosition: cellPosition,
                                 markedNumbers: updatedLobby.markedNumbers,
-                                playerStats: playerStats // Oyuncu istatistiklerini broadcast mesajına ekle
-                            });
+                                playerStats: playerStats 
+                            });;
 
                             if (rowCompleted) {
                                 const userDetails = getUserDetails(userId);
