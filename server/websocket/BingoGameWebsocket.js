@@ -28,7 +28,7 @@ function BingoGameWebsocket(ws, request) {
 
         const userId = decoded.id;
 
-        lobbyManager.getLobbiesFromSession((sessionErr, lobbies) => { // Use lobbyManager for getLobbiesFromSession
+        lobbyManager.getLobbiesFromSession((sessionErr, lobbies) => {
             if (sessionErr) {
                 ws.send(JSON.stringify({ type: 'error', message: 'Sunucu hatası' }));
                 ws.close();
@@ -50,9 +50,8 @@ function BingoGameWebsocket(ws, request) {
             lobbySockets[lobbyCode].push(ws);
 
             const userDetails = getUserDetails(userId);
-            const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
-            const profilePhoto = userDetails ? userDetails.profilePhoto : null; // Kullanıcının profil fotoğrafını al
-            BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-connected', userId: userId, username: username, profilePhoto: profilePhoto });
+      
+            BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-connected', userId: userId, username: userDetails.username, profilePhoto: userDetails.profilePhoto });
 
 
             lobbyGameManager.getLobbyGameData(lobbyCode, userId, (gameDataErr, gameData) => { 
@@ -80,41 +79,42 @@ function BingoGameWebsocket(ws, request) {
                         } else {
                             ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi sayı çekebilir.' }));
                         }
-                    }else if (parsedMessage.type === 'mark-number') { 
+                    }
+                    else if (parsedMessage.type === 'mark-number') {
                         const numberToMark = parsedMessage.number;
                         if (typeof numberToMark !== 'number') {
                             ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz sayı formatı' }));
                             return;
                         }
-                        lobbyGameManager.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition, scores, rowCompleted, completedRowNumbers) => { // Use lobbyGameManager for markNumberOnCard, scores eklendi, rowCompleted and completedRowNumbers added
+                        lobbyGameManager.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition, scores, rowCompleted, completedRowNumbers, playerStats) => { // playerStats parametresi eklendi
                             if (markErr) {
                                 ws.send(JSON.stringify({ type: 'error', message: markErr.message }));
                                 return;
                             }
 
                             BingoGameWebsocket.broadcast(lobbyCode, {
-                                type: 'number-marked', 
+                                type: 'number-marked',
                                 userId: userId,
                                 number: markedNumber,
                                 cellPosition: cellPosition,
-                                markedNumbers: updatedLobby.markedNumbers, 
+                                markedNumbers: updatedLobby.markedNumbers,
+                                playerStats: playerStats // Oyuncu istatistiklerini broadcast mesajına ekle
                             });
 
                             if (rowCompleted) {
                                 const userDetails = getUserDetails(userId);
-                                const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
                                 completedRowNumbers.forEach(rowNumber => {
-                                    BingoGameWebsocket.broadcast(lobbyCode, { type: 'row-completed', username: username, rowNumber: rowNumber }); // Row completed message
+                                    BingoGameWebsocket.broadcast(lobbyCode, { type: 'row-completed', username: userDetails.username, rowNumber: rowNumber, profilePhoto: userDetails.profilePhoto }); // Row completed message
                                 });
                             }
 
                             if (isBingo) {
-                                const userDetails = getUserDetails(userId); 
-                                const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı'; // Kullanıcı adını al
-                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'bingo', username: username, scores: scores }); // Bingo mesajı, userId yerine username gönder, scores eklendi
+                                const userDetails = getUserDetails(userId);
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'bingo', username: userDetails.username, profilePhoto: userDetails.profilePhoto, scores: scores }); // Bingo mesajı, userId yerine username gönder, scores eklendi
                             }
                         });
-                    } else if (parsedMessage.type === 'send-emoji') {
+                    }
+                    else if (parsedMessage.type === 'send-emoji') {
                         const emoji = parsedMessage.emoji;
                         if (!emoji) {
                             ws.send(JSON.stringify({ type: 'error', message: 'Emoji gönderilmedi' }));
@@ -122,12 +122,11 @@ function BingoGameWebsocket(ws, request) {
                         }
 
                         const userDetails = getUserDetails(userId);
-                        const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı'; 
 
                         BingoGameWebsocket.broadcast(lobbyCode, {
                             type: 'emoji-received', 
                             userId: userId,
-                            username: username,
+                            username: userDetails.username,
                             emoji: emoji,
                         });
                     } else if (parsedMessage.type === 'end-game') { 
@@ -150,16 +149,14 @@ function BingoGameWebsocket(ws, request) {
                         }
 
                         const userDetails = getUserDetails(userId);
-                        const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
-                        const profilePhoto = userDetails ? userDetails.profilePhoto : null; 
 
                         const timestamp = new Date().toISOString(); 
 
                         BingoGameWebsocket.broadcast(lobbyCode, {
                             type: 'chat-message-received',
                             userId: userId,
-                            username: username,
-                            profilePhoto: profilePhoto,
+                            username: userDetails.username,
+                            profilePhoto: userDetails.profilePhoto,
                             message: messageText,
                             timestamp: timestamp
                         });
@@ -174,10 +171,8 @@ function BingoGameWebsocket(ws, request) {
             ws.on('close', () => {
                 console.log(`WebSocket: Bağlantı kesildi, Lobby: ${lobbyCode}, User: ${userId}`);
 
-                // Kullanıcı ayrıldığında broadcast yap
                 const userDetails = getUserDetails(userId);
-                const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
-                BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-disconnected', userId: userId, username: username});
+                BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-disconnected', userId: userId, username: userDetails.username});
 
 
                 if (lobbySockets[lobbyCode]) {

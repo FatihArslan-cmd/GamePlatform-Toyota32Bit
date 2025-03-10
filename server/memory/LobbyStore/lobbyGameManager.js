@@ -166,9 +166,7 @@ const lobbyGameManager = {
                 });
             }
 
-
             const isBingo = lobbyGameManager.checkBingo(card, lobby.markedNumbers[username]);
-
 
             if (isBingo) {
                 const bingoBonus = 1500;
@@ -193,16 +191,35 @@ const lobbyGameManager = {
                     lobby.gameStarted = false;
                     lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
                         if (saveErr) return callback(saveErr);
-                        callback(null, lobby, isBingo, number, cellPosition, scores, rowCompleted, completedRowNumbers); // Pass row completion info
+                        // Oyuncu istatistiklerini hesapla ve callback'e ekle
+                        const playerStats = lobbyGameManager.getPlayerStatsForLobby(lobby);
+                        callback(null, lobby, isBingo, number, cellPosition, scores, rowCompleted, completedRowNumbers, playerStats); // playerStats'i ekledik
                     });
                 }, userId);
             } else {
                 lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                     if (err) return callback(err);
-                    callback(null, lobby, isBingo, number, cellPosition, null, rowCompleted, completedRowNumbers); // Pass row completion info
+                    // Oyuncu istatistiklerini hesapla ve callback'e ekle
+                    const playerStats = lobbyGameManager.getPlayerStatsForLobby(lobby);
+                    callback(null, lobby, isBingo, number, cellPosition, null, rowCompleted, completedRowNumbers, playerStats); // playerStats'i ekledik
                 });
             }
         });
+    },
+
+    // Yeni fonksiyon: Lobi için oyuncu istatistiklerini hesaplar
+    getPlayerStatsForLobby: (lobby) => {
+        const playerStats = {};
+        lobby.members.forEach(member => {
+            const username = member.username;
+            const markedNumbersCount = lobbyGameManager.countMarkedNumbersForUser(lobby, member.id);
+            const completedRowsCount = Object.values(lobby.completedRows[username]).filter(Boolean).length; // True olanları say
+            playerStats[member.id] = {
+                markedNumbersCount: markedNumbersCount,
+                completedRowsCount: completedRowsCount
+            };
+        });
+        return playerStats;
     },
 
     checkBingo: (card, markedNumbersForUser) => {
