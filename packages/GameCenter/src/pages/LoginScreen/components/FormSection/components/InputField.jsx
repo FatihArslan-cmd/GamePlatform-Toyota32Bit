@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native-paper';
 
-const InputField = React.memo(({ // React.memo ile sarıldı
+const InputField = React.memo(({ 
   label,
   value,
   onChangeText,
@@ -12,7 +12,7 @@ const InputField = React.memo(({ // React.memo ile sarıldı
   style,
   textColor,
 }) => {
-  console.log("InputField component rendered"); // Render kontrolü için log
+  console.log("InputField component rendered"); 
   return (
     <TextInput
       mode="flat"

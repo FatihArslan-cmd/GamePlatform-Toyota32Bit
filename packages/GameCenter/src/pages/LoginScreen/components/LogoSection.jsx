@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+
 const LogoSection = () => {
   return (
     <View style={styles.logoContainer}>

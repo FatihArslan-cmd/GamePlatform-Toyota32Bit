@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import PermissionItem from './PermissionItem';
-import { storage } from '../../../../utils/storage';
+import { storage } from '../../../../../../utils/storage';
+import { usePermissionsContext } from '../../../../context/PermissionContext';
 
-const BioModalContent = ({ onPermissionsChange }) => {
+const PermissionsModalContent = () => {
   const [permissions, setPermissions] = useState({
     biometric: false,
     nfc: false,
@@ -12,28 +13,30 @@ const BioModalContent = ({ onPermissionsChange }) => {
   });
 
   useEffect(() => {
-    // Load saved permissions from MMKV when the component mounts
-    const savedPermissions = storage.getString('permissions');
-    if (savedPermissions) {
-      setPermissions(JSON.parse(savedPermissions));
-    }
-  }, []);
-
-    const handlePermissionChange = (key) => {
-    // Update the permissions state
-    const updatedPermissions = {
-      ...permissions,
-      [key]: !permissions[key], // Toggle the permission value
+    const loadPermissions = async () => {
+      try {
+        const savedPermissions = await storage.getString('permissions');
+        if (savedPermissions) {
+          const parsedPermissions = JSON.parse(savedPermissions);
+          setPermissions(parsedPermissions);
+        }
+      } catch (error) {
+        console.error('Failed to load permissions from storage', error);
+      }
     };
 
-    // Save the updated permissions to MMKV
-    storage.set('permissions', JSON.stringify(updatedPermissions));
+    loadPermissions();
+  }, []);
 
-    // Update the state and notify parent component if needed
-    setPermissions(updatedPermissions);
-    if (onPermissionsChange) {
-      onPermissionsChange(updatedPermissions);
-    }
+  const handlePermissionChange = (key) => {
+    setPermissions(prevPermissions => {
+      const updatedPermissions = {
+        ...prevPermissions,
+        [key]: !prevPermissions[key],
+      };
+      storage.set('permissions', JSON.stringify(updatedPermissions));
+      return updatedPermissions;
+    });
   };
 
   return (
@@ -80,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BioModalContent;
+export default PermissionsModalContent;
