@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Card, List } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import { ToastService } from '../../../context/ToastService';
+import { useTheme } from '../../../context/ThemeContext';
 
 const ThemeSection = () => {
   const [expanded, setExpanded] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState('system');
+  const { theme, setTheme, resolvedTheme, colors } = useTheme(); // colors'ı alın
 
   const handlePress = () => setExpanded(!expanded);
 
-  const handleThemeChange = (theme) => {
-    if (selectedTheme === theme) {
+  const handleThemeChange = (newTheme) => {
+    if (theme === newTheme) {
       ToastService.show('info', 'This theme is already selected');
     } else {
-      setSelectedTheme(theme);
+      setTheme(newTheme);
       setExpanded(false);
-      ToastService.show('success', `Theme changed to ${theme}`);
-      // Here you would typically dispatch a theme change action
-      // For example: dispatch(changeTheme(theme))
+      ToastService.show('success', `Theme changed to ${newTheme}`);
     }
   };
 
@@ -36,43 +35,43 @@ const ThemeSection = () => {
   };
 
   return (
-    <Card style={styles.card}>
+    <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
         <GrandientText
           text="Theme"
           colors={['#FF6B6B', '#FFD93D', 'red', 'blue', 'green', 'purple']}
-          textStyle={{ fontSize: 22 }}
+          textStyle={{ fontSize: 22, color: colors.text }} // Metin rengini ayarla
           gradientDirection="horizontal"
         />
         <List.Accordion
           expanded={expanded}
           onPress={handlePress}
-          titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
           title="Choose Theme"
-          descriptionStyle={{fontFamily:'Orbitron-VariableFont_wght'}}
-          description={selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1) + ' Mode'}
-          left={props => <List.Icon {...props} color="#6366F1" icon="palette" />}
+          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.text }} // Açıklama rengini ayarla
+          description={theme.charAt(0).toUpperCase() + theme.slice(1) + ' Mode'}
+          left={props => <List.Icon {...props} color={colors.primary} icon="palette" />} // İkon rengini ayarla
         >
           <List.Item
             title="System Default"
             onPress={() => handleThemeChange('system')}
-            titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
-            left={props => <List.Icon {...props} icon="theme-light-dark" />}
-            right={() => selectedTheme === 'system' ? <List.Icon icon="check" /> : null}
+            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
+            left={props => <List.Icon {...props} icon={getThemeIcon('system')} color={colors.primary} />} // İkon rengini ayarla
+            right={() => theme === 'system' ? <List.Icon icon="check" color={colors.primary} /> : null} // İkon rengini ayarla
           />
           <List.Item
             title="Light Mode"
             onPress={() => handleThemeChange('light')}
-            titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
-            left={props => <List.Icon {...props} icon="white-balance-sunny" />}
-            right={() => selectedTheme === 'light' ? <List.Icon icon="check" /> : null}
+            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
+            left={props => <List.Icon {...props} icon={getThemeIcon('light')} color={colors.primary} />} // İkon rengini ayarla
+            right={() => theme === 'light' ? <List.Icon icon="check" color={colors.primary} /> : null} // İkon rengini ayarla
           />
           <List.Item
             title="Dark Mode"
             onPress={() => handleThemeChange('dark')}
-            titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
-            left={props => <List.Icon {...props} icon="moon-waning-crescent" />}
-            right={() => selectedTheme === 'dark' ? <List.Icon icon="check" /> : null}
+            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
+            left={props => <List.Icon {...props} icon={getThemeIcon('dark')} color={colors.primary} />} // İkon rengini ayarla
+            right={() => theme === 'dark' ? <List.Icon icon="check" color={colors.primary} /> : null} // İkon rengini ayarla
           />
         </List.Accordion>
       </Card.Content>

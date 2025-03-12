@@ -3,11 +3,11 @@ import { Linking,StyleSheet } from 'react-native';
 import { Card, List, RadioButton } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import GradientDivider from '../../../components/GradientDivider';
-import { ToastService } from '../../../context/ToastService'; // Import ToastService
-
+import { ToastService } from '../../../context/ToastService';
+import ThemeContext from '../../../context/ThemeContext'; 
 const LanguageSection = () => {
   const [expanded, setExpanded] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('Turkish'); // Default language
+  const [selectedLanguage, setSelectedLanguage] = useState('Turkish'); 
 
   const handlePress = () => setExpanded(!expanded);
 

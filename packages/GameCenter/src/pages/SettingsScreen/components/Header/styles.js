@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     justifyContent: 'space-between', // Distributes space evenly
-    borderBottomWidth: 1.5, // Optional: Add a hairline border for a subtle line
     borderBottomColor: '#ddd', // Optional: Border color
   },
   leftContainer: {

@@ -10,11 +10,10 @@ import Header from './components/Header/Header';
 import LanguageSection from './components/LanguageSection';
 import { AnimatedSection } from '../../components/Animations/EnteringPageAnimation';
 import ThemeSection from './components/ThemeSection';
+
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
-
-  
 
   return (
     <GestureHandlerRootView>
