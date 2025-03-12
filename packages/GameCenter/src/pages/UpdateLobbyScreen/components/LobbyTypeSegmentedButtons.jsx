@@ -1,27 +1,35 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SegmentedButtons, Text } from 'react-native-paper';
+import { useLobbyUpdate } from '../context/LobbyUpdateContext';
+import { useTheme } from '../../../context/ThemeContext'; 
 
-const LobbyTypeSegmentedButtons = ({ value, onValueChange }) => {
+const LobbyTypeSegmentedButtons = () => {
+  const { lobbyType, setLobbyType } = useLobbyUpdate();
+  const { colors } = useTheme(); 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Lobby Type</Text>
+      <Text style={[styles.label, { color: colors.text }]}>Lobby Type</Text>
       <SegmentedButtons
-        value={value}
-        onValueChange={onValueChange}
+        value={lobbyType}
+        onValueChange={setLobbyType}
         buttons={[
           {
             value: 'Normal',
             label: 'Normal',
-            labelStyle: styles.segmentedButtonLabel,
+            labelStyle: [styles.segmentedButtonLabel, { color: colors.text }], 
+            style: { backgroundColor: colors.card }
           },
           {
             value: 'Event',
             label: 'Event',
-            labelStyle: styles.segmentedButtonLabel,
+            labelStyle: [styles.segmentedButtonLabel, { color: colors.text }], 
+            style: { backgroundColor: colors.card } 
           },
         ]}
-        style={styles.segmentedButtons}
+        style={[styles.segmentedButtons, { backgroundColor: colors.card }]} 
+        theme={{ colors: { primary: colors.primary, surface: colors.card, text: colors.text } }} 
       />
     </View>
   );
@@ -35,7 +43,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 8,
-    color: '#333',
   },
   segmentedButtons: {
     marginTop: 8,

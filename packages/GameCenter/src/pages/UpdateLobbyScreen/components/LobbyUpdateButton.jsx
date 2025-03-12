@@ -2,20 +2,25 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useLobbyUpdate } from '../context/LobbyUpdateContext';
+import { useTheme } from '../../../context/ThemeContext'; 
 
-const LobbyUpdateButton = ({ loading, handleUpdateLobby }) => {
+const LobbyUpdateButton = () => {
+  const { loading, handleUpdateLobby } = useLobbyUpdate();
+  const { colors } = useTheme();
+
   return (
     <Button
       mode="contained"
       onPress={handleUpdateLobby}
-      style={styles.updateButton}
+      style={[styles.updateButton, { backgroundColor: colors.primary }]} 
       contentStyle={styles.buttonContent}
       loading={loading}
       disabled={loading}
-      buttonColor="#8a2be2"
-      icon={({ size, color }) => <Icon name="check" size={size} color={color} />}
+      buttonColor={colors.primary} 
+      icon={({ size, color }) => <Icon name="check" size={size} color={colors.card} />} 
     >
-      <Text style={styles.updateButtonText}>
+      <Text style={[styles.updateButtonText, { color: colors.card }]}>
         {loading ? 'Updating...' : 'Update Lobby'}
       </Text>
     </Button>
@@ -33,7 +38,6 @@ const styles = StyleSheet.create({
   },
   updateButtonText: {
     fontFamily: 'Orbitron-ExtraBold',
-    color: 'white',
   },
 });
 
