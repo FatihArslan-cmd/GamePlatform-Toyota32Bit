@@ -7,7 +7,7 @@ import { useTheme } from '../../../context/ThemeContext';
 
 const ThemeSection = () => {
   const [expanded, setExpanded] = useState(false);
-  const { theme, setTheme, resolvedTheme, colors } = useTheme(); // colors'ı alın
+  const { theme, setTheme, resolvedTheme, colors } = useTheme();
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -39,39 +39,41 @@ const ThemeSection = () => {
       <Card.Content>
         <GrandientText
           text="Theme"
-          colors={['#FF6B6B', '#FFD93D', 'red', 'blue', 'green', 'purple']}
-          textStyle={{ fontSize: 22, color: colors.text }} // Metin rengini ayarla
+          colors={colors.themeTextGradient}
+          textStyle={{ fontSize: 22, color: colors.text }}
           gradientDirection="horizontal"
         />
         <List.Accordion
+          style={{ backgroundColor: colors.card }}
           expanded={expanded}
           onPress={handlePress}
-          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
           title="Choose Theme"
-          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.text }} // Açıklama rengini ayarla
+          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText }}
           description={theme.charAt(0).toUpperCase() + theme.slice(1) + ' Mode'}
-          left={props => <List.Icon {...props} color={colors.primary} icon="palette" />} // İkon rengini ayarla
+          left={props => <List.Icon {...props} color={colors.primary} icon="palette" />}
+          right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />} 
         >
           <List.Item
             title="System Default"
             onPress={() => handleThemeChange('system')}
-            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
-            left={props => <List.Icon {...props} icon={getThemeIcon('system')} color={colors.primary} />} // İkon rengini ayarla
-            right={() => theme === 'system' ? <List.Icon icon="check" color={colors.primary} /> : null} // İkon rengini ayarla
+            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+            left={props => <List.Icon {...props} icon={getThemeIcon('system')} color={colors.primary} />}
+            right={() => theme === 'system' ? <List.Icon icon="check" color={colors.primary} /> : null}
           />
           <List.Item
             title="Light Mode"
             onPress={() => handleThemeChange('light')}
-            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
-            left={props => <List.Icon {...props} icon={getThemeIcon('light')} color={colors.primary} />} // İkon rengini ayarla
-            right={() => theme === 'light' ? <List.Icon icon="check" color={colors.primary} /> : null} // İkon rengini ayarla
+            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+            left={props => <List.Icon {...props} icon={getThemeIcon('light')} color={colors.primary} />}
+            right={() => theme === 'light' ? <List.Icon icon="check" color={colors.primary} /> : null}
           />
           <List.Item
             title="Dark Mode"
             onPress={() => handleThemeChange('dark')}
-            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }} // Başlık rengini ayarla
-            left={props => <List.Icon {...props} icon={getThemeIcon('dark')} color={colors.primary} />} // İkon rengini ayarla
-            right={() => theme === 'dark' ? <List.Icon icon="check" color={colors.primary} /> : null} // İkon rengini ayarla
+            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+            left={props => <List.Icon {...props} icon={getThemeIcon('dark')} color={colors.primary} />}
+            right={() => theme === 'dark' ? <List.Icon icon="check" color={colors.primary} /> : null}
           />
         </List.Accordion>
       </Card.Content>

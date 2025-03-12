@@ -4,9 +4,12 @@ import { Card, List } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import { ToastService } from '../../../context/ToastService';
 import GradientDivider from '../../../components/GradientDivider';
+import { useTheme } from '../../../context/ThemeContext';
+
 const NotificationSection = () => {
   const [pushEnabled, setPushEnabled] = React.useState(true);
   const [emailEnabled, setEmailEnabled] = React.useState(true);
+  const { colors } = useTheme();
 
   const handlePushToggle = () => {
     const newValue = !pushEnabled;
@@ -29,26 +32,27 @@ const NotificationSection = () => {
   };
 
   return (
-    <Card style={styles.card}>
+    <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
         <GrandientText
           text="Notifications"
-          colors={['black', '#778899']}
-          textStyle={{ fontSize: 22 }}
+          colors={colors.languageTextGradient}
+          textStyle={{ fontSize: 22, color: colors.text }}
           gradientDirection="horizontal"
         />
         <TouchableOpacity onPress={handlePushToggle} style={styles.listItemContainer}>
           <List.Item
+            style={{ backgroundColor: colors.card }}
             title="Push Notifications"
-            titleStyle={styles.titleStyle}
+            titleStyle={[styles.titleStyle, { color: colors.text }]}
             description="Receive push notifications"
-            descriptionStyle={styles.descriptionStyle}
-            left={props => <List.Icon {...props} icon="bell" color="#6366F1" />}
+            descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
+            left={props => <List.Icon {...props} icon="bell" color={colors.primary} />}
             right={() => (
               <GrandientText
                 text={pushEnabled ? "Enabled" : "Disabled"}
                 colors={pushEnabled ? ['green', 'darkgreen'] : ['red', 'darkred']}
-                textStyle={styles.rightTextStyle}
+                textStyle={[styles.rightTextStyle, { color: colors.text }]}
                 gradientDirection="horizontal"
               />
             )}
@@ -57,16 +61,17 @@ const NotificationSection = () => {
 
         <TouchableOpacity onPress={handleEmailToggle} style={styles.listItemContainer}>
           <List.Item
+            style={{ backgroundColor: colors.card }}
             title="Email Notifications"
-            titleStyle={styles.titleStyle}
+            titleStyle={[styles.titleStyle, { color: colors.text }]}
             description="Receive email updates"
-            descriptionStyle={styles.descriptionStyle}
-            left={props => <List.Icon {...props} icon="email" color="#6366F1" />}
+            descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
+            left={props => <List.Icon {...props} icon="email" color={colors.primary} />}
             right={() => (
               <GrandientText
                 text={emailEnabled ? "Enabled" : "Disabled"}
                 colors={emailEnabled ? ['green', 'darkgreen'] : ['red', 'darkred']}
-                textStyle={styles.rightTextStyle}
+                textStyle={[styles.rightTextStyle, { color: colors.text }]}
                 gradientDirection="horizontal"
               />
             )}
@@ -92,15 +97,11 @@ const styles = StyleSheet.create({
   descriptionStyle: {
     fontFamily: 'Orbitron-VariableFont_wght',
     fontSize: 12,
-    color: '#666',
   },
   rightTextStyle: {
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     fontSize: 14,
   },
-  listItemContainer: {
-    // Optional: Add styling if needed for the TouchableOpacity container
-  }
 });
 
 export default NotificationSection;

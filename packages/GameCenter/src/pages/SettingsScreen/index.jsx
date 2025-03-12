@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet, ScrollView, useColorScheme } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, useColorScheme, StatusBar } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -10,15 +10,23 @@ import Header from './components/Header/Header';
 import LanguageSection from './components/LanguageSection';
 import { AnimatedSection } from '../../components/Animations/EnteringPageAnimation';
 import ThemeSection from './components/ThemeSection';
+import { useTheme } from '../../context/ThemeContext';
 
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
+  const { theme, colors } = useTheme();
+
+  useEffect(() => {
+    StatusBar.setBackgroundColor(colors.card);
+    StatusBar.setBarStyle(theme === 'dark' ? 'light-content' : 'dark-content');
+  }, [colors.card, theme]);
 
   return (
     <GestureHandlerRootView>
-      <Surface style={[styles.container, { paddingTop: insets.top }]}>
-            <Header />
+      <StatusBar backgroundColor={colors.card} barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
+      <Surface style={[styles.container, { paddingTop: insets.top, backgroundColor: colors.background }]}>
+        <Header />
 
         <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scrollView}>
           <View style={styles.content}>
@@ -42,9 +50,9 @@ const SettingsScreen = () => {
             <AnimatedSection index={4}>
               <AboutSection />
             </AnimatedSection>
-          </View>    
+          </View>
         </ScrollView>
-       
+
       </Surface>
     </GestureHandlerRootView>
   );

@@ -1,58 +1,58 @@
-
 import React from 'react';
 import { Linking,StyleSheet } from 'react-native';
 import { Card, List,Snackbar} from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import LogoutButton from './LogOutButton';
+import { useTheme } from '../../../context/ThemeContext';
 
 const AboutSection = () => {
     const [visible, setVisible] = React.useState(false);
+    const { colors } = useTheme();
 
     const onToggleSnackBar = () => setVisible(!visible);
-  
     const onDismissSnackBar = () => setVisible(false);
 
   return (
-    <Card style={styles.card}>
+    <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
      <GrandientText
             text="About"
-            colors={['black', '#778899']}
-            textStyle={{ fontSize: 22 }}
+            colors={colors.languageTextGradient}
+            textStyle={{ fontSize: 22, color: colors.text }}
             gradientDirection="horizontal"
           />
-                  
+
         <List.Item
-        titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
+        titleStyle={[styles.titleStyle, { color: colors.text }]}
           title="App Version"
           onPress={onToggleSnackBar}
-          descriptionStyle={{fontFamily:'Orbitron-VariableFont_wght'}}
+          descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
           description="1.0.0"
-          left={props => <List.Icon {...props}  color="#6366F1" icon="information" />}
+          left={props => <List.Icon {...props}  color={colors.primary} icon="information" />}
         />
 
         <List.Item
           title="Terms of Service"
-          titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
-          left={props => <List.Icon {...props}  color="#6366F1" icon="file-document" />}
-          right={props => <List.Icon {...props}  color="#6366F1" icon="chevron-right" />}
+          titleStyle={[styles.titleStyle, { color: colors.text }]}
+          left={props => <List.Icon {...props}  color={colors.primary} icon="file-document" />}
+          right={props => <List.Icon {...props}  color={colors.primary} icon="chevron-right" />}
           onPress={() => Linking.openURL('https://your-app.com/terms')}
         />
 
         <List.Item
           title="Privacy Policy"
-          titleStyle={{fontFamily:'Orbitron-ExtraBold'}}
-          left={props => <List.Icon {...props}  color="#6366F1" icon="shield" />}
-          right={props => <List.Icon {...props}  color="#6366F1" icon="chevron-right" />}
+          titleStyle={[styles.titleStyle, { color: colors.text }]}
+          left={props => <List.Icon {...props}  color={colors.primary} icon="shield" />}
+          right={props => <List.Icon {...props}  color={colors.primary} icon="chevron-right" />}
           onPress={() => Linking.openURL('https://your-app.com/privacy')}
         />
 
-        <LogoutButton /> 
+        <LogoutButton />
         <Snackbar
         visible={visible}
         onDismiss={onDismissSnackBar} >
-            
-    App Version 1.0.0     
+
+    App Version 1.0.0
  </Snackbar>
       </Card.Content>
     </Card>
@@ -64,6 +64,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginHorizontal: 16,
     marginVertical: 8,
+  },
+  titleStyle: {
+    fontFamily: 'Orbitron-ExtraBold',
+  },
+  descriptionStyle: {
+    fontFamily: 'Orbitron-VariableFont_wght',
   }
 });
 
