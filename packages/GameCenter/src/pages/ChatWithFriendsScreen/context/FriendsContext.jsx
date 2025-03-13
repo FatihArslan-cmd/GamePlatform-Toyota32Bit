@@ -31,8 +31,6 @@ const FriendsProvider = ({ children }) => {
         friends,
         loading,
         error,
-        // You might want to add a function to refresh friends here if needed later
-        // refreshFriends: loadFriends, // Example: Function to reload friends manually
     };
 
     return (

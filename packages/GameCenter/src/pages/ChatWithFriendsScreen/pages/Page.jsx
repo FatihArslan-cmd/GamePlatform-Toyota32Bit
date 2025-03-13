@@ -1,19 +1,22 @@
 import React from 'react';
-import { StyleSheet, View ,FlatList, TouchableOpacity } from 'react-native'; // Import TouchableOpacity
+import { StyleSheet, View ,FlatList } from 'react-native'; 
 import { useFriends } from '../context/FriendsContext';
-import { Text, List } from 'react-native-paper';
+import { List,TouchableRipple } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import Header from '../components/Header/Header';
 import EmptyState from '../../../components/EmptyState';
+import { useTheme } from '../../../context/ThemeContext'; 
+
 const Page = () => {
   const { friends, loading } = useFriends();
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation(); 
+  const { colors } = useTheme(); 
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity // Wrap List.Item with TouchableOpacity
-      onPress={() => navigation.navigate('ChatScreen', { friend: item })} // Navigate to ChatScreen and pass friend data
+    <TouchableRipple 
+      onPress={() => navigation.navigate('ChatScreen', { friend: item })} 
     >
       <List.Item
         title={item.username}
@@ -29,26 +32,26 @@ const Page = () => {
                 resizeMode={FastImage.resizeMode.cover}
               />
             ) : (
-              <View style={[styles.avatar, styles.avatarPlaceholder]} />
+              <View style={[styles.avatar, styles.avatarPlaceholder, { backgroundColor: colors.border }]} /> 
             )}
           </View>
         )}
-        style={styles.friendItem}
-        titleStyle={styles.friendUsername}
+        style={[styles.friendItem, { backgroundColor: colors.card }]} 
+        titleStyle={[styles.friendUsername, { color: colors.text }]} 
       />
-    </TouchableOpacity>
+    </TouchableRipple>
   );
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
         <LoadingIndicator/>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Header />
       {friends.length > 0 ? (
         <List.Section>
@@ -59,8 +62,8 @@ const Page = () => {
           />
         </List.Section>
       ) : (
-        <View style={styles.noFriendsContainer}>
-          <EmptyState message="You don't have any friend"/>
+        <View style={[styles.noFriendsContainer, { backgroundColor: colors.background }]}> 
+          <EmptyState message="You don't have any friend" color={colors.text}/>
         </View>
       )}
     </View>
@@ -72,7 +75,6 @@ export default Page;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
   },
   loadingContainer: {
     flex: 1,
@@ -92,18 +94,20 @@ const styles = StyleSheet.create({
   friendItem: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: 'white',
+    backgroundColor: 'white', 
     marginBottom: 2,
     borderRadius: 4,
   },
   friendUsername: {
     fontSize: 24,
     fontFamily: 'Orbitron-ExtraBold',
+    color: 'black', 
   },
   noFriendsContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f4f4f4', 
   },
   noFriendsText: {
     fontSize: 18,

@@ -1,14 +1,18 @@
+// Header/HeaderTitle.js
 import React from 'react';
 import GrandientText from '../../../../components/GrandientText';  // Adjust path if needed
+import { useTheme } from '../../../../context/ThemeContext'; // Import useTheme
 
-const HeaderTitle = () => (
-  <GrandientText
-    text="Chat with Friends"
-    colors={['#FFD700', '#CD7F32']} // Gold to Bronze
-    textStyle={{ fontSize: 28 }}
-    gradientDirection="horizontal"
-    width={400}
-  />
-);
+const HeaderTitle = () => {
+  const { colors } = useTheme(); 
+  return (
+    <GrandientText
+      text="Chat with Friends"
+      colors={colors.gameCenterText} 
+      gradientDirection="horizontal"
+      width={400}
+    />
+  );
+};
 
 export default HeaderTitle;

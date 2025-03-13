@@ -4,6 +4,7 @@ import { List ,TouchableRipple} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackButton from '../../../components/BackIcon';
+import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
 
 const ChatHeader = ({ friend, onMoreActions }) => {
     const getStatusText = () => {
@@ -12,14 +13,15 @@ const ChatHeader = ({ friend, onMoreActions }) => {
     const getStatusColor = () => {
         return friend.isOnline ? 'green' : 'red';
     };
+    const { colors } = useTheme(); // Use the useTheme hook
 
     return (
-        <View style={styles.header}>
+        <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}> {/* Themed header background and border color */}
             <BackButton left={0} top={18} />
             <View style={styles.contentContainer}>
                 <List.Item
                     title={friend.username}
-                    titleStyle={styles.headerTitle}
+                    titleStyle={[styles.headerTitle, { color: colors.text }]} // Themed header title color
                     description={getStatusText()}
                     descriptionStyle={[styles.headerSubtitle, { color: getStatusColor() }]}
                     left={() => (
@@ -34,7 +36,7 @@ const ChatHeader = ({ friend, onMoreActions }) => {
                                     resizeMode={FastImage.resizeMode.cover}
                                 />
                             ) : (
-                                <View style={[styles.avatar, styles.avatarPlaceholder]} />
+                                <View style={[styles.avatar, styles.avatarPlaceholder, { backgroundColor: colors.border }]} /> // Themed avatarPlaceholder background
                             )}
                         </View>
                     )}
@@ -51,9 +53,9 @@ const ChatHeader = ({ friend, onMoreActions }) => {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#fff',
+        backgroundColor: '#fff', // Removed hardcoded color, will be set by theme
         borderBottomWidth: 1,
-        borderBottomColor: '#E0E0E0',
+        borderBottomColor: '#E0E0E0', // Removed hardcoded color, will be set by theme
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: 10,
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontFamily: 'Orbitron-ExtraBold',
-        color: '#333',
+        color: '#333', // Removed hardcoded color, will be set by theme
     },
     headerSubtitle: {
         fontSize: 14,
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         borderRadius: 22.5,
     },
     avatarPlaceholder: {
-        backgroundColor: '#ddd',
+        backgroundColor: '#ddd', // Removed hardcoded color, will be set by theme
     },
     headerButton: {
         paddingHorizontal: 15,

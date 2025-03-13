@@ -1,23 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { createContext, useState, useRef, useCallback, useContext, useEffect } from 'react';
 import { ToastService } from '../../../context/ToastService';
-import ChatHeader from '../components/ChatHeader'; // Adjust path as needed
-import MessageList from '../components/MessageList'; // Adjust path as needed
-import InputArea from '../components/InputArea'; // Adjust path as needed
 import { useWebSocket } from '../context/WebSocketContext';
-import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
 
-const ChatScreen = () => {
-    const route = useRoute();
-    const { friend: initialFriend } = route.params;
+export const ChatScreenContext = createContext();
+
+export const ChatScreenProvider = ({ initialFriend, children }) => {
     const [friend, setFriend] = useState(initialFriend);
     const [messages, setMessages] = useState([]);
     const [newMessageText, setNewMessageText] = useState('');
     const messageListRef = useRef(null);
     const { userId, sendMessage, subscribeToMessages, isConnected } = useWebSocket();
-    const { colors } = useTheme(); // Use the useTheme hook
 
     useEffect(() => {
         if (!isConnected) return;
@@ -40,7 +32,7 @@ const ChatScreen = () => {
                 }
             }
         });
-    }, [isConnected, friend.id]);
+    }, [isConnected, friend.id, subscribeToMessages]);
 
     const handleSendMessage = useCallback(() => {
         if (newMessageText && userId && isConnected) {
@@ -65,28 +57,17 @@ const ChatScreen = () => {
         }
     }, [newMessageText, friend.id, userId, isConnected, sendMessage]);
 
+    const contextValue = {
+        friend, setFriend,
+        messages, setMessages,
+        newMessageText, setNewMessageText,
+        messageListRef,
+        handleSendMessage,
+    };
+
     return (
-        <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}> {/* Themed safeArea background */}
-            <View style={[styles.container, { backgroundColor: colors.background }]}> {/* Themed container background */}
-                <ChatHeader friend={friend} onMoreActions={() => {}} />
-                <MessageList messages={messages} userId={userId} messageListRef={messageListRef} />
-                <InputArea
-                    newMessageText={newMessageText}
-                    setNewMessageText={setNewMessageText}
-                    sendMessage={handleSendMessage}
-                />
-            </View>
-        </SafeAreaView>
+        <ChatScreenContext.Provider value={contextValue}>
+            {children}
+        </ChatScreenContext.Provider>
     );
 };
-
-const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-    },
-    container: {
-        flex: 1,
-    },
-});
-
-export default ChatScreen;

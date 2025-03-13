@@ -10,7 +10,7 @@ export const WebSocketProvider = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        const ws = new WebSocket('ws://10.0.2.2:3000/friendchat'); // "/friendchat" yolunu ekleyin
+        const ws = new WebSocket('ws://10.0.2.2:3000/friendchat');
         socket.current = ws;
         const accessToken = getToken();
 
