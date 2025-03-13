@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const AnimatedSurface = Animated.createAnimatedComponent(Surface);
 
-const GameItem = memo(({ item, onPress }) => {
+const GameItem = memo(({ item }) => {
   const scale = useSharedValue(1);
   const navigation = useNavigation();
   const animatedStyle = useAnimatedStyle(() => {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 12,
     paddingBottom: 52,
-    overflow: 'hidden', // This is important for the blur effect
+    overflow: 'hidden', 
   },
   backgroundContainer: {
     position: 'absolute',

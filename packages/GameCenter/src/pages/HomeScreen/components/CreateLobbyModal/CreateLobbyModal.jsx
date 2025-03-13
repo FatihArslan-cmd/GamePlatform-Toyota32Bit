@@ -9,7 +9,7 @@ import PasswordInput from './components/PasswordInput';
 import InvitationLink from './components/InvitationLink';
 import { ToastService } from '../../../../context/ToastService';
 import { createLobby } from './service/service';
-import { useBingoWebSocket } from '../../../../context/BingoWebSocket/BingoWebSocket';
+import { useBingoWebSocket } from '../../../../context/BingoGameWebsocket';
 
 const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
@@ -161,6 +161,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             onPress={resetLobby}
                             style={styles.resetButton}
                             icon="refresh"
+                            labelStyle={styles.resetButtonLabel} 
                         >
                             Create New Lobby
                         </Button>
@@ -195,6 +196,9 @@ const styles = StyleSheet.create({
     },
     resetButton: {
         marginTop: 'auto',
+    },
+    resetButtonLabel: { 
+        fontFamily: 'Orbitron-ExtraBold', 
     },
     passwordSwitchContainer: {
         flexDirection: 'row',

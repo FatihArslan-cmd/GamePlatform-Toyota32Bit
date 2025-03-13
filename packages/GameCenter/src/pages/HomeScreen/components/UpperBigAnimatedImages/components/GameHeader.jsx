@@ -1,17 +1,22 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Divider } from 'react-native-paper';
+import { Text, Divider } from 'react-native-paper'; 
 import getFormattedDate from '../../../../../utils/getFormattedDate';
+import { useTheme } from '../../../../../context/ThemeContext'; 
+const GameHeader = () => {
+  const { colors } = useTheme(); 
+  const styles = useStyles(colors); 
 
-const GameHeader = () => (
-  <View style={styles.headerContainer}>
-    <Text style={styles.sectionTitle}>Top Rated Games</Text>
-    <Text style={styles.dateText}>{getFormattedDate()}</Text>
-    <Divider style={styles.divider} />
-  </View>
-);
+  return (
+    <View style={styles.headerContainer}>
+      <Text style={styles.sectionTitle}>Top Rated Games</Text>
+      <Text style={styles.dateText}>{getFormattedDate()}</Text>
+      <Divider style={styles.divider} />
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => StyleSheet.create({
   headerContainer: {
     paddingHorizontal: 20,
     paddingTop: 100,
@@ -19,13 +24,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 28,
-    color: '#666',
+    color: colors.text, 
     letterSpacing: -0.5,
     fontFamily: 'Orbitron-ExtraBold'
   },
   dateText: {
     fontSize: 14,
-    color: '#666',
+    color: colors.subText,
     marginTop: 4,
     fontFamily: 'Orbitron-VariableFont_wght',
   },
@@ -34,6 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     width: '100%',
     marginVertical: 10,
+    backgroundColor: colors.border,
   },
 });
 

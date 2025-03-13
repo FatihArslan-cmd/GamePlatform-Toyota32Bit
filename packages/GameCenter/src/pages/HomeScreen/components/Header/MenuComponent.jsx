@@ -3,13 +3,18 @@ import { StyleSheet, Linking } from 'react-native';
 import { Menu, Divider, Appbar ,Tooltip} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { ToastService } from '../../../../context/ToastService';
-const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible, openBottomSheet, setJoinLobbyModalVisible }) => {
+import { useTheme } from '../../../../context/ThemeContext';
+import { useHeader } from './context/HeaderContext'; 
+
+const MenuComponent = () => { 
   const navigation = useNavigation();
+  const { colors } = useTheme();
+  const { closeMenu, openLobbyModal, openBottomSheet, openJoinLobbyModal, menuVisible,openMenu } = useHeader(); 
 
   const handleHelpAndDisplay = () => {
     closeMenu();
-    const recipientEmail = 'fatiharslan1459@gmail.com'; 
-    const subject = 'Help & Display Inquiry'; 
+    const recipientEmail = 'fatiharslan1459@gmail.com';
+    const subject = 'Help & Display Inquiry';
     const body = 'Dear Support Team,\n\nI am writing to you regarding...\n';
 
     const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -22,14 +27,15 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
 
   return (
     <Menu
-      visible={menuVisible}
+      visible={menuVisible} 
       onDismiss={closeMenu}
+      mode='elevated'
       anchor={
         <Tooltip title="Options">
         <Appbar.Action
           icon="dots-vertical"
-          onPress={openMenu}
-          color="gray"
+          onPress={openMenu} 
+          color={colors.text}
         />
         </Tooltip>
       }
@@ -37,7 +43,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
     >
       <Menu.Item
         onPress={() => {
-          closeMenu();
+          closeMenu(); 
           navigation.navigate('Settings');
         }}
         title="Settings"
@@ -52,8 +58,8 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       <Divider />
       <Menu.Item
         onPress={() => {
-          closeMenu();
-          setLobbyModalVisible(true);
+          closeMenu(); 
+          openLobbyModal();
         }}
         title="Create Lobby"
         titleStyle={styles.menuItemText}
@@ -61,7 +67,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       <Divider />
       <Menu.Item
         onPress={() => {
-          closeMenu();
+          closeMenu(); 
           openBottomSheet();
         }}
         title="Active Lobbies"
@@ -70,8 +76,8 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
       <Divider />
       <Menu.Item
         onPress={() => {
-          closeMenu();
-          setJoinLobbyModalVisible(true);
+          closeMenu(); 
+          openJoinLobbyModal();
         }}
         title="Join Lobby"
         titleStyle={styles.menuItemText}
@@ -82,7 +88,7 @@ const MenuComponent = ({ menuVisible, openMenu, closeMenu, setLobbyModalVisible,
 
 const styles = StyleSheet.create({
   menu: {
-    marginTop: 40,
+    marginTop: 70,
   },
   menuItemText: {
     color: 'black',

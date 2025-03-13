@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
-import lobbyService from './services/lobbyService';
+import lobbyService from '../services/lobbyService';
 import LobbyCard from './components/LobbyCard';
-import NoLobby from './components/NoLobby';
-import { ToastService } from '../../../../context/ToastService';
-import FadeIn from '../../../../components/Animations/FadeInAnimation';
+import NoLobby from '../components/components/NoLobby';
+import { ToastService } from '../../../../../context/ToastService';
+import FadeIn from '../../../../../components/Animations/FadeInAnimation';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
 
 const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   const [userLobby, setUserLobby] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { colors } = useTheme(); // Use the useTheme hook
 
   const fetchLobbies = useCallback(async () => {
     setLoading(true);
@@ -34,14 +36,14 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}> {/* Themed background color for container */}
         {showNoLobby ? <NoLobby loading={true} />: null}
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}> {/* Themed background color for container */}
       {userLobby ? (
         <FadeIn><LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} /></FadeIn>
       ) : (

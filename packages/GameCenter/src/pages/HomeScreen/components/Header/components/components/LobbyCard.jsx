@@ -2,13 +2,14 @@ import React , {useContext, useState, useCallback} from 'react';
 import { StyleSheet} from 'react-native';
 import { Card } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { ToastService } from '../../../../../context/ToastService';
-import { UserContext } from '../../../../../context/UserContext';
-import CustomModal from '../../../../../components/CustomModal';
-import useLobbyActions from './hooks/useLobbyActions';
+import { ToastService } from '../../../../../../context/ToastService';
+import { UserContext } from '../../../../../../context/UserContext';
+import CustomModal from '../../../../../../components/CustomModal';
+import useLobbyActions from '../hooks/useLobbyActions';
 import LobbyCardHeaderActions from './LobbyCardHeaderActions';
 import LobbyCardContent from './LobbyCardContent';
-import PlayerModalContent from './PlayerModalContent'; // Import PlayerModalContent
+import PlayerModalContent from './PlayerModalContent'; 
+import { useTheme } from '../../../../../../context/ThemeContext';
 
 const LobbyCard = ({ lobby, onLobbyAction }) => {
   const { user } = useContext(UserContext);
@@ -17,6 +18,7 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
   const [playerModalVisible, setPlayerModalVisible] = useState(false);
   const [currentLobby, setCurrentLobby] = useState(lobby);
   const { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer } = useLobbyActions(onLobbyAction);
+  const { colors } = useTheme();
 
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
@@ -45,8 +47,8 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
   const handlePlayerAction = useCallback(async (playerId, actionType) => {
     if (user.username !== currentLobby.ownerUsername) {
       ToastService.show('error', 'Only the lobby owner can perform player actions.');
-      setPlayerModalVisible(false); // Optionally close the modal after showing error
-      return; // Stop further execution if not the owner
+      setPlayerModalVisible(false); 
+      return; 
     }
 
     try {
@@ -76,11 +78,10 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
 
 
   return (
-    <Card style={styles.lobbyCard}>
+    <Card style={[styles.lobbyCard, { backgroundColor: colors.card }]}>
       <LobbyCardHeaderActions
         copyLobbyCodeToClipboard={copyLobbyCodeToClipboard}
         lobbyCode={currentLobby.code}
-        user={user}
         ownerUsername={currentLobby.ownerUsername}
         setDeleteModalVisible={setDeleteModalVisible}
       />
@@ -88,7 +89,6 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
       <Card.Content>
         <LobbyCardContent
           lobby={currentLobby}
-          user={user}
           ownerUsername={currentLobby.ownerUsername}
           setLeaveModalVisible={setLeaveModalVisible}
           togglePlayerModal={togglePlayerModal}
@@ -133,7 +133,7 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
 const styles = StyleSheet.create({
   lobbyCard: {
     elevation: 2,
-    borderRadius: 20, // Added border radius here
+    borderRadius: 20,
   },
 });
 

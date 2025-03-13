@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => StyleSheet.create({
   paginationContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -24,17 +25,20 @@ const styles = StyleSheet.create({
 });
 
 const PaginationDots = memo(({ activeIndex, count, dotSize = 8 }) => {
+  const { colors } = useTheme(); // Use the useTheme hook
+  const themedStyles = useStyles(colors); // Get themed styles
+
   return (
-    <View style={styles.paginationContainer}>
+    <View style={themedStyles.paginationContainer}>
       {Array.from({ length: count }).map((_, index) => (
         <Animated.View
           key={index}
           style={[
-            styles.dot,
+            themedStyles.dot,
             {
               width: dotSize,
               height: dotSize,
-              backgroundColor: activeIndex === index ? '#4A00E0' : '#E0E0E0',
+              backgroundColor: activeIndex === index ? colors.primary : colors.border, // Theme colors for dots
               transform: [
                 {
                   scale: activeIndex === index ? 1.3 : 1,

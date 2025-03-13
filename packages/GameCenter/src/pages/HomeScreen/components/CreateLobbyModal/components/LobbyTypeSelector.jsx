@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   typeButton: {
-    marginTop: 8,
+    marginTop: 12,
     borderRadius: 20,
   },
 });

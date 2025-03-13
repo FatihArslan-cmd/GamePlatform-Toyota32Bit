@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Animated, Linking, Alert } from 'react-native';
-import { Surface, Text, IconButton, useTheme, TouchableRipple } from 'react-native-paper';
+import { StyleSheet, View, Animated, Linking } from 'react-native';
+import { Surface, Text, IconButton, TouchableRipple } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { ToastService } from '../../../../../context/ToastService';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme and rename it to avoid conflict with react-native-paper's useTheme
 
 const InvitationLink = ({code}) => {
   const [copied, setCopied] = useState(false);
   const [animation] = useState(new Animated.Value(0));
 
-  const theme = useTheme();
+  const theme = useTheme(); // Use the imported theme context
 
   const handleCopy = async () => {
     if (!code) return;
@@ -57,7 +58,7 @@ const InvitationLink = ({code}) => {
     }
 
     Linking.openURL(url).catch((err) => {
-      
+
       ToastService.show('error', 'Failed to open link');
     });
   };
@@ -66,8 +67,8 @@ const InvitationLink = ({code}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Share your lobby</Text>
-      <Text style={styles.subtitle}>
+      <Text style={[styles.title, { color: theme.colors.text }]}>Share your lobby</Text> {/* Themed title text color */}
+      <Text style={[styles.subtitle, { color: theme.colors.subText }]}> {/* Themed subtitle text color */}
         Give your teammates access to this lobby and start playing in real time
       </Text>
 
@@ -78,7 +79,7 @@ const InvitationLink = ({code}) => {
         style={styles.lottieAnimation}
       />
 
-      <Surface style={styles.linkContainer} elevation={2}>
+      <Surface style={[styles.linkContainer, { backgroundColor: theme.colors.card }]} elevation={2}> {/* Themed Surface background color */}
         <TouchableRipple
           style={styles.linkTouchable}
           onPress={handleCopy}
@@ -94,10 +95,10 @@ const InvitationLink = ({code}) => {
               <IconButton
                 icon="link-variant"
                 size={24}
-                iconColor={theme.colors.primary}
+                iconColor={useTheme().colors.text} // Keep icon color from react-native-paper's theme as requested
                 style={styles.linkIcon}
               />
-              <Text numberOfLines={1} style={styles.linkText}>
+              <Text numberOfLines={1} style={[styles.linkText, { color: theme.colors.text }]}> {/* Themed link text color */}
                 {code}
               </Text>
             </View>
@@ -105,7 +106,7 @@ const InvitationLink = ({code}) => {
             <IconButton
               icon={copied ? 'check' : 'content-copy'}
               size={24}
-              iconColor={copied ? theme.colors.success : theme.colors.primary}
+              iconColor={copied ? useTheme().colors.success : useTheme().colors.primary} // Keep icon color from react-native-paper's theme as requested
               style={styles.copyIcon}
               onPress={handleCopy}
             />
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   linkContainer: {
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff', // Removed hardcoded white, will be set by theme
   },
   linkTouchable: {
     width: '100%',

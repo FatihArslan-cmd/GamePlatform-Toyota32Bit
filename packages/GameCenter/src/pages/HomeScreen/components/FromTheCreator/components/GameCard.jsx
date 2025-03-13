@@ -40,7 +40,7 @@ const GameCard = ({ instructions, imageSource, buttonText, onButtonPress, button
             colors={colorsToUse}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={styles.gradientButton}
+            style={[styles.gradientButton, { opacity: 0.75 }]}
           >
             <Button
               mode="text"
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   transparentButton: {
-    backgroundColor: 'transparent',
+    // Adding defined style that was referenced but missing
   },
   buttonText: {
     fontSize: 16,

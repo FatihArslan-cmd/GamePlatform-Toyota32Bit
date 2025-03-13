@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../../../../../../context/ThemeContext'; 
 
 const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
+  const { colors } = useTheme(); 
+
   return (
     <View style={styles.container}>
       <TouchableRipple
@@ -14,7 +17,7 @@ const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
           <Icon
             name={leftAction.iconName}
             size={26}
-            color="green"
+            color={colors.success} 
           />
         </View>
       </TouchableRipple>
@@ -26,7 +29,7 @@ const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
           <Icon
             name={rightAction.iconName}
             size={26}
-            color="blue"
+            color={colors.info} 
           />
         </View>
       </TouchableRipple>
@@ -37,8 +40,8 @@ const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between', // Added to push buttons to ends
-    alignItems: 'center', // Optional: to vertically center the buttons if needed
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   bottomSheetButton: {
     alignItems: 'center',

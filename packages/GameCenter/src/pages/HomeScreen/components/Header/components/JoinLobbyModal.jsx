@@ -1,19 +1,20 @@
-import React, { useState, useCallback ,useEffect} from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
-import CustomModal from '../../../../components/CustomModal';
-import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
+import React, { useState, useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { TouchableRipple } from 'react-native-paper'; // Removed Text import, added to TouchableRipple import
+import CustomModal from '../../../../../components/CustomModal';
+import InputField from '../../../../LoginScreen/components/FormSection/components/InputField';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
-import lobbyService from './services/lobbyService';
-import { ToastService } from '../../../../context/ToastService';
-import { useBingoWebSocket } from '../../../../context/BingoWebSocket/BingoWebSocket';
+import lobbyService from '../services/lobbyService';
+import { ToastService } from '../../../../../context/ToastService';
+import { useBingoWebSocket } from '../../../../../context/BingoGameWebsocket';
+import { useHeader } from '../context/HeaderContext'; // Import useHeader
 
-
-const JoinLobbyModal = ({ visible, onDismiss }) => {
+const JoinLobbyModal = () => { // Removed props from parameter list
     const [lobbyCode, setLobbyCode] = useState('');
     const [lobbyPassword, setLobbyPassword] = useState('');
-    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
+    const { connectWebSocket } = useBingoWebSocket();
+    const { joinLobbyModalVisible, closeJoinLobbyModal } = useHeader(); // Get visibility and onDismiss from context
 
 
     const handleJoinLobby = useCallback(async () => {
@@ -22,7 +23,7 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
 
             connectWebSocket(lobbyCode);
             ToastService.show('success', 'Successfully joined lobby!');
-            onDismiss();
+            closeJoinLobbyModal(); // Use context function
 
         } catch (error) {
             console.error('Error joining lobby:', error);
@@ -33,7 +34,7 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
                 ToastService.show('error', 'Failed to join lobby. Please try again.');
             }
         }
-    }, [lobbyCode, lobbyPassword, onDismiss, connectWebSocket]);
+    }, [lobbyCode, lobbyPassword, closeJoinLobbyModal, connectWebSocket]); // Updated dependency array
 
 
     const handlePaste = useCallback(async () => {
@@ -56,8 +57,8 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
 
     return (
         <CustomModal
-            visible={visible}
-            onDismiss={onDismiss}
+            visible={joinLobbyModalVisible} // Get visibility from context
+            onDismiss={closeJoinLobbyModal} // Use context function
             title="Join Lobby"
             text="Enter the lobby code and password (if required):"
             showConfirmButton={true}
@@ -92,7 +93,8 @@ const JoinLobbyModal = ({ visible, onDismiss }) => {
                     />
                      {lobbyPassword.length > 0 && (
                         <TouchableRipple style={styles.clearButton} onPress={handleClearPassword}>
-                            <Icon name="cancel" size={24} color="#fff" />
+                            <Icon name="cancel" size={24} color="#fff" >
+                                </Icon>
                         </TouchableRipple>
                     )}
                 </View>

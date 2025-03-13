@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { UserContext } from '../../../../../../context/UserContext';
+import { useTheme } from '../../../../../../context/ThemeContext'; 
 
-const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, user, ownerUsername, setDeleteModalVisible }) => {
+const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, ownerUsername, setDeleteModalVisible }) => {
+ const { user } = useContext(UserContext);
+ const { colors } = useTheme(); 
 
     return (
     <View style={styles.cardHeaderActions}>
@@ -11,18 +15,18 @@ const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, user, own
         style={styles.codeContainer}
         onPress={() => copyLobbyCodeToClipboard(lobbyCode)}
       >
-        <Icon name="code-tags" size={20} color="#666" />
-        <Text style={styles.lobbyCode}>{lobbyCode}</Text>
+        <Icon name="code-tags" size={20} color={colors.text} />
+        <Text style={[styles.lobbyCode, { color: colors.text }]}>{lobbyCode}</Text> 
       </TouchableOpacity>
       <View style={styles.headerIcons}>
         {user && user.username === ownerUsername ? (
           <>
-        
+
             <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
               <Icon
                 name="close"
                 size={24}
-                color="red"
+                color={colors.error}
                 style={styles.iconButton}
               />
             </TouchableRipple>

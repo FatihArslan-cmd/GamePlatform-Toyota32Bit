@@ -30,7 +30,7 @@ const VideoPlayItems = memo(({ title, imageUri, index, resizeMode = 'cover', onP
                 <FastImage
                     style={styles.image}
                     source={{ uri: imageUri }}
-                    resizeMode={resizeMode} // Use the resizeMode prop here
+                    resizeMode={resizeMode} 
                 />
                 <View
                     style={styles.overlay}

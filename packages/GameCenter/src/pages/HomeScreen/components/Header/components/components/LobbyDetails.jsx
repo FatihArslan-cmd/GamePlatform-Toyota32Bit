@@ -1,25 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import formatDate from '../../../../../utils/FormatDate';
+import formatDate from '../../../../../../utils/FormatDate';
+import { useTheme } from '../../../../../../context/ThemeContext'; 
 
 const LobbyDetails = ({ lobby }) => {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.lobbyDetails}>
       <View style={styles.typeBadgeContainer}>
         <View style={styles.typeBadge}>
-          <Icon name="tag" size={16} color="#666" />
-          <Text style={styles.lobbyType}>{lobby.lobbyType.toUpperCase()}</Text>
+          <Icon name="tag" size={16} color={colors.text} /> 
+          <Text style={[styles.lobbyType, { color: colors.text }]}>{lobby.lobbyType.toUpperCase()}</Text> 
         </View>
         {lobby.lobbyType === 'Event' && (
           <View style={styles.eventDateContainer}>
             <View style={styles.dateItem}>
-              <Icon name="calendar-start" size={16} color="#007bff" />
-              <Text style={styles.dateText}>{formatDate(lobby.startDate, true)}</Text>
+              <Icon name="calendar-start" size={16} color={colors.info} /> 
+              <Text style={[styles.dateText, { color: colors.text }]}>{formatDate(lobby.startDate, true)}</Text> 
             </View>
             <View style={styles.dateItem}>
-              <Icon name="calendar-end" size={16} color="#dc3545" />
-              <Text style={styles.dateText}>{formatDate(lobby.endDate, true)}</Text>
+              <Icon name="calendar-end" size={16} color={colors.error} /> 
+              <Text style={[styles.dateText, { color: colors.text }]}>{formatDate(lobby.endDate, true)}</Text> 
             </View>
           </View>
         )}
@@ -27,19 +30,19 @@ const LobbyDetails = ({ lobby }) => {
 
       <View style={styles.detailItem}>
         <View style={styles.detailHeader}>
-          <Icon name="crown" size={20} color="#FFD700" />
-          <Text style={styles.detailLabel}>Owner</Text>
+          <Icon name="crown" size={20} color={colors.warning} /> 
+          <Text style={[styles.detailLabel, { color: colors.text }]}>Owner</Text>
         </View>
-        <Text style={styles.detailLabel}>{lobby.ownerUsername.toUpperCase()}</Text>
+        <Text style={[styles.detailLabel, { color: colors.text }]}>{lobby.ownerUsername.toUpperCase()}</Text> 
       </View>
       <View style={styles.detailItem}>
         <View style={styles.detailHeader}>
-          <Icon name="account-group" size={20} color="#4a148c" />
-          <Text style={styles.detailLabel}>Players</Text>
+          <Icon name="account-group" size={20} color={colors.primary} /> 
+          <Text style={[styles.detailLabel, { color: colors.text }]}>Players</Text>
         </View>
-        <Text style={styles.detailLabel}>
+        <Text style={[styles.detailLabel, { color: colors.text }]}>
           {lobby.members.length}/{lobby.maxCapacity}
-        </Text>
+        </Text> 
       </View>
     </View>
   );

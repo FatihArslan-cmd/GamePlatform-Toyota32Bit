@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import lobbyService from '../../services/lobbyService';
 import { ToastService } from '../../../../../../context/ToastService';
-import { useBingoWebSocket } from '../../../../../../context/BingoWebSocket/BingoWebSocket'; // Import the hook
+import { useBingoWebSocket } from '../../../../../../context/BingoGameWebsocket';
 
 const useLobbyActions = (onLobbyAction) => {
   const { closeWebSocket } = useBingoWebSocket(); // Get closeWebSocket function from context
@@ -25,7 +25,6 @@ const useLobbyActions = (onLobbyAction) => {
   const handleLeaveLobby = useCallback(async (lobbyId) => {
     try {
       await lobbyService.leaveLobby(lobbyId);
-      ToastService.show('success', 'Left lobby successfully!');
       if (onLobbyAction) {
         onLobbyAction(); // Refresh lobby list in parent component after leaving
       }
