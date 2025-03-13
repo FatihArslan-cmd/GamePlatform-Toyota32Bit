@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTheme } from 'react-native-paper';
-import * as FriendService from '../services/service';
-import { ToastService } from '../../../context/ToastService';
-import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+import * as FriendService from '../../../services/service';
+import { ToastService } from '../../../../../context/ToastService';
+import { useFocusEffect } from '@react-navigation/native'; 
 
 const useFriendsPage = () => {
     const { colors } = useTheme();
@@ -28,11 +28,9 @@ const useFriendsPage = () => {
         }
     }, []);
 
-    // Use useFocusEffect to fetch friends list when the screen comes into focus
     useFocusEffect(
         useCallback(() => {
             fetchFriendsList();
-            // No cleanup function needed in this case, but you can add one if necessary
         }, [fetchFriendsList])
     );
 
@@ -57,7 +55,7 @@ const useFriendsPage = () => {
     const handleCopyCode = useCallback(async () => {
         Clipboard.setString(friendCode);
         setModalVisible(false);
-        ToastService.show("success", 'Code copied to clipboard'); // Show toast
+        ToastService.show("success", 'Code copied to clipboard'); 
     }, [friendCode]);
 
     const handleModalDismiss = useCallback(() => {
@@ -96,7 +94,7 @@ const useFriendsPage = () => {
             setFriendModalVisible(false);
             setSelectedFriend(null);
             await fetchFriendsList();
-             ToastService.show("success", 'Friend Removed Successfully!'); // Show toast
+             ToastService.show("success", 'Friend Removed Successfully!'); 
              setModalVisible(false);
 
         } catch (err) {
@@ -113,7 +111,7 @@ const useFriendsPage = () => {
             await FriendService.addFriend(code);
             await fetchFriendsList();
             handleModalDismiss();
-            ToastService.show("success", 'Friend added successfully!'); // Show toast
+            ToastService.show("success", 'Friend added successfully!'); 
         } catch (err) {
             setError(err.message || 'Failed to add friend.');
         } finally {

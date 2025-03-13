@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Card, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FastImage from 'react-native-fast-image'; 
-import styles from '../../styles/FriendPageStyles'; // Stil dosyasının yolunu kontrol edin
+import styles from '../../../styles/FriendPageStyles'; 
 
 const FriendItem = ({ item, colors, onPress }) => {
     return (

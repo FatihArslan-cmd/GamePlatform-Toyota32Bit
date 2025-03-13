@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { Button, TouchableRipple,Text,Tooltip } from 'react-native-paper';
-import InputField from '../../../LoginScreen/components/FormSectionItem/InputField';
+import InputField from '../../../LoginScreen/components/FormSection/components/InputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useFriendsPage from '../../hooks/useFriendsPage';
+import useFriendsPage from './hooks/useFriendsPage';
 import styles from '../../styles/FriendPageStyles';
-import FriendAddModal from './Modals/FriendAddModal';
-import FriendItem from './FrientItem';
-import InviteModal from './Modals/InviteModal';
-import FriendDetailsModal from './Modals/FriendDetailsModal';
+import FriendAddModal from './components/FriendModals/FriendAddModal';
+import FriendItem from './components/FrientItem';
+import InviteModal from './components/FriendModals/InviteModal';
+import FriendDetailsModal from './components/FriendModals/FriendDetailsModal';
 import EmptyState from '../../../../components/EmptyState';
 import { ToastService } from '../../../../context/ToastService';
+import { useButtons } from '../context/ButtonsContext'; 
+import {useTheme} from '../../../../context/ThemeContext';
 
-
-const FriendsPage = ({ onFriendCountChange }) => {
+const FriendsPage = () => {
     const {
-        colors,
         modalVisible,
         friendCode,
         loading,
@@ -33,14 +33,14 @@ const FriendsPage = ({ onFriendCountChange }) => {
         handleAddFriend,
         handleSearchChange
     } = useFriendsPage();
+    const { handleFriendCountChange } = useButtons(); 
+    const { colors } = useTheme();
 
     const [addModalVisible, setAddModalVisible] = useState(false);
 
     useEffect(() => {
-        if (onFriendCountChange) {
-            onFriendCountChange(friends.length);
-        }
-    }, [friends, onFriendCountChange]);
+        handleFriendCountChange(friends.length);
+    }, [friends, handleFriendCountChange]); 
 
     const handleOpenAddModal = () => {
         setAddModalVisible(true);
@@ -97,9 +97,9 @@ const FriendsPage = ({ onFriendCountChange }) => {
             />
             <Button
                 mode="contained"
-                style={[styles.inviteButton, { backgroundColor: `${colors.primary}70` }]}
+                style={[styles.inviteButton, { backgroundColor: `${colors.primary}` }]}
                 buttonColor={colors.primary}
-                labelStyle={[styles.inviteButtonText, { color: 'white', opacity: 0.80,fontFamily:'Orbitron-VariableFont_wght' }]}
+                labelStyle={[styles.inviteButtonText, { color: 'white', opacity: 0.80, fontFamily:'Orbitron-ExtraBold' }]}
                 icon={() => <Icon name="link-variant" color='white' size={24} />}
                 iconPosition="trailing"
                 onPress={handleInvitePress}
@@ -119,7 +119,7 @@ const FriendsPage = ({ onFriendCountChange }) => {
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 style={styles.friendsList}
-                ListEmptyComponent={() => <EmptyState textColor="white" message={"No friends Yet!"}/>}
+                ListEmptyComponent={() => <EmptyState textColor={colors.text} message={"No friends Yet!"}/>}
             />
         </View>
     );

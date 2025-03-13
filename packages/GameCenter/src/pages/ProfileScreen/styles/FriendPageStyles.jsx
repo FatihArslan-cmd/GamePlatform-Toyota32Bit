@@ -1,4 +1,3 @@
-// FriendPageStyles.js
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -24,7 +23,6 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     input: {
-        marginBottom: 15,
         backgroundColor: '#ffffff10',
         flex: 1,
     },
