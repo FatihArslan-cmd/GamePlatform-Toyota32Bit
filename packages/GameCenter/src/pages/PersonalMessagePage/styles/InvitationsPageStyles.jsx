@@ -1,28 +1,26 @@
+// styles/InvitationsPageStyles.js
 import { StyleSheet } from 'react-native';
 
-export const pageStyles = StyleSheet.create({
+export const pageStyles = (colors) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',
   },
-  backgroundImage: {
+backgroundImage: {
     flex: 1,
-  },
-  container: {
+},
+container: {
     flex: 1,
     padding: 16,
-    paddingBottom: 32,
-    backgroundColor: 'rgba(245, 245, 245, 0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    backgroundColor: colors.blurredImageBackground,
+},
 });
 
-export const invitationCardStyles = StyleSheet.create({
+export const invitationCardStyles = (colors) => StyleSheet.create({
   surfaceCard: {
     marginBottom: 16,
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: colors.card,
     marginTop: 75,
   },
   inviterAvatar: {
@@ -34,6 +32,7 @@ export const invitationCardStyles = StyleSheet.create({
   card: {
     borderRadius: 20,
     overflow: 'hidden',
+    backgroundColor: colors.card,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -49,7 +48,7 @@ export const invitationCardStyles = StyleSheet.create({
   inviteMessage: {
     fontSize: 16,
     fontFamily: 'Orbitron-ExtraBold',
-    color: '#000',
+    color: colors.text,
     marginBottom: 4,
     textAlign: 'center'
   },
@@ -57,7 +56,8 @@ export const invitationCardStyles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     fontFamily: 'Orbitron-VariableFont_wght',
-    opacity: 0.7
+    opacity: 0.7,
+    color: colors.subText,
   },
   actions: {
     justifyContent: 'space-between',
@@ -81,5 +81,6 @@ export const invitationCardStyles = StyleSheet.create({
     fontFamily: 'Orbitron-ExtraBold',
     fontSize: 14,
     letterSpacing: 0.5,
+    color: colors.text,
   },
 });

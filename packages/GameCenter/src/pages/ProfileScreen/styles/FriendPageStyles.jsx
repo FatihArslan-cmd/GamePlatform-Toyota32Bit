@@ -43,13 +43,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff10',
         padding: 15,
         marginVertical: 5,
-        borderRadius: 10,
-        elevation: 2,
     },
     friendName: {
         fontSize: 18,
-        color: '#ffffff',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
     },
     friendCardContent: {
         flexDirection: 'row',
@@ -71,7 +68,7 @@ const styles = StyleSheet.create({
     codeText: {
         fontSize: 24,
         color: '#fff',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        fontFamily: 'Orbitron-ExtraBold',
         marginRight: 10
     },
     snackbar: {

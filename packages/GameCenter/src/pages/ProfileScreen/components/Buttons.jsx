@@ -17,22 +17,15 @@ const Buttons = () => {
     } = useButtons();
     const { colors } = useTheme();
 
-    if (!colors) {
-        // Theme context might not be immediately available.
-        // You can return a loading state or fallback UI if needed.
-        return <View><Text>Loading Theme...</Text></View>;
-    }
-
-
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={[styles.tabContainer, { backgroundColor: colors.background }]}>
                 {tabs.map((tab, index) => (
                     <TouchableRipple
                         key={tab.id}
-                        style={[styles.tab, { width: `${100 / tabs.length}%` }]} // Adjust width based on number of tabs
+                        style={[styles.tab, { width: `${100 / tabs.length}%` }]}
                         onPress={() => handleTabPress(index)}
-                        rippleColor={colors.ripple} // Use theme color for ripple or configurable
+                        rippleColor={colors.ripple} 
                     >
                         <View style={styles.tabContent}>
                             <Text style={[styles.tabNumber, { color: colors.subText }, activeTabIndex === index && { color: colors.primary }]}>

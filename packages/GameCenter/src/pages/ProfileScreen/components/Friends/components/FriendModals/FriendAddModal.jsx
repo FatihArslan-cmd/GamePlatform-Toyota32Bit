@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import InputField from '../../../../../LoginScreen/components/FormSection/components/InputField';
-import CustomModal from '../../../../../../components/CustomModal';
-import styles from '../../../../styles/FriendPageStyles';
+import React, { useState, useContext } from 'react';
 import { View } from 'react-native';
-const FriendAddModal = ({ visible, onDismiss, onAddFriend,setAddModalVisible }) => {
+import { TextInput } from 'react-native-paper';
+import CustomModal from '../../../../../../components/CustomModal';
+import { useTheme } from '../../../../../../context/ThemeContext';
 
+const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible }) => {
     const [friendCode, setFriendCode] = useState('');
+    const { colors } = useTheme();
 
     const handleAdd = () => {
         onAddFriend(friendCode);
@@ -23,18 +24,31 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend,setAddModalVisible }) 
             onConfirm={handleAdd}
         >
             <View style={{ paddingVertical: 35 }}>
-
-            <InputField
+                <TextInput
                     label="Enter friend code"
                     value={friendCode}
                     onChangeText={setFriendCode}
-                    style={styles.input}
+                    mode="flat"
+                    style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        marginHorizontal: 10,
+                        color: colors.text,
+                    }}
+                    placeholder="Friend code"
+                    placeholderTextColor={colors.text}
+                    theme={{
+                        colors: {
+                            primary: colors.primary,
+                            placeholder: colors.primary, //  Label color when unfocused
+                            text: colors.text,         // Input text color
+                        },
+                    }}
+                    autoCapitalize="none"
+                    autoCorrect={false}
                 />
             </View>
-               
         </CustomModal>
     );
 };
-
 
 export default FriendAddModal;
