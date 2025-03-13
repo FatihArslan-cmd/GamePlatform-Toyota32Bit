@@ -1,13 +1,18 @@
 import React from 'react';
 import GrandientText from '../../../components/GrandientText';
+import { useTheme } from '../../../context/ThemeContext'; 
 
-const HeaderTitle = () => (
-  <GrandientText
-    text="Invite Friends"
-    colors={['black', '#778899']}
-    textStyle={{ fontSize: 28 }}
-    gradientDirection="horizontal"
-  />
-);
+const HeaderTitle = () => {
+  const { colors } = useTheme();
+
+  return (
+    <GrandientText
+      text="Invite Friends"
+      colors={colors.languageTextGradient}
+      textStyle={{ fontSize: 28 }}
+      gradientDirection="horizontal"
+    />
+  );
+};
 
 export default HeaderTitle;

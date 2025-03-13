@@ -6,79 +6,133 @@ const WebSocketContext = createContext(null);
 
 export const WebSocketProvider = ({ children }) => {
     const socket = useRef(null);
-    const [userId, setUserId] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
+    const messageListeners = useRef(new Set());
+    const reconnectTimeout = useRef(null);
+    const isUnmounted = useRef(false);
+    const messageQueue = useRef([]);
+    
+    const [state, setState] = useState({
+        userId: null,
+        isConnected: false,
+        connectionStatus: 'disconnected' 
+    });
 
-    useEffect(() => {
+    const updateState = (newState) => {
+        if (!isUnmounted.current) {
+            setState(prev => ({ ...prev, ...newState }));
+        }
+    };
+
+    const connectWebSocket = () => {
+        if (isUnmounted.current) return;
+
+        updateState({ connectionStatus: 'connecting' });
+        
         const ws = new WebSocket('ws://10.0.2.2:3000/friendchat');
         socket.current = ws;
         const accessToken = getToken();
 
         ws.onopen = () => {
-            console.log('WebSocket connected');
+            if (isUnmounted.current) return;
             ws.send(JSON.stringify({
                 type: 'auth',
                 token: accessToken,
             }));
-            setIsConnected(true);
+            updateState({ isConnected: true, connectionStatus: 'connected' });
         };
 
         ws.onmessage = (event) => {
+            if (isUnmounted.current) return;
             try {
                 const message = JSON.parse(event.data);
                 if (message.type === 'connected') {
-                    console.log('WebSocket authenticated');
-                    console.log('Authenticated User ID:', message.payload.userId);
-                    setUserId(message.payload.userId);
-                } else if (message.type === 'error') {
-                    console.error('WebSocket Error:', message.message);
-                    ToastService.show('error', message.message);
+                    updateState({ userId: message.payload.userId });
                 }
+                messageListeners.current.forEach(callback => callback(message));
             } catch (error) {
-                console.error('Failed to parse message:', error);
-                ToastService.show('error', 'Failed to process WebSocket message.');
+                console.error('Message parse error:', error);
+                ToastService.show('error', 'Invalid message format');
             }
         };
 
         ws.onerror = (error) => {
+            if (isUnmounted.current) return;
             console.error('WebSocket error:', error);
-            ToastService.show('error', 'Failed to connect to chat server.');
-            setIsConnected(false);
+            ToastService.show('error', 'Connection error');
+            updateState({ isConnected: false, connectionStatus: 'error' });
         };
 
-        ws.onclose = () => {
-            console.log('WebSocket closed');
-            setIsConnected(false);
-        };
+        ws.onclose = (event) => {
+            if (isUnmounted.current) return;
+            console.log('WebSocket closed:', event.code, event.reason);
+            
+            updateState({ 
+                isConnected: false, 
+                connectionStatus: state.connectionStatus === 'connected' ? 'reconnecting' : 'disconnected'
+            });
 
-        return () => {
-            if (ws.readyState === WebSocket.OPEN) {
-                ws.close();
+            if (!isUnmounted.current && event.code !== 1000) {
+                reconnectTimeout.current = setTimeout(() => {
+                    connectWebSocket();
+                }, 5000);
             }
         };
-    }, []);
+
+        return ws;
+    };
 
     const sendMessage = (payload) => {
-        if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+        if (socket.current?.readyState === WebSocket.OPEN) {
             socket.current.send(JSON.stringify(payload));
+            while (messageQueue.current.length > 0) {
+                const msg = messageQueue.current.shift();
+                socket.current.send(JSON.stringify(msg));
+            }
+        } else {
+            messageQueue.current.push(payload);
+            if (messageQueue.current.length > 5) {
+                ToastService.show('warning', 'Messages are queued. Trying to reconnect...');
+                connectWebSocket();
+            }
         }
     };
 
     const subscribeToMessages = (callback) => {
-        if (socket.current) {
-            socket.current.onmessage = (event) => {
-                try {
-                    const message = JSON.parse(event.data);
-                    callback(message);
-                } catch (error) {
-                    console.error('Failed to parse message:', error);
-                }
-            };
-        }
+        messageListeners.current.add(callback);
+        return () => messageListeners.current.delete(callback);
     };
 
+    useEffect(() => {
+        isUnmounted.current = false;
+        const ws = connectWebSocket();
+
+        return () => {
+            isUnmounted.current = true;
+            
+            if (reconnectTimeout.current) {
+                clearTimeout(reconnectTimeout.current);
+            }
+            
+            if (ws && ws.readyState !== WebSocket.CLOSED) {
+                ws.close(1000, 'Normal closure');
+            }
+            
+            socket.current = null;
+            messageListeners.current.clear();
+            messageQueue.current = [];
+        };
+    }, []);
+
     return (
-        <WebSocketContext.Provider value={{ userId, isConnected, sendMessage, subscribeToMessages }}>
+        <WebSocketContext.Provider
+            value={{
+                userId: state.userId,
+                isConnected: state.isConnected,
+                connectionStatus: state.connectionStatus,
+                sendMessage,
+                subscribeToMessages
+            }}
+        >
             {children}
         </WebSocketContext.Provider>
     );

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FriendInviteProvider } from './context/FriendInviteContext';
 import FriendInvitePage from './components/FriendInvitePage';
-const index = () => {
+const FriendInvite = () => {
   return (
     <FriendInviteProvider>
         <FriendInvitePage />
@@ -9,4 +9,4 @@ const index = () => {
   )
 }
 
-export default index
+export default FriendInvite

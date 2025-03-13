@@ -1,27 +1,29 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { List ,TouchableRipple} from 'react-native-paper';
+import { List, TouchableRipple } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackButton from '../../../components/BackIcon';
-import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../../../context/ThemeContext';
+import { useChat } from '../context/ChatContext'; 
 
-const ChatHeader = ({ friend, onMoreActions }) => {
-    const getStatusText = () => {
-        return friend.isOnline ? 'Online' : 'Offline';
-    };
-    const getStatusColor = () => {
-        return friend.isOnline ? 'green' : 'red';
-    };
-    const { colors } = useTheme(); // Use the useTheme hook
+const ChatHeader = () => {
+    const { friend } = useChat();
+    const { colors } = useTheme();
+
+    const getStatusText = () => friend.isOnline ? 'Online' : 'Offline';
+    const getStatusColor = () => friend.isOnline ? 'green' : 'red';
 
     return (
-        <View style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}> {/* Themed header background and border color */}
+        <View style={[styles.header, { 
+            backgroundColor: colors.card, 
+            borderBottomColor: colors.border 
+        }]}>
             <BackButton left={0} top={18} />
             <View style={styles.contentContainer}>
                 <List.Item
                     title={friend.username}
-                    titleStyle={[styles.headerTitle, { color: colors.text }]} // Themed header title color
+                    titleStyle={[styles.headerTitle, { color: colors.text }]}
                     description={getStatusText()}
                     descriptionStyle={[styles.headerSubtitle, { color: getStatusColor() }]}
                     left={() => (
@@ -29,19 +31,18 @@ const ChatHeader = ({ friend, onMoreActions }) => {
                             {friend.profilePhoto ? (
                                 <FastImage
                                     style={styles.avatar}
-                                    source={{
-                                        uri: friend.profilePhoto,
-                                        priority: FastImage.priority.normal,
-                                    }}
+                                    source={{ uri: friend.profilePhoto }}
                                     resizeMode={FastImage.resizeMode.cover}
                                 />
                             ) : (
-                                <View style={[styles.avatar, styles.avatarPlaceholder, { backgroundColor: colors.border }]} /> // Themed avatarPlaceholder background
+                                <View style={[styles.avatar, styles.avatarPlaceholder, { 
+                                    backgroundColor: colors.border 
+                                }]} />
                             )}
                         </View>
                     )}
                     right={() => (
-                        <TouchableRipple style={styles.headerButton} onPress={onMoreActions}>
+                        <TouchableRipple style={styles.headerButton}>
                             <Icon name="ellipsis-vertical" size={24} color="#555" />
                         </TouchableRipple>
                     )}
@@ -53,9 +54,9 @@ const ChatHeader = ({ friend, onMoreActions }) => {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#fff', // Removed hardcoded color, will be set by theme
+        backgroundColor: '#fff', 
         borderBottomWidth: 1,
-        borderBottomColor: '#E0E0E0', // Removed hardcoded color, will be set by theme
+        borderBottomColor: '#E0E0E0',
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: 10,
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontFamily: 'Orbitron-ExtraBold',
-        color: '#333', // Removed hardcoded color, will be set by theme
+        color: '#333', 
     },
     headerSubtitle: {
         fontSize: 14,
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
         borderRadius: 22.5,
     },
     avatarPlaceholder: {
-        backgroundColor: '#ddd', // Removed hardcoded color, will be set by theme
+        backgroundColor: '#ddd',
     },
     headerButton: {
         paddingHorizontal: 15,

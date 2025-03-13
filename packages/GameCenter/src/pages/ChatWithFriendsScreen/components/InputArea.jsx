@@ -1,12 +1,22 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '../../../context/ThemeContext'; 
-const InputArea = ({ newMessageText, setNewMessageText, sendMessage }) => {
-    const { colors } = useTheme(); 
+import { useTheme } from '../../../context/ThemeContext';
+import { useChat } from '../context/ChatContext'; 
+
+const InputArea = () => {
+    const { colors } = useTheme();
+    const { 
+        newMessageText, 
+        setNewMessageText, 
+        handleSendMessage 
+    } = useChat(); 
 
     return (
-        <View style={[styles.inputArea, { borderTopColor: colors.border, backgroundColor: colors.card }]}>
+        <View style={[styles.inputArea, { 
+            borderTopColor: colors.border, 
+            backgroundColor: colors.card 
+        }]}>
             <TextInput
                 style={[styles.input, {
                     borderColor: colors.border,
@@ -14,22 +24,22 @@ const InputArea = ({ newMessageText, setNewMessageText, sendMessage }) => {
                     color: colors.text
                 }]}
                 placeholder="Type a message..."
-                placeholderTextColor={colors.subText} 
+                placeholderTextColor={colors.subText}
                 value={newMessageText}
                 onChangeText={setNewMessageText}
-                onSubmitEditing={sendMessage}
+                onSubmitEditing={handleSendMessage}
                 returnKeyType="send"
-                color={colors.text} 
             />
             <TouchableOpacity
                 style={[styles.sendButton, { backgroundColor: colors.primary }]}
-                onPress={sendMessage}
+                onPress={handleSendMessage}
             >
-                <Icon name="send" size={24} color={colors.card} /> 
+                <Icon name="send" size={24} color={colors.card} />
             </TouchableOpacity>
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     inputArea: {

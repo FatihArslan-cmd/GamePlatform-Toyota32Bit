@@ -57,18 +57,18 @@ const FriendInviteProvider = ({ children }) => {
         }
     
         try {
-            await lobbyService.inviteFriendToLobby(friendId, userLobby.code); // Backend davet servisini çağır
-            ToastService.show('success', 'Arkadaş davet isteği başarıyla gönderildi!'); // Başarı mesajı
+            await lobbyService.inviteFriendToLobby(friendId, userLobby.code);
+            ToastService.show('success', 'Arkadaş davet isteği başarıyla gönderildi!'); 
         } catch (err) {
-            if (err.response && err.response.status === 400 && err.response.data && err.response.data.message === 'Invited user is already in the lobby') { // Güncellenmiş hata mesajını kontrol et
-                ToastService.show('warning', 'Bu arkadaşınız zaten lobide.'); // Daha kullanıcı dostu mesaj
+            if (err.response && err.response.status === 400 && err.response.data && err.response.data.message === 'Invited user is already in the lobby') { 
+                ToastService.show('warning', 'Bu arkadaşınız zaten lobide.'); 
             } else if (err.response && err.response.status === 400 && err.response.data && err.response.data.message === 'Invitation already sent to this user for this lobby') {
-                ToastService.show('warning', 'Bu arkadaşınıza zaten bu lobi için davet gönderdiniz.'); // Uyarı mesajı (Eski mesaj için de kalabilir, isteğe bağlı)
+                ToastService.show('warning', 'Bu arkadaşınıza zaten bu lobi için davet gönderdiniz.'); 
             }
              else {
-                ToastService.show('error', 'Arkadaş davet isteği gönderilirken bir hata oluştu.'); // Genel hata mesajı
-                setError(err.message); // Hata durumunu ayarla (isteğe bağlı)
-                console.error("Davet hatası:", err); // Hata detaylarını konsola yazdır (isteğe bağlı)
+                ToastService.show('error', 'Arkadaş davet isteği gönderilirken bir hata oluştu.'); 
+                setError(err.message); 
+                console.error("Davet hatası:", err); 
             }
         }
     };

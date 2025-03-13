@@ -27,33 +27,33 @@ const MessageBubble = ({ message, isCurrentUserMessage }) => {
 const styles = StyleSheet.create({
     messageBubble: {
         maxWidth: '75%',
-        paddingVertical: 8, // Reduced padding for Paper
-        paddingHorizontal: 12, // Reduced padding for Paper
-        marginVertical: 4, // Reduced margin for Paper
+        paddingVertical: 8, 
+        paddingHorizontal: 12,
+        marginVertical: 4, 
         borderRadius: 20,
-        elevation: 1, // Elevation for shadow
+        elevation: 1, 
     },
     currentUserBubble: {
-        backgroundColor: '#DCF8C6', // WhatsApp green, adjust theme for consistency
+        backgroundColor: '#DCF8C6', 
         alignSelf: 'flex-end',
         borderTopRightRadius: 2,
     },
     friendBubble: {
-        backgroundColor: '#fff', // White, adjust theme for consistency
+        backgroundColor: '#fff', 
         alignSelf: 'flex-start',
         borderTopLeftRadius: 2,
     },
     currentUserMessageText: {
-        color: '#333', // Dark grey, adjust theme for consistency
+        color: '#333', 
         fontSize: 16,
     },
     friendMessageText: {
-        color: '#333', // Dark grey, adjust theme for consistency
+        color: '#333',
         fontSize: 16,
     },
     timestampText: {
         fontSize: 12,
-        color: '#777', // Grey, adjust theme for consistency
+        color: '#777', 
         alignSelf: 'flex-end',
         marginTop: 2,
     },
