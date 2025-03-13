@@ -13,6 +13,8 @@ export const pageStyles = StyleSheet.create({
     padding: 16,
     paddingBottom: 32,
     backgroundColor: 'rgba(245, 245, 245, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

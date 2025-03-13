@@ -1,10 +1,12 @@
 import React, { useRef, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Animated,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { usePermissionsContext } from '../../../../context/PermissionContext'; 
 
-const UserIcon = ({ onPress, }) => {
+const UserIcon = () => { 
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shineAnim = useRef(new Animated.Value(0)).current;
+  const { setVisible: setModalVisible } = usePermissionsContext();
 
   const pulseAnimation = useCallback(() => {
     Animated.sequence([
@@ -52,9 +54,10 @@ const UserIcon = ({ onPress, }) => {
   });
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={() => setModalVisible(true)}>
       <View style={styles.profileContainer}>
         <View style={styles.iconContainer}>
+
           <Animated.View
             style={[
               styles.userIconWrapper,
@@ -63,8 +66,9 @@ const UserIcon = ({ onPress, }) => {
               },
             ]}
           >
-            <Icon name="account-circle" size={100} color="#8a2be2" />
+             <Icon name="account-circle" size={100} color="#8a2be2" />
           </Animated.View>
+
           <Animated.View
             style={[
               styles.shine,
@@ -74,7 +78,6 @@ const UserIcon = ({ onPress, }) => {
             ]}
           />
         </View>
-        <Text style={styles.lastUserText}>Logged in as: </Text>
       </View>
     </TouchableOpacity>
   );
@@ -102,12 +105,6 @@ const styles = StyleSheet.create({
     width: 60,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
     transform: [{ skewX: '-20deg' }],
-  },
-  lastUserText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: '#8a2be2',
-    fontFamily: 'Orbitron-VariableFont_wght',
   },
 });
 

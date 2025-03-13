@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { getRefreshToken } from '../../../../shared/states/api';
-import { storage } from '../../../../utils/storage';
-import UserIcon from './UserIcon';
-import PermissionsModal from './PermissionsModal';
-import LoadingFullScreen from '../../../../components/LoadingFullScreen';
+import { getRefreshToken } from '../../../../../shared/states/api';
+import { storage } from '../../../../../utils/storage';
+import UserIcon from './components/UserIcon';
+import PermissionsModal from './components/PermissionsModal';
+import LoadingFullScreen from '../../../../../components/LoadingFullScreen';
 import { useNavigation } from '@react-navigation/native';
+import { usePermissionsContext } from '../../../context/PermissionContext';
 
 const SavedUserSection = () => {
   const refreshToken = getRefreshToken();
-  const [permissions, setPermissions] = useState({ barcode: false, biometric: false, nfc: false });
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
-  const [hasPermissions, setHasPermissions] = useState(false)
+
+  const {
+    visible: isModalVisible,
+    setVisible: setModalVisible, 
+    permissions,
+    setPermissions,
+    hasPermissions,
+    setHasPermissions,
+    isLoading,
+    setIsLoading 
+  } = usePermissionsContext();
 
   useEffect(() => {
     const storedPermissions = storage.getString('permissions');
@@ -34,13 +42,7 @@ const SavedUserSection = () => {
       {hasPermissions && (
         <UserIcon onPress={() => setModalVisible(true)}  />
       )}
-      <PermissionsModal
-        visible={isModalVisible}
-        onDismiss={() => setModalVisible(false)}
-        permissions={permissions}
-        navigation={navigation}
-        setIsLoading={setIsLoading}
-      />
+      <PermissionsModal/>
     </View>
   );
 };

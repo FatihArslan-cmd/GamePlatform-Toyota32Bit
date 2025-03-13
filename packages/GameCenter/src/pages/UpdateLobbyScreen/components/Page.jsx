@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Surface, Text } from 'react-native-paper';
-import { useLobbyUpdate } from '../context/LobbyUpdateContext';
 import EmptyState from '../../../components/EmptyState';
 import ErrorComponents from '../../../components/ErrorComponents';
 import LobbyTypeSegmentedButtons from './LobbyTypeSegmentedButtons';
@@ -10,6 +9,8 @@ import DatePickerInput from './DatePickerInput';
 import LobbyUpdateButton from './LobbyUpdateButton';
 import TextInputWithIcon from './TextInputWithIcon';
 import { UserContext } from '../../../context/UserContext';
+import { useTheme } from '../../../context/ThemeContext';
+import{ useLobbyUpdate }from '../context/LobbyUpdateContext';
 
 const Page = () => {
   const {
@@ -20,42 +21,15 @@ const Page = () => {
     setLobbyName,
     maxCapacity,
     setMaxCapacity,
-    handleUpdateLobby: contextHandleUpdateLobby,
+    lobbyType,
   } = useLobbyUpdate();
 
-  const [lobbyType, setLobbyType] = useState(lobby?.lobbyType || 'Normal');
-  const [startDate, setStartDate] = useState(lobby?.startDate ? new Date(lobby.startDate) : new Date());
-  const [endDate, setEndDate] = useState(lobby?.endDate ? new Date(lobby.endDate) : new Date());
-  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
-  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const { user } = useContext(UserContext);
-  const handleUpdateLobby = useCallback(async () => {
-    const updates = {
-      lobbyName: lobbyName,
-      maxCapacity: parseInt(maxCapacity, 10),
-      lobbyType: lobbyType,
-      startDate: lobbyType === 'Event' ? startDate.toISOString() : null,
-      endDate: lobbyType === 'Event' ? endDate.toISOString() : null,
-    };
-    await contextHandleUpdateLobby(updates);
-  }, [lobbyName, maxCapacity, lobbyType, startDate, endDate, contextHandleUpdateLobby]);
-
-  const onStartDateChange = useCallback((selectedDate) => {
-    const currentDate = selectedDate || startDate;
-    setShowStartDatePicker(false);
-    setStartDate(currentDate);
-  }, [startDate, setStartDate, setShowStartDatePicker]);
-
-  const onEndDateChange = useCallback((selectedDate) => {
-    const currentDate = selectedDate || endDate;
-    setShowEndDatePicker(false);
-    setEndDate(currentDate);
-  }, [endDate, setEndDate, setShowEndDatePicker]);
-
+  const { colors } = useTheme(); 
 
   if (error) {
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
         <ErrorComponents message={error} />
       </SafeAreaView>
     );
@@ -63,28 +37,18 @@ const Page = () => {
 
   if (!lobby) {
     return (
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
         <EmptyState />
       </SafeAreaView>
     );
   }
 
-  if (user.username !== lobby.ownerUsername) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.unauthorizedContainer}>
-          <Text style={styles.unauthorizedText}>You are not authorized to update this lobby.</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Surface style={styles.card} elevation={4}>
+        <Surface style={[styles.card, { backgroundColor: colors.card }]} elevation={4}>
           <View style={styles.headerContainer}>
-            <Text style={styles.title}>Update Lobby</Text>
+            <Text style={[styles.title, { color: colors.text }]}>Update Lobby</Text>
           </View>
 
           <TextInputWithIcon
@@ -104,39 +68,23 @@ const Page = () => {
             iconName="account-group"
           />
 
-          <LobbyTypeSegmentedButtons
-            value={lobbyType}
-            onValueChange={setLobbyType}
-          />
+          <LobbyTypeSegmentedButtons />
 
           {lobbyType === 'Event' && (
             <>
               <DatePickerInput
                 label="Start Date"
-                date={startDate}
-                setDate={setStartDate}
-                showPicker={showStartDatePicker}
-                setShowPicker={setShowStartDatePicker}
-                onDateChange={onStartDateChange}
-                minimumDate={new Date()}
+                dateType="startDate"
               />
 
               <DatePickerInput
                 label="End Date"
-                date={endDate}
-                setDate={setEndDate}
-                showPicker={showEndDatePicker}
-                setShowPicker={setShowEndDatePicker}
-                onDateChange={onEndDateChange}
-                minimumDate={startDate}
+                dateType="endDate"
               />
             </>
           )}
 
-          <LobbyUpdateButton
-            loading={loading}
-            handleUpdateLobby={handleUpdateLobby}
-          />
+          <LobbyUpdateButton />
         </Surface>
       </ScrollView>
     </SafeAreaView>
@@ -146,7 +94,6 @@ const Page = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -156,7 +103,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     padding: 24,
-    backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -172,7 +118,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontFamily: 'Orbitron-ExtraBold',
     marginLeft: 10,
-    color: '#333',
   },
   unauthorizedContainer: {
     flex: 1,
@@ -185,7 +130,6 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     fontFamily: 'Orbitron-ExtraBold',
-
   },
 });
 

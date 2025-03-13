@@ -6,25 +6,27 @@ import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
 import InputArea from '../../ChatWithFriendsScreen/components/InputArea';
 import { useWebSocket } from '../context/WebSocketContext';
+import { useTheme } from '../../../context/ThemeContext';
 
 const Page = () => {
     const route = useRoute();
     const { roomName,roomTopic } = route.params || {};
     const [newMessageText, setNewMessageText] = useState('');
     const messageListRef = useRef(null);
-    const { messages, sendMessage, userId } = useWebSocket(); // Context'ten değerler alındı
+    const { messages, sendMessage, userId } = useWebSocket();
+    const { colors } = useTheme();
 
     const handleSendMessage = useCallback(() => {
-        sendMessage(newMessageText); // Context'teki sendMessage fonksiyonu kullanılıyor
-        setNewMessageText(''); // Input alanını temizle
+        sendMessage(newMessageText);
+        setNewMessageText('');
         if (messageListRef.current) {
             messageListRef.current.scrollToEnd({ animated: true });
         }
     }, [newMessageText, sendMessage]);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <View style={styles.container}>
+        <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
                 <ChatHeader roomTopic={roomTopic} roomName={roomName || 'Oda Sohbeti'} onMoreActions={() => { }} />
                 <MessageList messages={messages} userId={userId} messageListRef={messageListRef} />
                 <InputArea
@@ -40,11 +42,9 @@ const Page = () => {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#F9F9F9',
     },
     container: {
         flex: 1,
-        backgroundColor: '#F9F9F9',
     },
 });
 

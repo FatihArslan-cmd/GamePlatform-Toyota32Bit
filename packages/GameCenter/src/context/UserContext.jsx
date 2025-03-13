@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { storage } from '../utils/storage';
-import { useBingoWebSocket } from './BingoWebSocket/BingoWebSocket';
+import { useBingoWebSocket } from './BingoGameWebsocket.js';
 import { ToastService } from './ToastService';
 
 export const UserContext = createContext();

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import lobbyService from '../service/service';
 import { ToastService } from '../../../context/ToastService'; // Adjust path if needed
-import { useBingoWebSocket } from '../../../context/BingoWebSocket/BingoWebSocket';
+import { useBingoWebSocket } from '../../../context/BingoGameWebsocket.js';
 const LobbyInviteContext = createContext();
 
 const LobbyInviteProvider = ({ children }) => {

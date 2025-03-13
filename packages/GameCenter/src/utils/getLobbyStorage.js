@@ -1,4 +1,4 @@
-import { storage } from "../../utils/storage";// Assuming your storage utility is in utils/storage.js
+import { storage } from "./storage";// Assuming your storage utility is in utils/storage.js
 
 export const getStoredLobbyCode = async () => {
     try {

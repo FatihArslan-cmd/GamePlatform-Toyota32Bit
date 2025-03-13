@@ -2,33 +2,31 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   appbar: {
-    backgroundColor: 'white',
-    elevation: 2, // Add elevation here for the shadow
+    elevation: 2,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    justifyContent: 'space-between', // Distributes space evenly
-    borderBottomWidth: 1.5, // Optional: Add a hairline border for a subtle line
-    borderBottomColor: '#ddd', // Optional: Border color
+    justifyContent: 'space-between',
+    borderBottomColor: '#ddd',
   },
   leftContainer: {
     left: 15,
-    flex: 1, // Takes up 1/3 of the available space
-    alignItems: 'flex-start', // Align content to the start (left)
+    flex: 1,
+    alignItems: 'flex-start',
   },
   centerContainer: {
-    flex: 1, // Takes up 1/3 of the available space
-    alignItems: 'center', // Centers the text horizontally
+    flex: 1,
+    alignItems: 'center',
   },
   rightContainer: {
-    flex: 1, // Takes up 1/3 of the available space
-    alignItems: 'flex-end', // Align content to the end (right)
+    flex: 1,
+    alignItems: 'flex-end',
   },
   profileImageContainer: {
-    width: 50, // Adjust as needed
-    height: 50, // Adjust as needed
-    borderRadius: 25, // Half of width/height for a circle
-    overflow: 'hidden', // Clip image if it overflows the rounded border
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: 'hidden',
   },
   profileImage: {
     width: '100%',

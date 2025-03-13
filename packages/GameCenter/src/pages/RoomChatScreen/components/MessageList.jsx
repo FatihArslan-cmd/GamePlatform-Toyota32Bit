@@ -2,16 +2,19 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import formatDate from '../../../utils/FormatDate';
+import { useTheme } from '../../../context/ThemeContext';
 
 const MessageList = ({ messages, userId, messageListRef }) => {
+    const { colors } = useTheme();
+
     const renderItem = ({ item }) => {
         const isCurrentUserMessage = item.senderId === userId || item.senderUsername === 'Sen';
         const messageStyle = isCurrentUserMessage ? styles.currentUserMessage : styles.otherUserMessage;
         const messageBoxStyle = isCurrentUserMessage ? styles.currentUserMessageBox : styles.otherUserMessageBox;
         const senderDisplayName = isCurrentUserMessage ? 'Sen' : item.senderUsername || 'Bilinmeyen';
-        const fullFormattedDateTime = formatDate(item.timestamp, true); // Tarih ve saati al
-        const timePart = fullFormattedDateTime.split(' ')[1]; // Sadece saat kısmını al
-        const formattedTime = timePart; // Sadece saati kullan
+        const fullFormattedDateTime = formatDate(item.timestamp, true);
+        const timePart = fullFormattedDateTime.split(' ')[1];
+        const formattedTime = timePart;
 
         return (
             <View style={[styles.messageRow, isCurrentUserMessage ? styles.currentUserRow : styles.otherUserRow]}>
@@ -21,10 +24,10 @@ const MessageList = ({ messages, userId, messageListRef }) => {
                         style={styles.profilePhoto}
                     />
                 )}
-                <View style={messageBoxStyle}>
-                    <Text style={styles.senderText}>{senderDisplayName}</Text>
-                    <Text style={[styles.messageText, messageStyle]}>{item.content}</Text>
-                    <Text style={styles.timestampText}>{formattedTime}</Text>
+                <View style={[messageBoxStyle, { backgroundColor: isCurrentUserMessage ? colors.card : colors.background }]}>
+                    <Text style={[styles.senderText, { color: colors.subText }]}>{senderDisplayName}</Text>
+                    <Text style={[styles.messageText, messageStyle, { color: colors.text }]}>{item.content}</Text>
+                    <Text style={[styles.timestampText, { color: colors.subText }]}>{formattedTime}</Text>
                 </View>
                 {isCurrentUserMessage && item.senderProfilePhoto && (
                     <FastImage
@@ -42,7 +45,7 @@ const MessageList = ({ messages, userId, messageListRef }) => {
             data={messages}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
-            style={styles.list}
+            style={[styles.list, { backgroundColor: colors.background }]}
             contentContainerStyle={styles.contentContainer}
         />
     );
@@ -69,7 +72,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     currentUserMessageBox: {
-        backgroundColor: '#DCF8C6',
         borderRadius: 10,
         padding: 10,
         maxWidth: '70%',
@@ -77,7 +79,6 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     otherUserMessageBox: {
-        backgroundColor: '#fff',
         borderRadius: 10,
         padding: 10,
         maxWidth: '70%',
@@ -89,15 +90,12 @@ const styles = StyleSheet.create({
         paddingBottom: 2,
     },
     currentUserMessage: {
-        color: '#000',
     },
     otherUserMessage: {
-        color: '#000',
     },
     senderText: {
         fontSize: 12,
-        color: 'gray',
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
         alignSelf: 'flex-end',
     },
     profilePhoto: {
@@ -106,10 +104,9 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginHorizontal: 5,
     },
-    timestampText: { // Yeni timestamp style
+    timestampText: {
         fontSize: 11,
-        color: 'gray',
-        alignSelf: 'flex-end', // Sağ alt köşeye hizala
+        alignSelf: 'flex-end',
     },
 });
 

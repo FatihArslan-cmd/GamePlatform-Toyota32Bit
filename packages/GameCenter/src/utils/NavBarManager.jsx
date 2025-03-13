@@ -5,7 +5,6 @@ export const hideNavigationBar = () => {
     NavigationBarModule.setNavigationBarVisibility(false);
   };
 
-
 export const showNavigationBar = () => {
     NavigationBarModule.setNavigationBarVisibility(true);
   };

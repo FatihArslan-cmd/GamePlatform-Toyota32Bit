@@ -1,7 +1,7 @@
 const lobbyManager = require('../memory/LobbyStore/lobbyManager'); // Adjust path if necessary
 const lobbyInvitationManager = require('../memory/LobbyStore/lobbyInvitationManager'); // Adjust path if necessary
 const lobbyGameManager = require('../memory/LobbyStore/lobbyGameManager'); // Adjust path if necessary
-
+const { getUserDetails } = require('../utils/getUserDetails'); // Import getUserDetails function using destructuring
 const createLobbyHandler = (req, res) => {
     const userId = req.user.id;
     const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword } = req.body; // hasPassword eklendi
@@ -37,6 +37,7 @@ const createLobbyHandler = (req, res) => {
 const joinLobbyHandler = (req, res) => {
     const userId = req.user.id;
     const { code, password } = req.body;
+    const websocketManager = req.app.get('WebsocketManager'); // Get WebSocket manager
 
     if (!code) {
         return res.status(400).json({ message: 'Lobby code is required' });
@@ -46,17 +47,38 @@ const joinLobbyHandler = (req, res) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
+
+        // Broadcast user joined message - CORRECTED to use 'user-connected'
+        if (websocketManager) {
+            const userDetails = getUserDetails(userId); // Get user details to get username
+            const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
+            websocketManager.broadcastBingoGameMessage(code, { type: 'user-connected', userId: userId, username: username }); // Broadcast join event - using 'user-connected' now
+        } else {
+            console.error("websocketManager is not defined in app.js, WebSocket broadcast will not work.");
+        }
+
         res.status(200).json({ message: 'Joined lobby successfully', lobby });
     });
 };
 
 const leaveLobbyHandler = (req, res) => {
     const userId = req.user.id;
+    const websocketManager = req.app.get('WebsocketManager'); // Get WebSocket manager
 
     lobbyManager.leaveLobby(userId, (err, lobby) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
+
+        // Broadcast user left message - Let's use 'user-disconnected' to be consistent with WebSocket close event
+        if (websocketManager && lobby) { // Check if lobby exists before broadcasting
+            const userDetails = getUserDetails(userId); // Get user details to get username
+            const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
+            websocketManager.broadcastBingoGameMessage(lobby.code, { type: 'user-disconnected', userId: userId, username: username }); // Broadcast leave event - using 'user-disconnected'
+        } else {
+            console.error("websocketManager is not defined in app.js or lobby is null, WebSocket broadcast will not work.");
+        }
+
 
         const isOwnerLeaving = lobby.ownerId === userId;
         const timeoutMessage = isOwnerLeaving
@@ -318,7 +340,38 @@ const getGameHistoryHandler = async (req, res) => {
         res.status(500).json({ message: 'Sunucu hatası', error: error.message });
     }
 };
+const endGameHandler = (req, res) => {
+    const userId = req.user.id;
+    const websocketManager = req.app.get('WebsocketManager');
 
+    lobbyManager.getUserLobby(userId, (err, lobby) => { // Kullanıcının lobisini al
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+
+        if (!lobby) {
+            return res.status(404).json({ message: 'Kullanıcı bir lobide bulunmuyor' }); // Kullanıcı lobide değilse hata döndür
+        }
+
+        if (lobby.ownerId !== userId) {
+            return res.status(403).json({ message: 'Sadece oda sahibi oyunu bitirebilir' });
+        }
+
+        lobbyGameManager.endGame(lobby.code, userId, (err, updatedLobby) => { // lobby.code kullanılıyor
+            if (err) {
+                return res.status(400).json({ message: err.message });
+            }
+
+            if (websocketManager) {
+                websocketManager.broadcastBingoGameMessage(lobby.code, { type: 'game-ended' });
+            } else {
+                console.error("websocketManager tanımlı değil, WebSocket yayın çalışmayacak.");
+            }
+
+            res.status(200).json({ message: 'Oyun başarıyla bitirildi', lobby: updatedLobby });
+        });
+    });
+};
 
 module.exports = {
     createLobbyHandler,
@@ -336,5 +389,6 @@ module.exports = {
     startGameHandler,
     drawNumberHandler,
     markNumberHandler,
-    getGameHistoryHandler // Export the new handler
+    getGameHistoryHandler,
+    endGameHandler,
 };

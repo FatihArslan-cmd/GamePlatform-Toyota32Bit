@@ -27,9 +27,6 @@ function BingoGameWebsocket(ws, request) {
         }
 
         const userId = decoded.id;
-        // Move userDetails and username declarations here, after userId is defined
-        const userDetails = getUserDetails(userId);
-        const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
 
         lobbyManager.getLobbiesFromSession((sessionErr, lobbies) => {
             if (sessionErr) {
@@ -45,18 +42,19 @@ function BingoGameWebsocket(ws, request) {
                 return;
             }
 
-            console.log(`WebSocket: User ${userId} (${username}) connected to Lobby ${lobbyCode}`);
+            console.log(`WebSocket: User ${userId} connected to Lobby ${lobbyCode}`);
 
             if (!lobbySockets[lobbyCode]) {
                 lobbySockets[lobbyCode] = [];
             }
             lobbySockets[lobbyCode].push(ws);
 
-            // Broadcast user joined message
-            BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-joined', userId: userId, username: username });
+            const userDetails = getUserDetails(userId);
+      
+            BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-connected', userId: userId, username: userDetails.username, profilePhoto: userDetails.profilePhoto });
 
 
-            lobbyGameManager.getLobbyGameData(lobbyCode, userId, (gameDataErr, gameData) => {
+            lobbyGameManager.getLobbyGameData(lobbyCode, userId, (gameDataErr, gameData) => { 
                 if (gameDataErr) {
                     console.error("Oyun verisi alınırken hata:", gameDataErr);
                     ws.send(JSON.stringify({ type: 'error', message: 'Oyun verisi alınamadı' }));
@@ -71,83 +69,101 @@ function BingoGameWebsocket(ws, request) {
                     const parsedMessage = JSON.parse(message);
                     if (parsedMessage.type === 'draw-number') {
                         if (lobby.ownerId === userId) {
-                            lobbyGameManager.drawNumber(lobbyCode, userId, (drawErr, updatedLobby, drawnNumber, isGameOver) => {
+                            lobbyGameManager.drawNumber(lobbyCode, userId, (drawErr, updatedLobby, drawnNumber) => {
                                 if (drawErr) {
                                     ws.send(JSON.stringify({ type: 'error', message: drawErr.message }));
                                     return;
                                 }
                                 BingoGameWebsocket.broadcast(lobbyCode, { type: 'number-drawn', number: drawnNumber, drawnNumbers: updatedLobby.drawnNumbers });
-                                if (isGameOver) {
-                                    BingoGameWebsocket.broadcast(lobbyCode, { type: 'game-over', message: 'Oyun bitti, çekilecek sayı kalmadı.' });
-                                    // Prompt owner for new game
-                                    const ownerSocket = lobbySockets[lobbyCode]?.find(socket => lobby.ownerId === userId && socket.readyState === WebSocket.OPEN);
-                                    if (ownerSocket) {
-                                        ownerSocket.send(JSON.stringify({ type: 'prompt-new-game', message: 'Yeni oyun başlatılsın mı?' }));
-                                    }
-                                }
                             });
                         } else {
                             ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi sayı çekebilir.' }));
                         }
-                    } else if (parsedMessage.type === 'mark-number') {
+                    }
+                    else if (parsedMessage.type === 'mark-number') {
                         const numberToMark = parsedMessage.number;
                         if (typeof numberToMark !== 'number') {
                             ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz sayı formatı' }));
                             return;
                         }
-                        lobbyGameManager.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition) => {
+                        lobbyGameManager.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition, scores, rowCompleted, completedRowNumbers, playerStats) => { // playerStats parametresi eklendi
                             if (markErr) {
                                 ws.send(JSON.stringify({ type: 'error', message: markErr.message }));
                                 return;
                             }
 
+                            const markingUserDetails = getUserDetails(userId); // Kullanıcı detaylarını al
+
                             BingoGameWebsocket.broadcast(lobbyCode, {
                                 type: 'number-marked',
-                                userId: userId,
+                                username: markingUserDetails.username,
+                                profilePhoto: markingUserDetails.profilePhoto,
                                 number: markedNumber,
                                 cellPosition: cellPosition,
                                 markedNumbers: updatedLobby.markedNumbers,
-                            });
+                                playerStats: playerStats 
+                            });;
+
+                            if (rowCompleted) {
+                                const userDetails = getUserDetails(userId);
+                                completedRowNumbers.forEach(rowNumber => {
+                                    BingoGameWebsocket.broadcast(lobbyCode, { type: 'row-completed', username: userDetails.username, rowNumber: rowNumber, profilePhoto: userDetails.profilePhoto }); // Row completed message
+                                });
+                            }
 
                             if (isBingo) {
-                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'bingo', userId: userId,username: username });
-                                // Prompt owner for new game after bingo
-                                const ownerSocket = lobbySockets[lobbyCode]?.find(socket => updatedLobby.ownerId === updatedLobby.ownerId && socket.readyState === WebSocket.OPEN);
-                                if (ownerSocket && updatedLobby.ownerId !== userId) { // Don't prompt if bingo player is owner.
-                                    ownerSocket.send(JSON.stringify({ type: 'prompt-new-game', message: `${username} BINGO yaptı! Yeni oyun başlatılsın mı?` }));
-                                } else if (updatedLobby.ownerId === userId) {
-                                    ownerSocket.send(JSON.stringify({ type: 'prompt-new-game', message: `BINGO! Yeni oyun başlatılsın mı?` }));
-                                }
+                                const userDetails = getUserDetails(userId);
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'bingo', username: userDetails.username, profilePhoto: userDetails.profilePhoto, scores: scores }); // Bingo mesajı, userId yerine username gönder, scores eklendi
                             }
                         });
-                    } else if (parsedMessage.type === 'send-emoji') {
+                    }
+                    else if (parsedMessage.type === 'send-emoji') {
                         const emoji = parsedMessage.emoji;
                         if (!emoji) {
                             ws.send(JSON.stringify({ type: 'error', message: 'Emoji gönderilmedi' }));
                             return;
                         }
 
+                        const userDetails = getUserDetails(userId);
 
                         BingoGameWebsocket.broadcast(lobbyCode, {
-                            type: 'emoji-received',
+                            type: 'emoji-received', 
                             userId: userId,
-                            username: username,
-                            emoji: emoji
+                            username: userDetails.username,
+                            emoji: emoji,
                         });
-                    } else if (parsedMessage.type === 'start-new-round') { // Handle new game prompt response
+                    } else if (parsedMessage.type === 'end-game') { 
                         if (lobby.ownerId === userId) {
-                            lobbyGameManager.startGame(lobbyCode, (startErr, newLobby) => {
-                                if (startErr) {
-                                    ws.send(JSON.stringify({ type: 'error', message: startErr.message }));
+                            lobbyGameManager.endGame(lobbyCode, userId, (endGameErr) => {
+                                if (endGameErr) {
+                                    ws.send(JSON.stringify({ type: 'error', message: endGameErr.message }));
                                     return;
                                 }
-                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'new-game-started', message: 'Yeni oyun başladı!', gameData: { bingoCards: newLobby.bingoCards, drawnNumbers: newLobby.drawnNumbers, markedNumbers: newLobby.markedNumbers } });
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'game-ended' }); 
                             });
                         } else {
-                            ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi yeni oyunu başlatabilir.' }));
+                            ws.send(JSON.stringify({ type: 'error', message: 'Sadece oda sahibi oyunu bitirebilir.' }));
                         }
+                    } else if (parsedMessage.type === 'chat-message') { 
+                        const messageText = parsedMessage.message;
+                        if (!messageText) {
+                            ws.send(JSON.stringify({ type: 'error', message: 'Mesaj içeriği boş olamaz' }));
+                            return;
+                        }
+
+                        const userDetails = getUserDetails(userId);
+
+                        const timestamp = new Date().toISOString(); 
+
+                        BingoGameWebsocket.broadcast(lobbyCode, {
+                            type: 'chat-message-received',
+                            userId: userId,
+                            username: userDetails.username,
+                            profilePhoto: userDetails.profilePhoto,
+                            message: messageText,
+                            timestamp: timestamp
+                        });
                     }
-                    // ... Diğer mesaj tipleri buraya eklenebilir ...
                 } catch (e) {
                     console.error("WebSocket mesaj hatası:", e);
                     ws.send(JSON.stringify({ type: 'error', message: 'Geçersiz mesaj formatı' }));
@@ -156,9 +172,12 @@ function BingoGameWebsocket(ws, request) {
 
 
             ws.on('close', () => {
-                console.log(`WebSocket: Bağlantı kesildi, Lobby: ${lobbyCode}, User: ${userId} (${username})`);
-                // Broadcast user left message
-                BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-left', userId: userId, username: username });
+                console.log(`WebSocket: Bağlantı kesildi, Lobby: ${lobbyCode}, User: ${userId}`);
+
+                const userDetails = getUserDetails(userId);
+                BingoGameWebsocket.broadcast(lobbyCode, { type: 'user-disconnected', userId: userId, username: userDetails.username});
+
+
                 if (lobbySockets[lobbyCode]) {
                     lobbySockets[lobbyCode] = lobbySockets[lobbyCode].filter(socket => socket !== ws);
                     if (lobbySockets[lobbyCode].length === 0) {
@@ -168,7 +187,7 @@ function BingoGameWebsocket(ws, request) {
             });
 
             ws.on('error', error => {
-                console.error(`WebSocket: Hata, Lobby: ${lobbyCode}, User: ${userId} (${username})`, error);
+                console.error(`WebSocket: Hata, Lobby: ${lobbyCode}, User: ${userId}`, error);
                 if (lobbySockets[lobbyCode]) {
                     lobbySockets[lobbyCode] = lobbySockets[lobbyCode].filter(socket => socket !== ws);
                     if (lobbySockets[lobbyCode].length === 0) {

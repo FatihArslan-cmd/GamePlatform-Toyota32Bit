@@ -1,32 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { Button, ActivityIndicator } from 'react-native-paper';
+import { useFormContext } from '../../../context/FormContext';
 
-const ActionButtons = ({ scaleAnim, onLoginPress }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleStartGamePress = async () => {
-    setIsLoading(true); // Start the loading state
-    try {
-      if (onLoginPress) {
-        await onLoginPress();
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false); // End the loading state
-    }
-  };
+const ActionButtons = () => {
+  const { handleLoginPress, isLoading } = useFormContext();
 
   return (
     <>
-      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <Animated.View style={{ transform: [{ scale: 1 }] }}>
         <Button
           mode="contained"
-          onPress={handleStartGamePress}
+          onPress={handleLoginPress}
           style={styles.loginButton}
           labelStyle={styles.buttonLabel}
-          disabled={isLoading} // Disable the button when loading
+          disabled={isLoading}
         >
           {isLoading ? (
             <ActivityIndicator animating={true} color="#fff" size="small" />
@@ -57,7 +45,7 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontSize: 16,
     color: '#fff',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
   },
   signupButton: {
     borderColor: '#8a2be2',
@@ -67,7 +55,7 @@ const styles = StyleSheet.create({
   signupButtonLabel: {
     color: '#8a2be2',
     fontSize: 16,
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },
 });

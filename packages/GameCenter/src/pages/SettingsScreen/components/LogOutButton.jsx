@@ -3,11 +3,13 @@ import { List } from 'react-native-paper';
 import CustomModal from '../../../components/CustomModal';
 import { UserContext } from '../../../context/UserContext';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '../../../context/ThemeContext';
 
-const LogoutButton = ({ showText = true, showChevron = true }) => { // Added showChevron prop with default value true
+const LogoutButton = ({ showText = true, showChevron = true }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const { logoutUser } = useContext(UserContext);
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   const handleLogout = () => {
     logoutUser();
@@ -21,9 +23,9 @@ const LogoutButton = ({ showText = true, showChevron = true }) => { // Added sho
     <>
       <List.Item
         title={showText ? "Logout" : null}
-        titleStyle={{ fontFamily: 'Orbitron-ExtraBold' }}
-        left={props => <List.Icon {...props} color="#B22222" icon="logout" />}
-        right={props => showChevron ? <List.Icon {...props} color="#B22222" icon="chevron-right" /> : null} // Conditionally render chevron based on showChevron
+        titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+        left={props => <List.Icon {...props} color={colors.error} icon="logout" />}
+        right={props => showChevron ? <List.Icon {...props} color={colors.error} icon="chevron-right" /> : null}
         onPress={() => setModalVisible(true)}
       />
 

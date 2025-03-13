@@ -6,12 +6,15 @@ import { useNavigation } from '@react-navigation/native';
 const LobbyUpdateContext = createContext();
 
 const formatDate = (date) => {
+    if (!date) return ''; // Handle null or undefined date
     const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
                     'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
     const day = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${day} ${month} ${year} ${hours}:${minutes}`;
 };
 
 
@@ -39,7 +42,7 @@ const LobbyUpdateProvider = ({ children }) => {
                     setLobby(userLobbyData);
                     setLobbyName(userLobbyData.lobbyName);
                     setMaxCapacity(String(userLobbyData.maxCapacity));
-                    setLobbyType(userLobbyData.lobbyType || 'Normal'); // Lobby tipini de context state'ine set et
+                    setLobbyType(userLobbyData.lobbyType || 'Normal');
                     setStartDate(userLobbyData.startDate ? new Date(userLobbyData.startDate) : new Date()); // Başlangıç tarihini set et
                     setEndDate(userLobbyData.endDate ? new Date(userLobbyData.endDate) : new Date()); // Bitiş tarihini set et
                 } else {
@@ -56,7 +59,7 @@ const LobbyUpdateProvider = ({ children }) => {
         fetchLobby();
     }, []);
 
-    const handleUpdateLobby = useCallback(async (updatesFromPage) => {
+    const handleUpdateLobby = useCallback(async () => { // Remove updatesFromPage parameter
         if (!lobby) {
             ToastService.show("error", "No lobby found. Please try again.");
             return;
@@ -67,36 +70,37 @@ const LobbyUpdateProvider = ({ children }) => {
         try {
             const updates = {
                 lobbyCode: lobby.code,
-                lobbyName: updatesFromPage.lobbyName,
-                maxCapacity: updatesFromPage.maxCapacity,
-                lobbyType: updatesFromPage.lobbyType,
-                startDate: updatesFromPage.startDate,
-                endDate: updatesFromPage.endDate,
+                lobbyName: lobbyName, // Use lobbyName from context state
+                maxCapacity: maxCapacity, // Use maxCapacity from context state
+                lobbyType: lobbyType, // Use lobbyType from context state
+                startDate: lobbyType === 'Event' && startDate ? startDate.toISOString() : null, // Use startDate from context state
+                endDate: lobbyType === 'Event' && endDate ? endDate.toISOString() : null, // Use endDate from context state
             };
+            console.log("Updates to be sent:", updates);
             await lobbyService.updateLobby(updates);
             ToastService.show("success", "Lobby updated successfully.");
             navigation.goBack();
         } catch (err) {
             console.error("Error updating lobby:", err);
             setError("Failed to update lobby. Please check your input and try again.");
-            ToastService.show("error", "Failed to update lobby. Please check your input and try again.");
+            ToastService.show("error", err);
         } finally {
             setLoading(false);
         }
-    }, [lobby, navigation]);
+    }, [lobby, navigation, lobbyName, maxCapacity, lobbyType, startDate, endDate]); // Add context state values as dependencies
 
 
     const onStartDateChange = useCallback((event, selectedDate) => {
         const currentDate = selectedDate || startDate;
         setShowStartDatePicker(false);
         setStartDate(currentDate);
-    }, [startDate]);
+    }, [startDate, setShowStartDatePicker, setStartDate]);
 
     const onEndDateChange = useCallback((event, selectedDate) => {
         const currentDate = selectedDate || endDate;
         setShowEndDatePicker(false);
         setEndDate(currentDate);
-    }, [endDate]);
+    }, [endDate, setShowEndDatePicker, setEndDate]);
 
 
     const contextValue = {
@@ -118,9 +122,9 @@ const LobbyUpdateProvider = ({ children }) => {
         setShowStartDatePicker,
         showEndDatePicker,
         setShowEndDatePicker,
-        formatDate, // formatDate fonksiyonunu context'e ekle
-        onStartDateChange, // onStartDateChange fonksiyonunu context'e ekle
-        onEndDateChange,   // onEndDateChange fonksiyonunu context'e ekle
+        formatDate, 
+        onStartDateChange, 
+        onEndDateChange,  
     };
 
     return (
