@@ -8,7 +8,7 @@ import useModal from '../../../hooks/useModal';
 import useFriendsPage from './Friends/hooks/useFriendsPage';
 import { useProfile } from '../context/ProfileContext';
 import {useTheme} from '../../../context/ThemeContext';
-
+import GrandientText from '../../../components/GrandientText';
 const TopBar = () => {
     const navigation = useNavigation();
     const { modalVisible, modalMessage, modalTitle, showModal, closeModal } = useModal();
@@ -65,7 +65,12 @@ const TopBar = () => {
                 onPress={toggleEditMode}
             />
             </Tooltip>
-            <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
+              <GrandientText
+                        text="Profile"
+                        colors={colors.gameCenterText}
+                        textStyle={{ fontSize: 28 }}
+                        gradientDirection="horizontal"
+                      />
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
                 <Tooltip title="Add Friend">
                 <IconButton icon="camera" size={24} iconColor={colors.subText} style={styles.topBarIcon} onPress={navigateToCamera} />

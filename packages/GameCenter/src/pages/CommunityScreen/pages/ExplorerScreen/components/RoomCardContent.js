@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import formatDate from '../../../../utils/FormatDate';
+import formatDate from '../../../../../utils/FormatDate';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 const RoomCardContent = ({ room }) => {
+  const { colors } = useTheme(); 
+  const styles = createStyles(colors); 
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.card }]}>
       <FastImage
         source={{ uri: room.imageUrl, priority: FastImage.priority.high }}
         style={styles.image}
@@ -14,15 +18,15 @@ const RoomCardContent = ({ room }) => {
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>{room.name}</Text>
-          <Text style={styles.date}>{formatDate(room.createdAt)}</Text>
+          <Text style={[styles.title, { color: colors.text }]}>{room.name}</Text>
+          <Text style={[styles.date, { color: colors.subText }]}>{formatDate(room.createdAt)}</Text>
         </View>
 
-        <Text style={styles.topic}>{room.topic}</Text>
+        <Text style={[styles.topic, { color: colors.subText }]}>{room.topic}</Text>
 
         <View style={styles.footer}>
-          <View style={styles.supporterContainer}>
-            <Text style={styles.supporters}>
+          <View style={[styles.supporterContainer, { backgroundColor: colors.border }]}>
+            <Text style={[styles.supporters, { color: colors.text }]}>
               {room.supporterCount} supporters
             </Text>
           </View>
@@ -32,14 +36,16 @@ const RoomCardContent = ({ room }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     height: 140,
+    borderRadius: 20,
   },
   image: {
     width: 140,
     height: '100%',
+    borderRadius:20,
   },
   content: {
     flex: 1,
@@ -60,7 +66,6 @@ const styles = StyleSheet.create({
   topic: {
     fontFamily: 'Orbitron-ExtraBold',
     fontSize: 14,
-    color: '#666666',
     marginBottom: 8,
     height: 35,
     overflow: 'hidden',
@@ -73,10 +78,8 @@ const styles = StyleSheet.create({
   date: {
     fontFamily: 'Orbitron-ExtraBold',
     fontSize: 12,
-    color: '#888888',
   },
   supporterContainer: {
-    backgroundColor: '#f0f0f0',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
@@ -84,7 +87,6 @@ const styles = StyleSheet.create({
   supporters: {
     fontFamily: 'Orbitron-ExtraBold',
     fontSize: 12,
-    color: '#444444',
   },
 });
 

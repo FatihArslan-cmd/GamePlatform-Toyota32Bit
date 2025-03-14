@@ -4,20 +4,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PostHeader from './components/PostHeader';
 import PostInput from './components/PostInput';
 import PostToolbar from './components/PostToolbar';
-import styles from './styles/createPostStyles';
+import createPostStyles from './styles/createPostStyles';
 import { createMessageApi } from './service/service';
 import { ToastService } from '../../../../context/ToastService';
+import { useTheme } from '../../../../context/ThemeContext';
+import styles from './styles/createPostStyles';
 
 const CreatePostScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [postText, setPostText] = useState(''); // State for message content
-  const [isPosting, setIsPosting] = useState(false); // State to indicate posting in progress
+  const [postText, setPostText] = useState('');
+  const [isPosting, setIsPosting] = useState(false);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        // Handle keyboard show if needed
       }
     );
 
@@ -27,7 +29,7 @@ const CreatePostScreen = ({ navigation }) => {
   }, []);
 
   const handlePost = async () => {
-    if (isPosting) return; // Prevent multiple posts
+    if (isPosting) return;
     setIsPosting(true);
 
     if (!postText.trim() && !selectedImage) {
@@ -39,7 +41,7 @@ const CreatePostScreen = ({ navigation }) => {
     try {
       const messageData = {
         content: postText.trim(),
-        contentImage: selectedImage || null, 
+        contentImage: selectedImage || null,
       };
       await createMessageApi(messageData);
       setIsPosting(false);
@@ -53,10 +55,10 @@ const CreatePostScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <PostHeader navigation={navigation} onPost={handlePost} isPosting={isPosting} /> 
-      <PostInput selectedImage={selectedImage} setSelectedImage={setSelectedImage} postText={postText} setPostText={setPostText} />
-      <PostToolbar setSelectedImage={setSelectedImage} />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <PostHeader navigation={navigation} onPost={handlePost} isPosting={isPosting} colors={colors} />
+      <PostInput selectedImage={selectedImage} setSelectedImage={setSelectedImage} postText={postText} setPostText={setPostText} colors={colors} />
+      <PostToolbar setSelectedImage={setSelectedImage} colors={colors} />
     </SafeAreaView>
   );
 };

@@ -5,7 +5,7 @@ const getHeaders = () => {
   const token = getToken();
   return {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}), // conditionally add authorization header
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 };
 
@@ -13,9 +13,9 @@ const getHeaders = () => {
 export const createRoom = async (name, topic, imageUrl) => {
     try {
         const response = await api.post('/rooms', {
-            name: name, // or just name,
-            topic: topic, // or just topic,
-            imageUrl: imageUrl, // or just imageUrl
+            name: name, 
+            topic: topic, 
+            imageUrl: imageUrl,
         }, {
             headers: getHeaders(),
         });
@@ -45,7 +45,7 @@ export const getRoom = async (roomId) => {
 
 export const getOthersRoom = async () => {
   try {
-    const response = await api.get(`/rooms/others`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+    const response = await api.get(`/rooms/others`, {}, { headers: getHeaders() }); 
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -53,7 +53,7 @@ export const getOthersRoom = async () => {
 };
 export const meJoinedRooms = async () => {
     try {
-      const response = await api.get(`/rooms/me-joined-rooms`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+      const response = await api.get(`/rooms/me-joined-rooms`, {}, { headers: getHeaders() });
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -61,7 +61,7 @@ export const meJoinedRooms = async () => {
   };
 export const getmyRooms = async () => {
     try {
-      const response = await api.get(`/rooms/me`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+      const response = await api.get(`/rooms/me`, {}, { headers: getHeaders() });
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -69,7 +69,7 @@ export const getmyRooms = async () => {
   };
   export const joinRoom = async (roomId) => {
     try {
-      const response = await api.post(`/rooms/${roomId}/join`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+      const response = await api.post(`/rooms/${roomId}/join`, {}, { headers: getHeaders() });
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error.message;
@@ -77,7 +77,7 @@ export const getmyRooms = async () => {
   };
 export const leaveRoom = async (roomId) => {
     try {
-        const response = await api.post(`/rooms/${roomId}/leave`, {}, { headers: getHeaders() }); // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+        const response = await api.post(`/rooms/${roomId}/leave`, {}, { headers: getHeaders() }); 
         return response.data;
       } catch (error) {
         throw error.response ? error.response.data : error.message;
@@ -95,7 +95,7 @@ export const deleteRoom = async (roomId) => {
 
 export const becomeSupporter = async (roomId) => {
     try {
-        const response = await api.post(`/rooms/${roomId}/become-supporter`, {}, { headers: getHeaders() });  // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+        const response = await api.post(`/rooms/${roomId}/become-supporter`, {}, { headers: getHeaders() });  
         return response.data;
       } catch (error) {
         throw error.response ? error.response.data : error.message;
@@ -104,7 +104,7 @@ export const becomeSupporter = async (roomId) => {
   
   export const leaveSupporter = async (roomId) => {
     try {
-        const response = await api.post(`/rooms/${roomId}/leave-supporter`, {}, { headers: getHeaders() });  // added empty body because POST requests should have a body even if empty to avoid potential issues with server
+        const response = await api.post(`/rooms/${roomId}/leave-supporter`, {}, { headers: getHeaders() }); 
         return response.data;
       } catch (error) {
         throw error.response ? error.response.data : error.message;

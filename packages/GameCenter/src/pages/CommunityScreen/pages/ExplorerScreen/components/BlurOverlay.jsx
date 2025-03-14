@@ -23,7 +23,7 @@ const BlurOverlay = ({ isBlurred, blurRadiusValue, buttonOpacityValue, handleBec
         <BlurView
           style={StyleSheet.absoluteFill}
           blurType="light"
-          blurAmount={7}
+          blurAmount={4}
           reducedTransparencyFallbackColor="white"
         />
       </Animated.View>

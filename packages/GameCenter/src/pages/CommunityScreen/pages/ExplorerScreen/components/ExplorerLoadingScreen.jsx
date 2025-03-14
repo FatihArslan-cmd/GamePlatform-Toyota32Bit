@@ -1,28 +1,28 @@
 import React from 'react';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 import { View, Dimensions } from 'react-native';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 export const ExplorerLoadingSkeleton = ({ props }) => {
   const windowWidth = Dimensions.get('window').width;
   const skeletonWidth = windowWidth * 0.9;
-
-  // Calculate dimensions for skeleton items
   const originalItemHeight = 80;
-  const itemHeight = originalItemHeight * 1.2; // Height increased by 20%
+  const itemHeight = originalItemHeight * 1.2;
   const itemSpacing = 16;
   const borderRadius = 8;
   const startX = 0;
+  const { colors } = useTheme();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}>
+    <View style={{ flex: 1, alignItems: 'center', paddingTop: 20, backgroundColor: colors.background }}>
       <ContentLoader
         rtl
         speed={0.5}
         width={skeletonWidth}
         height={1000}
         viewBox={`0 0 ${skeletonWidth} 1000`}
-        backgroundColor="#D3D3D3" // Daha açık gri renk (Light Gray)
-        foregroundColor="#E0E0E0" // Daha açık gri foreground
+        backgroundColor={colors.border}
+        foregroundColor={colors.card}
         {...props}
       >
         {[...Array(10)].map((_, index) => (

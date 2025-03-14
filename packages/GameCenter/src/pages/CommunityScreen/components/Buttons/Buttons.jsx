@@ -1,18 +1,23 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { Button, Divider, Text } from 'react-native-paper';
-import Animated, { 
-  useAnimatedStyle, 
-  withTiming 
+import Animated, {
+  useAnimatedStyle,
+  withTiming
 } from 'react-native-reanimated';
+import { useTheme } from '../../../../context/ThemeContext'; 
 
 const { width } = Dimensions.get('window');
 const BUTTON_WIDTH = (width - 50) / 2;
-const INDICATOR_WIDTH = BUTTON_WIDTH * 0.6; // 60% of button width
+const INDICATOR_WIDTH = BUTTON_WIDTH * 0.6;
 
 const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
+  const { colors } = useTheme(); 
+  const styles = createStyles(colors);
+
   const buttonTextStyle = {
-    fontFamily: 'Orbitron-ExtraBold'
+    fontFamily: 'Orbitron-ExtraBold',
+    color: colors.text, 
   };
 
   const getButtonStyle = (index) => {
@@ -25,15 +30,16 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
   const indicatorStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        { 
+        {
           translateX: withTiming(
-            currentPageIndex === 0 
-              ? 16 + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2 
-              : 16 + BUTTON_WIDTH + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2, 
+            currentPageIndex === 0
+              ? 16 + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2
+              : 16 + BUTTON_WIDTH + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2,
             { duration: 300 }
-          ) 
+          )
         }
-      ]
+      ],
+      backgroundColor: colors.primary,
     };
   });
 
@@ -42,26 +48,28 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
       <View style={styles.buttonContainer}>
         <Button onPress={goToHome} mode="text"
           rippleColor="rgba(0, 0, 0, 0.3)"
-
-        style={getButtonStyle(0)}>
+          style={getButtonStyle(0)}
+          labelStyle={buttonTextStyle}
+        >
           <Text style={buttonTextStyle}>Home</Text>
         </Button>
         <Button onPress={goToExplorer} mode="text"
-                  rippleColor="rgba(0, 0, 0, 0.3)"
-
-        style={getButtonStyle(1)}>
+          rippleColor="rgba(0, 0, 0, 0.3)"
+          style={getButtonStyle(1)}
+          labelStyle={buttonTextStyle} 
+        >
           <Text style={buttonTextStyle}>Explorer</Text>
         </Button>
       </View>
       <View style={styles.indicatorContainer}>
         <Animated.View style={[styles.indicator, indicatorStyle]} />
       </View>
-      <Divider style={styles.divider} />
+      <Divider style={[styles.divider, { backgroundColor: colors.border }]} /> 
     </>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({ 
   buttonContainer: {
     flexDirection: 'row',
     width: '100%',
@@ -74,7 +82,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   inactiveButton: {
-    opacity: 0.5, 
+    opacity: 0.5,
   },
   divider: {
     height: 2,
@@ -89,7 +97,6 @@ const styles = StyleSheet.create({
   indicator: {
     width: INDICATOR_WIDTH,
     height: 2,
-    backgroundColor: 'black',
     borderRadius: 1,
     position: 'absolute',
   },

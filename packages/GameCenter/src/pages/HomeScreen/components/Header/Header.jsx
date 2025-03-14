@@ -12,7 +12,6 @@ import MessageIconWithBadge from './MessageIconWithBadge';
 import AddFriendToLobbyIcon from './components/components/AddFriendToLobbyIcon';
 import { useTheme } from '../../../../context/ThemeContext';
 import { HeaderProvider, useHeader } from './context/HeaderContext';
-import { CreateLobbyProvider } from '../CreateLobbyModal/context/CreateLobbyContext';
 
 const HeaderContent = () => {
   const { colors } = useTheme();

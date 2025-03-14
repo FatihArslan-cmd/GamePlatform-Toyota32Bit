@@ -4,11 +4,15 @@ import { Appbar } from 'react-native-paper';
 import ProfileImage from './ProfileImage';
 import HeaderTitle from './HeaderTitle';
 import RightActions from './RightActions';
-import styles from './styles';
+import createStyles from './styles'; 
+import { useTheme } from '../../../../context/ThemeContext'; 
 
 const Header = () => {
+  const { colors } = useTheme(); 
+  const styles = createStyles(colors);
+
   return (
-    <Appbar.Header style={styles.appbar}>
+    <Appbar.Header style={[styles.appbar, { backgroundColor: colors.background }]}>
       <View style={styles.leftContainer}>
         <ProfileImage />
       </View>

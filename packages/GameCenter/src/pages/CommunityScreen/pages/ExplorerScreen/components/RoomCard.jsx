@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
 import { useSharedValue, withTiming, Easing } from 'react-native-reanimated';
-import { becomeSupporter } from '../../services/api';
+import { becomeSupporter } from '../../../services/roomApi';
 import RoomCardContent from './RoomCardContent'; // Import RoomCardContent
 import BlurOverlay from './BlurOverlay'; // Import BlurOverlay
-import { ToastService } from '../../../../context/ToastService';
+import { ToastService } from '../../../../../context/ToastService';
 
 const RoomCard = ({ room }) => {
   const [isBlurred, setIsBlurred] = useState(false);
@@ -65,6 +65,7 @@ const RoomCard = ({ room }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     margin: 8,
+    borderRadius: 8,
   },
   card: {
     elevation: 4,

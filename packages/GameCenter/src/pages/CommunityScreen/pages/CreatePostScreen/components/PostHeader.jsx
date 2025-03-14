@@ -2,9 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button, TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../../../../../context/ThemeContext';
 import styles from '../styles/createPostStyles';
+import GrandientText from '../../../../../components/GrandientText';
 
-const PostHeader = ({ navigation, onPost, isPosting }) => { // Receive onPost and isPosting props
+const PostHeader = ({ navigation, onPost, isPosting }) => {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.header}>
       <TouchableRipple
@@ -13,16 +17,21 @@ const PostHeader = ({ navigation, onPost, isPosting }) => { // Receive onPost an
         borderless={true}
         rippleColor="rgba(0,0,0,0.1)"
       >
-        <Icon name="close" size={28} color="#333" />
+        <Icon name="close" size={28} color={colors.text} />
       </TouchableRipple>
-
+     <GrandientText
+      text="Share your thoughts"
+      colors={colors.gameCenterText} 
+      gradientDirection="horizontal"
+      width={400}
+    />
       <Button
         mode="contained"
-        onPress={onPost} // Call the onPost function from props
+        onPress={onPost}
         style={styles.postButton}
         labelStyle={styles.postButtonLabel}
-        loading={isPosting} // Show loading indicator when isPosting is true
-        disabled={isPosting} // Disable button when posting
+        loading={isPosting}
+        disabled={isPosting}
       >
         Post
       </Button>

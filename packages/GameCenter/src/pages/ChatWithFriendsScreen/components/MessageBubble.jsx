@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Surface, Text, useTheme } from 'react-native-paper';
+import { Surface, Text } from 'react-native-paper';
 
 const MessageBubble = ({ message, isCurrentUserMessage }) => {
-    const theme = useTheme();
 
     const formatDate = (dateString) => {
         if (!dateString) return '';

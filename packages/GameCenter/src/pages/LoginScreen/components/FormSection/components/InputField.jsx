@@ -1,7 +1,8 @@
 import React from 'react';
 import { TextInput } from 'react-native-paper';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme hook
 
-const InputField = React.memo(({ 
+const InputField = React.memo(({
   label,
   value,
   onChangeText,
@@ -12,7 +13,9 @@ const InputField = React.memo(({
   style,
   textColor,
 }) => {
-  console.log("InputField component rendered"); 
+  console.log("InputField component rendered");
+  const { colors } = useTheme(); // Use the useTheme hook to access colors from context
+
   return (
     <TextInput
       mode="flat"
@@ -22,18 +25,22 @@ const InputField = React.memo(({
       secureTextEntry={secureTextEntry}
       style={style}
       contentStyle={{ fontFamily: "Orbitron-ExtraBold" }}
-      left={<TextInput.Icon icon={leftIcon} color="#8a2be2" />}
+      left={<TextInput.Icon icon={leftIcon} color={colors.primary} />}
       right={
         rightIcon && (
           <TextInput.Icon
             icon={rightIcon}
             onPress={onRightIconPress}
-            color="#8a2be2"
+            color={colors.primary} 
           />
         )
       }
       theme={{
-        colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: textColor || '#fff' },
+        colors: {
+          primary: colors.primary, // Use primary color from theme
+          placeholder: colors.primary, // Use primary color from theme
+          text: textColor || colors.text, // Use text color from theme or textColor prop
+        },
         fonts: {
           regular: { fontFamily: "Orbitron-ExtraBold" }
         }

@@ -1,14 +1,18 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { topics } from './topics';
+import { useExplorer } from '../context/ExplorerContext';
+import { useTheme } from '../../../../../context/ThemeContext';
 
-const CommunityTopics = ({ onTopicSelect, selectedTopic, showAllButton }) => {
+const CommunityTopics = ({ showAllButton }) => {
+  const { selectedTopic, handleTopicSelect } = useExplorer();
   const allButtonTitle = "All";
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
 
   const handleTopicPress = (topic) => {
-    console.log("Selected Topic:", topic);
-    onTopicSelect(topic);
+    handleTopicSelect(topic);
   };
 
   let renderTopics = topics;
@@ -28,11 +32,13 @@ const CommunityTopics = ({ onTopicSelect, selectedTopic, showAllButton }) => {
           key={index}
           style={[
             styles.chip,
-            topic === selectedTopic || (selectedTopic === null && topic === allButtonTitle) ? styles.selectedChip : null,
+            { backgroundColor: colors.card, borderColor: colors.border },
+            (topic === selectedTopic || (selectedTopic === null && topic === allButtonTitle)) && styles.selectedChip,
           ]}
           textStyle={[
             styles.chipText,
-            topic === selectedTopic || (selectedTopic === null && topic === allButtonTitle) ? styles.selectedChipText : null,
+            { color: colors.text },
+            (topic === selectedTopic || (selectedTopic === null && topic === allButtonTitle)) && styles.selectedChipText,
           ]}
           onPress={() => handleTopicPress(topic)}
         >
@@ -43,16 +49,14 @@ const CommunityTopics = ({ onTopicSelect, selectedTopic, showAllButton }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingTop:60,
+    paddingTop: 60,
   },
   chip: {
     marginHorizontal: 4,
-    backgroundColor: 'white',
     borderRadius: 5,
-    borderColor: 'gray',
     borderWidth: 0.3,
     paddingHorizontal: 18,
   },
@@ -60,11 +64,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Orbitron-ExtraBold',
   },
   selectedChip: {
-    backgroundColor: '#007bff',
-     borderColor: '#007bff',
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   selectedChipText: {
-    color: 'white',
+    color: colors.navigationBarIconBg,
   },
 });
 

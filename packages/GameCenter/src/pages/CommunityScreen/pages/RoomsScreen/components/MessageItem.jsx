@@ -4,21 +4,23 @@ import { Text, IconButton, Avatar} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import formatDate from '../../../../../utils/FormatDate';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
 
 const MessageItem = ({ message }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(message.initialLikes || 0);
+  const { colors } = useTheme(); // Use theme context
+  const styles = createStyles(colors); // Create styles with theme colors
 
   const handleLike = () => {
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
 
-  // Reanimated Fade In Animation
   const opacity = useSharedValue(0);
 
   useEffect(() => {
-    opacity.value = withTiming(1, { duration: 300 }); // Fade in over 300ms
+    opacity.value = withTiming(1, { duration: 300 });
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -27,10 +29,8 @@ const MessageItem = ({ message }) => {
     };
   });
 
-
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <View style={styles.line} />
+    <Animated.View style={[styles.container, animatedStyle, { backgroundColor: colors.postBG }]}>
       <View style={styles.messageContent}>
         <View style={styles.headerContainer}>
           <Avatar.Image
@@ -40,13 +40,13 @@ const MessageItem = ({ message }) => {
           />
           <View style={styles.userInfo}>
             <View style={styles.usernameTimeContainer}>
-              <Text variant="titleMedium" style={styles.username}>{message.username}</Text>
-              <Text variant="bodySmall" style={styles.timestamp}>{formatDate(message.timePosted)}</Text>
+              <Text variant="titleMedium" style={[styles.username, { color: colors.text }]}>{message.username}</Text>
+              <Text variant="bodySmall" style={[styles.timestamp, { color: colors.subText }]}>{formatDate(message.timePosted)}</Text>
             </View>
           </View>
         </View>
 
-        <Text variant="bodyMedium" style={styles.contentText}>{message.content}</Text>
+        <Text variant="bodyMedium" style={[styles.contentText, { color: colors.text }]}>{message.content}</Text>
 
         {message.contentImage && (
           <View style={styles.imageContainer}>
@@ -63,11 +63,11 @@ const MessageItem = ({ message }) => {
             <View style={styles.interactionButton}>
               <IconButton
                 icon={liked ? "heart" : "heart-outline"}
-                iconColor={liked ? 'red' : 'grey'}
+                iconColor={liked ? colors.error : 'grey'}
                 size={20}
                 onPress={handleLike}
               />
-              <Text variant="bodySmall" style={[styles.interactionText, liked && styles.likedText]}>
+              <Text variant="bodySmall" style={[styles.interactionText, { color: 'grey' }, liked && { color: colors.error }]}>
                 {likeCount}
               </Text>
             </View>
@@ -79,9 +79,9 @@ const MessageItem = ({ message }) => {
                 icon="chat-outline"
                 iconColor="grey"
                 size={20}
-                onPress={() => {}} // Add comment functionality here
+                onPress={() => {}}
               />
-              <Text variant="bodySmall" style={styles.interactionText}>
+              <Text variant="bodySmall" style={[styles.interactionText, { color: 'grey' }]}>
                 {message.commentCount || 0}
               </Text>
             </View>
@@ -93,27 +93,27 @@ const MessageItem = ({ message }) => {
                 icon="share-variant-outline"
                 iconColor="grey"
                 size={20}
-                onPress={() => {}} // Add share functionality here
+                onPress={() => {}}
               />
-              <Text variant="bodySmall" style={styles.interactionText}>
+              <Text variant="bodySmall" style={[styles.interactionText, { color: 'grey' }]}>
                 {message.shareCount || 0}
               </Text>
             </View>
           </View>
         </View>
       </View>
-      <View style={styles.line} />
+      <View style={[styles.line, { backgroundColor: colors.border }]} />
     </Animated.View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
   container: {
-   backgroundColor: 'white',
+   // backgroundColor: 'white', // Removed hardcoded color, using theme now
   },
   line: {
     height: 1,
-    backgroundColor: '#E0E0E0',
+    // backgroundColor: '#E0E0E0', // Removed hardcoded color, using theme now
   },
   messageContent: {
     paddingHorizontal: 20,
@@ -136,15 +136,15 @@ const styles = StyleSheet.create({
   },
   username: {
     fontFamily:'Orbitron-ExtraBold',
-    color: '#333',
+    // color: '#333', // Removed hardcoded color, using theme now
     marginRight: 8,
   },
   timestamp: {
-    color: '#888',
+    // color: '#888', // Removed hardcoded color, using theme now
     fontFamily:'Orbitron-ExtraBold'
   },
   contentText: {
-    color: '#333',
+    // color: '#333', // Removed hardcoded color, using theme now
     lineHeight: 20,
     marginVertical: 12,
     fontSize: 20,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     paddingLeft: 62,
   },
   imageContainer: {
-    alignItems: 'center', // Center the image horizontally
+    alignItems: 'center',
   },
   contentImage: {
     width: 200,
@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
   },
   interactionText: {
-    color: 'grey',
+    // color: 'grey', // Removed hardcoded color, using theme now
     marginLeft: 4,
   },
   likedText: {
-    color: 'red',
+    // color: 'red', // Removed hardcoded color, using theme now
   },
 });
 

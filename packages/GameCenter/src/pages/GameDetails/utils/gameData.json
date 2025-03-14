@@ -1,0 +1,32 @@
+[
+  {
+    "gameName": "Mystery Game 1",
+    "instructions": "Explore the secrets of Mystery Game 1! Exciting challenges await.",
+    "imageSource": "unnamed.png",
+    "backgroundColors": ["#4a148c", "#7c43bd", "#9b6bf5"]
+  },
+  {
+    "gameName": "Adventure Quest",
+    "instructions": "Embark on an epic Adventure Quest! Discover treasures and overcome obstacles.",
+    "imageSource": "adventureQuestImage.png",
+    "backgroundColors": ["#007BFF", "#66A7FF", "#B3D4FF"]
+  },
+  {
+    "gameName": "Space Explorers",
+    "instructions": "Journey to the stars in Space Explorers!  Uncover new worlds.",
+    "imageSource": "spaceExplorersImage.png",
+    "backgroundColors": ["#222222", "#434343", "#6B6B6B"]
+  },
+  {
+    "gameName": "Word Wizards",
+    "instructions": "Become a Word Wizard! Test your vocabulary and word skills.",
+    "imageSource": "wordWizardsImage.png",
+    "backgroundColors": ["#28a745", "#69c977", "#a7e3b5"]
+  },
+  {
+    "gameName": "Color Mania",
+    "instructions": "Get ready for Color Mania!  Match colors and score big!",
+    "imageSource": "colorManiaImage.png",
+    "backgroundColors": ["#ffc107", "#ffda6a", "#ffe8b8"]
+  }
+]

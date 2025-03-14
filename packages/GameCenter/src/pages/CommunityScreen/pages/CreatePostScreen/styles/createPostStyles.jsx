@@ -38,17 +38,18 @@ const styles = StyleSheet.create({
   avatar: {
     marginRight: 12,
   },
-  inputArea: { // Added inputArea style to potentially adjust card content if needed
-    padding: 0, // Reset default padding of Card.Content if needed
-    margin: 0,
+  inputArea: { 
+    padding: 0, 
+    marginTop: 30,
   },
   input: {
     fontSize: 18,
     color: '#000',
     minHeight: 100,
     backgroundColor: 'white',
-    padding: 0, // Reset default padding of TextInput if needed
+    padding: 0, 
     margin: 0,
+    borderRadius:5
   },
   toolbarContainer: {
     borderTopWidth: 1,
@@ -62,31 +63,30 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   dropdownButton: {
-    backgroundColor: '#E8F0FE', // Light blue background like in the image
-    borderRadius: 20, // Rounded corners
-    paddingHorizontal: 12, // Horizontal padding to match the image
-    paddingVertical: 8, // Vertical padding
-    flexDirection: 'row', // To align text and icon horizontally
-    alignItems: 'center', // To vertically align text and icon
+    backgroundColor: '#E8F0FE', 
+    borderRadius: 20, 
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    flexDirection: 'row', 
+    alignItems: 'center',
   },
   dropdownText: {
-    color: '#1DA1F2', // Blue text color like in the image
-    fontSize: 14, // Match the font size, you might need to adjust this
+    fontSize: 14, 
   },
   postMediaContainer: {
     marginTop: 10,
     alignItems: 'center',
-    position: 'relative', // For positioning the remove icon
+    position: 'relative', 
   },
   postMediaImage: {
     width: 200,
-    height: 300, // Adjust height as needed
+    height: 300, 
     resizeMode: 'cover',
   },
   removeMediaButton: {
     position: 'absolute',
-    top: -10, // Adjust position as needed
-    right: -10, // Adjust position as needed
+    top: -10, 
+    right: -10, 
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 15,
     width: 30,

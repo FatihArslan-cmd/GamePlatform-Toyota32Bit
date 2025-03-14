@@ -4,14 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { TouchableRipple, Tooltip } from 'react-native-paper';
 import { isTablet } from '../../../../components/isTablet';
+import { useTheme } from '../../../../context/ThemeContext'; 
 
-const MakePost = ({ color = '#fff', size }) => {
+const MakePost = ({  size }) => {
   const navigation = useNavigation();
   const adjustedSize = size || (isTablet() ? 32 : 24);
   const circleSize = adjustedSize + 16;
+  const { colors } = useTheme(); 
+  const styles = createStyles(colors); 
 
   const handlePress = () => {
-    
     navigation.navigate('CreatePost');
   };
 
@@ -25,7 +27,7 @@ const MakePost = ({ color = '#fff', size }) => {
         >
           <Tooltip title='Make a post' >
             <View style={[styles.circle, { width: circleSize, height: circleSize, borderRadius: circleSize / 2 }]}>
-              <Icon name="plus" size={adjustedSize} color={color} />
+              <Icon name="plus" size={adjustedSize} color={colors.text} />
             </View>
           </Tooltip>
         </TouchableRipple>
@@ -34,7 +36,7 @@ const MakePost = ({ color = '#fff', size }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({ 
   container: {
     position: 'absolute',
     bottom: 72,
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   circle: {
-    backgroundColor: '#6200ee',
+    backgroundColor: colors.primary, 
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
