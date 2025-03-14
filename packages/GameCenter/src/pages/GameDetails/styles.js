@@ -32,7 +32,6 @@ export const styles = StyleSheet.create({
       },
       infoContainer: {
         flex: 1,
-        backgroundColor: '#ffffff',
         padding: 24,
         borderTopLeftRadius: 50,
         borderTopRightRadius: 50,
@@ -42,7 +41,6 @@ export const styles = StyleSheet.create({
         fontSize: 28,
         marginBottom: 24,
         textAlign: 'center',
-        color: '#4a148c',
         letterSpacing: 0.5,
         fontFamily: 'Orbitron-ExtraBold'
       },
@@ -62,7 +60,6 @@ export const styles = StyleSheet.create({
     
       instructionContainer: {
         marginBottom: 20,
-        backgroundColor: '#fffff',
         padding: 16,
         borderRadius: 20,
       },
@@ -71,7 +68,6 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 16,
         paddingHorizontal: 12,
-        backgroundColor: '#ffffff',
         padding: 12,
         borderRadius: 20,
         elevation: 2,
@@ -79,8 +75,7 @@ export const styles = StyleSheet.create({
       aboutContainer: {
         flex: 1,
         padding: 16,
-        position: 'relative', // Add position relative to aboutContainer
-
+        position: 'relative', 
       },
 
       instructionWrapper: {
@@ -93,10 +88,8 @@ export const styles = StyleSheet.create({
         marginBottom: 16,
         borderRadius: 15,
         overflow: 'hidden',
-        backgroundColor: '#ffffff',
       },
       instructionNumberContainer: {
-        backgroundColor: '#4a148c',
         padding: 16,
         justifyContent: 'center',
         alignItems: 'center',
@@ -203,6 +196,7 @@ export const styles = StyleSheet.create({
       // Lobbies styles
       lobbiesContainer: {
         marginBottom: 20,
+        
       },
       createLobbyButton: {
         marginBottom: 16,

@@ -2,25 +2,28 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, lobby }) => {
+  const { colors } = useTheme(); 
+
   return (
     <View style={styles.cardHeaderActions}>
       <TouchableOpacity
         style={styles.codeContainer}
         onPress={() => copyLobbyCodeToClipboard(lobbyCode)}
       >
-        <Icon name="code-tags" size={20} color="#666" />
-        <Text style={styles.lobbyCode}>{lobbyCode}</Text>
+        <Icon name="code-tags" size={20} color={colors.subText} />
+        <Text style={[styles.lobbyCode, { color: colors.text }]}>{lobbyCode}</Text>
       </TouchableOpacity>
       <View style={styles.headerIcons}>
         {lobby.hasPassword && (
-          <Icon name="lock" size={24} color="black" style={styles.headerIcon} />
+          <Icon name="lock" size={24} color={colors.text} style={styles.headerIcon} />
         )}
         {lobby.gameStarted && (
           <View style={styles.gameStartedContainer}>
             <Icon name="run-fast" size={24} color="#FF6F61" style={styles.headerIcon} />
-            <Text style={styles.gameStartedText}>Started</Text>
+            <Text style={[styles.gameStartedText, { color: colors.error }]}>Started</Text> 
           </View>
         )}
       </View>

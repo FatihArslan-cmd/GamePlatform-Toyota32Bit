@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import InputField from '../../../LoginScreen/components/FormSection/components/InputField';
+import InputField from '../../../../LoginScreen/components/FormSection/components/InputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const JoinLobbyModalContent = ({ hasPassword, password, setPassword }) => {
@@ -18,14 +18,14 @@ const JoinLobbyModalContent = ({ hasPassword, password, setPassword }) => {
             label="Password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry={!passwordVisible} // Toggle secureTextEntry based on visibility
+            secureTextEntry={!passwordVisible} 
             textColor="#ffffff"
             style={styles.passwordInput}
             rightIcon={() => (
               <Icon
                 name={passwordVisible ? "eye-off" : "eye"}
                 size={24}
-                color="#8a2be2" // or any color you prefer
+                color="#8a2be2" 
                 onPress={togglePasswordVisibility}
               />
             )}

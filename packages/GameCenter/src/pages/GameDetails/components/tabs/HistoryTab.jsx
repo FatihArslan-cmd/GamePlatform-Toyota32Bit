@@ -7,7 +7,8 @@ import lobbyService from '../../service/service';
 import formatDate from '../../../../utils/FormatDate';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import ErrorComponents from '../../../../components/ErrorComponents';
-import EmptyState from '../../../../components/EmptyState';// Import EmptyStateComponent
+import EmptyState from '../../../../components/EmptyState';
+import { useTheme } from '../../../../context/ThemeContext'; 
 
 export default function HistoryTab() {
   const [gameHistory, setGameHistory] = useState([]);
@@ -39,7 +40,6 @@ export default function HistoryTab() {
     return <ErrorComponents />;
   }
 
-  // Check if gameHistory is empty
   if (gameHistory.length === 0) {
     return (
         <EmptyState/>
@@ -60,28 +60,29 @@ export default function HistoryTab() {
 function GameHistoryCard({ game }) {
   const isWon = game.result === 'Bingo Kazandı';
   const gameDate = formatDate(game.gameEndTime);
-  const gameTime = formatDate(game.gameEndTime, true).split(' ')[1]; // Extract time part
+  const gameTime = formatDate(game.gameEndTime, true).split(' ')[1]; 
+  const { colors } = useTheme(); 
 
   return (
-    <Card style={styles.historyCard}>
+    <Card style={[styles.historyCard, { backgroundColor: colors.card }]}> 
       <Card.Content style={styles.historyContent}>
         <View style={styles.historyLeft}>
           <Text style={[
             styles.resultText,
-            { color: isWon ? '#4CAF50' : '#F44336' }
+            { color: isWon ? colors.success : colors.error } 
           ]}>
             {game.result}
           </Text>
-          <Text style={styles.dateText}>{gameDate}</Text>
+          <Text style={[styles.dateText, { color: colors.subText }]}>{gameDate}</Text>
         </View>
         <View style={styles.historyRight}>
           <View style={styles.historyInfoItem}>
-            <IconButton icon="trophy" size={20} color="#4a148c" />
-            <Text style={styles.scoreText}>{game.lobbyName}</Text>
+            <IconButton icon="trophy" size={20} iconColor={colors.primary} />
+            <Text style={[styles.scoreText, { color: colors.text }]}>{game.lobbyName}</Text> 
           </View>
           <View style={styles.historyInfoItem}>
-            <IconButton icon="clock" size={20} color="#4a148c" />
-            <Text style={styles.durationText}>{gameTime}</Text>
+            <IconButton icon="clock" size={20} iconColor={colors.primary} /> 
+            <Text style={[styles.durationText, { color: colors.subText }]}>{gameTime}</Text> 
           </View>
         </View>
       </Card.Content>

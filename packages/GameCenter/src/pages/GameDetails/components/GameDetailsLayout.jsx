@@ -10,12 +10,12 @@ import { styles } from '../styles';
 import GradientDivider from '../../../components/GradientDivider';
 import CreateLobbyModal from '../../HomeScreen/components/CreateLobbyModal/CreateLobbyModal';
 import { useGameDetails } from '../context/GameDetailsContext';
-import { GameDetailsImageEnterAnimation } from './Animation/GameDetailsImageEnterAnimation'; // Corrected: Named import using curly braces
-
+import { GameDetailsImageEnterAnimation } from './Animation/GameDetailsImageEnterAnimation';
+import { useTheme } from '../../../context/ThemeContext';
 export default function GameDetailsLayout({ gameName, about, imageSource, backgroundColors }) {
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();
-  const { animatedImageStyle, animatedContentStyle } = GameDetailsImageEnterAnimation(); // Use the animation hook
-
+  const { animatedImageStyle, animatedContentStyle } = GameDetailsImageEnterAnimation(); 
+  const { colors } = useTheme(); 
   const defaultBackgroundColors = ['#4a148c', '#7c43bd', '#9b6bf5'];
   const gradientColors = backgroundColors || defaultBackgroundColors;
 
@@ -23,7 +23,7 @@ export default function GameDetailsLayout({ gameName, about, imageSource, backgr
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={gradientColors} // Use backgroundColors prop here
+        colors={gradientColors}
         style={styles.gradient}
       >
         <BackButton style={styles.backButton} color="white" size={32} />
@@ -34,8 +34,8 @@ export default function GameDetailsLayout({ gameName, about, imageSource, backgr
         />
 
         <Animated.View style={[styles.contentWrapper, animatedContentStyle]}>
-          <Surface style={styles.infoContainer}>
-            <Title style={styles.title}>{gameName}</Title>
+          <Surface style={[styles.infoContainer,{ backgroundColor: colors.background }]}>
+            <Title style={[styles.title,{color:colors.bingoText}]}>{gameName}</Title>
             <GradientDivider colorProps={['#4A00E0', '#4A00E0']} />
             <TabNavigation />
             <TabContent about={about} />

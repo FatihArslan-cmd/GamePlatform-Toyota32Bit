@@ -3,17 +3,19 @@ import { View, ScrollView } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { styles } from '../../styles';
 import { useGameDetails } from '../../context/GameDetailsContext';
-import lobbyService from '../../service/service'; // Import lobbyService
+import lobbyService from '../../service/service'; 
 import JoinableLobbyCard from '../LobbyCard/JoinableLobbyCard';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import FadeIn from '../../../../components/Animations/FadeInAnimation'; // Import FadeInAnimation
+import FadeIn from '../../../../components/Animations/FadeInAnimation'; 
 import EmptyState from '../../../../components/EmptyState';
+import { useTheme } from '../../../../context/ThemeContext';
 
 export default function LobbiesTab() {
     const { setLobbyModalVisible } = useGameDetails();
     const [lobbies, setLobbies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { colors } = useTheme(); 
 
     useEffect(() => {
         const fetchLobbies = async () => {
@@ -21,8 +23,8 @@ export default function LobbiesTab() {
             setError(null);
 
             try {
-                const response = await lobbyService.getLobbies(); // Use lobbyService to fetch lobbies
-                setLobbies(response); // Assuming lobbyService.getLobbies returns the array of lobbies directly
+                const response = await lobbyService.getLobbies(); 
+                setLobbies(response); 
                 console.log(response);
             } catch (error) {
                 setError('Failed to load lobbies');
@@ -41,21 +43,19 @@ export default function LobbiesTab() {
                 mode="contained"
                 icon="plus-circle"
                 onPress={() => setLobbyModalVisible(true)}
-                style={styles.createLobbyButton}
+                style={[styles.createLobbyButton, { backgroundColor: colors.gameDetailsButton }]} 
             >
                 Create Lobby
             </Button>
             {loading ? (
-                <View style={styles.loadingContainer}>
                     <LoadingIndicator  />
-                </View>
             ) : error ? (
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorText}>{error}</Text>
                 </View>
-            ) : lobbies.length === 0 ? ( // Check if lobbies array is empty
+            ) : lobbies.length === 0 ? ( 
                 <FadeIn>
-                    <EmptyState message="Şu anda katılabileceğiniz lobi bulunmamaktadır." />
+                    <EmptyState textColor={colors.text} message="Şu anda katılabileceğiniz lobi bulunmamaktadır." />
                 </FadeIn>
             ) : (
                 lobbies.map((lobby, index) => (

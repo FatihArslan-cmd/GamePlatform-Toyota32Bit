@@ -6,9 +6,11 @@ import LobbiesTab from './tabs/LobbiesTab';
 import HistoryTab from './tabs/HistoryTab';
 import SettingsTab from './tabs/SettingsTab/SettingsTab';
 import { styles } from '../styles';
+import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
 
 export default function TabContent({ about }) {
   const { activeTab } = useGameDetails();
+  const { colors } = useTheme();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -26,7 +28,7 @@ export default function TabContent({ about }) {
   };
 
   return (
-    <View style={styles.tabContent}>
+    <View style={[styles.tabContent,{ backgroundColor: colors.background }]}>
       {renderContent()}
     </View>
   );

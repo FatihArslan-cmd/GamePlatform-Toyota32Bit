@@ -4,17 +4,19 @@ import { Card } from 'react-native-paper';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { ToastService } from '../../../../context/ToastService';
 import CustomModal from '../../../../components/CustomModal';
-import JoinableLobbyCardHeaderActions from './JoinableLobbyCardHeaderActions';
-import JoinableLobbyCardContent from './JoinableLobbyCardContent';
+import JoinableLobbyCardHeaderActions from './components/JoinableLobbyCardHeaderActions';
+import JoinableLobbyCardContent from './components/JoinableLobbyCardContent';
 import lobbyService from '../../../HomeScreen/components/Header/services/lobbyService';
-import JoinLobbyModalContent from './JoinLobbyModalContent'; // Import the new component
+import JoinLobbyModalContent from './components/JoinLobbyModalContent'; 
 import { useBingoWebSocket } from '../../../../context/BingoGameWebsocket';
+import { useTheme } from '../../../../context/ThemeContext'; 
 
 const JoinableLobbyCard = ({ lobby}) => {
   const [joinModalVisible, setJoinModalVisible] = useState(false);
   const [currentLobby] = useState(lobby);
   const [password, setPassword] = useState('');
-    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
+  const { connectWebSocket } = useBingoWebSocket();
+  const { colors } = useTheme(); 
 
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
@@ -27,27 +29,27 @@ const JoinableLobbyCard = ({ lobby}) => {
   }, []);
 
   const handleJoinLobby = async () => {
-    setJoinModalVisible(false); // Close the modal
+    setJoinModalVisible(false); 
     try {
       if (currentLobby.hasPassword) {
-        await lobbyService.joinLobby(currentLobby.code, password); // Call joinLobby service with password
+        await lobbyService.joinLobby(currentLobby.code, password); 
       } else {
-        await lobbyService.joinLobby(currentLobby.code); // Call joinLobby service without password
+        await lobbyService.joinLobby(currentLobby.code);
       }
       connectWebSocket(currentLobby.code);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-          ToastService.show('error', error.response.data.message); // Show server error message
+          ToastService.show('error', error.response.data.message); 
       }
     }
   };
 
   return (
-    <Card style={styles.lobbyCard}>
+    <Card style={[styles.lobbyCard, { backgroundColor: colors.card }]}> 
       <JoinableLobbyCardHeaderActions
         copyLobbyCodeToClipboard={copyLobbyCodeToClipboard}
         lobbyCode={currentLobby.code}
-        lobby={currentLobby} // Pass the lobby data here
+        lobby={currentLobby}
       />
 
       <Card.Content>
@@ -64,10 +66,10 @@ const JoinableLobbyCard = ({ lobby}) => {
         text={currentLobby.hasPassword ? "This lobby is password protected. Please enter the password to join." : "Are you sure you want to join this lobby?"}
         confirmText="Join Lobby"
         showConfirmButton={true}
-        onConfirm={handleJoinLobby} // Call handleJoinLobby on confirm
-        backgroundColor="#333333" // Dark grey background for modal
-        textColor="#ffffff" // White text color for modal text
-        titleColor="#ffffff" // White title color for modal title
+        onConfirm={handleJoinLobby} 
+        backgroundColor={colors.card} 
+        textColor={colors.text} 
+        titleColor={colors.text} 
       >
         <JoinLobbyModalContent
           hasPassword={currentLobby.hasPassword}
