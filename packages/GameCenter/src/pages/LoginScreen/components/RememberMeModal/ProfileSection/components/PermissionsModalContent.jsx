@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import PermissionItem from './PermissionItem';
 import { storage } from '../../../../../../utils/storage';
-import { usePermissionsContext } from '../../../../context/PermissionContext';
+import { useTheme } from '../../../../../../context/ThemeContext';
 
 const PermissionsModalContent = () => {
   const [permissions, setPermissions] = useState({
@@ -11,6 +11,7 @@ const PermissionsModalContent = () => {
     nfc: false,
     barcode: false,
   });
+  const { colors } = useTheme(); 
 
   useEffect(() => {
     const loadPermissions = async () => {
@@ -40,8 +41,8 @@ const PermissionsModalContent = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Title style={styles.title}>Permissions</Title>
+    <View style={[styles.container, { backgroundColor: colors.background }]}> 
+      <Title style={[styles.title, { color: colors.text }]}>Permissions</Title> 
 
       <PermissionItem
         title="Allow Touch ID / Face ID usage"
@@ -73,12 +74,10 @@ const PermissionsModalContent = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#121212',
   },
   title: {
     textAlign: 'center',
     marginBottom: 20,
-    color: '#ffffff',
     fontFamily:'Orbitron-ExtraBold'
   },
 });

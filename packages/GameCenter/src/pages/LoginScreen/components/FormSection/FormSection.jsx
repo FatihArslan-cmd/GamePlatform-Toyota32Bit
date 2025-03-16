@@ -29,7 +29,7 @@ const FormSection = () => {
         closeModal,
         handleConfirmBioModal,
     } = useFormContext();
-    
+
     const {
         appIsLoading,
     } = usePermissionsContext();
@@ -46,6 +46,7 @@ const FormSection = () => {
                 onChangeText={setUsername}
                 leftIcon="account-circle"
                 style={styles.input}
+                isFormSectionInput={true} // Pass the new prop here and set to true
             />
 
             { !isForgotPassword ? (
@@ -60,6 +61,7 @@ const FormSection = () => {
                         rightIcon={showPassword ? 'eye-off' : 'eye'}
                         onRightIconPress={() => setShowPassword(!showPassword)}
                         style={styles.input}
+                        isFormSectionInput={true} // Pass the new prop here and set to true
                     />
                     <OptionsSection />
                     <ActionButtons />

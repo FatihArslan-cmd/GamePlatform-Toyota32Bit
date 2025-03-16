@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { getRefreshToken } from '../../../../../shared/states/api';
 import { storage } from '../../../../../utils/storage';
 import UserIcon from './components/UserIcon';
 import PermissionsModal from './components/PermissionsModal';
 import LoadingFullScreen from '../../../../../components/LoadingFullScreen';
-import { useNavigation } from '@react-navigation/native';
 import { usePermissionsContext } from '../../../context/PermissionContext';
 
 const SavedUserSection = () => {
-  const refreshToken = getRefreshToken();
-  const navigation = useNavigation();
 
   const {
-    visible: isModalVisible,
     setVisible: setModalVisible, 
-    permissions,
     setPermissions,
     hasPermissions,
     setHasPermissions,
     isLoading,
-    setIsLoading 
   } = usePermissionsContext();
 
   useEffect(() => {

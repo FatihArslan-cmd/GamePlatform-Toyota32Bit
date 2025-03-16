@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface, Checkbox } from 'react-native-paper';
 import { useFormContext } from '../../../context/FormContext'; 
+import { useTheme } from '../../../../../context/ThemeContext';
 
 const OptionsSection = () => {
     const { rememberMe, setRememberMe, setIsForgotPassword } = useFormContext();
-
+    const { colors } = useTheme();
     return (
         <Surface style={styles.container}>
             <TouchableRipple
@@ -17,7 +18,7 @@ const OptionsSection = () => {
                         onPress={() => setRememberMe(!rememberMe)}
                         color="#8a2be2"
                     />
-                    <Text style={styles.checkboxLabel}>Remember Me</Text>
+                    <Text style={[styles.checkboxLabel,{color:colors.text}]}>Remember Me</Text>
                 </>
             </TouchableRipple>
 

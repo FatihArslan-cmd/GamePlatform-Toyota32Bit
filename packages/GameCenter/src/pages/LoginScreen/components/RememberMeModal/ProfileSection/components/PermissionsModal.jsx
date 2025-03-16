@@ -10,7 +10,6 @@ const PermissionsModal = () => {
   const {
     visible,
     onDismiss,
-    setIsLoading,
     handlePermissionAction,
   } = usePermissionsContext();
 

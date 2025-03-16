@@ -12,9 +12,15 @@ const InputField = React.memo(({
   onRightIconPress,
   style,
   textColor,
+  isFormSectionInput, // New prop to indicate if it's used in FormSection
 }) => {
   console.log("InputField component rendered");
   const { colors } = useTheme(); // Use the useTheme hook to access colors from context
+
+  // Determine primary color based on isFormSectionInput prop
+  const primaryColor = isFormSectionInput ? '#8a2be2' : colors.primary;
+  const placeholderColor = isFormSectionInput ? '#8a2be2' : colors.primary;
+
 
   return (
     <TextInput
@@ -25,20 +31,20 @@ const InputField = React.memo(({
       secureTextEntry={secureTextEntry}
       style={style}
       contentStyle={{ fontFamily: "Orbitron-ExtraBold" }}
-      left={<TextInput.Icon icon={leftIcon} color={colors.primary} />}
+      left={<TextInput.Icon icon={leftIcon} color={primaryColor} />}
       right={
         rightIcon && (
           <TextInput.Icon
             icon={rightIcon}
             onPress={onRightIconPress}
-            color={colors.primary} 
+            color={primaryColor}
           />
         )
       }
       theme={{
         colors: {
-          primary: colors.primary, // Use primary color from theme
-          placeholder: colors.primary, // Use primary color from theme
+          primary: primaryColor, // Use conditionally determined primary color
+          placeholder: placeholderColor, // Use conditionally determined placeholder color
           text: textColor || colors.text, // Use text color from theme or textColor prop
         },
         fonts: {

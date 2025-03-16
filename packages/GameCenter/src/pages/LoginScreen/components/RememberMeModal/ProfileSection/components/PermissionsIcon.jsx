@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { storage } from '../../../../../../utils/storage';
+import { useTheme } from '../../../../../../context/ThemeContext';
 
 const PermissionsIcon = ({ handlePermissionAction }) => {
-  const [permissions, setPermissions] = useState({ 
+  const [permissions, setPermissions] = useState({
     biometric: false,
     nfc: false,
     barcode: false,
   });
+  const { colors } = useTheme(); 
 
   useEffect(() => {
     const loadPermissions = async () => {
@@ -24,7 +26,7 @@ const PermissionsIcon = ({ handlePermissionAction }) => {
     };
 
     loadPermissions();
-  }, []); 
+  }, []);
 
   const iconMap = {
     barcode: { name: 'qr-code-scanner', type: 'barcode' },
@@ -41,10 +43,10 @@ const PermissionsIcon = ({ handlePermissionAction }) => {
         style={styles.iconWrapper}
         onPress={() => {
             handlePermissionAction(iconMap[key].type);
-    
+
         }}
       >
-        <Icon name={iconMap[key].name} size={80} color="#8a2be2" />
+        <Icon name={iconMap[key].name} size={80} color={colors.primary} /> 
       </TouchableOpacity>
     ));
 };
