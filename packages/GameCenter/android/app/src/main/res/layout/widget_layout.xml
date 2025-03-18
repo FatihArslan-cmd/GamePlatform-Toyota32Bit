@@ -1,0 +1,49 @@
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="24dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <!-- Game Center Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Game Center"
+            android:textColor="#4A00E0"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"
+            android:letterSpacing="0.02"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Explore Now Button -->
+        <Button
+            android:id="@+id/explore_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/button_background"
+            android:text="Explore Now"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

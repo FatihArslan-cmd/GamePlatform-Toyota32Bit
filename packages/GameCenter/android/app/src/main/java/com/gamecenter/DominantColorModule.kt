@@ -7,13 +7,12 @@ import java.net.URL;
 import java.io.FileInputStream;
 import java.io.File;
 import androidx.palette.graphics.Palette;
-import android.util.LruCache; // Import LruCache
+import android.util.LruCache;
 
 class DominantColorModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     override fun getName() = "DominantColor"
 
-    // Memory cache for Bitmaps
     private val memoryCache: LruCache<String, Bitmap>
 
     init {
