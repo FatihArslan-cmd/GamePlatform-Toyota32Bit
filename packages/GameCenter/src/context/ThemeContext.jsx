@@ -1,8 +1,7 @@
-// contexts/ThemeContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Appearance } from 'react-native';
 import { storage } from '../utils/storage.js';
-import { lightColors, darkColors } from '../utils/colors.js'; // Renk paletlerini import edin
+import { lightColors, darkColors } from '../utils/colors.js'; 
 
 const ThemeContext = createContext({});
 
@@ -36,7 +35,6 @@ export const ThemeProvider = ({ children }) => {
 
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
 
-  // Tema renklerini belirle
   const colors = resolvedTheme === 'dark' ? darkColors : lightColors;
 
   return (

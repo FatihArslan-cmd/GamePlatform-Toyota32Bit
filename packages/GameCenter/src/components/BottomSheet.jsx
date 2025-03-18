@@ -11,6 +11,7 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { PanResponder } from 'react-native';
+import { useTheme } from '../../src/context/ThemeContext'; // Import useTheme
 
 const BottomSheet = React.memo(({
   visible,
@@ -18,12 +19,14 @@ const BottomSheet = React.memo(({
   title,
   children,
   height = '50%',
-  backgroundColor = 'white',
+  backgroundColorProp, // Renamed prop to avoid conflict with theme.colors.background
 }) => {
   const { height: screenHeight } = Dimensions.get('window');
-  
+  const { colors, resolvedTheme } = useTheme(); // Use the useTheme hook
+  const backgroundColor = backgroundColorProp || colors.background; // Default to theme card color if backgroundColorProp is not provided
+
   const defaultHeight = useMemo(() => (
-    typeof height === 'string' 
+    typeof height === 'string'
       ? screenHeight * (parseInt(height) / 100)
       : height
   ), [height, screenHeight]);
@@ -42,7 +45,7 @@ const BottomSheet = React.memo(({
     });
   }, [translateY, opacity, screenHeight, onDismiss]);
 
-  const panResponder = useMemo(() => 
+  const panResponder = useMemo(() =>
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: (_, gestureState) => {
@@ -108,6 +111,9 @@ const BottomSheet = React.memo(({
 
   const handleDismiss = useCallback(() => onDismiss(), [onDismiss]);
 
+  const blurType = resolvedTheme === 'dark' ? 'dark' : 'light'; // Determine blurType based on theme
+  const handleColor = resolvedTheme === 'dark' ? colors.border : '#ccc'; // Theme handle color
+
   return (
     <Portal>
       <Modal visible={visible} onDismiss={handleDismiss} contentContainerStyle={styles.container}>
@@ -115,9 +121,9 @@ const BottomSheet = React.memo(({
           <Animated.View style={[StyleSheet.absoluteFill, backdropAnimatedStyle]}>
             <BlurView
               style={[StyleSheet.absoluteFill, styles.blurView]}
-              blurType="light"
+              blurType={blurType} // Themed blurType
               blurAmount={5}
-              reducedTransparencyFallbackColor="white"
+              reducedTransparencyFallbackColor={colors.background} // Themed fallback color
             />
           </Animated.View>
         </TouchableWithoutFeedback>
@@ -127,13 +133,13 @@ const BottomSheet = React.memo(({
           style={[
             styles.modalContent,
             modalAnimatedStyle,
-            { height: defaultHeight, backgroundColor },
+            { height: defaultHeight, backgroundColor }, // Themed background color
           ]}
         >
-          <View style={styles.handle} />
+          <View style={[styles.handle, { backgroundColor: handleColor }]} /> {/* Themed handle color */}
 
-          <View style={styles.header}>
-            <Text style={styles.title}>{title}</Text>
+          <View style={[styles.header, { borderBottomColor: colors.border }]}> {/* Themed border color for header */}
+            <Text style={[styles.title, { color: colors.text }]}>{title}</Text> {/* Themed text color for title */}
           </View>
 
           <View style={styles.content}>
@@ -157,7 +163,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   modalContent: {
-    backgroundColor: 'white',
     marginHorizontal: 15,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -174,7 +179,6 @@ const styles = StyleSheet.create({
   handle: {
     width: 40,
     height: 5,
-    backgroundColor: '#ccc',
     borderRadius: 10,
     alignSelf: 'center',
     marginBottom: 10,
@@ -186,7 +190,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   title: {
     fontSize: 18,

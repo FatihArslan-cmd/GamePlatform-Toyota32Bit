@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback, memo } from 'react';
 import { StyleSheet, Animated, Dimensions, View, TouchableWithoutFeedback } from 'react-native';
 import { Modal, Portal, Button, Text } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
+import { useTheme } from '../context/ThemeContext';
 
 const CustomModal = memo(({
   visible,
@@ -17,7 +18,7 @@ const CustomModal = memo(({
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const blurFadeAnim = useRef(new Animated.Value(0)).current;
   const { height } = Dimensions.get('window');
-
+  const { colors } = useTheme();
   const handleDismiss = useCallback(() => {
     Animated.parallel([
       Animated.timing(slideAnim, {
@@ -73,15 +74,15 @@ const CustomModal = memo(({
     <Portal>
       <Animated.View style={[StyleSheet.absoluteFill, { opacity: blurFadeAnim }]}>
         <BlurView blurType="dark" blurAmount={2} style={StyleSheet.absoluteFill}>
-          {/* TouchableWithoutFeedback eklendi */}
           <TouchableWithoutFeedback onPress={handleDismiss}>
             <View style={StyleSheet.absoluteFill} >
               <Modal
                 visible={visible}
-                onDismiss={() => {}} // onDismiss'i boşaltıyoruz çünkü dışarı tıklamayı TouchableWithoutFeedback ile kontrol ediyoruz.
-                dismissable={false} // Modal'ın kendi kendine kapanmasını engelliyoruz.
+                onDismiss={() => {}} 
+                dismissable={false} 
                 contentContainerStyle={[
                   styles.modalContainer,
+                  {  backgroundColor: colors.background,},
                   { transform: [{ translateY: slideAnim }] },
                 ]}>
                 <Animated.View
@@ -99,8 +100,8 @@ const CustomModal = memo(({
                       ],
                     },
                   ]}>
-                  {title && <Text style={styles.title}>{title}</Text>}
-                  {text && <Text style={styles.text}>{text}</Text>}
+                  {title && <Text style={[styles.title,{color:colors.text}]}>{title}</Text>}
+                  {text && <Text style={[styles.text,{color:colors.text}]}>{text}</Text>}
                   {children}
                   <View style={styles.buttonContainer}>
                     <Button
@@ -135,7 +136,6 @@ const styles = StyleSheet.create({
   modalContainer: {
     marginHorizontal: 20,
     padding: 20,
-    backgroundColor: '#121212',
     borderRadius: 15,
     elevation: 4,
     width: '80%',
