@@ -1,9 +1,7 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "version": "independent",
-  "packages": [
-    "packages/*"
-  ],
-  "npmClient": "yarn"
-
+  "packages": ["packages/*"],
+  "npmClient": "yarn",
+  "npmClientArgs": ["--cache-folder", ".yarn-cache"]
 }
