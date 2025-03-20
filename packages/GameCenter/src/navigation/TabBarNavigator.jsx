@@ -7,26 +7,57 @@ import Lottie from 'lottie-react-native';
 import HomeScreen from '../pages/HomeScreen/index';
 import ProfileScreen from '../pages/ProfileScreen/index';
 import CommunityScreen from '../pages/CommunityScreen/index';
-import { useBingoWebSocket } from '../context/BingoWebSocket/BingoWebSocket';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useBingoWebSocket } from '../context/BingoGameWebsocket';
+import { useNavigation } from '@react-navigation/native';
+import { ToastService } from '../context/ToastService';
+import { useTheme } from '../context/ThemeContext';
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const Tab = createMaterialTopTabNavigator();
 
+const lottieSources = {
+  'homeIcon-light': require('../locales/lottie/homeIcon-light.json'),
+  'homeIcon-dark': require('../locales/lottie/homeIcon-dark.json'),
+  'ChatIcon-light': require('../locales/lottie/ChatIcon-light.json'),
+  'ChatIcon-dark': require('../locales/lottie/ChatIcon-dark.json'),
+  'Profileicon-light': require('../locales/lottie/Profileicon-light.json'),
+  'Profileicon-dark': require('../locales/lottie/Profileicon-dark.json'),
+};
+
+
 const TabNavigator = () => {
-  const { messages } = useBingoWebSocket(); // Get messages from WebSocket context
-  const navigation = useNavigation(); // Get navigation object
+  const { messages,clearMessages } = useBingoWebSocket();
+  const navigation = useNavigation();
+  const { colors, theme } = useTheme();
 
   useEffect(() => {
+    console.log("TabNavigator Messages:", messages);
     const gameStartMessage = messages.find(msg => msg.type === 'game-started');
     if (gameStartMessage) {
       console.log("Game started message detected in TabNavigator, navigating to GameScreen...");
       navigation.navigate('CountDownSplashScreen');
+      clearMessages()
+
     }
   }, [messages, navigation ]);
+  useEffect(() => {
+    const gameEndMessage = messages.find(msg => msg.type === 'game-ended');
+    if (gameEndMessage) {
+      clearMessages();
+      navigation.navigate('Tabs');
+      ToastService.show("info", "Game ended. You are now back to the main screen.");
+    }
+  }, [messages, navigation]);
+
+  const getLottieSource = (iconName) => {
+    const themeSuffix = theme === 'dark' ? 'dark' : 'light';
+    const sourceName = `${iconName}-${themeSuffix}`;
+    return lottieSources[sourceName] || lottieSources['homeIcon-light']; // Default to light home icon if not found
+  };
+
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
       <Tab.Navigator
         tabBar={(props) => <AnimatedTabBar {...props} />}
         swipeEnabled={true}
@@ -35,10 +66,10 @@ const TabNavigator = () => {
           tabBarShowIcon: true,
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: '#ffffff',
+            backgroundColor: colors.card,
           },
           tabBarIndicatorStyle: {
-            backgroundColor: '#00ae59',
+            backgroundColor: colors.navigationBarIconBg,
           },
         }}
       >
@@ -50,10 +81,11 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={require('../locales/lottie/home.icon.json')}
-                style={[styles.icon, { tintColor: 'black' }]}
+                source={getLottieSource('homeIcon')} // Use getLottieSource with icon name
+                style={[styles.icon, { tintColor: colors.text }]}
               />
             ),
+            
           }}
         />
         <Tab.Screen
@@ -64,8 +96,8 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={require('../locales/lottie/ChatIcon.json')}
-                style={[styles.icon, { tintColor: 'black' }]}
+                source={getLottieSource('ChatIcon')} // Use getLottieSource with icon name
+                style={[styles.icon, { tintColor: colors.text }]}
               />
             ),
           }}
@@ -78,8 +110,8 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={require('../locales/lottie/Profile-icon.json')}
-                style={[styles.icon, { tintColor: 'black' }]}
+                source={getLottieSource('Profileicon')} // Use getLottieSource with icon name
+                style={[styles.icon, { tintColor: colors.text }]}
               />
             ),
           }}
@@ -96,6 +128,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
   };
 
   const [layout, dispatch] = useReducer(reducer, []);
+  const {colors} = useTheme()
 
   const handleLayout = useCallback((event, index) => {
     dispatch({ x: event.nativeEvent.layout.x, index });
@@ -130,7 +163,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
   );
 
   return (
-    <View style={[styles.tabBar, { backgroundColor: '#ffffff' }]}>
+    <View style={[styles.tabBar, { backgroundColor: colors.background }]}>
       <AnimatedSvg
         width={110}
         height={60}
@@ -138,7 +171,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
         style={[styles.activeBackground, animatedStyles]}
       >
         <Path
-          fill="#6200ee"
+          fill={colors.navigationFill}
           d="M20 0H0c11.046 0 20 8.953 20 20v5c0 19.33 15.67 35 35 35s35-15.67 35-35v-5c0-11.045 8.954-20 20-20H20z"
         />
       </AnimatedSvg>
@@ -149,6 +182,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
 
 const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
   const ref = useRef(null);
+  const {colors, theme} = useTheme()
 
   useEffect(() => {
     if (active && ref?.current) {
@@ -158,11 +192,18 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
 
   const animatedComponentCircleStyles = useAnimatedStyle(() => ({
     transform: [{ scale: withTiming(active ? 1 : 0, { duration: 500 }) }],
+    backgroundColor: active ? colors.navigationBarIconBg : colors.card,
   }));
 
   const animatedIconContainerStyles = useAnimatedStyle(() => ({
     opacity: withTiming(active ? 1 : 0.5, { duration: 500 }),
   }));
+
+  const getLottieSourceForComponent = (iconName) => {
+    const themeSuffix = theme === 'dark' ? 'dark' : 'light';
+    return lottieSources[`${iconName}-${themeSuffix}`] || lottieSources['homeIcon-light']; // Default to light home icon if not found
+  };
+
 
   return (
     <Pressable onPress={onPress} onLayout={onLayout} style={styles.component}>
@@ -170,15 +211,17 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
         style={[styles.componentCircle, animatedComponentCircleStyles]}
       />
       <Animated.View style={[styles.iconContainer, animatedIconContainerStyles]}>
-        {options.tabBarIcon ? options.tabBarIcon({ ref }) : <Text>?</Text>}
+        {options.tabBarIcon ? options.tabBarIcon({ ref, source: getLottieSourceForComponent(options.name) }) : <Text>?</Text>}
       </Animated.View>
     </Pressable>
   );
 });
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   tabBar: {
-    backgroundColor: '#ffffff',
   },
   activeBackground: {
     position: 'absolute',
@@ -195,7 +238,6 @@ const styles = StyleSheet.create({
   componentCircle: {
     flex: 1,
     borderRadius: 30,
-    backgroundColor: 'white',
   },
   iconContainer: {
     position: 'absolute',

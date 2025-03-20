@@ -14,10 +14,12 @@ const authenticate = (req, res, next) => {
 
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
-      console.error('JWT Verification Error:', err); // Hata detayını gör
-      return res.status(401).json({ message: 'Invalid token', error: err.message });
+      console.error('JWT Verification Error:', err);
+      if (err instanceof jwt.TokenExpiredError) { 
+        return res.status(401).json({ message: 'Token expired', error: 'TokenExpiredError' }); 
+      }
+      return res.status(401).json({ message: 'Invalid token', error: err.message }); 
     }
-  
 
     const userId = decoded.id;
 

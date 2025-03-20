@@ -261,9 +261,22 @@ const lobbyManager = {
                 lobby.endDate = null;
             }
 
-            if (updates.lobbyType === 'Event' && (!updates.startDate || !updates.endDate)) {
-                return callback(new Error('Event lobbies require startDate and endDate'));
+            if (updates.lobbyType === 'Event' || lobby.lobbyType === 'Event') { // Check if updating to event or already an event
+                const startDate = updates.startDate || lobby.startDate;
+                const endDate = updates.endDate || lobby.endDate;
+
+                if (!startDate || !endDate) {
+                    return callback(new Error('Event lobbies require startDate and endDate'));
+                }
+
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+
+                if (start > end) {
+                    return callback(new Error('Start date cannot be after end date'));
+                }
             }
+
 
             if (updates.addMember) {
                 const parsedUserId = parseInt(updates.addMember);

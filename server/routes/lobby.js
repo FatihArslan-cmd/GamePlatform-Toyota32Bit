@@ -1,5 +1,3 @@
-// router.js
-
 const express = require('express');
 const {
   createLobbyHandler,
@@ -18,7 +16,7 @@ const {
   drawNumberHandler,
   markNumberHandler,
   getGameHistoryHandler,
-  endGameHandler // Import the new handler
+  endGameHandler 
 } = require('../controller/LobbyController');
 const authenticate = require('../middleware/authenticate');
 

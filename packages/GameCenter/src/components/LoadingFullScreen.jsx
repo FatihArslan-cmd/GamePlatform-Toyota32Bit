@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { StyleSheet, Dimensions,StatusBar } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Animated, {
   FadeIn,
@@ -12,8 +12,6 @@ import Animated, {
 import { Text } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { hideNavigationBar } from '../utils/NavBarManager';
-import FastImage from 'react-native-fast-image';
-import games from '../pages/HomeScreen/components/VideoPlayBlock/components/games';
 
 const { width } = Dimensions.get('window');
 
@@ -24,10 +22,6 @@ const LoadingFullScreen = () => {
     hideNavigationBar();
   }, []);
 
-  useEffect(() => {
-    const imagesToPreload = games.map(game => ({ uri: game.imageUri }));
-    FastImage.preload(imagesToPreload);
-  }, []);
 
   useEffect(() => {
     scale.value = withRepeat(
