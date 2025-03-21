@@ -47,16 +47,16 @@ const GameItem = memo(({ item }) => {
         backgroundColors: ["#007BFF", "#66A7FF", "#B3D4FF"]
       });
     }}>
-      <AnimatedSurface style={[styles.surface, animatedStyle]} elevation={4}>
+      <AnimatedSurface style={[styles.surface, animatedStyle]} elevation={4} >
         <View style={styles.backgroundContainer}>
           <FastImage
-            source={{ 
+            source={{
               uri: item.image_background,
               priority: FastImage.priority.high,
               cache: FastImage.cacheControl.immutable,
             }}
             style={styles.backgroundImage}
-            
+
           />
           <BlurView
             style={styles.absoluteFill}
@@ -68,14 +68,14 @@ const GameItem = memo(({ item }) => {
 
         <Card style={styles.card}>
           <FastImage
-            source={{ 
+            source={{
               uri: item.image_background,
               priority: FastImage.priority.high,
               cache: FastImage.cacheControl.immutable,
 
             }}
             style={styles.cardCover}
-            
+
           />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -87,7 +87,7 @@ const GameItem = memo(({ item }) => {
             titleNumberOfLines={2}
           />
         </Card>
-        
+
         <View style={styles.playButtonContainer}>
           <View
             style={styles.playButton}
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 12,
     paddingBottom: 52,
-    overflow: 'hidden', 
+    overflow: 'hidden',
   },
   backgroundContainer: {
     position: 'absolute',
