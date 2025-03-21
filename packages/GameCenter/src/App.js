@@ -9,6 +9,7 @@ import { BingoWebSocketProvider } from './context/BingoGameWebsocket.js';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { PaperProvider } from 'react-native-paper'
 import ConnectivityListener from './context/ConnectivityListener.jsx';
+import './context/i18n'
 
 const App = () => {
   LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
