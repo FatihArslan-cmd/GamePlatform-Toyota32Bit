@@ -4,6 +4,7 @@ import { Title } from 'react-native-paper';
 import PermissionItem from './PermissionItem';
 import { storage } from '../../../../../../utils/storage';
 import { useTheme } from '../../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const PermissionsModalContent = () => {
   const [permissions, setPermissions] = useState({
@@ -11,7 +12,8 @@ const PermissionsModalContent = () => {
     nfc: false,
     barcode: false,
   });
-  const { colors } = useTheme(); 
+  const { colors } = useTheme();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadPermissions = async () => {
@@ -41,11 +43,11 @@ const PermissionsModalContent = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}> 
-      <Title style={[styles.title, { color: colors.text }]}>Permissions</Title> 
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Title style={[styles.title, { color: colors.text }]}>{t('permissionsModal.title')}</Title> {/* Translate "Permissions" */}
 
       <PermissionItem
-        title="Allow Touch ID / Face ID usage"
+        title={t('permissionsModal.biometric')} 
         icon="fingerprint"
         isChecked={permissions.biometric}
         onToggle={() => handlePermissionChange('biometric')}
@@ -53,7 +55,7 @@ const PermissionsModalContent = () => {
       />
 
       <PermissionItem
-        title="Allow NFC usage"
+        title={t('permissionsModal.nfc')} 
         icon="nfc"
         isChecked={permissions.nfc}
         onToggle={() => handlePermissionChange('nfc')}
@@ -61,7 +63,7 @@ const PermissionsModalContent = () => {
       />
 
       <PermissionItem
-        title="Allow barcode scanner usage"
+        title={t('permissionsModal.barcode')} 
         icon="barcode-scan"
         isChecked={permissions.barcode}
         onToggle={() => handlePermissionChange('barcode')}

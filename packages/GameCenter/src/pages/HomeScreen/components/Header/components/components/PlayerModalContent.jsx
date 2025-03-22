@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, StyleSheet, FlatList,TouchableOpacity } from 'react-native';
 import { Text, Menu, } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import {useTranslation} from 'react-i18next';
 
-const PlayerModalContent = ({ lobby, onPlayerAction }) => { // Prop adını onPlayerAction olarak değiştirdim
+const PlayerModalContent = ({ lobby, onPlayerAction }) => { 
   const [visibleMenuId, setVisibleMenuId] = useState(null);
   const [anchorPosition, setAnchorPosition] = useState({ x: 0, y: 0 });
+  const { t } = useTranslation();
 
   const handlePress = (event, itemId) => {
     event.target.measure((x, y, width, height, pageX, pageY) => {
@@ -38,18 +40,18 @@ const PlayerModalContent = ({ lobby, onPlayerAction }) => { // Prop adını onPl
       >
         <Menu.Item
           onPress={() => {
-            onPlayerAction?.(item.id, 'kick'); // Kick aksiyonunu belirtiyorum
+            onPlayerAction?.(item.id, 'kick'); 
             setVisibleMenuId(null);
           }}
-          title="Kick"
+          title={t('homeScreen.kick')}
           titleStyle={styles.menuItemText}
         />
-        <Menu.Item // Kick and Block Menu Item eklendi
+        <Menu.Item 
           onPress={() => {
-            onPlayerAction?.(item.id, 'kickAndBlock'); // Kick and Block aksiyonunu belirtiyorum
+            onPlayerAction?.(item.id, 'kickAndBlock'); 
             setVisibleMenuId(null);
           }}
-          title="Kick & Block"
+          title={t('homeScreen.kickandblock')}
           titleStyle={styles.menuItemText}
         />
       </Menu>

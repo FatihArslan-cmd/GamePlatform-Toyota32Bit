@@ -14,12 +14,14 @@ import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 import useDisableBackButton from './hooks/useDisableBackButton';
 import { hideNavigationBar } from '../../utils/NavBarManager';
 import useHeaderAnimation from './hooks/useHeaderAnimation';
+import { useTheme } from '../../context/ThemeContext';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const HomeScreen = () => {
   const [games, setGames] = useState([]);
-  const { headerAnimatedStyle, scrollHandler, onLayout } = useHeaderAnimation(); 
+  const { headerAnimatedStyle, scrollHandler, onLayout } = useHeaderAnimation();
+  const { resolvedTheme } = useTheme(); // Consume the theme
 
   useEffect(() => {
     hideNavigationBar();
@@ -33,11 +35,12 @@ const HomeScreen = () => {
 
   useDisableBackButton();
 
+  const statusBarBarStyle = resolvedTheme === 'dark' ? 'light-content' : 'dark-content'; 
 
   return (
     <View style={styles.container}>
 
-      <StatusBar backgroundColor="transparent" barStyle="dark-content" />
+      <StatusBar backgroundColor="transparent" barStyle={statusBarBarStyle} /> 
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onLayout}
@@ -46,7 +49,7 @@ const HomeScreen = () => {
       </Animated.View>
 
       <AnimatedScrollView
-        onScroll={scrollHandler} 
+        onScroll={scrollHandler}
         scrollEventThrottle={8}
         overScrollMode="never"
         bounces={false}

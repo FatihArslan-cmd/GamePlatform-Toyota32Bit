@@ -3,107 +3,141 @@ import { ToastService } from '../../../../../context/ToastService';
 import { createLobby } from '../service/service';
 import { useBingoWebSocket } from '../../../../../context/BingoGameWebsocket';
 
-export const CreateLobbyContext = createContext();
+const CreateLobbyContext = createContext();
 
 export const CreateLobbyProvider = ({ children }) => {
-    const [lobbyType, setLobbyType] = useState('Normal');
-    const [lobbyName, setLobbyName] = useState('');
-    const [gameName, setGameName] = useState('');
-    const [maxCapacity, setMaxCapacity] = useState('');
-    const [password, setPassword] = useState('');
-    const [code, setCode] = useState('');
-    const [error, setError] = useState('');
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [isCodeGenerated, setIsCodeGenerated] = useState(false);
-    const [hasPassword, setHasPassword] = useState(false);
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    const { connectWebSocket } = useBingoWebSocket();
+    
+  const { connectWebSocket } = useBingoWebSocket();
+  const [lobbyType, setLobbyType] = useState('Normal');
+  const [lobbyName, setLobbyName] = useState('');
+  const [gameName, setGameName] = useState('');
+  const [maxCapacity, setMaxCapacity] = useState('');
+  const [password, setPassword] = useState('');
+  const [code, setCode] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isCodeGenerated, setIsCodeGenerated] = useState(false);
+  const [hasPassword, setHasPassword] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [errors, setErrors] = useState({});
 
-    const toggleLobbyType = useCallback(() => {
-        setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
-    }, []);
+  const validateFields = useCallback(() => {
+    const newErrors = {};
 
-    const handleSave = useCallback(async () => {
-        if (!lobbyName.trim()) {
-            ToastService.show("error", 'Lobby name cannot be empty');
-            return;
-        }
-        if (!gameName.trim()) {
-            ToastService.show("error", 'Game name cannot be empty');
-            return;
-        }
-        if (!maxCapacity.trim()) {
-            ToastService.show("error", 'Max capacity cannot be empty');
-            return;
-        }
+    if (!lobbyName.trim()) newErrors.lobbyName = 'Lobby name required';
+    if (!gameName.trim()) newErrors.gameName = 'Game name required';
+    if (!maxCapacity) {
+      newErrors.maxCapacity = 'Capacity required';
+    } else if (isNaN(maxCapacity) || maxCapacity < 2) {
+      newErrors.maxCapacity = 'Invalid capacity (min 2)';
+    }
 
-        if (hasPassword && !password.trim()) {
-            ToastService.show("error", "Password cannot be empty for a password-protected lobby.");
-            return;
-        }
+    if (hasPassword && !password.trim()) {
+      newErrors.password = 'Password required';
+    }
 
-        if (lobbyType === 'Event' && (!startDate || !endDate)) {
-            ToastService.show("error", "Event lobbies require start and end date.");
-            return;
-        }
+    if (lobbyType === 'Event') {
+      if (!startDate) newErrors.startDate = 'Start date required';
+      if (!endDate) newErrors.endDate = 'End date required';
+      if (startDate >= endDate) newErrors.dateRange = 'End date must be after start date';
+    }
 
-        const requestBody = {
-            lobbyName,
-            lobbyType,
-            gameName,
-            code,
-            maxCapacity: parseInt(maxCapacity, 10),
-            password: hasPassword ? password : null,
-            hasPassword: hasPassword,
-            ...(lobbyType === 'Event' && { startDate: startDate.toISOString(), endDate: endDate.toISOString() }),
-        };
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [lobbyName, gameName, maxCapacity, hasPassword, password, lobbyType, startDate, endDate]);
 
-        try {
-            const data = await createLobby(requestBody);
-            connectWebSocket(data.lobby.code);
-            setCode(`${data.lobby.code}`);
-            setIsCodeGenerated(true);
-        } catch (error) {
-            ToastService.show("error", error.message);
-        }
-    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate, connectWebSocket]);
+  // Lobby oluşturma fonksiyonu
+  const handleCreateLobby = useCallback(async () => {
+    if (!validateFields()) return;
 
-    const resetLobby = useCallback(() => {
-        setLobbyType('Normal');
-        setPassword('');
-        setMaxCapacity('');
-        setCode('');
-        setError('');
-        setGameName('');
-        setLobbyName('');
-        setIsCodeGenerated(false);
-        setHasPassword(false);
-        setStartDate(new Date());
-        setEndDate(new Date());
-    }, []);
+    try {
+      const requestBody = {
+        lobbyName: lobbyName.trim(),
+        gameName: gameName.trim(),
+        lobbyType,
+        maxCapacity: parseInt(maxCapacity, 10),
+        hasPassword,
+        password: hasPassword ? password.trim() : null,
+        ...(lobbyType === 'Event' && {
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString()
+        })
+      };
 
-    const contextValue = {
-        lobbyType, setLobbyType,
-        lobbyName, setLobbyName,
-        gameName, setGameName,
-        maxCapacity, setMaxCapacity,
-        password, setPassword,
-        code, setCode,
-        error, setError,
-        isPasswordVisible, setIsPasswordVisible,
-        isCodeGenerated, setIsCodeGenerated,
-        hasPassword, setHasPassword,
-        startDate, setStartDate,
-        endDate, setEndDate,
-        toggleLobbyType,
-        handleSave,
-        resetLobby,
-    };
+      const response = await createLobby(requestBody);
 
-    return (
-        <CreateLobbyContext.Provider value={contextValue}>
-            {children}
-        </CreateLobbyContext.Provider>
-    );
+      setCode(response.lobby.code);
+      setIsCodeGenerated(true);
+      connectWebSocket(response.lobby.code);
+      ToastService.show('success', 'Lobby created successfully!');
+
+    } catch (error) {
+      ToastService.show('error', error.response?.data?.message || 'Failed to create lobby');
+      setErrors(prev => ({ ...prev, server: error.message }));
+    }
+  }, [validateFields, lobbyName, gameName, maxCapacity, hasPassword, password, lobbyType, startDate, endDate, connectWebSocket]);
+
+  // Form resetleme
+  const resetLobby = useCallback(() => {
+    setLobbyType('Normal');
+    setLobbyName('');
+    setGameName('');
+    setMaxCapacity('');
+    setPassword('');
+    setCode('');
+    setErrors({});
+    setIsCodeGenerated(false);
+    setHasPassword(false);
+    setStartDate(new Date());
+    setEndDate(new Date());
+  }, []);
+
+  // Context değeri
+  const contextValue = {
+    // State'ler
+    lobbyType,
+    lobbyName,
+    gameName,
+    maxCapacity,
+    password,
+    code,
+    isPasswordVisible,
+    isCodeGenerated,
+    hasPassword,
+    startDate,
+    endDate,
+    errors,
+
+    // State updateler
+    setLobbyType,
+    setLobbyName,
+    setGameName,
+    setMaxCapacity,
+    setPassword,
+    setCode,
+    setIsPasswordVisible,
+    setHasPassword,
+    setStartDate,
+    setEndDate,
+
+    // Fonksiyonlar
+    toggleLobbyType: useCallback(() => {
+      setLobbyType(prev => prev === 'Normal' ? 'Event' : 'Normal');
+    }, []),
+
+    togglePasswordVisibility: useCallback(() => {
+      setIsPasswordVisible(prev => !prev);
+    }, []),
+
+    handleCreateLobby,
+    resetLobby
+  };
+
+  return (
+    <CreateLobbyContext.Provider value={contextValue}>
+      {children}
+    </CreateLobbyContext.Provider>
+  );
 };
+
+export { CreateLobbyContext };

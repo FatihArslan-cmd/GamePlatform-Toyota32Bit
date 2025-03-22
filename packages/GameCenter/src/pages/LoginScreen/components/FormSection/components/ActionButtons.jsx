@@ -2,10 +2,11 @@ import React from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { Button, ActivityIndicator } from 'react-native-paper';
 import { useFormContext } from '../../../context/FormContext';
+import { useTranslation } from 'react-i18next'; 
 
 const ActionButtons = () => {
   const { handleLoginPress, isLoading } = useFormContext();
-
+  const { t } = useTranslation(); 
   return (
     <>
       <Animated.View style={{ transform: [{ scale: 1 }] }}>
@@ -19,7 +20,7 @@ const ActionButtons = () => {
           {isLoading ? (
             <ActivityIndicator animating={true} color="#fff" size="small" />
           ) : (
-            'START GAME'
+            t('loginScreen.startGame')
           )}
         </Button>
       </Animated.View>
@@ -29,7 +30,7 @@ const ActionButtons = () => {
         style={styles.signupButton}
         labelStyle={styles.signupButtonLabel}
       >
-        CREATE NEW ACCOUNT
+        {t('loginScreen.createNewAccount')}
       </Button>
     </>
   );

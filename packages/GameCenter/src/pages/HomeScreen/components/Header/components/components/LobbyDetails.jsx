@@ -3,9 +3,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import formatDate from '../../../../../../utils/FormatDate';
 import { useTheme } from '../../../../../../context/ThemeContext'; 
-
+import {useTranslation} from 'react-i18next';
 const LobbyDetails = ({ lobby }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.lobbyDetails}>
@@ -31,14 +32,18 @@ const LobbyDetails = ({ lobby }) => {
       <View style={styles.detailItem}>
         <View style={styles.detailHeader}>
           <Icon name="crown" size={20} color={colors.warning} /> 
-          <Text style={[styles.detailLabel, { color: colors.text }]}>Owner</Text>
+          <Text style={[styles.detailLabel, { color: colors.text }]}>
+            {t('homeScreen.owner')}
+          </Text>
         </View>
         <Text style={[styles.detailLabel, { color: colors.text }]}>{lobby.ownerUsername.toUpperCase()}</Text> 
       </View>
       <View style={styles.detailItem}>
         <View style={styles.detailHeader}>
           <Icon name="account-group" size={20} color={colors.primary} /> 
-          <Text style={[styles.detailLabel, { color: colors.text }]}>Players</Text>
+          <Text style={[styles.detailLabel, { color: colors.text }]}>
+            {t('homeScreen.players')}
+          </Text>
         </View>
         <Text style={[styles.detailLabel, { color: colors.text }]}>
           {lobby.members.length}/{lobby.maxCapacity}

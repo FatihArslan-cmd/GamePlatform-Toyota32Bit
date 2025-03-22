@@ -5,12 +5,12 @@ import LobbyCard from './components/LobbyCard';
 import NoLobby from '../components/components/NoLobby';
 import { ToastService } from '../../../../../context/ToastService';
 import FadeIn from '../../../../../components/Animations/FadeInAnimation';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../../../../../context/ThemeContext'; 
 
 const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   const [userLobby, setUserLobby] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { colors } = useTheme(); // Use the useTheme hook
+  const { colors } = useTheme(); 
 
   const fetchLobbies = useCallback(async () => {
     setLoading(true);
@@ -20,7 +20,7 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
     } catch (error) {
       console.error('Error fetching user lobby data:', error);
       ToastService.show('error', 'Failed to fetch lobby data.');
-      setUserLobby(null); // Set userLobby to null in case of error to show NoLobby component or handle no lobby case
+      setUserLobby(null);
     } finally {
       setLoading(false);
     }
@@ -36,18 +36,23 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
 
   if (loading) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}> {/* Themed background color for container */}
+      <View style={[styles.container, { backgroundColor: colors.background }]}> 
         {showNoLobby ? <NoLobby loading={true} />: null}
       </View>
     );
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}> {/* Themed background color for container */}
+    <View style={[styles.container, { backgroundColor: colors.background }]}> 
       {userLobby ? (
-        <FadeIn><LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} /></FadeIn>
+        <FadeIn>
+          <LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} />
+          </FadeIn>
       ) : (
-        showNoLobby ? <FadeIn><NoLobby /></FadeIn> : null
+        showNoLobby ? 
+        <FadeIn>
+          <NoLobby />
+        </FadeIn> : null
       )}
     </View>
   );

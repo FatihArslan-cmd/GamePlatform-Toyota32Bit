@@ -2,71 +2,72 @@ import { useCallback } from 'react';
 import lobbyService from '../../services/lobbyService';
 import { ToastService } from '../../../../../../context/ToastService';
 import { useBingoWebSocket } from '../../../../../../context/BingoGameWebsocket';
+import { useTranslation } from 'react-i18next';
 
 const useLobbyActions = (onLobbyAction) => {
-  const { closeWebSocket } = useBingoWebSocket(); // Get closeWebSocket function from context
+  const { closeWebSocket } = useBingoWebSocket();
+  const { t } = useTranslation();
 
   const handleDeleteLobby = useCallback(async (lobbyId) => {
     try {
       await lobbyService.deleteLobby(lobbyId);
-      ToastService.show('success', 'Lobby deleted successfully!');
+      ToastService.show('success', t('homeScreen.lobbyDeletedSuccess'));
       if (onLobbyAction) {
-        onLobbyAction(); // Refresh lobby list in parent component after deletion
+        onLobbyAction();
       }
-      closeWebSocket(); // Close websocket connection on lobby deletion
-      return true; // Indicate success
+      closeWebSocket();
+      return true;
     } catch (error) {
       console.error("Error deleting lobby:", error);
-      ToastService.show('error', error.response?.data?.message || 'Failed to delete lobby.');
-      return false; // Indicate failure
+      ToastService.show('error', error.response?.data?.message || t('homeScreen.lobbyDeletedFailed')); 
+      return false;
     }
-  }, [onLobbyAction, closeWebSocket]); // Add closeWebSocket to dependencies
+  }, [onLobbyAction, closeWebSocket, t]);
 
   const handleLeaveLobby = useCallback(async (lobbyId) => {
     try {
       await lobbyService.leaveLobby(lobbyId);
       if (onLobbyAction) {
-        onLobbyAction(); // Refresh lobby list in parent component after leaving
+        onLobbyAction();
       }
-      closeWebSocket(); // Close websocket connection on leaving lobby
-      return true; // Indicate success
+      closeWebSocket();
+      return true;
     } catch (error) {
       console.error("Error leaving lobby:", error);
-      ToastService.show('error', error.response?.data?.message || 'Failed to leave lobby.');
-      return false; // Indicate failure
+      ToastService.show('error', error.response?.data?.message || t('homeScreen.lobbyLeaveFailed')); 
+      return false;
     }
-  }, [onLobbyAction, closeWebSocket]); // Add closeWebSocket to dependencies
+  }, [onLobbyAction, closeWebSocket, t]);
 
   const handleKickPlayer = useCallback(async (lobbyId, playerId) => {
     try {
-      await lobbyService.kickPlayer(lobbyId, playerId); // Call kickPlayer in lobbyService
+      await lobbyService.kickPlayer(lobbyId, playerId);
       if (onLobbyAction) {
-        onLobbyAction(); // Refresh lobby list in parent if needed
+        onLobbyAction();
       }
       return true;
     } catch (error) {
-      console.error("Error kicking player:", error);
-      ToastService.show('error', error.response?.data?.message || 'Failed to kick player.');
+      ToastService.show('error', error.response?.data?.message || t('homeScreen.playerKickFailed'));
       return false;
     }
-  }, [onLobbyAction]);
+  }, [onLobbyAction, t]);
 
   const handleKickAndBlockPlayer = useCallback(async (lobbyId, playerId) => {
     try {
-      await lobbyService.kickAndBlockPlayer(lobbyId, playerId); // Call kickAndBlockPlayer in lobbyService
+      await lobbyService.kickAndBlockPlayer(lobbyId, playerId);
       if (onLobbyAction) {
-        onLobbyAction(); // Refresh lobby list if needed
+        onLobbyAction();
       }
       return true;
     } catch (error) {
       console.error("Error kicking and blocking player:", error);
-      ToastService.show('error', error.response?.data?.message || 'Failed to kick and block player.');
+      ToastService.show('error', error.response?.data?.message || t('homeScreen.playerKickBlockFailed')); 
       return false;
     }
-  }, [onLobbyAction]);
+  }, [onLobbyAction, t]);
 
 
-  return { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer }; // Include new handlers
+  return { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer };
 };
 
 export default useLobbyActions;

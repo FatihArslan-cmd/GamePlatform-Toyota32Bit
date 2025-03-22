@@ -7,6 +7,7 @@ import MyLoader from '../../../../components/SkeletonPlaceHolder/MiniGamesPlaceH
 import GrandientText from '../../../../components/GrandientText';
 import ScrollIndicator from './components/ScrollIndicator';
 import { useTheme } from '../../../../context/ThemeContext';
+import {useTranslation} from 'react-i18next';
 
 const MiniGamesBlock = memo(({ games }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,7 @@ const MiniGamesBlock = memo(({ games }) => {
     const scrollProgress = useRef(new Animated.Value(0)).current;
     const { colors } = useTheme();
     const themedStyles = useStyles(colors);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const timeout = setTimeout(() => setIsLoading(false), 1500);
@@ -54,7 +56,7 @@ const MiniGamesBlock = memo(({ games }) => {
     return (
         <View style={themedStyles.wrapper}>
             <GrandientText
-                text="Mini Games"
+                text={t('homeScreen.miniGames')}
                 colors={colors.languageTextGradient}
                 textStyle={{ fontSize: 32, textAlign: 'center', color: colors.text }}
                 gradientDirection="horizontal"

@@ -8,11 +8,13 @@ import GrandientText from '../../../../components/GrandientText';
 import PagerView from 'react-native-pager-view';
 import PaginationDots from './components/PaginationDots';
 import { useTheme } from '../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const FromTheCreator = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { colors } = useTheme();
   const themedStyles = useStyles(colors);
+  const { t } = useTranslation();
 
   const getImageSource = (imageName) => {
     return imageAssets[imageName] || null;
@@ -33,7 +35,7 @@ const FromTheCreator = () => {
   return (
     <View style={themedStyles.container}>
       <GrandientText
-        text="From the Creator"
+        text={t('homeScreen.fromTheCreator')}
         colors={colors.themeTextGradient} 
         textStyle={{ fontSize: 32 }}
         gradientDirection="horizontal"
@@ -54,7 +56,7 @@ const FromTheCreator = () => {
                 gameName={game.gameName}
                 instructions={game.instructions}
                 imageSource={getImageSource(game.imageSource)}
-                buttonText="Explore Now"
+                buttonText={t('homeScreen.exploreNow')}
                 buttonColors={buttonColorSets[index % buttonColorSets.length]}
                 backgroundColors={game.backgroundColors}
               />

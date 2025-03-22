@@ -1,8 +1,9 @@
-// context/LobbyInviteContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import lobbyService from '../service/service';
 import { ToastService } from '../../../context/ToastService';
 import { useBingoWebSocket } from '../../../context/BingoGameWebsocket.js';
+import { useTranslation } from 'react-i18next';
+
 const LobbyInviteContext = createContext();
 
 const LobbyInviteProvider = ({ children }) => {
@@ -10,6 +11,7 @@ const LobbyInviteProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const { connectWebSocket } = useBingoWebSocket();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchInvitations = async () => {
@@ -20,7 +22,7 @@ const LobbyInviteProvider = ({ children }) => {
                 setInvitations(data.invitations);
             } catch (err) {
                 setError(err.message);
-                ToastService.show('error', 'Davetler alınırken bir hata oluştu.');
+                ToastService.show('error', t('personalMessagePage.fetchError'));
             } finally {
                 setLoading(false);
             }
@@ -37,10 +39,10 @@ const LobbyInviteProvider = ({ children }) => {
             setInvitations(prevInvitations =>
                 prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode)
             );
-            ToastService.show('success', 'Davet kabul edildi!');
+            ToastService.show('success', t('personalMessagePage.inviteAccepted')); 
         } catch (err) {
             setError(err.message);
-            ToastService.show('error', 'Davet kabul edilirken bir hata oluştu.');
+            ToastService.show('error', t('personalMessagePage.acceptError')); 
             console.error("Accept invite error:", err);
         } finally {
             setLoading(false);
@@ -54,10 +56,10 @@ const LobbyInviteProvider = ({ children }) => {
             setInvitations(prevInvitations =>
                 prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode)
             );
-            ToastService.show('info', 'Davet reddedildi.');
+            ToastService.show('info', t('personalMessagePage.inviteDeclined'));
         } catch (err) {
             setError(err.message);
-            ToastService.show('error', 'Davet reddedilirken bir hata oluştu.');
+            ToastService.show('error', t('personalMessagePage.rejectError'));
             console.error("Reject invite error:", err);
         } finally {
             setLoading(false);

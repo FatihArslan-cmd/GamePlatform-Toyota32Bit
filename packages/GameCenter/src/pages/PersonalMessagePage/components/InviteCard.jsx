@@ -5,13 +5,15 @@ import { getTimeAgo } from '../../../utils/getTimeAgo';
 import { invitationCardStyles } from '../styles/InvitationsPageStyles';
 import { useTheme } from '../../../context/ThemeContext';
 import { useLobbyInvite } from '../context/LobbyInviteContext';
+import { useTranslation } from 'react-i18next'; 
 
 const InviteCard = ({ invite }) => { 
-  const inviteMessage = `${invite.inviterUsername.toUpperCase()} seni ${invite.lobbyName.toUpperCase()} lobisine davet etti`;
+  const inviteMessage = `${invite.inviterUsername.toUpperCase()} ${t('personalMessagePage.invitedyoutothe')} ${invite.lobbyName.toUpperCase()} ${t('personalMessagePage.lobby')}`;
   const { colors } = useTheme();
   const styles = invitationCardStyles(colors);
   const { handleAcceptInvite, handleRejectInvite } = useLobbyInvite();
-
+  const { t } = useTranslation();
+  
   return (
     <Surface style={styles.surfaceCard} elevation={4}>
       <Card style={styles.card}>
@@ -33,7 +35,7 @@ const InviteCard = ({ invite }) => {
             buttonColor={colors.primary}
             textColor={colors.card}
           >
-            Kabul Et
+            {t('personalMessagePage.accept')}
           </Button>
           <Button
             mode="outlined"
@@ -45,7 +47,7 @@ const InviteCard = ({ invite }) => {
             textColor={colors.text}
             borderColor={colors.border}
           >
-            Reddet
+            {t('personalMessagePage.decline')}
           </Button>
         </Card.Actions>
       </Card>

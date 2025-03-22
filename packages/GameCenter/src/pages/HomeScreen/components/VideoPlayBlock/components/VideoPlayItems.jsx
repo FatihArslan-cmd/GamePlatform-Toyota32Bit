@@ -2,22 +2,15 @@ import React, { memo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Text,TouchableRipple } from 'react-native-paper';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+
 const { width } = Dimensions.get('window');
 const CARD_SPACING = 10;
 const CARD_WIDTH = (width - CARD_SPACING * 3) / 2.1;
 
-/**
- * VideoPlayItems component to display a card with an image and title.
- *
- * @param {object} props - Component props.
- * @param {string} props.title - Title of the video/item.
- * @param {string} props.imageUri - URI of the image to display.
- * @param {number} props.index - Index of the item (no longer used for staggered animations).
- * @param {('cover' | 'contain' | 'stretch' | 'repeat' | 'center')} [props.resizeMode='cover'] - Resize mode for the image. Defaults to 'cover'.
- * @param {function} props.onPress - Function to be called when the item is pressed.
- */
-
 const VideoPlayItems = memo(({ title, imageUri, index, resizeMode = 'cover', onPress }) => {
+    const { colors } = useTheme(); // Use theme context
+    const styles = createStyles(colors); // Create styles with theme colors
 
     return (
         <TouchableRipple
@@ -30,7 +23,7 @@ const VideoPlayItems = memo(({ title, imageUri, index, resizeMode = 'cover', onP
                 <FastImage
                     style={styles.image}
                     source={{ uri: imageUri }}
-                    resizeMode={resizeMode} 
+                    resizeMode={resizeMode}
                 />
                 <View
                     style={styles.overlay}
@@ -44,7 +37,7 @@ const VideoPlayItems = memo(({ title, imageUri, index, resizeMode = 'cover', onP
 });
 
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
     headerText: {
         fontSize: 24,
         marginBottom: 16,
@@ -58,7 +51,7 @@ const styles = StyleSheet.create({
         width: CARD_WIDTH,
         height: 200,
         borderRadius: 30,
-        backgroundColor: '#fff',
+        backgroundColor: colors.card, // Use theme card color
         elevation: 5,
         overflow: 'hidden',
     },
@@ -69,7 +62,7 @@ const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: '#000',
-        opacity: 0, // Keep overlay but without animation, set opacity to 0 if not needed
+        opacity: 0,
     },
     titleContainer: {
         position: 'absolute',

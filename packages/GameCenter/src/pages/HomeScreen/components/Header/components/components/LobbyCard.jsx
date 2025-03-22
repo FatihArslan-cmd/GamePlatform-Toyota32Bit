@@ -8,8 +8,9 @@ import CustomModal from '../../../../../../components/CustomModal';
 import useLobbyActions from '../hooks/useLobbyActions';
 import LobbyCardHeaderActions from './LobbyCardHeaderActions';
 import LobbyCardContent from './LobbyCardContent';
-import PlayerModalContent from './PlayerModalContent'; 
+import PlayerModalContent from './PlayerModalContent';
 import { useTheme } from '../../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const LobbyCard = ({ lobby, onLobbyAction }) => {
   const { user } = useContext(UserContext);
@@ -19,16 +20,17 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
   const [currentLobby, setCurrentLobby] = useState(lobby);
   const { handleDeleteLobby, handleLeaveLobby, handleKickPlayer, handleKickAndBlockPlayer } = useLobbyActions(onLobbyAction);
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
       await Clipboard.setString(code);
-      ToastService.show('success', 'Lobby code successfully copied!');
+      ToastService.show('success', t('homeScreen.lobbyCodeCopied')); 
     } catch (error) {
       console.error("Error copying to clipboard:", error);
-      ToastService.show('error', 'Failed to copy lobby code.');
+      ToastService.show('error', t('homeScreen.lobbyCodeCopyFailed'));
     }
-  }, []);
+  }, [t]);
 
   const onDeleteConfirmation = useCallback(async () => {
     setDeleteModalVisible(false);
@@ -46,9 +48,9 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
 
   const handlePlayerAction = useCallback(async (playerId, actionType) => {
     if (user.username !== currentLobby.ownerUsername) {
-      ToastService.show('error', 'Only the lobby owner can perform player actions.');
-      setPlayerModalVisible(false); 
-      return; 
+      ToastService.show('error', t('homeScreen.onlyOwnerAction')); 
+      setPlayerModalVisible(false);
+      return;
     }
 
     try {
@@ -64,17 +66,17 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
           ...prevLobby,
           members: prevLobby.members.filter(member => member.id !== playerId),
         }));
-        ToastService.show('success', `Player ${actionType === 'kick' ? 'kicked' : 'kicked and blocked'} successfully!`);
+        ToastService.show('success', t(`homeScreen.playerActionSuccess`, { action: t(`homeScreen.${actionType}`) })); 
       } else {
-        ToastService.show('error', `Failed to ${actionType === 'kick' ? 'kick' : 'kick and block'} player.`);
+        ToastService.show('error', t(`homeScreen.playerActionFailed`, { action: t(`homeScreen.${actionType}`) })); 
       }
     } catch (error) {
       console.error(`Error performing player action (${actionType}):`, error);
-      ToastService.show('error', `Failed to ${actionType === 'kick' ? 'kick' : 'kick and block'} player.`);
+      ToastService.show('error', t(`homeScreen.playerActionFailed`, { action: t(`homeScreen.${actionType}`) })); 
     } finally {
       setPlayerModalVisible(false);
     }
-  }, [handleKickPlayer, handleKickAndBlockPlayer, currentLobby.id, currentLobby.ownerUsername, user.username]);
+  }, [handleKickPlayer, handleKickAndBlockPlayer, currentLobby.id, currentLobby.ownerUsername, user.username, t]);
 
 
   return (
@@ -99,9 +101,9 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
         visible={deleteModalVisible}
         onDismiss={() => setDeleteModalVisible(false)}
         onConfirm={onDeleteConfirmation}
-        title="Delete Lobby?"
-        text="Are you sure you want to delete this lobby? This action cannot be undone."
-        confirmText="Delete Lobby"
+        title={t('homeScreen.deleteLobbyModalTitle')} 
+        text={t('homeScreen.deleteLobbyModalDescription')}
+        confirmText={t('homeScreen.deleteLobbyModalConfirmButton')} 
         showConfirmButton={true}
       />
 
@@ -109,16 +111,16 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
         visible={leaveModalVisible}
         onDismiss={() => setLeaveModalVisible(false)}
         onConfirm={onLeaveConfirmation}
-        title="Leave Lobby?"
-        text="Are you sure you want to leave this lobby?"
-        confirmText="Leave Lobby"
+        title={t('homeScreen.leaveLobbyModalTitle')} 
+        text={t('homeScreen.leaveLobbyModalDescription')} 
+        confirmText={t('homeScreen.leaveLobbyModalConfirmButton')} 
         showConfirmButton={true}
       />
 
       <CustomModal
         visible={playerModalVisible}
         onDismiss={togglePlayerModal}
-        title="Players in Lobby"
+        title={t('homeScreen.playersInLobbyModalTitle')} 
         onConfirm={togglePlayerModal}
       >
         <PlayerModalContent

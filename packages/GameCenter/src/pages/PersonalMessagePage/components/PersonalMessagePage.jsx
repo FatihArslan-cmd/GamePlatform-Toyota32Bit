@@ -7,11 +7,13 @@ import InviteCard from '../components/InviteCard';
 import { pageStyles } from '../styles/InvitationsPageStyles';
 import BackButton from '../../../components/BackIcon';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const Page = () => {
-  const { invitations, loading } = useLobbyInvite(); 
+  const { invitations, loading } = useLobbyInvite();
   const { colors, resolvedTheme } = useTheme();
   const styles = pageStyles(colors);
+  const { t } = useTranslation(); 
 
   return (
     <>
@@ -30,7 +32,7 @@ const Page = () => {
           ) : !invitations || invitations.length === 0 ? (
             <View style={styles.container}>
               <EmptyState
-                message="Şu anda aktif bir davetiniz bulunmuyor."
+                message={t('personalMessagePage.noActiveInvites')}
                 textColor={colors.text}
               />
             </View>

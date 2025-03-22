@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper'; // Removed Text import, added to TouchableRipple import
+import { TouchableRipple } from 'react-native-paper';
 import CustomModal from '../../../../../components/CustomModal';
 import InputField from '../../../../LoginScreen/components/FormSection/components/InputField';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,33 +8,34 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import lobbyService from '../services/lobbyService';
 import { ToastService } from '../../../../../context/ToastService';
 import { useBingoWebSocket } from '../../../../../context/BingoGameWebsocket';
-import { useHeader } from '../context/HeaderContext'; // Import useHeader
+import { useHeader } from '../context/HeaderContext';
+import { useTranslation } from 'react-i18next'; 
 
-const JoinLobbyModal = () => { // Removed props from parameter list
+const JoinLobbyModal = () => {
     const [lobbyCode, setLobbyCode] = useState('');
     const [lobbyPassword, setLobbyPassword] = useState('');
     const { connectWebSocket } = useBingoWebSocket();
-    const { joinLobbyModalVisible, closeJoinLobbyModal } = useHeader(); // Get visibility and onDismiss from context
-
+    const { joinLobbyModalVisible, closeJoinLobbyModal } = useHeader();
+    const { t } = useTranslation(); 
 
     const handleJoinLobby = useCallback(async () => {
         try {
             await lobbyService.joinLobby(lobbyCode, lobbyPassword);
 
             connectWebSocket(lobbyCode);
-            ToastService.show('success', 'Successfully joined lobby!');
-            closeJoinLobbyModal(); // Use context function
+            ToastService.show('success', t('homeScreen.joinLobbySuccessToast'));
+            closeJoinLobbyModal();
 
         } catch (error) {
             console.error('Error joining lobby:', error);
-            if (error.response && error.response.data && error.response.data.message) {
-                ToastService.show('error', error.response.data.message);
+            if (error?.response?.data?.message) { // Use optional chaining for safety
+                ToastService.show('error', error.response.data.message); // Display backend error message directly - consider i18n for backend messages if needed
             }
             else {
-                ToastService.show('error', 'Failed to join lobby. Please try again.');
+                ToastService.show('error', t('homeScreen.joinLobbyFailToast'));
             }
         }
-    }, [lobbyCode, lobbyPassword, closeJoinLobbyModal, connectWebSocket]); // Updated dependency array
+    }, [lobbyCode, lobbyPassword, closeJoinLobbyModal, connectWebSocket, t]);
 
 
     const handlePaste = useCallback(async () => {
@@ -43,9 +44,9 @@ const JoinLobbyModal = () => { // Removed props from parameter list
             setLobbyCode(text);
         } catch (error) {
             console.error('Error pasting from clipboard:', error);
-            ToastService.show('error', 'Failed to paste from clipboard.');
+            ToastService.show('error', t('homeScreen.joinLobbyClipboardFailToast'));
         }
-    }, []);
+    }, [t]);
 
     const handleClearCode = useCallback(() => {
         setLobbyCode('');
@@ -57,18 +58,18 @@ const JoinLobbyModal = () => { // Removed props from parameter list
 
     return (
         <CustomModal
-            visible={joinLobbyModalVisible} // Get visibility from context
-            onDismiss={closeJoinLobbyModal} // Use context function
-            title="Join Lobby"
-            text="Enter the lobby code and password (if required):"
+            visible={joinLobbyModalVisible}
+            onDismiss={closeJoinLobbyModal}
+            title={t('homeScreen.joinLobbyModalTitle')}
+            text={t('homeScreen.joinLobbyModalDescription')}
             showConfirmButton={true}
-            confirmText="Join"
+            confirmText={t('homeScreen.joinLobbyModalJoinButton')}
             onConfirm={handleJoinLobby}
         >
             <View style={styles.inputContainer}>
                 <View style={styles.inputWrapper}>
                     <InputField
-                        label="Lobby Code"
+                        label={t('homeScreen.joinLobbyModalLobbyCodeLabel')}
                         value={lobbyCode}
                         onChangeText={setLobbyCode}
                         style={styles.input}
@@ -85,7 +86,7 @@ const JoinLobbyModal = () => { // Removed props from parameter list
 
                 <View style={styles.passwordInputWrapper}>
                     <InputField
-                        label="Lobby Password (Optional)"
+                        label={t('homeScreen.joinLobbyModalLobbyPasswordLabel')}
                         value={lobbyPassword}
                         onChangeText={setLobbyPassword}
                         secureTextEntry
@@ -93,8 +94,7 @@ const JoinLobbyModal = () => { // Removed props from parameter list
                     />
                      {lobbyPassword.length > 0 && (
                         <TouchableRipple style={styles.clearButton} onPress={handleClearPassword}>
-                            <Icon name="cancel" size={24} color="#fff" >
-                                </Icon>
+                            <Icon name="cancel" size={24} color="#fff" />
                         </TouchableRipple>
                     )}
                 </View>

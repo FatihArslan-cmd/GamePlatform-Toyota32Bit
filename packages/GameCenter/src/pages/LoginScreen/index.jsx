@@ -9,16 +9,14 @@ import { FormProvider } from './context/FormContext';
 import { PermissionsProvider } from './context/PermissionContext';
 import LanguageSelector from './components/LanguageSelector';
 import ThemeSwitcher from './components/ThemeSwitcher';
-import { useTheme } from '../../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../../context/ThemeContext'; 
 
 const LoginScreen = () => {
+
   useEffect(() => {
     hideNavigationBar();
   }, []);
-
-  const { colors, resolvedTheme } = useTheme(); // Use ThemeContext and get resolvedTheme
-
-  // Define gradient colors based on the theme
+  const { colors, resolvedTheme } = useTheme();
   const gradientColors = resolvedTheme === 'dark' ? ['#1a1b2e', '#2d0a3e', '#1a1b2e'] : colors.loginScreenGradient;
 
 

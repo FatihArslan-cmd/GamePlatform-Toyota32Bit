@@ -5,10 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LobbyDetails from './LobbyDetails'; 
 import { UserContext } from '../../../../../../context/UserContext';
 import { useTheme } from '../../../../../../context/ThemeContext'; 
-
+import {useTranslation} from 'react-i18next';
 const LobbyCardContent = ({ lobby, ownerUsername, setLeaveModalVisible, togglePlayerModal }) => {
   const { user } = useContext(UserContext);
   const { colors } = useTheme(); 
+  const { t } = useTranslation();
 
   return (
     <View>
@@ -27,7 +28,9 @@ const LobbyCardContent = ({ lobby, ownerUsername, setLeaveModalVisible, togglePl
           labelStyle={styles.buttonLabel}
         >
           <Icon name="exit-run" size={20} color="white" />
-          <Text style={styles.buttonText}>Leave</Text> 
+          <Text style={styles.buttonText}>
+             {t('homeScreen.leave')}  
+          </Text> 
         </Button>
       </View>
     </View>

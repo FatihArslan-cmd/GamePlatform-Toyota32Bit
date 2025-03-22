@@ -4,16 +4,18 @@ import { TouchableRipple } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../../../context/ThemeContext';
 import { ToastService } from '../../../context/ToastService';
+import { useTranslation } from 'react-i18next'; 
 
 const ThemeSwitcher = () => {
-  const { theme, setTheme,colors } = useTheme();
+  const { theme, setTheme, colors } = useTheme();
+  const { t } = useTranslation();
 
   const isDarkMode = theme === 'dark';
 
   const toggleTheme = () => {
     const newTheme = isDarkMode ? 'light' : 'dark';
     setTheme(newTheme);
-    ToastService.show('succes', `Theme switched to ${newTheme} mode`); 
+    ToastService.show('success', `${t('themeSwitcher.themeSwitched')} ${t(`themeSwitcher.${newTheme}`)}`);
   };
 
   return (

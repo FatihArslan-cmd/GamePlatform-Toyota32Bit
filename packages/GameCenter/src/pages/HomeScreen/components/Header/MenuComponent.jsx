@@ -1,15 +1,17 @@
 import React from 'react';
 import { StyleSheet, Linking } from 'react-native';
-import { Menu, Divider, Appbar ,Tooltip} from 'react-native-paper';
+import { Menu, Divider, Appbar, Tooltip } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { ToastService } from '../../../../context/ToastService';
 import { useTheme } from '../../../../context/ThemeContext';
-import { useHeader } from './context/HeaderContext'; 
+import { useHeader } from './context/HeaderContext';
+import { useTranslation } from 'react-i18next';
 
-const MenuComponent = () => { 
+const MenuComponent = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
-  const { closeMenu, openLobbyModal, openBottomSheet, openJoinLobbyModal, menuVisible,openMenu } = useHeader(); 
+  const { closeMenu, openLobbyModal, openBottomSheet, openJoinLobbyModal, menuVisible, openMenu } = useHeader();
+  const { t } = useTranslation();
 
   const handleHelpAndDisplay = () => {
     closeMenu();
@@ -19,68 +21,63 @@ const MenuComponent = () => {
 
     const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    Linking.openURL(mailtoUrl)
-      .catch((err) => {
-        ToastService.show('error', 'Failed to open email client');
-      });
+    Linking.openURL(mailtoUrl).catch(() => {
+      ToastService.show('error', t('homeScreen.emailError'));
+    });
   };
 
   return (
     <Menu
-      visible={menuVisible} 
+      visible={menuVisible}
       onDismiss={closeMenu}
-      mode='elevated'
+      mode="elevated"
       anchor={
-        <Tooltip title="Options">
-        <Appbar.Action
-          icon="dots-vertical"
-          onPress={openMenu} 
-          color={colors.text}
-        />
+        <Tooltip title={t('homeScreen.options')}>
+          <Appbar.Action icon="dots-vertical" onPress={openMenu} color={colors.text} />
         </Tooltip>
       }
-      style={styles.menu}
+      contentStyle={[styles.menu, { backgroundColor: colors.card }]}
     >
       <Menu.Item
         onPress={() => {
-          closeMenu(); 
+          closeMenu();
           navigation.navigate('Settings');
         }}
-        title="Settings"
-        titleStyle={styles.menuItemText}
+        title={t('homeScreen.settings')}
+        titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
       <Divider />
       <Menu.Item
         onPress={handleHelpAndDisplay}
-        title="Help & Display"
-        titleStyle={styles.menuItemText}
+        title={t('homeScreen.helpAndDisplay')}
+        titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
       <Divider />
       <Menu.Item
         onPress={() => {
-          closeMenu(); 
+          closeMenu();
           openLobbyModal();
         }}
-        title="Create Lobby"
-        titleStyle={styles.menuItemText}
+        title={t('homeScreen.createLobby')}
+        titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
       <Divider />
       <Menu.Item
         onPress={() => {
-          closeMenu(); 
+          closeMenu();
           openBottomSheet();
         }}
-        title="Active Lobbies"
-        titleStyle={styles.menuItemText}
+        title={t('homeScreen.activeLobbies')}
+        titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
       <Divider />
       <Menu.Item
         onPress={() => {
-          closeMenu(); 
+          closeMenu();
           openJoinLobbyModal();
         }}
-        title="Join Lobby"
-        titleStyle={styles.menuItemText}
+        title={t('homeScreen.joinLobby')}
+        titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
     </Menu>
   );
@@ -92,7 +89,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     color: 'black',
-    fontFamily: 'Orbitron-VariableFont_wght',
+    fontFamily: 'Orbitron-ExtraBold',
   },
 });
 

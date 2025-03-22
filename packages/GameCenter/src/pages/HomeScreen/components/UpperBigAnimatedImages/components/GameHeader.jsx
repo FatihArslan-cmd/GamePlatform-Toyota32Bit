@@ -1,15 +1,20 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Divider } from 'react-native-paper'; 
+import { Text, Divider } from 'react-native-paper';
 import getFormattedDate from '../../../../../utils/getFormattedDate';
-import { useTheme } from '../../../../../context/ThemeContext'; 
+import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
+
 const GameHeader = () => {
-  const { colors } = useTheme(); 
-  const styles = useStyles(colors); 
+  const { colors } = useTheme();
+  const styles = useStyles(colors);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.sectionTitle}>Top Rated Games</Text>
+      <Text style={styles.sectionTitle}>
+        {t('homeScreen.topRatedGames')}
+      </Text>
       <Text style={styles.dateText}>{getFormattedDate()}</Text>
       <Divider style={styles.divider} />
     </View>
@@ -24,9 +29,9 @@ const useStyles = (colors) => StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 28,
-    color: colors.text, 
+    color: colors.text,
     letterSpacing: -0.5,
-    fontFamily: 'Orbitron-ExtraBold'
+    fontFamily: 'Orbitron-ExtraBold',
   },
   dateText: {
     fontSize: 14,

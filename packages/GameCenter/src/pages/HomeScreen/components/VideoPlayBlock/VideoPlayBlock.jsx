@@ -7,11 +7,13 @@ import VideoPlayItems from './components/VideoPlayItems';
 import GradientDivider from '../../../../components/GradientDivider';
 import GrandientText from '../../../../components/GrandientText';
 import { useTheme } from '../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const VideoPlayBlock = memo(() => {
   const isFocused = useIsFocused();
   const { colors } = useTheme(); 
   const themedStyles = styles(colors);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isFocused) {
@@ -22,7 +24,7 @@ const VideoPlayBlock = memo(() => {
   return (
     <View style={themedStyles.container}>
       <GrandientText
-        text="Upcoming Games"
+        text= {t('homeScreen.Upcominggames')}
         colors={colors.languageTextGradient} 
         textStyle={{ fontSize: 32 }}
         gradientDirection="horizontal"
@@ -59,7 +61,7 @@ const styles = (colors) => StyleSheet.create({
     fontFamily: 'Orbitron-VariableFont_wght',
     textAlign: 'center',
     marginBottom: 16,
-    color: colors.text, // Use text color from theme if you were to use a simple Text component instead of GrandientText
+    color: colors.text, 
   },
 });
 
