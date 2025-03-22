@@ -6,7 +6,7 @@ import FriendsPage from './Friends/index';
 import AchivementsPage from './Achivements';
 import { useButtons } from './context/ButtonsContext';
 import { useTheme } from '../../../context/ThemeContext';
-
+ 
 const Buttons = () => {
     const {
         pagerRef,
@@ -16,7 +16,7 @@ const Buttons = () => {
         handlePageChange,
     } = useButtons();
     const { colors } = useTheme();
-
+    
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={[styles.tabContainer, { backgroundColor: colors.background }]}>

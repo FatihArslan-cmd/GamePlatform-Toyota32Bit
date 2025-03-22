@@ -2,11 +2,12 @@ import React, { createContext, useState, useContext, useEffect, useCallback } fr
 import lobbyService from '../../HomeScreen/components/Header/services/lobbyService';
 import { ToastService } from '../../../context/ToastService';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const LobbyUpdateContext = createContext();
 
 const formatDate = (date) => {
-    if (!date) return ''; // Handle null or undefined date
+    if (!date) return '';
     const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
                     'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
     const day = date.getDate();
@@ -25,6 +26,7 @@ const LobbyUpdateProvider = ({ children }) => {
     const [lobbyName, setLobbyName] = useState('');
     const [maxCapacity, setMaxCapacity] = useState('');
     const navigation = useNavigation();
+    const { t } = useTranslation(); 
 
     const [lobbyType, setLobbyType] = useState('Normal');
     const [startDate, setStartDate] = useState(new Date());
@@ -43,8 +45,8 @@ const LobbyUpdateProvider = ({ children }) => {
                     setLobbyName(userLobbyData.lobbyName);
                     setMaxCapacity(String(userLobbyData.maxCapacity));
                     setLobbyType(userLobbyData.lobbyType || 'Normal');
-                    setStartDate(userLobbyData.startDate ? new Date(userLobbyData.startDate) : new Date()); // Başlangıç tarihini set et
-                    setEndDate(userLobbyData.endDate ? new Date(userLobbyData.endDate) : new Date()); // Bitiş tarihini set et
+                    setStartDate(userLobbyData.startDate ? new Date(userLobbyData.startDate) : new Date()); 
+                    setEndDate(userLobbyData.endDate ? new Date(userLobbyData.endDate) : new Date()); 
                 } else {
                     setError("No lobby found for the user.");
                 }
@@ -59,35 +61,44 @@ const LobbyUpdateProvider = ({ children }) => {
         fetchLobby();
     }, []);
 
-    const handleUpdateLobby = useCallback(async () => { // Remove updatesFromPage parameter
+    const handleUpdateLobby = useCallback(async () => {
         if (!lobby) {
             ToastService.show("error", "No lobby found. Please try again.");
             return;
         }
+
+        if (!lobbyName.trim()) {
+            ToastService.show("error", t('updateLobbyScreen.lobbyNameEmptyError'));
+            return;
+        }
+
+        if (!maxCapacity.trim()) {
+            ToastService.show("error", t('updateLobbyScreen.maxCapacityEmptyError')); 
+            return;
+        }
+
 
         setLoading(true);
         setError(null);
         try {
             const updates = {
                 lobbyCode: lobby.code,
-                lobbyName: lobbyName, // Use lobbyName from context state
-                maxCapacity: maxCapacity, // Use maxCapacity from context state
-                lobbyType: lobbyType, // Use lobbyType from context state
-                startDate: lobbyType === 'Event' && startDate ? startDate.toISOString() : null, // Use startDate from context state
-                endDate: lobbyType === 'Event' && endDate ? endDate.toISOString() : null, // Use endDate from context state
+                lobbyName: lobbyName,
+                maxCapacity: maxCapacity,
+                lobbyType: lobbyType,
+                startDate: lobbyType === 'Event' && startDate ? startDate.toISOString() : null,
+                endDate: lobbyType === 'Event' && endDate ? endDate.toISOString() : null,
             };
-            console.log("Updates to be sent:", updates);
             await lobbyService.updateLobby(updates);
-            ToastService.show("success", "Lobby updated successfully.");
+            ToastService.show("success", t('updateLobbyScreen.lobbyUpdatedSuccessfully')); 
             navigation.goBack();
         } catch (err) {
-            console.error("Error updating lobby:", err);
             setError("Failed to update lobby. Please check your input and try again.");
             ToastService.show("error", err);
         } finally {
             setLoading(false);
         }
-    }, [lobby, navigation, lobbyName, maxCapacity, lobbyType, startDate, endDate]); // Add context state values as dependencies
+    }, [lobby, navigation, lobbyName, maxCapacity, lobbyType, startDate, endDate, t]);
 
 
     const onStartDateChange = useCallback((event, selectedDate) => {
@@ -122,9 +133,9 @@ const LobbyUpdateProvider = ({ children }) => {
         setShowStartDatePicker,
         showEndDatePicker,
         setShowEndDatePicker,
-        formatDate, 
-        onStartDateChange, 
-        onEndDateChange,  
+        formatDate,
+        onStartDateChange,
+        onEndDateChange,
     };
 
     return (

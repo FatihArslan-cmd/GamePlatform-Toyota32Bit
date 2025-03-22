@@ -11,8 +11,9 @@ import InviteModal from './components/FriendModals/InviteModal';
 import FriendDetailsModal from './components/FriendModals/FriendDetailsModal';
 import EmptyState from '../../../../components/EmptyState';
 import { ToastService } from '../../../../context/ToastService';
-import { useButtons } from '../context/ButtonsContext'; 
+import { useButtons } from '../context/ButtonsContext';
 import {useTheme} from '../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const FriendsPage = () => {
     const {
@@ -33,14 +34,15 @@ const FriendsPage = () => {
         handleAddFriend,
         handleSearchChange
     } = useFriendsPage();
-    const { handleFriendCountChange } = useButtons(); 
+    const { handleFriendCountChange } = useButtons();
     const { colors } = useTheme();
+    const { t } = useTranslation();
 
     const [addModalVisible, setAddModalVisible] = useState(false);
 
     useEffect(() => {
         handleFriendCountChange(friends.length);
-    }, [friends, handleFriendCountChange]); 
+    }, [friends, handleFriendCountChange]);
 
     const handleOpenAddModal = () => {
         setAddModalVisible(true);
@@ -75,12 +77,12 @@ const FriendsPage = () => {
             />
             <View style={styles.searchContainer}>
                 <InputField
-                    label="Search friends"
+                    label={t('profileScreen.searchFriends')} // Translated "Arkadaş Ara"
                     leftIcon="magnify"
                     style={styles.input}
                     onChangeText={handleSearchChange}
                     rightIcon={() => (
-                        <Tooltip title='Add friends' >
+                        <Tooltip title='Add friends' > 
                         <TouchableRipple onPress={handleOpenAddModal}>
                             <Icon name="plus" size={28} color={colors.primary} />
                         </TouchableRipple>
@@ -106,7 +108,7 @@ const FriendsPage = () => {
                 loading={loading}
                 disabled={loading}
             >
-                Get a link to invite users
+                {t('profileScreen.getalinktoinviteusers')} 
             </Button>
             <FlatList
                 data={friends}
@@ -119,7 +121,7 @@ const FriendsPage = () => {
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 style={styles.friendsList}
-                ListEmptyComponent={() => <EmptyState textColor={colors.text} message={"No friends Yet!"}/>}
+                ListEmptyComponent={() => <EmptyState textColor={colors.text} message={t('profileScreen.noFriendsYet')}/>} // Translated "Henüz arkadaşın yok!"
             />
         </View>
     );

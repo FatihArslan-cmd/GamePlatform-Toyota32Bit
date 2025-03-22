@@ -1,4 +1,5 @@
 import React, { createContext, useState, useRef, useContext, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'; 
 
 const ButtonsContext = createContext();
 
@@ -7,10 +8,10 @@ export const ButtonsContextProvider = ({ children }) => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const [friendCount, setFriendCount] = useState(0);
     const [achievementCount, setAchievementCount] = useState(0);
-
+    const { t } = useTranslation();
     const [tabs, setTabs] = useState([
-        { id: 0, title: '0', subtitle: 'Achievements' },
-        { id: 1, title: friendCount.toString(), subtitle: 'Friends' }
+        { id: 0, title: '0', subtitle: t('profileScreen.achievements') },
+        { id: 1, title: friendCount.toString(), subtitle: t('profileScreen.friends') },
     ]);
 
 

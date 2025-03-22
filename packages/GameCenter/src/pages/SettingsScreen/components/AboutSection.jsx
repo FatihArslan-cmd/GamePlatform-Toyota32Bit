@@ -1,13 +1,15 @@
 import React from 'react';
 import { Linking,StyleSheet } from 'react-native';
-import { Card, List,Snackbar} from 'react-native-paper';
+import { Card, List,Snackbar,Text} from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import LogoutButton from './LogOutButton';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const AboutSection = () => {
     const [visible, setVisible] = React.useState(false);
     const { colors } = useTheme();
+    const { t } = useTranslation(); 
 
     const onToggleSnackBar = () => setVisible(!visible);
     const onDismissSnackBar = () => setVisible(false);
@@ -16,7 +18,7 @@ const AboutSection = () => {
     <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
      <GrandientText
-            text="About"
+            text={t('settingsScreen.aboutSection.title')}
             colors={colors.languageTextGradient}
             textStyle={{ fontSize: 22, color: colors.text }}
             gradientDirection="horizontal"
@@ -24,7 +26,7 @@ const AboutSection = () => {
 
         <List.Item
         titleStyle={[styles.titleStyle, { color: colors.text }]}
-          title="App Version"
+          title={t('settingsScreen.aboutSection.appVersion')} 
           onPress={onToggleSnackBar}
           descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
           description="1.0.0"
@@ -32,7 +34,7 @@ const AboutSection = () => {
         />
 
         <List.Item
-          title="Terms of Service"
+          title={t('settingsScreen.aboutSection.termsOfService')} 
           titleStyle={[styles.titleStyle, { color: colors.text }]}
           left={props => <List.Icon {...props}  color={colors.primary} icon="file-document" />}
           right={props => <List.Icon {...props}  color={colors.primary} icon="chevron-right" />}
@@ -40,7 +42,7 @@ const AboutSection = () => {
         />
 
         <List.Item
-          title="Privacy Policy"
+          title={t('settingsScreen.aboutSection.privacyPolicy')} 
           titleStyle={[styles.titleStyle, { color: colors.text }]}
           left={props => <List.Icon {...props}  color={colors.primary} icon="shield" />}
           right={props => <List.Icon {...props}  color={colors.primary} icon="chevron-right" />}
@@ -50,9 +52,13 @@ const AboutSection = () => {
         <LogoutButton />
         <Snackbar
         visible={visible}
-        onDismiss={onDismissSnackBar} >
+        onDismiss={onDismissSnackBar} 
 
-    App Version 1.0.0
+>
+
+<Text style={{ color: 'white', fontFamily: 'Orbitron-ExtraBold' }}>
+    {t('settingsScreen.aboutSection.appVersionSnackbar')}
+  </Text>
  </Snackbar>
       </Card.Content>
     </Card>

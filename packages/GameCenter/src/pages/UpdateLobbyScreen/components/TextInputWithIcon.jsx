@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../../../context/ThemeContext'; 
 
 const TextInputWithIcon = ({ label, value, onChangeText, placeholder, iconName, keyboardType }) => {
   const { colors } = useTheme(); 

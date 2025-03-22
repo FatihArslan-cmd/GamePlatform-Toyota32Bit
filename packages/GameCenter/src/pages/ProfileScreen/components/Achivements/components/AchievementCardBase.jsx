@@ -13,10 +13,6 @@ const AchievementCardBase = ({ item: propItem, isOwned }) => {
 
     const item = allAchievements.find(achievement => achievement.id === propItem.id);
 
-    if (!item) {
-        return <Text style={{color: colors.text}}>Achievement not found</Text>;
-    }
-
     const getRarityStyle = () => {
         switch (item.rarity) {
             case 'Rare':

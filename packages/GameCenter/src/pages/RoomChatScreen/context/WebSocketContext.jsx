@@ -38,7 +38,6 @@ const WebSocketProvider = ({ children, roomId }) => {
         ws.current.onmessage = (event) => {
             try {
                 const message = JSON.parse(event.data);
-                console.log('WebSocketContext: Mesaj alındı', message);
 
                 if (message.type === 'auth-success') {
                     userId.current = message.userId;
@@ -49,7 +48,7 @@ const WebSocketProvider = ({ children, roomId }) => {
                         content: message.text,
                         timestamp: message.timestamp,
                         senderUsername: message.senderUsername,
-                        senderProfilePhoto: message.senderProfilePhoto, // Profil fotoğrafını al
+                        senderProfilePhoto: message.senderProfilePhoto, 
                     };
                     setMessages(prevMessages => [...prevMessages, newMessage]);
                 } else if (message.type === 'error') {

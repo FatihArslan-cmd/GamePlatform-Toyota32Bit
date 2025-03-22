@@ -4,12 +4,15 @@ import CustomModal from '../../../components/CustomModal';
 import { UserContext } from '../../../context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const LogoutButton = ({ showText = true, showChevron = true }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const { logoutUser } = useContext(UserContext);
   const navigation = useNavigation();
   const { colors } = useTheme();
+  const { t } = useTranslation(); 
+
 
   const handleLogout = () => {
     logoutUser();
@@ -22,7 +25,7 @@ const LogoutButton = ({ showText = true, showChevron = true }) => {
   return (
     <>
       <List.Item
-        title={showText ? "Logout" : null}
+        title={showText ? t('settingsScreen.logoutButton.logout') : null} 
         titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
         left={props => <List.Icon {...props} color={colors.error} icon="logout" />}
         right={props => showChevron ? <List.Icon {...props} color={colors.error} icon="chevron-right" /> : null}
@@ -32,8 +35,8 @@ const LogoutButton = ({ showText = true, showChevron = true }) => {
       <CustomModal
         visible={isModalVisible}
         onDismiss={() => setModalVisible(false)}
-        title="Logout"
-        text="Are you sure you want to log out?"
+        title={t('settingsScreen.logoutButton.logoutModalTitle')} 
+        text={t('settingsScreen.logoutButton.logoutConfirmation')} 
         showConfirmButton="true"
         onConfirm={handleLogout}
         onCancel={() => setModalVisible(false)}

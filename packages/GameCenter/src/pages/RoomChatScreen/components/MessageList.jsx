@@ -24,7 +24,7 @@ const MessageList = ({ messages, userId, messageListRef }) => {
                         style={styles.profilePhoto}
                     />
                 )}
-                <View style={[messageBoxStyle, { backgroundColor: isCurrentUserMessage ? colors.card : colors.background }]}>
+                <View style={[messageBoxStyle, { backgroundColor: isCurrentUserMessage ? colors.messageBoxLight : colors.background }]}>
                     <Text style={[styles.senderText, { color: colors.subText }]}>{senderDisplayName}</Text>
                     <Text style={[styles.messageText, messageStyle, { color: colors.text }]}>{item.content}</Text>
                     <Text style={[styles.timestampText, { color: colors.subText }]}>{formattedTime}</Text>

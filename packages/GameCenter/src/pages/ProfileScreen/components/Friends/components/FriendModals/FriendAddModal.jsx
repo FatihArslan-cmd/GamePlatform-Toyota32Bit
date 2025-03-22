@@ -3,10 +3,12 @@ import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import CustomModal from '../../../../../../components/CustomModal';
 import { useTheme } from '../../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible }) => {
     const [friendCode, setFriendCode] = useState('');
     const { colors } = useTheme();
+    const { t } = useTranslation(); 
 
     const handleAdd = () => {
         onAddFriend(friendCode);
@@ -18,14 +20,14 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible })
         <CustomModal
             visible={visible}
             onDismiss={onDismiss}
-            title="Add Friend"
+            title={t('friendAddModal.title')}
             showConfirmButton={true}
-            confirmText="Add"
+            confirmText={t('friendAddModal.confirmButton')} 
             onConfirm={handleAdd}
         >
             <View style={{ paddingVertical: 35 }}>
                 <TextInput
-                    label="Enter friend code"
+                    label={t('friendAddModal.friendCodeLabel')} 
                     value={friendCode}
                     onChangeText={setFriendCode}
                     mode="flat"
@@ -34,13 +36,13 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible })
                         marginHorizontal: 10,
                         color: colors.text,
                     }}
-                    placeholder="Friend code"
+                    placeholder={t('friendAddModal.friendCodePlaceholder')} 
                     placeholderTextColor={colors.text}
                     theme={{
                         colors: {
                             primary: colors.primary,
-                            placeholder: colors.primary, //  Label color when unfocused
-                            text: colors.text,         // Input text color
+                            placeholder: colors.primary, 
+                            text: colors.text,         
                         },
                     }}
                     autoCapitalize="none"

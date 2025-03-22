@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, useColorScheme, StatusBar } from 'react-native';
+import React, {  useEffect } from 'react';
+import { View, StyleSheet, ScrollView,  StatusBar } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -14,11 +14,9 @@ import { useTheme } from '../../context/ThemeContext';
 
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
-  const colorScheme = useColorScheme();
   const { theme, colors } = useTheme();
 
   useEffect(() => {
-    StatusBar.setBackgroundColor(colors.card);
     StatusBar.setBarStyle(theme === 'dark' ? 'light-content' : 'dark-content');
   }, [colors.card, theme]);
 

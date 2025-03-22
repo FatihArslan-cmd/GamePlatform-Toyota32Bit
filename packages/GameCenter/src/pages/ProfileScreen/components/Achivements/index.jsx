@@ -9,10 +9,12 @@ import EmptyState from '../../../../components/EmptyState';
 import LevelProgressBar from './components/LevelProgressBar';
 import { useAchievements } from './context/AchievementsContext';
 import { useTheme } from '../../../../context/ThemeContext'; 
+import { useTranslation } from 'react-i18next'; 
 
 const AchievementsPage = () => {
     const { activeTab, setActiveTab, allAchievements, ownedAchievements, loading, error } = useAchievements();
     const { colors } = useTheme(); 
+    const { t } = useTranslation();
 
     const renderItem = useCallback(({ item }) => {
         if (activeTab === 'all') {
@@ -38,13 +40,13 @@ const AchievementsPage = () => {
                 buttons={[
                     {
                         value: 'all',
-                        label: 'All Achievements',
+                        label:  t('profileScreen.allAchievements'),
                         labelStyle: [styles.buttonLabel, { color: colors.text }], 
                         style: { backgroundColor: colors.card } 
                     },
                     {
                         value: 'owned',
-                        label: 'Your Achievements',
+                        label: t('profileScreen.yourAchievements'),
                         labelStyle: [styles.buttonLabel, { color: colors.text }], 
                         style: { backgroundColor: colors.card } 
                     },

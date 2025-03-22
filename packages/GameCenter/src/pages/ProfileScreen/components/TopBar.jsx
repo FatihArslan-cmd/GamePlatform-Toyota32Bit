@@ -9,12 +9,15 @@ import useFriendsPage from './Friends/hooks/useFriendsPage';
 import { useProfile } from '../context/ProfileContext';
 import {useTheme} from '../../../context/ThemeContext';
 import GrandientText from '../../../components/GrandientText';
+import { useTranslation } from 'react-i18next'; 
+
 const TopBar = () => {
     const navigation = useNavigation();
     const { modalVisible, modalMessage, modalTitle, showModal, closeModal } = useModal();
     const { handleAddFriend, error, snackbarVisible, setSnackbarVisible, snackbarMessage } = useFriendsPage();
     const { isEditMode, toggleEditMode } = useProfile();
     const { colors } = useTheme();
+    const { t } = useTranslation();
 
     const navigateToCamera = () => {
         navigation.navigate('BarcodeScan', {
@@ -66,7 +69,7 @@ const TopBar = () => {
             />
             </Tooltip>
               <GrandientText
-                        text="Profile"
+                        text={t('profileScreen.profile')}
                         colors={colors.gameCenterText}
                         textStyle={{ fontSize: 28 }}
                         gradientDirection="horizontal"
