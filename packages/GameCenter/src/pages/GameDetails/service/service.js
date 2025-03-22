@@ -11,7 +11,7 @@ const lobbyService = {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.lobbies; // Return the lobbies array
+      return response.data.lobbies; 
     } catch (error) {
       console.error('Error fetching lobbies:', error);
       throw error;
@@ -20,13 +20,13 @@ const lobbyService = {
   getUserLobby: async () => {
     try {
         const token = await getToken();
-        const response = await api.get(`/lobby/listUserLobby`, { // Call the new endpoint
+        const response = await api.get(`/lobby/listUserLobby`, { 
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
-        return response.data.lobby; // Return the lobby data from the response
+        return response.data.lobby; 
       } catch (error) {
         console.error('Error fetching user lobby:', error);
         throw error;
@@ -35,9 +35,9 @@ const lobbyService = {
   leaveLobby: async (lobbyId) => {
     try {
       const token = await getToken();
-      const response = await api.post( // Assuming a POST request for leaving lobby
-        `/lobby/leave`, // Endpoint for leaving lobby
-        { lobbyId }, // Sending lobbyId in the request body
+      const response = await api.post( 
+        `/lobby/leave`, 
+        { lobbyId }, 
         {
           headers: {
             'Content-Type': 'application/json',
@@ -51,44 +51,39 @@ const lobbyService = {
       throw error;
     }
   },
-  startGame: async () => { // Add startGame function
+  startGame: async () => {
     try {
       const token = await getToken();
-      const response = await api.post(`/lobby/start-game`, {}, { // POST request to start game
+      const response = await api.post(`/lobby/start-game`, {}, { 
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; // Return the response data (optional, can be adjusted based on backend response)
+      return response.data; 
     } catch (error) {
-      console.error('Error starting game:', error);
       if (error.response && error.response.data && error.response.data.message) {
-        // Re-throw with the backend error message
         throw new Error(error.response.data.message);
       } else {
-        // Re-throw with a generic message if backend message is not available
         throw new Error("Failed to start the game. Please try again.");
       }
     }
   },
-  getGameHistory: async () => { // Add getGameHistory function
+  getGameHistory: async () => { 
     try {
       const token = await getToken();
-      const response = await api.get(`/lobby/game/history`, { // GET request to get game history
+      const response = await api.get(`/lobby/game/history`, { 
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; // Return the game history data from the response
+      return response.data; 
     } catch (error) {
       console.error('Error fetching game history:', error);
       if (error.response && error.response.data && error.response.data.message) {
-        // Re-throw with the backend error message
         throw new Error(error.response.data.message);
       } else {
-        // Re-throw with a generic message if backend message is not available
         throw new Error("Failed to fetch game history. Please try again.");
       }
     }

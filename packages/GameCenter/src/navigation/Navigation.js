@@ -10,7 +10,7 @@ import SettingScreen from '../pages/SettingsScreen/index.jsx';
 import BootSplash from 'react-native-bootsplash';
 import { Animated } from 'react-native';
 import GameScreen from '../pages/GameScreen/index.jsx';
-import BarcodeScan from '../components/BarcodeScanScreen/BarcodeScan.jsx';
+import BarcodeScan from '../pages/BarcodeScanScreen/BarcodeScan.jsx';
 import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.jsx';
 import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js';
 import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/index.jsx';
@@ -44,12 +44,12 @@ export default function Navigation() {
           }).start();
         });
       }, 175);
-
-      await delay(1500);
       
       const hasSeenIntro = storage.getBoolean('hasSeenIntro');
       const token = storage.getString('token');
-      
+
+      await delay(2000);
+
       setIsIntroSeen(hasSeenIntro ?? false);
       setIsLoggedIn(!!token);
     }
@@ -60,6 +60,7 @@ export default function Navigation() {
   if (isIntroSeen === null) {
     return <LoadingFullScreen />;
   }
+  
   return (
     <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
       <NavigationContainer  ref={navigationService.navigationRef}>
