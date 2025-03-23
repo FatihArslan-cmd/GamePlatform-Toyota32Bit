@@ -45,17 +45,13 @@ const FromTheCreator = () => {
       <GradientDivider />
 
       <View style={themedStyles.pagerContainer}>
-        <PagerView
-          style={themedStyles.pagerView}
-          initialPage={0}
-          orientation="horizontal"
-          onPageSelected={handlePageScroll}
-        >
+        <PagerView style={themedStyles.pagerView} initialPage={0} orientation="horizontal" onPageSelected={handlePageScroll}>
           {gameData.map((game, index) => (
             <View key={index} style={themedStyles.page}>
               <GameCard
-                gameName={game.gameName[currentLanguage] || game.gameName.en}
-                instructions={game.instructions[currentLanguage] || game.instructions.en}
+                gameName={game.gameName?.[currentLanguage] || game.gameName?.en }
+                instructions={game.instructions?.[currentLanguage] || game.instructions?.en }
+                explanation={game.explanation?.[currentLanguage] || game.explanation?.en }
                 imageSource={getImageSource(game.imageSource)}
                 buttonText={t('homeScreen.exploreNow')}
                 buttonColors={buttonColorSets[index % buttonColorSets.length]}
@@ -65,10 +61,7 @@ const FromTheCreator = () => {
           ))}
         </PagerView>
 
-        <PaginationDots
-          activeIndex={activeIndex}
-          count={gameData.length}
-        />
+        <PaginationDots activeIndex={activeIndex} count={gameData.length} />
       </View>
     </View>
   );

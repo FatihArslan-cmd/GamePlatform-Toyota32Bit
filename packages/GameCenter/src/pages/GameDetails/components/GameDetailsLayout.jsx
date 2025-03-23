@@ -13,7 +13,7 @@ import { useGameDetails } from '../context/GameDetailsContext';
 import { GameDetailsImageEnterAnimation } from './Animation/GameDetailsImageEnterAnimation';
 import { useTheme } from '../../../context/ThemeContext';
 
-export default function GameDetailsLayout({ gameName, about, imageSource, backgroundColors }) {
+export default function GameDetailsLayout({ gameName, explanation, imageSource, backgroundColors }) {
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();
   const { animatedImageStyle, animatedContentStyle } = GameDetailsImageEnterAnimation(); 
   const { colors } = useTheme(); 
@@ -38,8 +38,8 @@ export default function GameDetailsLayout({ gameName, about, imageSource, backgr
           <Surface style={[styles.infoContainer,{ backgroundColor: colors.background }]}>
             <Title style={[styles.title,{color:colors.bingoText}]}>{gameName}</Title>
             <GradientDivider colorProps={['#4A00E0', '#4A00E0']} />
-            <TabNavigation />
-            <TabContent about={about} />
+            <TabNavigation explanation={explanation} />
+            <TabContent explanation={explanation} />
           </Surface>
         </Animated.View>
       </LinearGradient>

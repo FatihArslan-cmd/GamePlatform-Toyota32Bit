@@ -8,20 +8,22 @@ import SettingsTab from './tabs/SettingsTab/SettingsTab';
 import { styles } from '../styles';
 import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
 
-export default function TabContent({ about }) {
+export default function TabContent({ explanation }) {
   const { activeTab } = useGameDetails();
   const { colors } = useTheme();
 
   const renderContent = () => {
+    const shouldRenderTabs = !!explanation; 
+
     switch (activeTab) {
       case 'about':
-        return <AboutTab about={about} />;
+        return <AboutTab explanation={explanation} />;
       case 'lobbies':
-        return <LobbiesTab />;
+        return shouldRenderTabs ? <LobbiesTab /> : null;
       case 'history':
-        return <HistoryTab />;
+        return shouldRenderTabs ? <HistoryTab /> : null;
       case 'settings':
-        return <SettingsTab />;
+        return shouldRenderTabs ? <SettingsTab /> : null;
       default:
         return null;
     }

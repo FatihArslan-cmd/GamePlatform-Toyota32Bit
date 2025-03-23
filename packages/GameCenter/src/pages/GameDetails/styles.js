@@ -37,8 +37,7 @@ export const styles = StyleSheet.create({
         borderTopRightRadius: 50,
         elevation: 15,
       },
-      title: {
-        fontSize: 28,
+      title: { fontSize: 28,
         marginBottom: 24,
         textAlign: 'center',
         letterSpacing: 0.5,

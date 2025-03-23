@@ -1,21 +1,28 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react'; 
 import { View, Text } from 'react-native';
-import { Button, Surface } from 'react-native-paper'; // Import ActivityIndicator if you want a loading indicator
+import { Button, Surface } from 'react-native-paper'; 
 import { styles } from '../../styles';
 import ActiveLobbiesContent from '../../../HomeScreen/components/Header/components/ActiveLobbiesContent';
 import lobbyService from '../../service/service';
 import { ToastService } from '../../../../context/ToastService';
 import { useTheme } from '../../../../context/ThemeContext';
 import {useTranslation} from 'react-i18next';
+import { useNavigation } from '@react-navigation/native'; 
 
-export default function AboutTab({ about }) {
-  const formattedAbout = Array.isArray(about) ? about : [about];
+export default function AboutTab({ explanation }) {
+  const formattedAbout = Array.isArray(explanation) ? explanation : [explanation];
   const { colors } = useTheme();
-  const [isStartingGame, setIsStartingGame] = useState(false); 
+  const [isStartingGame, setIsStartingGame] = useState(false);
   const { t } = useTranslation();
+  const navigation = useNavigation(); 
 
   const handleStartGame = async () => {
-    if (isStartingGame) { 
+    if (!explanation) {
+      navigation.navigate('Settings');
+      return;
+    }
+
+    if (isStartingGame) {
       return;
     }
     setIsStartingGame(true);
@@ -28,20 +35,26 @@ export default function AboutTab({ about }) {
       }
       ToastService.show("error", errorMessage);
     } finally {
-      setIsStartingGame(false); 
+      setIsStartingGame(false);
     }
   };
 
   return (
     <View style={[styles.aboutContainer, { paddingBottom: 80 }]}>
-      <View style={styles.instructionWrapper}>
-        {formattedAbout.map((item, index) => (
-          <Surface key={index} style={[styles.modernInstructionItem,{backgroundColor:colors.card}]} elevation={2}>
-            <Text style={[styles.modernInstructionText,{color:colors.text}]}>{item}</Text>
-          </Surface>
-        ))}
-      </View>
-     <ActiveLobbiesContent showNoLobby = {false}  />
+      {explanation ? ( 
+        <View style={styles.instructionWrapper}>
+          {formattedAbout.map((item, index) => (
+            <Surface key={index} style={[styles.modernInstructionItem,{backgroundColor:colors.card}]} elevation={2}>
+              <Text style={[styles.modernInstructionText,{color:colors.text}]}>{item}</Text>
+            </Surface>
+          ))}
+        </View>
+      ) : null}
+
+      {explanation ? (
+         <ActiveLobbiesContent showNoLobby = {false}  />
+      ) : null }
+
        <Button
         mode="contained"
         onPress={handleStartGame}
@@ -49,10 +62,10 @@ export default function AboutTab({ about }) {
         contentStyle={styles.buttonContent}
         labelStyle={styles.buttonLabel}
         icon="gamepad-variant"
-        loading={isStartingGame} 
-        disabled={isStartingGame} 
+        loading={isStartingGame}
+        disabled={isStartingGame}
       >
-        {t('gameDetailsScreen.startGame')}
+       {t('gameDetailsScreen.startGame')}
       </Button>
     </View>
   );
