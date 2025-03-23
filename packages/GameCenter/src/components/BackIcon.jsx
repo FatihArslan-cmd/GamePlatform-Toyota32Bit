@@ -9,7 +9,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { isTablet } from './isTablet';
+import { isTablet } from '../utils/isTablet.js';
 import { useTheme } from '../context/ThemeContext'; 
 
 const BackButton = ({ size, top = 24, left = 16, padding = 8 }) => {

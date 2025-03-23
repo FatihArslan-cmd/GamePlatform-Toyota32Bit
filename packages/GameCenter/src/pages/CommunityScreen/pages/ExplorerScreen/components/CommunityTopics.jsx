@@ -4,12 +4,13 @@ import { Chip } from 'react-native-paper';
 import { topics } from './topics';
 import { useExplorer } from '../context/ExplorerContext';
 import { useTheme } from '../../../../../context/ThemeContext';
-
+import {useTranslation} from 'react-i18next';
 const CommunityTopics = ({ showAllButton }) => {
   const { selectedTopic, handleTopicSelect } = useExplorer();
-  const allButtonTitle = "All";
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
+  const allButtonTitle = t('communityScreen.all');
 
   const handleTopicPress = (topic) => {
     handleTopicSelect(topic);

@@ -9,6 +9,7 @@ import ErrorComponents from '../../../../components/ErrorComponents';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 const RoomsScreen = () => {
   const [rooms, setRooms] = useState([]);
@@ -17,6 +18,7 @@ const RoomsScreen = () => {
   const navigation = useNavigation();
   const { colors } = useTheme(); 
   const styles = createStyles(colors);
+  const { t } = useTranslation();
 
   const fetchRooms = useCallback(async () => {
     setLoading(true);
@@ -60,7 +62,7 @@ const RoomsScreen = () => {
       <>
       <View style={[styles.emptyRoomsContainer, {paddingTop: 80,paddingLeft:45}]}>
         <VideoPlayItems
-              title="Join a room to start chatting"
+              title={t('communityScreen.Join a room to start chatting')}
               imageUri="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKni1sjgvtL6sHuH9nyUJhk7Y_Przzh1-iRQ&s"
               resizeMode="contain"
             />

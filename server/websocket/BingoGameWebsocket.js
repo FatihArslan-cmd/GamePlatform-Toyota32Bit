@@ -92,7 +92,7 @@ function BingoGameWebsocket(ws, request) {
                                 return;
                             }
 
-                            const markingUserDetails = getUserDetails(userId); // Kullanıcı detaylarını al
+                            const markingUserDetails = getUserDetails(userId); 
 
                             BingoGameWebsocket.broadcast(lobbyCode, {
                                 type: 'number-marked',

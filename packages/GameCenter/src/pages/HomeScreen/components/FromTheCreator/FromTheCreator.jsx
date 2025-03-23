@@ -14,7 +14,8 @@ const FromTheCreator = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { colors } = useTheme();
   const themedStyles = useStyles(colors);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   const getImageSource = (imageName) => {
     return imageAssets[imageName] || null;
@@ -36,7 +37,7 @@ const FromTheCreator = () => {
     <View style={themedStyles.container}>
       <GrandientText
         text={t('homeScreen.fromTheCreator')}
-        colors={colors.themeTextGradient} 
+        colors={colors.themeTextGradient}
         textStyle={{ fontSize: 32 }}
         gradientDirection="horizontal"
         width={400}
@@ -53,8 +54,8 @@ const FromTheCreator = () => {
           {gameData.map((game, index) => (
             <View key={index} style={themedStyles.page}>
               <GameCard
-                gameName={game.gameName}
-                instructions={game.instructions}
+                gameName={game.gameName[currentLanguage] || game.gameName.en}
+                instructions={game.instructions[currentLanguage] || game.instructions.en}
                 imageSource={getImageSource(game.imageSource)}
                 buttonText={t('homeScreen.exploreNow')}
                 buttonColors={buttonColorSets[index % buttonColorSets.length]}
@@ -77,14 +78,7 @@ const useStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: colors.background, 
-  },
-  title: {
-    fontSize: 28,
-    fontFamily: 'Orbitron-VariableFont_wght',
-    textAlign: 'center',
-    marginBottom: 16,
-    color: colors.text, 
+    backgroundColor: colors.background,
   },
   pagerContainer: {
     flex: 1,

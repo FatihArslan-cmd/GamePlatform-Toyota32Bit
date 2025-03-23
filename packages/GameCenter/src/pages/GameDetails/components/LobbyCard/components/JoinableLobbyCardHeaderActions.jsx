@@ -3,9 +3,11 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../../../../../context/ThemeContext';
+import {useTranslation} from 'react-i18next';
 
 const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, lobby }) => {
   const { colors } = useTheme(); 
+  const { t } = useTranslation();
 
   return (
     <View style={styles.cardHeaderActions}>
@@ -23,7 +25,9 @@ const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, l
         {lobby.gameStarted && (
           <View style={styles.gameStartedContainer}>
             <Icon name="run-fast" size={24} color="#FF6F61" style={styles.headerIcon} />
-            <Text style={[styles.gameStartedText, { color: colors.error }]}>Started</Text> 
+            <Text style={[styles.gameStartedText, { color: colors.error }]}>
+              {t('gameDetailsScreen.started')}
+              </Text> 
           </View>
         )}
       </View>

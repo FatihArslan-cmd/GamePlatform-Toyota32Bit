@@ -1,13 +1,11 @@
-// contexts/CreateRoomContext.js
 import React, { createContext, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { createRoom } from '../../../services/roomApi';
 import { ToastService } from '../../../../../context/ToastService';
+import {useTranslation} from 'react-i18next';
 
-// Context oluştur
 const CreateRoomContext = createContext();
 
-// Provider bileşeni
 export const CreateRoomProvider = ({ children }) => {
   const navigation = useNavigation();
   const [roomName, setRoomName] = useState('');
@@ -15,15 +13,15 @@ export const CreateRoomProvider = ({ children }) => {
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isCreateSuccess, setIsCreateSuccess] = useState(false);
+  const { t } = useTranslation();
 
-  // Oda oluşturma fonksiyonu
   const handleCreateRoom = async () => {
     if (!roomName.trim()) {
-      ToastService.show('error', 'Room name cannot be empty');
+      ToastService.show('error', t('communityScreen.roomNameEmptyError')); 
       return;
     }
     if (!topic) {
-      ToastService.show('error', 'Please select a topic');
+      ToastService.show('error', t('communityScreen.topicSelectionError')); 
       return;
     }
 
@@ -31,24 +29,22 @@ export const CreateRoomProvider = ({ children }) => {
 
     try {
       await createRoom(roomName, topic, imageUri);
-      ToastService.show('success', 'Room created successfully!');
+      ToastService.show('success', t('communityScreen.roomCreationSuccess')); 
       setIsCreateSuccess(true);
       setTimeout(() => {
         navigation.goBack();
       }, 500);
     } catch (err) {
-      ToastService.show('error', err.message || 'Failed to create room');
+      ToastService.show('error', err.message || t('communityScreen.roomCreationFailed'));
     } finally {
       setLoading(false);
     }
   };
 
-  // Konu seçme fonksiyonu
   const handleTopicSelectAndCreate = (selectedTopic) => {
     setTopic(selectedTopic);
   };
 
-  // Context value'su
   const value = {
     roomName,
     setRoomName,
@@ -71,7 +67,6 @@ export const CreateRoomProvider = ({ children }) => {
   );
 };
 
-// Context'i kullanmak için özel hook
 export const useCreateRoom = () => {
   const context = useContext(CreateRoomContext);
   if (!context) {

@@ -1,7 +1,6 @@
 const { achievementsData } = require('../utils/achievementsData');
 
 const getUserAchievements = (req, res) => {
-    // Tüm başarımları dön
     const allAchievements = achievementsData.map(achievement => {
         return {
             ...achievement,
@@ -14,7 +13,6 @@ const getUserAchievements = (req, res) => {
 const getUserOwnedAchievements = (req, res) => {
   const userId = req.user.id;
 
-  // Kullanıcının session'daki başarımlarını al
   const userAchievements = req.session.achievements && req.session.achievements[userId]
       ? req.session.achievements[userId]
       : [];

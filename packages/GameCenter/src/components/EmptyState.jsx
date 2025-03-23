@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const EmptyStateComponent = React.memo(({ message, textColor = 'black' }) => { // textColor prop'unu ekledik ve default değeri 'black' olarak ayarladık
+const EmptyStateComponent = React.memo(({ message, textColor = 'black' }) => { 
   const fadeAnim = useSharedValue(0);
 
   useEffect(() => {

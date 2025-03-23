@@ -11,6 +11,7 @@ import { useBingoWebSocket } from '../context/BingoGameWebsocket';
 import { useNavigation } from '@react-navigation/native';
 import { ToastService } from '../context/ToastService';
 import { useTheme } from '../context/ThemeContext';
+import {useTranslation} from 'react-i18next';
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const Tab = createMaterialTopTabNavigator();
@@ -29,12 +30,11 @@ const TabNavigator = () => {
   const { messages,clearMessages } = useBingoWebSocket();
   const navigation = useNavigation();
   const { colors, theme } = useTheme();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    console.log("TabNavigator Messages:", messages);
     const gameStartMessage = messages.find(msg => msg.type === 'game-started');
     if (gameStartMessage) {
-      console.log("Game started message detected in TabNavigator, navigating to GameScreen...");
       navigation.navigate('CountDownSplashScreen');
       clearMessages()
 
@@ -45,14 +45,14 @@ const TabNavigator = () => {
     if (gameEndMessage) {
       clearMessages();
       navigation.navigate('Tabs');
-      ToastService.show("info", "Game ended. You are now back to the main screen.");
+      ToastService.show("info", t('bingoGame.gameEnded'));
     }
   }, [messages, navigation]);
 
   const getLottieSource = (iconName) => {
     const themeSuffix = theme === 'dark' ? 'dark' : 'light';
     const sourceName = `${iconName}-${themeSuffix}`;
-    return lottieSources[sourceName] || lottieSources['homeIcon-light']; // Default to light home icon if not found
+    return lottieSources[sourceName] || lottieSources['homeIcon-light']; 
   };
 
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput, Text, Switch } from 'react-native-paper';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const PasswordInput = ({
   password,
@@ -9,32 +10,36 @@ const PasswordInput = ({
   onPasswordChange,
   onToggleVisibility,
   hasPassword,
-  onPasswordToggle
+  onPasswordToggle,
+  t // Receive t function as prop
 }) => {
-  const { colors } = useTheme(); 
+  const { colors } = useTheme();
+  // const { t } = useTranslation(); // No need to use hook here, it's passed as prop
 
   return (
     <View style={styles.container}>
       <View style={styles.passwordSwitchContainer}>
-        <Text variant="bodyMedium" style={[styles.passwordSwitchText, { color: colors.text }]}>Password Protected Lobby</Text> {/* Themed text color */}
+        <Text variant="bodyMedium" style={[styles.passwordSwitchText, { color: colors.text }]}>
+          {t('createLobbyModal.passwordInput.hasPassword')} {/* Translated text */}
+        </Text>
         <Switch
           value={hasPassword}
           onValueChange={onPasswordToggle}
-          thumbColor={hasPassword ? colors.primary : null} 
-          trackColor={{ true: colors.primary, false: null }} 
+          thumbColor={hasPassword ? colors.primary : null}
+          trackColor={{ true: colors.primary, false: null }}
         />
       </View>
 
       {hasPassword && (
         <TextInput
         label={
-          <Text style={{ color: colors.text }}>Lobby Password</Text>
+          <Text style={{ color: colors.text }}>{t('createLobbyModal.passwordInput.password')}</Text> 
         }
           mode="outlined"
           value={password}
           onChangeText={onPasswordChange}
           secureTextEntry={!isPasswordVisible}
-          left={<TextInput.Icon icon="lock" color={colors.primary} />} 
+          left={<TextInput.Icon icon="lock" color={colors.primary} />}
           right={
             <TextInput.Icon
               icon={isPasswordVisible ? "eye-off" : "eye"}
@@ -42,9 +47,9 @@ const PasswordInput = ({
               iconColor={colors.text}
             />
           }
-          style={[styles.input, { backgroundColor: colors.card }]} 
-          outlineStyle={{ borderColor: colors.border }} 
-          textColor={colors.text} 
+          style={[styles.input, { backgroundColor: colors.card }]}
+          outlineStyle={{ borderColor: colors.border }}
+          textColor={colors.text}
         />
       )}
     </View>

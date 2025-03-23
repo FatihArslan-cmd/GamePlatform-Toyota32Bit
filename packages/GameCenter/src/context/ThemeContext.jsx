@@ -14,7 +14,6 @@ export const ThemeProvider = ({ children }) => {
       const savedTheme = storage.getString('theme');
       if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
         setTheme(savedTheme);
-        console.log(`Theme loaded from storage: ${savedTheme}`);
       }
     };
     loadTheme();

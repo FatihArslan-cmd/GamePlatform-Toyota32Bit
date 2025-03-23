@@ -1,5 +1,357 @@
 {
+  "loginScreen": {
+    "title": "Maceraya Katıl",
+    "email": "E-posta",
+    "username": "Kullanıcı Adı",
+    "password": "Şifre",
+    "login": "Giriş Yap",
+    "loginSuccess": "Başarıyla giriş yapıldı",
+    "logoutSuccess": "Hesaptan çıkış yapıldı",
+    "register": "Kayıt Ol",
+    "forgotPassword": "Şifremi Unuttum",
     "turkish": "Türkçe",
     "english": "İngilizce",
-    "german": "Almanca"
-  }
+    "german": "Almanca",
+    "startGame": "Oyuna Başla",
+      "createNewAccount": "Yeni Hesap Oluştur",
+      "rememberMe": "Beni Hatırla",
+      "backToLogin": "Giriş Ekranına Dön",
+      "sendCode": "Kodu Gönder",
+      "retryIn": "saniye sonra tekrar dene"
+  },
+  "permissionsModal": {
+    "title": "İzinler",
+    "biometric": "Touch ID / Face ID kullanımına izin ver",
+    "nfc": "NFC kullanımına izin ver",
+    "barcode": "Barkod tarayıcı kullanımına izin ver"
+  },
+  "themeSwitcher": {
+      "themeSwitched": "Yeni Tema: ",
+      "light": "Açık",
+      "dark": "Karanlık"
+    },
+    "formContextMessages": {
+    "usernameEmpty": "Kullanıcı adı boş olamaz",
+    "codeSentSuccess": "Kod başarıyla gönderildi",
+    "userNotFound": "Kullanıcı bulunamadı",
+    "invalidUsernameEmail": "Geçersiz kullanıcı adı veya e-posta sorunu",
+    "rateLimitError": "saniye bekleyin",
+    "sendCodeFailed": "Şifre sıfırlama kodu gönderilemedi. Lütfen tekrar deneyin.",
+    "loginErrorTitle": "Giriş Hatası",
+    "loginErrorMessage": "Giriş sırasında bir hata oluştu",
+    "rememberMeTitle": "Beni Hatırla?",
+    "rememberMeMessage": "Beni Hatırla özelliğini etkinleştirmek istediğinizden emin misiniz?"
+  },
+  "loadingScreen": {
+    "title":"Sizi yönlendiriyoruz!",
+    "subtitle":"Macera için hazır olun"
+    },
+  "settingsScreen": {
+    "headerTitle":"Ayarlar",
+    "aboutSection": {
+      "title": "Hakkında",
+      "appVersion": "Uygulama Versiyonu",
+      "termsOfService": "Kullanım Şartları",
+      "privacyPolicy": "Gizlilik Politikası",
+      "appVersionSnackbar": "Uygulama Versiyonu 1.0.0"
+    },
+    "logoutButton": {
+      "logout": "Çıkış Yap",
+      "logoutConfirmation": "Çıkış yapmak istediğinizden emin misiniz?",
+      "logoutModalTitle": "Çıkış Yap"
+    },
+    "notificationSection": {
+      "title": "Bildirimler",
+      "pushNotifications": "Push Bildirimleri",
+      "pushNotificationsDescription": "Push bildirimleri al",
+      "emailNotifications": "E-posta Bildirimleri",
+      "emailNotificationsDescription": "E-posta güncellemeleri al",
+      "enabled": "Aktif",
+      "disabled": "Pasif"
+    },
+    "themeSection": {
+      "title": "Tema",
+      "chooseTheme": "Tema Seç",
+      "systemDefault": "Sistem Varsayılanı",
+      "lightMode": "Açık Mod",
+      "darkMode": "Koyu Mod",
+      "systemModeDescription": "Sistem Teması",
+      "lightModeDescription": "Açık Tema",
+      "darkModeDescription": "Koyu Tema",
+      "alreadySelected": "Bu tema zaten seçili",
+      "themeChanged": "Tema değiştirildi: "
+    },
+    "langSection": {
+     "chooseLang": "Dil Seç",
+     "language": "Dil"
+    }
+  },
+  "updateLobbyScreen": {
+    "headerTitle": "Lobi Güncelle",
+    "lobbyNameLabel": "Lobi Adı",
+    "lobbyNamePlaceholder": "Lobi adını girin",
+    "maxCapacityLabel": "Maksimum Kapasite",
+    "maxCapacityPlaceholder": "Maksimum kapasiteyi girin",
+    "startDateLabel": "Başlangıç Tarihi",
+    "endDateLabel": "Bitiş Tarihi",
+    "updateLobbyButton": "Lobiyi Güncelle",
+    "updatingButton": "Güncelleniyor...",
+    "lobbyTypeLabel": "Lobi Tipi",
+    "normalLobbyType": "Normal",
+    "eventLobbyType": "Etkinlik",
+    "lobbyUpdatedSuccessfully": "Lobi başarıyla güncellendi.",
+    "lobbyNameEmptyError": "Lobi adı boş olamaz.",
+    "maxCapacityEmptyError": "Maksimum kapasite boş olamaz."
+  },
+  "connectivityListener": {
+    "connectionLost": "İnternet bağlantısı kesildi!",
+    "connectionRestored": "İnternet bağlantısı geri geldi!"
+  },
+  "customModal": {
+    "cancel": "İptal",
+    "confirm": "Onayla"
+  },
+  "chatScreen": {
+    "typeMessagePlaceholder": "Bir mesaj yazın..."
+  },
+  "profileScreen": {
+    "profile": "Profil",
+    "achievements": "Başarımlar",
+    "friends": "Arkadaşlar",
+    "allAchievements": "Tüm Başarımlar",
+    "yourAchievements": "Başarımlarınız",
+    "getalinktoinviteusers": "Kullanıcıları davet etmek için bir kod alın",
+    "searchFriends": "Arkadaş ara",
+    "noFriendsYet": "Henüz arkadaşınız yok!"
+  },
+  "friendAddModal": {
+    "title": "Arkadaş Ekle",
+    "confirmButton": "Ekle",
+    "friendCodeLabel": "Arkadaş kodunu girin",
+    "friendCodePlaceholder": "Arkadaş kodu",
+    "removeFriend": "Arkadaşı Sil",
+    "inviteFriends": "Arkadaşları Davet Et",
+    "shareCode": "Kodu Paylaş",
+    "codecopiedtoclipboard": "Kod panoya kopyalandı",
+    "friendRemovedSuccessfully!": "Arkadaş başarıyla silindi!",
+    "friendAddedSuccessfully!": "Arkadaş başarıyla eklendi!"
+  },
+ "personalMessagePage": {
+    "noActiveInvites": "Şu anda aktif bir davetiniz bulunmuyor.",
+    "accept": "Kabul Et",
+    "decline": "Reddet",
+    "invitedyoutothe": "seni",
+    "lobby": "lobisine davet etti",
+    "fetchError": "Davetler alınırken bir hata oluştu.",
+    "inviteAccepted": "Davet kabul edildi!",
+    "acceptError": "Davet kabul edilirken bir hata oluştu.",
+    "inviteDeclined": "Davet reddedildi.",
+    "rejectError": "Davet reddedilirken bir hata oluştu."
+},
+
+"homeScreen": {
+  "Upcominggames": "Gelecek Oyunlar",
+  "released": "Yayınlandı",
+  "lastUpdated": "Son Güncelleme",
+  "topRatedGames": "En Çok Oylanan Oyunlar",
+  "miniGames": "Mini Oyunlar",
+  "searchPlaceholder": "Oyun Ara",
+  "settings": "Ayarlar",
+  "helpAndDisplay": "Yardım ve Görüntüleme",
+  "createLobby": "Lobi Oluştur",
+  "activeLobbies": "Aktif Lobiler",
+  "joinLobby": "Lobiye Katıl",
+  "options": "Seçenekler",
+  "emailError": "E-posta istemcisi açılamadı",
+  "fromTheCreator": "Özel Oyunlar",
+  "exploreNow": "Şimdi Keşfet",
+  "joinLobbyModalTitle": "Lobiye Katıl",
+  "joinLobbyModalDescription": "Lobi kodunu ve şifreyi (gerekirse) girin:",
+  "joinLobbyModalJoinButton": "Katıl",
+  "joinLobbyModalLobbyCodeLabel": "Lobi Kodu",
+  "joinLobbyModalLobbyPasswordLabel": "Lobi Şifresi (İsteğe Bağlı)",
+  "joinLobbySuccessToast": "Lobiye başarıyla katıldınız!",
+  "joinLobbyFailToast": "Lobiye katılamadı. Lütfen tekrar deneyin.",
+  "joinLobbyClipboardFailToast": "Panodan yapıştırma başarısız oldu.",
+  "noLobby": "Herhangi bir lobiye katılmadınız.",
+  "kick": "At",
+  "kickandblock": "At ve Engelle",
+  "event": "Etkinlik",
+  "normal": "Normal",
+  "owner": "Sahip",
+  "players": "Oyuncular",
+  "leave": "Ayrıl",
+  "lobbyCodeCopied": "Lobi kodu başarıyla kopyalandı!",
+  "lobbyCodeCopyFailed": "Lobi kodu kopyalanamadı.",
+  "onlyOwnerAction": "Sadece lobi sahibi oyuncu işlemleri yapabilir.",
+  "playerActionSuccess": "Oyuncu {{action}} başarıyla!",
+  "playerActionFailed": "Oyuncu {{action}} başarısız oldu.",
+  "deleteLobbyModalTitle": "Lobiyi Sil?",
+  "deleteLobbyModalDescription": "Bu lobiyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+  "deleteLobbyModalConfirmButton": "Lobiyi Sil",
+  "leaveLobbyModalTitle": "Lobiden Ayrıl?",
+  "leaveLobbyModalDescription": "Bu lobiden ayrılmak istediğinizden emin misiniz?",
+  "leaveLobbyModalConfirmButton": "Lobiden Ayrıl",
+  "playersInLobbyModalTitle": "Lobi Oyuncuları",
+  "lobbyDeletedSuccess": "Lobi başarıyla silindi!",
+  "lobbyDeletedFailed": "Lobi silinemedi.",
+  "lobbyLeaveFailed": "Lobiden ayrılamadı.",
+  "playerKickFailed": "Oyuncu atılamadı.",
+  "playerKickBlockFailed": "Oyuncu atılıp engellenemedi."
+},
+"countDownScreen" :{
+"getReady": "Hazır Ol!"
+},
+
+  "friendInvitePage":{
+    "emptyState1":"Arkadaşları davet etmeden önce bir lobiye katılın.",
+    "emptyState2":"Arkadaşları davet etmeden önce bir lobiye katılın.",
+    "invite":"Davet Et",
+    "lobbyInfoTitle": "Lobi Bilgisi",
+    "availableSpotsText": "kişilik boş yer var!",
+    "inviteSuccess": "Arkadaş davet isteği başarıyla gönderildi!",
+    "alreadyInLobby": "Bu arkadaşınız zaten lobide.",
+    "invitationAlreadySent": "Bu arkadaşınıza zaten bu lobi için davet gönderdiniz.",
+    "inviteError": "Arkadaş davet isteği gönderilirken bir hata oluştu.",
+    "inviteFriends": "Arkadaşları Davet Et"
+  },
+  "chatWithFriends":{
+    "emptyState": "Hiç arkadaşınız yok",
+    "title":"Arkadaşlarla Sohbet",
+    "online": "Çevrimiçi",
+    "offline": "Çevrimdışı"
+  },
+  "time":{
+    "years": "yıl önce",
+    "months": "ay önce",
+    "days": "gün önce",
+    "hours": "saat önce",
+    "minutes": "dakika önce",
+    "seconds": "saniye önce",
+    "justNow": "şimdi"
+  },
+  "communityScreen":{
+    "Join a room to start chatting": "Sohbete başlamak için bir odaya katılın",
+    "noCommunity": "Bir topluluk yok",
+    "becomeamember": "Üye ol",
+    "all": "Tümü",
+    "You have become a supporter of this room.": "Bu oda için bir destekçi oldunuz.",
+    "Failed to become a supporter of this room.": "Bu oda için destekçi olunamadı.",
+    "supporters": "Destekçiler",
+    "Create a Community": "Topluluk Oluştur",
+    "roomName": "Oda Adı",
+    "Select Image": "Resim Seç",
+    "Create Room": "Oda Oluştur",
+    "roomNameEmptyError": "Oda adı boş olamaz",
+    "topicSelectionError": "Lütfen bir konu seçin",
+    "roomCreationSuccess": "Oda başarıyla oluşturuldu!",
+    "roomCreationFailed": "Oda oluşturulamadı",
+    "emptyPostError": "Lütfen paylaşmak için bir şeyler yazın veya bir resim seçin.",
+    "postSuccess": "Gönderi başarıyla oluşturuldu.",
+    "postError": "Gönderi oluşturulurken bir hata oluştu.",
+    "shareYourThoughts": "Düşüncelerinizi paylaşın",
+    "postButton": "Gönder",
+    "whatsHappening": "Neler oluyor?",
+    "everyone":"Herkes",
+    "community": "Topluluk",
+    "home": "Anasayfa",
+    "explorer": "Keşfet"
+  },
+  
+    "gameDetailsScreen":{
+      "start": "Başla",
+      "lobbies": "Lobiler",
+      "history": "Geçmiş",
+      "settings": "Ayarlar",
+      "startGame": "Oyuna Başla",
+      "Failed to start the game. Please try again.": "Oyun başlatılamadı. Lütfen tekrar deneyin.",
+      "bingoWin": "Bingo kazandınız!",
+      "createLobby": "Lobi Oluştur",
+      "noLobbyToJoin": "Katılacak lobi yok",
+      "animated": "Animasyonlu",
+      "classic": "Klasik",
+      "sound": "Ses",
+      "gameSpeed": "Oyun Hızı",
+      "otomaticMarking": "Otomatik İşaretleme",
+      "theme": "Tema",
+      "classic": "Klasik",
+      "modern": "Modern",
+      "colorful": "Renkli",
+      "soundLevel": "Ses Seviyesi",
+      "musicLevel": "Müzik Seviyesi",
+      "numberreadSound": "Sayı Okuma Sesleri",
+      "joinLobbyModalTitle": "Lobiye Katıl?",
+      "joinLobbyModalPasswordProtectedText": "Bu lobi şifre korumalıdır. Lütfen katılmak için şifreyi girin.",
+      "joinLobbyModalConfirmationText": "Bu lobiye katılmak istediğinizden emin misiniz?",
+      "joinLobbyButton": "Lobiye Katıl",
+      "password": "Şifre",
+      "started":"Başladı",
+      "join":"Katıl"
+    },
+    
+    
+      "createLobbyModal": {
+        "title": "Oluştur Lobby",
+        "lobbyTypeSelector": {
+          "normal": "Normal",
+          "event": "Etkinlik",
+          "toggleLobbyType": "Lobi Tipini Değiştir",
+          "lobbyType": "Lobi Tipi",
+          "normal": "🎮 Normal",
+          "event": "🎉 Etkinlik"
+        },
+        "dateTimeSelector": {
+          "startDate": "Başlangıç Tarihi",
+          "endDate": "Bitiş Tarihi"
+        },
+        "gameSelector": {
+          "lobbyName": "Lobi Adı",
+          "gameName": "Oyun Adı",
+          "maxCapacity": "Maksimum Kapasite",
+          "lobbyNamePlaceholder": "Lobi Adı Girin",
+          "gameNamePlaceholder": "Oyun Adı Girin",
+          "maxCapacityPlaceholder": "Kapasite Girin (örn. 10)",
+          "gameSelection": "Oyun Seçimi"
+        },
+        "passwordInput": {
+          "password": "Lobi Şifresi",
+          "showPassword": "Şifreyi Göster",
+          "hidePassword": "Şifreyi Gizle",
+          "hasPassword": "Şifre Korumalı Lobi"
+        },
+        "invitationLink": {
+          "invitationCode": "Davet Kodunu Paylaş",
+          "copyCode": "Panoya Kopyalandı",
+          "shareLobbySubtitle": "Takım arkadaşlarınıza bu lobiye erişim izni verin ve gerçek zamanlı oynamaya başlayın"
+        },
+        "buttons": {
+          "createLobby": "Lobi Oluştur",
+          "createNewLobby": "Yeni Lobi Oluştur"
+        },
+        "toastMessages": {
+          "emptyLobbyName": "Lobi adı boş olamaz",
+          "emptyGameName": "Oyun adı boş olamaz",
+          "emptyMaxCapacity": "Maksimum kapasite boş olamaz",
+          "emptyPassword": "Şifre korumalı bir lobi için şifre boş olamaz.",
+          "requireStartEndDate": "Etkinlik lobileri başlangıç ve bitiş tarihi gerektirir.",
+          "failedToOpenLink": "Link açılırken hata oluştu"
+        }
+      },
+
+      "bingoGame":{
+        "joinedTheLobby": "lobiye katıldı",
+        "leftTheLobby": "lobiden ayrıldı",
+        "chinko":"satır çinkosunu yaptı",
+        "players":"Oyuncular",
+        "noMessages":"Henüz mesaj yok",
+        "logoutTitle":"Çıkış Yap",
+        "logoutDescription":"Çıkış yapmak istediğinizden emin misiniz?",
+        "logout":"Çıkış Yap",
+        "cancel":"İptal",
+        "resultScreenButton": "Yeni bir oyun başlat",
+        "scoreBoard": "Skor Tablosu",
+        "point": "Puan",
+        "winner": "Kazanan",
+        "gameEnded":"Oyun oda sahibi tarafından sonlanırıldı anasayfaya aktarıldınız."
+      }
+}

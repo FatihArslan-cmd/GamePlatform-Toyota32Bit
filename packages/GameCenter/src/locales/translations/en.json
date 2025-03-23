@@ -1,5 +1,351 @@
 {
+  "loginScreen": {
+    "title": "Enter your Realm",
+    "email": "Email",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "loginSuccess": "Login successful",
+    "logoutSuccess": "Logged out successfully",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
     "turkish": "Turkish",
     "english": "English",
-    "german": "German"
+    "german": "German",
+    "startGame": "Start Game",
+    "createNewAccount": "Create New Account",
+    "rememberMe": "Remember Me",
+    "backToLogin": "Back to Login",
+    "sendCode": "Send Code",
+    "retryIn": "seconds before retrying"
+  },
+  "permissionsModal": {
+    "title": "Permissions",
+    "biometric": "Allow Touch ID / Face ID usage",
+    "nfc": "Allow NFC usage",
+    "barcode": "Allow barcode scanner usage"
+  },
+  "themeSwitcher": {
+    "themeSwitched": "New Theme: ",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "formContextMessages": {
+    "usernameEmpty": "Username cannot be empty",
+    "codeSentSuccess": "Code sent successfully",
+    "userNotFound": "User not found",
+    "invalidUsernameEmail": "Invalid username or email issue",
+    "rateLimitError": "wait seconds",
+    "sendCodeFailed": "Failed to send password reset code. Please try again.",
+    "loginErrorTitle": "Login Error",
+    "loginErrorMessage": "An error occurred during login",
+    "rememberMeTitle": "Remember Me?",
+    "rememberMeMessage": "Are you sure you want to enable Remember Me?"
+  },
+  "loadingScreen": {
+    "title": "We are navigating you!",
+    "subtitle": "Get ready for the adventure"
+  },
+  "settingsScreen": {
+    "headerTitle": "Settings",
+    "aboutSection": {
+      "title": "About",
+      "appVersion": "App Version",
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy",
+      "appVersionSnackbar": "App Version 1.0.0"
+    },
+    "logoutButton": {
+      "logout": "Logout",
+      "logoutConfirmation": "Are you sure you want to logout?",
+      "logoutModalTitle": "Logout"
+    },
+    "notificationSection": {
+      "title": "Notifications",
+      "pushNotifications": "Push Notifications",
+      "pushNotificationsDescription": "Receive push notifications",
+      "emailNotifications": "Email Notifications",
+      "emailNotificationsDescription": "Receive email updates",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "themeSection": {
+      "title": "Theme",
+      "chooseTheme": "Choose Theme",
+      "systemDefault": "System Default",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode",
+      "systemModeDescription": "System Theme",
+      "lightModeDescription": "Light Theme",
+      "darkModeDescription": "Dark Theme",
+      "alreadySelected": "This theme is already selected",
+      "themeChanged": "Theme changed: "
+    },
+    "langSection": {
+      "chooseLang": "Choose Language",
+      "language": "Language"
+    }
+  },
+  "updateLobbyScreen": {
+    "headerTitle": "Update Lobby",
+    "lobbyNameLabel": "Lobby Name",
+    "lobbyNamePlaceholder": "Enter lobby name",
+    "maxCapacityLabel": "Maximum Capacity",
+    "maxCapacityPlaceholder": "Enter maximum capacity",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date",
+    "updateLobbyButton": "Update Lobby",
+    "updatingButton": "Updating...",
+    "lobbyTypeLabel": "Lobby Type",
+    "normalLobbyType": "Normal",
+    "eventLobbyType": "Event",
+    "lobbyUpdatedSuccessfully": "Lobby updated successfully.",
+    "lobbyNameEmptyError": "Lobby name cannot be empty.",
+    "maxCapacityEmptyError": "Maximum capacity cannot be empty."
+  },
+  "connectivityListener": {
+    "connectionLost": "Internet connection lost!",
+    "connectionRestored": "Internet connection restored!"
+  },
+  "customModal": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "chatScreen": {
+    "typeMessagePlaceholder": "Type a message..."
+  },
+  "profileScreen": {
+    "profile": "Profile",
+    "achievements": "Achievements",
+    "friends": "Friends",
+    "allAchievements": "All Achievements",
+    "yourAchievements": "Your Achievements",
+    "getalinktoinviteusers": "Get a code to invite users",
+    "searchFriends": "Search Friends",
+    "noFriendsYet": "No friends yet!"
+  },
+  "friendAddModal": {
+    "title": "Add Friend",
+    "confirmButton": "Add",
+    "friendCodeLabel": "Enter friend code",
+    "friendCodePlaceholder": "Friend code",
+    "removeFriend": "Remove Friend",
+    "inviteFriends": "Invite Friends",
+    "shareCode": "Share Code",
+    "codecopiedtoclipboard": "Code copied to clipboard",
+    "friendRemovedSuccessfully!": "Friend removed successfully!",
+    "friendAddedSuccessfully!": "Friend added successfully!"
+  },
+  "personalMessagePage": {
+    "noActiveInvites": "You have no active invites at the moment.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "invitedyoutothe": "invited you to the",
+    "lobby": "lobby",
+    "fetchError": "An error occurred while fetching invites.",
+    "inviteAccepted": "Invite accepted!",
+    "acceptError": "An error occurred while accepting the invite.",
+    "inviteDeclined": "Invite declined.",
+    "rejectError": "An error occurred while declining the invite."
+  },
+  "homeScreen": {
+    "Upcominggames": "Upcoming Games",
+    "released": "Released",
+    "lastUpdated": "Last Updated",
+    "topRatedGames": "Top Rated Games",
+    "miniGames": "Mini Games",
+    "searchPlaceholder": "Search Game",
+    "settings": "Settings",
+    "helpAndDisplay": "Help & Display",
+    "createLobby": "Create Lobby",
+    "activeLobbies": "Active Lobbies",
+    "joinLobby": "Join Lobby",
+    "options": "Options",
+    "emailError": "Could not open email client",
+    "fromTheCreator": "Special Games",
+    "exploreNow": "Explore Now",
+    "joinLobbyModalTitle": "Join Lobby",
+    "joinLobbyModalDescription": "Enter lobby code and password (if required):",
+    "joinLobbyModalJoinButton": "Join",
+    "joinLobbyModalLobbyCodeLabel": "Lobby Code",
+    "joinLobbyModalLobbyPasswordLabel": "Lobby Password (Optional)",
+    "joinLobbySuccessToast": "Successfully joined the lobby!",
+    "joinLobbyFailToast": "Failed to join the lobby. Please try again.",
+    "joinLobbyClipboardFailToast": "Pasting from clipboard failed.",
+    "noLobby": "You haven't joined any lobby.",
+    "kick": "Kick",
+    "kickandblock": "Kick and Block",
+    "event": "Event",
+    "normal": "Normal",
+    "owner": "Owner",
+    "players": "Players",
+    "leave": "Leave",
+    "lobbyCodeCopied": "Lobby code copied successfully!",
+    "lobbyCodeCopyFailed": "Failed to copy lobby code.",
+    "onlyOwnerAction": "Only lobby owner can perform player actions.",
+    "playerActionSuccess": "Player {{action}} successfully!",
+    "playerActionFailed": "Player {{action}} failed.",
+    "deleteLobbyModalTitle": "Delete Lobby?",
+    "deleteLobbyModalDescription": "Are you sure you want to delete this lobby? This action cannot be undone.",
+    "deleteLobbyModalConfirmButton": "Delete Lobby",
+    "leaveLobbyModalTitle": "Leave Lobby?",
+    "leaveLobbyModalDescription": "Are you sure you want to leave this lobby?",
+    "leaveLobbyModalConfirmButton": "Leave Lobby",
+    "playersInLobbyModalTitle": "Lobby Players",
+    "lobbyDeletedSuccess": "Lobby deleted successfully!",
+    "lobbyDeletedFailed": "Failed to delete lobby.",
+    "lobbyLeaveFailed": "Failed to leave lobby.",
+    "playerKickFailed": "Failed to kick player.",
+    "playerKickBlockFailed": "Failed to kick and block player."
+  },
+  "countDownScreen": {
+    "getReady": "Get Ready!"
+  },
+  "friendInvitePage": {
+    "emptyState1": "Join a lobby before inviting friends.",
+    "emptyState2": "Join a lobby before inviting friends.",
+    "invite": "Invite",
+    "lobbyInfoTitle": "Lobby Info",
+    "availableSpotsText": "available spots!",
+    "inviteSuccess": "Friend invite request sent successfully!",
+    "alreadyInLobby": "This friend is already in the lobby.",
+    "invitationAlreadySent": "You have already sent an invitation to this friend for this lobby.",
+    "inviteError": "An error occurred while sending friend invite request.",
+    "inviteFriends": "Invite Friends"
+  },
+  "chatWithFriends": {
+    "emptyState": "You have no friends",
+    "title": "Chat with Friends",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "time": {
+    "years": "years ago",
+    "months": "months ago",
+    "days": "days ago",
+    "hours": "hours ago",
+    "minutes": "minutes ago",
+    "seconds": "seconds ago",
+    "justNow": "just now"
+  },
+  "communityScreen": {
+    "Join a room to start chatting": "Join a room to start chatting",
+    "noCommunity": "No community",
+    "becomeamember": "Become a member",
+    "all": "All",
+    "You have become a supporter of this room.": "You have become a supporter of this room.",
+    "Failed to become a supporter of this room.": "Failed to become a supporter of this room.",
+    "supporters": "Supporters",
+    "Create a Community": "Create a Community",
+    "roomName": "Room Name",
+    "Select Image": "Select Image",
+    "Create Room": "Create Room",
+    "roomNameEmptyError": "Room name cannot be empty",
+    "topicSelectionError": "Please select a topic",
+    "roomCreationSuccess": "Room created successfully!",
+    "roomCreationFailed": "Failed to create room",
+    "emptyPostError": "Please write something or select an image to share.",
+    "postSuccess": "Post created successfully.",
+    "postError": "An error occurred while creating post.",
+    "shareYourThoughts": "Share your thoughts",
+    "postButton": "Post",
+    "whatsHappening": "What's happening?",
+    "everyone": "Everyone",
+    "community": "Community",
+    "home": "Home",
+    "explorer": "Explorer"
+  },
+  "gameDetailsScreen": {
+    "start": "Start",
+    "lobbies": "Lobbies",
+    "history": "History",
+    "settings": "Settings",
+    "startGame": "Start Game",
+    "Failed to start the game. Please try again.": "Failed to start the game. Please try again.",
+    "bingoWin": "Bingo win!",
+    "createLobby": "Create Lobby",
+    "noLobbyToJoin": "No lobby to join",
+    "animated": "Animated",
+    "classic": "Classic",
+    "sound": "Sound",
+    "gameSpeed": "Game Speed",
+    "otomaticMarking": "Automatic Marking",
+    "theme": "Theme",
+    "classic": "Classic",
+    "modern": "Modern",
+    "colorful": "Colorful",
+    "soundLevel": "Sound Level",
+    "musicLevel": "Music Level",
+    "numberreadSound": "Number Read Sounds",
+    "joinLobbyModalTitle": "Join Lobby?",
+    "joinLobbyModalPasswordProtectedText": "This lobby is password protected. Please enter the password to join.",
+    "joinLobbyModalConfirmationText": "Are you sure you want to join this lobby?",
+    "joinLobbyButton": "Join Lobby",
+    "password": "Password",
+    "started": "Started",
+    "join": "Join"
+  },
+  "createLobbyModal": {
+    "title": "Create Lobby",
+    "lobbyTypeSelector": {
+      "normal": "Normal",
+      "event": "Event",
+      "toggleLobbyType": "Toggle Lobby Type",
+      "lobbyType": "Lobby Type",
+      "normal": "🎮 Normal",
+      "event": "🎉 Event"
+    },
+    "dateTimeSelector": {
+      "startDate": "Start Date",
+      "endDate": "End Date"
+    },
+    "gameSelector": {
+      "lobbyName": "Lobby Name",
+      "gameName": "Game Name",
+      "maxCapacity": "Max Capacity",
+      "lobbyNamePlaceholder": "Enter Lobby Name",
+      "gameNamePlaceholder": "Enter Game Name",
+      "maxCapacityPlaceholder": "Enter Capacity (e.g., 10)",
+      "gameSelection": "Game Selection"
+    },
+    "passwordInput": {
+      "password": "Lobby Password",
+      "showPassword": "Show Password",
+      "hidePassword": "Hide Password",
+      "hasPassword": "Password Protected Lobby"
+    },
+    "invitationLink": {
+      "invitationCode": "Share Invitation Code",
+      "copyCode": "Copied to Clipboard",
+      "shareLobbySubtitle": "Authorize your teammates to access this lobby and start playing in real-time"
+    },
+    "buttons": {
+      "createLobby": "Create Lobby",
+      "createNewLobby": "Create New Lobby"
+    },
+    "toastMessages": {
+      "emptyLobbyName": "Lobby name cannot be empty",
+      "emptyGameName": "Game name cannot be empty",
+      "emptyMaxCapacity": "Maximum capacity cannot be empty",
+      "emptyPassword": "Password cannot be empty for a password-protected lobby.",
+      "requireStartEndDate": "Event lobbies require start and end dates.",
+      "failedToOpenLink": "Failed to open link"
+    }
+  },
+  "bingoGame": {
+    "joinedTheLobby": "joined the lobby",
+    "leftTheLobby": "left the lobby",
+    "chinko": "made a line bingo",
+    "players": "Players",
+    "noMessages": "No messages yet",
+    "logoutTitle": "Logout",
+    "logoutDescription": "Are you sure you want to logout?",
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "resultScreenButton": "Start a new game",
+    "scoreBoard": "Scoreboard",
+    "point": "Point",
+    "winner": "Winner",
+    "gameEnded": "Game ended by room owner, you are redirected to the homepage."
   }
+}

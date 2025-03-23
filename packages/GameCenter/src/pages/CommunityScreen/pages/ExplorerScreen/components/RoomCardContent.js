@@ -3,10 +3,12 @@ import { View, StyleSheet, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import formatDate from '../../../../../utils/FormatDate';
 import { useTheme } from '../../../../../context/ThemeContext';
+import {useTranslation} from 'react-i18next';
 
 const RoomCardContent = ({ room }) => {
   const { colors } = useTheme(); 
   const styles = createStyles(colors); 
+  const { t } = useTranslation();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.card }]}>
@@ -27,7 +29,7 @@ const RoomCardContent = ({ room }) => {
         <View style={styles.footer}>
           <View style={[styles.supporterContainer, { backgroundColor: colors.border }]}>
             <Text style={[styles.supporters, { color: colors.text }]}>
-              {room.supporterCount} supporters
+              {room.supporterCount} {t('communityScreen.supporters')} 
             </Text>
           </View>
         </View>

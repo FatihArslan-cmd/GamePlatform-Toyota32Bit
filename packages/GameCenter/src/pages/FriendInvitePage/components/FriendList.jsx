@@ -3,11 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { List, Avatar, Button } from 'react-native-paper';
 import { useFriendInvite } from '../context/FriendInviteContext'; 
 import { useTheme } from '../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 const FriendList = () => {
     const { colors } = useTheme(); 
     const styles = createStyles(colors); 
     const { friends, handleInvite } = useFriendInvite(); 
+    const { t } = useTranslation();
 
     return (
         <List.Section>
@@ -31,7 +33,7 @@ const FriendList = () => {
                                 style={styles.inviteButtonPaper}
                                 labelStyle={styles.inviteButtonTextPaper}
                             >
-                                Invite
+                                {t('friendInvitePage.invite')}
                             </Button>
                         </View>
                     )}

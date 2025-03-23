@@ -45,21 +45,18 @@ const getAllRoomsHandler = (req, res) => {
     res.json(rooms);
 };
 
-// Yeni Handler: Kullanıcının yarattığı odaları getir
 const getRoomsByMeHandler = (req, res) => {
     const userId = req.user.id;
     const rooms = getRoomsByCreator(userId);
     res.json(rooms);
 };
 
-// Yeni Handler: Kullanıcının yaratmadığı odaları getir
 const getRoomsNotByMeHandler = (req, res) => {
     const userId = req.user.id;
     const rooms = getRoomsNotByCreator(userId);
     res.json(rooms);
 };
 
-// Yeni Handler: Kullanıcının supporter olduğu odaları getir
 const getRoomsBySupporterHandler = (req, res) => {
     const userId = req.user.id;
     const rooms = getRoomsBySupporter(userId);

@@ -40,6 +40,6 @@ router.get('/invitations/count', authenticate, getLobbyInvitationCountHandler);
 router.post('/:lobbyCode/draw-number', authenticate, drawNumberHandler);
 router.post('/:lobbyCode/mark-number', authenticate, markNumberHandler);
 router.get('/game/history', authenticate, getGameHistoryHandler);
-router.post('/end-game', authenticate, endGameHandler); // :lobbyCode kaldırıldı
+router.post('/end-game', authenticate, endGameHandler);
 
 module.exports = router;

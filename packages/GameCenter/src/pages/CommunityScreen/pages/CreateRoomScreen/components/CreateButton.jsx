@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useCreateRoom } from '../context/CreateRoomContext';
+import {useTranslation} from 'react-i18next';
 
 const CreateButton = () => {
   const { loading, isCreateSuccess, handleCreateRoom } = useCreateRoom(); 
+  const { t } = useTranslation();
 
   return (
     <Button
@@ -17,7 +19,7 @@ const CreateButton = () => {
       labelStyle={{ color: 'white' }}
     >
       <Text style={{ fontFamily: 'Orbitron-ExtraBold', color: 'white' }}>
-        Create Room
+        {t('communityScreen.Create Room')}
       </Text>
     </Button>
   );

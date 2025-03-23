@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { TextInput, Text } from 'react-native-paper';
 import { useState, useRef } from 'react';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../../../../../context/ThemeContext';
 
 const GameSelector = ({
     gameName,
@@ -11,11 +11,11 @@ const GameSelector = ({
     onGameNameChange,
     onLobbyNameChange,
     onMaxCapacityChange,
+    t 
 }) => {
     const [pressedScale] = useState(new Animated.Value(1));
     const games = ['Bingo', 'Chess', 'Poker', 'Checkers', 'Monopoly', 'Scrabble', 'Clue', 'Risk', 'Catan', 'Ticket to Ride'];
-    const { colors } = useTheme(); // Use the useTheme hook
-    console.log('GameSelector rendered');
+    const { colors } = useTheme();
 
     const handlePressIn = () => {
         Animated.spring(pressedScale, {
@@ -32,9 +32,8 @@ const GameSelector = ({
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.background }]}> {/* Themed container background */}
-            <Text style={styles.gameSelectorLabel}>Game Selection</Text> {/* Themed gameSelectorLabel text color */}
-            <View style={[styles.gameSelectorContainer, { backgroundColor: 'transparent' }]}> {/* Transparent game selector container background */}
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={[styles.gameSelectorContainer, { backgroundColor: 'transparent' }]}>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -48,14 +47,14 @@ const GameSelector = ({
                             onPressOut={handlePressOut}
                             style={[
                                 styles.gameButton,
-                                { backgroundColor: colors.primary }, // Themed game button background color
+                                { backgroundColor: colors.primary },
                                 gameName === game && styles.gameButtonSelected,
                             ]}
                             onPress={() => onGameNameChange(game)}
                         >
                             <Text style={[
                                 styles.gameButtonText,
-                                { color: colors.card }, // Themed game button text color to contrast with button background
+                                { color: colors.card },
                                 gameName === game && styles.gameButtonTextSelected,
                             ]}>
                                 {game}
@@ -67,36 +66,37 @@ const GameSelector = ({
 
             <TextInput
                 label={
-                         <Text style={{ color: colors.text }}>Lobby Name</Text>
-                       } 
+                    <Text style={{ color: colors.text }}>{t('createLobbyModal.gameSelector.lobbyName')}</Text> 
+                }
                 mode="outlined"
                 value={lobbyName}
-                placeholder="Create your lobby name..."
-                left={<TextInput.Icon icon="home" color={colors.primary} />} // Themed icon color
-                style={[styles.input, { backgroundColor: colors.card }]} // Themed input background
+                placeholder={t('createLobbyModal.gameSelector.lobbyNamePlaceholder')} 
+                left={<TextInput.Icon icon="home" color={colors.primary} />}
+                style={[styles.input, { backgroundColor: colors.card }]}
                 onChangeText={onLobbyNameChange}
-                outlineColor={colors.border} // Themed outline color
-                activeOutlineColor={colors.primary} // Themed active outline color
-                textColor={colors.text} // Themed text color
-                placeholderTextColor={colors.subText} // Themed placeholder text color
+                outlineColor={colors.border}
+                activeOutlineColor={colors.primary}
+                textColor={colors.text}
+                placeholderTextColor={colors.subText}
             />
 
             <TextInput
                 label={
-                         <Text style={{ color: colors.text }}>Max Players</Text>
-                       } 
+                    <Text style={{ color: colors.text }}>{t('createLobbyModal.gameSelector.maxCapacity')}</Text> 
+                }
                 mode="outlined"
                 value={maxCapacity}
-                placeholder="Set player limit..."
+                placeholder={t('createLobbyModal.gameSelector.maxCapacityPlaceholder')} 
                 keyboardType="numeric"
-                left={<TextInput.Icon icon="account-group" color={colors.primary} />} // Themed icon color
-                right={<TextInput.Icon icon="information" color={colors.primary} />} // Themed icon color
-                style={[styles.input, { backgroundColor: colors.card }]} // Themed input background
+                left={<TextInput.Icon icon="account-group" color={colors.primary} />}
+                right={<TextInput.Icon icon="information" color={colors.primary} />}
+                style={[styles.input, { backgroundColor: colors.card }]}
                 onChangeText={onMaxCapacityChange}
-                outlineColor={colors.border} // Themed outline color
-                activeOutlineColor={colors.primary} // Themed active outline color
-                textColor={colors.text} // Themed text color
-                placeholderTextColor={colors.subText} // Themed placeholder text color
+                outlineColor={colors.border}
+                activeOutlineColor={colors.primary}
+                textColor={colors.text}
+                placeholderTextColor={colors.subText}
+                
             />
         </View>
     );
@@ -104,11 +104,11 @@ const GameSelector = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff', // Removed hardcoded white, will be set by theme in component
+        backgroundColor: '#fff',
     },
     input: {
         marginBottom: 16,
-        backgroundColor: 'white', // Removed hardcoded white, will be set by theme in component
+        backgroundColor: 'white',
         elevation: 2,
         shadowColor: '#000',
         shadowOffset: {
@@ -122,13 +122,13 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         borderRadius: 12,
         padding: 8,
-        backgroundColor: 'transparent', // Set to transparent as requested
+        backgroundColor: 'transparent',
     },
     gameSelectorLabel: {
         marginBottom: 12,
         fontSize: 18,
         fontWeight: '600',
-        color: '#8a2be2', // Removed hardcoded color, will be set by theme in component
+        color: '#8a2be2',
         fontFamily: 'Orbitron-ExtraBold',
     },
     scrollViewContent: {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 12,
         borderRadius: 25,
-        backgroundColor: '#fff', // Removed hardcoded white, will be set by theme in component
+        backgroundColor: '#fff',
         marginRight: 12,
         elevation: 2,
         shadowColor: '#000',
@@ -151,16 +151,16 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
     },
     gameButtonSelected: {
-        backgroundColor: '#8a2be2', // Kept original color as it seems to be part of the brand
-        borderColor: '#8a2be2',     // Kept original color as it seems to be part of the brand
+        backgroundColor: '#8a2be2',
+        borderColor: '#8a2be2',
     },
     gameButtonText: {
         fontSize: 16,
-        color: '#333', // Removed hardcoded dark gray, will be set by theme in component
+        color: '#333',
         fontFamily: 'Orbitron-ExtraBold',
     },
     gameButtonTextSelected: {
-        color: '#fff', // Kept original color as it seems to be part of the brand
+        color: '#fff',
     },
 });
 

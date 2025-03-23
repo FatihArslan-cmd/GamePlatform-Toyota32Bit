@@ -4,10 +4,11 @@ import { Title, Button, Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LobbyDetails from '../../../../HomeScreen/components/Header/components/components/LobbyDetails';
 import { useTheme } from '../../../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 const JoinableLobbyCardContent = ({ lobby, setJoinModalVisible }) => {
   const { colors } = useTheme(); 
-
+  const { t } = useTranslation();
   return (
     <View>
       <Title style={[styles.lobbyName, { color: colors.text }]}>{lobby.lobbyName}</Title>
@@ -23,7 +24,9 @@ const JoinableLobbyCardContent = ({ lobby, setJoinModalVisible }) => {
           labelStyle={[styles.buttonLabel]}
           icon={() => <Icon name="login" size={20} color='white' />}
         >
-          <Text style={[styles.buttonText, { color: 'white' }]}>Join</Text> 
+          <Text style={[styles.buttonText, { color: 'white' }]}>
+            {t('gameDetailsScreen.join')}
+            </Text> 
         </Button>
       </View>
     </View>

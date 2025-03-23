@@ -2,17 +2,17 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme from correct path
+import { useTheme } from '../../../../../context/ThemeContext'; 
 
 const CustomDateTimeSelector = ({ onDateTimeChange, initialStartDate, initialEndDate }) => {
   const [startDate, setStartDate] = useState(initialStartDate || new Date());
   const [endDate, setEndDate] = useState(initialEndDate || new Date());
   const [pickerConfig, setPickerConfig] = useState({
     mode: 'date',
-    type: null, // 'start' or 'end'
+    type: null, 
     show: false,
   });
-  const { colors } = useTheme(); // Use the useTheme hook
+  const { colors } = useTheme(); 
 
   useEffect(() => {
     if (initialStartDate) {

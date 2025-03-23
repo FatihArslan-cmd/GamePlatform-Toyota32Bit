@@ -6,6 +6,7 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 import { useTheme } from '../../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 const { width } = Dimensions.get('window');
 const BUTTON_WIDTH = (width - 50) / 2;
@@ -14,6 +15,7 @@ const INDICATOR_WIDTH = BUTTON_WIDTH * 0.6;
 const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
   const { colors } = useTheme(); 
   const styles = createStyles(colors);
+  const { t } = useTranslation();
 
   const buttonTextStyle = {
     fontFamily: 'Orbitron-ExtraBold',
@@ -51,14 +53,18 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
           style={getButtonStyle(0)}
           labelStyle={buttonTextStyle}
         >
-          <Text style={buttonTextStyle}>Home</Text>
+          <Text style={buttonTextStyle}>
+            {t('communityScreen.home')}
+          </Text>
         </Button>
         <Button onPress={goToExplorer} mode="text"
           rippleColor="rgba(0, 0, 0, 0.3)"
           style={getButtonStyle(1)}
           labelStyle={buttonTextStyle} 
         >
-          <Text style={buttonTextStyle}>Explorer</Text>
+          <Text style={buttonTextStyle}>
+            {t('communityScreen.explorer')}
+          </Text>
         </Button>
       </View>
       <View style={styles.indicatorContainer}>

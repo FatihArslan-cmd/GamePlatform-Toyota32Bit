@@ -21,7 +21,10 @@ export const lightColors = {
   postBG:'white',
   bingoText:'#4a148c',
   gameDetailsButton:'#751cef',
-  loginScreenGradient: ['#f8f0ff', '#d8c0e8', '#f8f0ff'] 
+  loginScreenGradient: ['#f8f0ff', '#d8c0e8', '#f8f0ff'],
+  ripple: 'rgba(0, 0, 0, .04)',
+  messageBoxLight: '#F0F0F0'
+
 };
 
 export const darkColors = {
@@ -47,6 +50,8 @@ export const darkColors = {
   postBG:'#172136',
   bingoText:'white',
   gameDetailsButton:'#818CF8',
-  loginScreenGradient: ['#1a1b2e', '#2d0a3e', '#1a1b2e'] 
+  loginScreenGradient: ['#1a1b2e', '#2d0a3e', '#1a1b2e'] ,
+  ripple: 'rgba(255, 255, 255, .04)', 
+  messageBoxLight: '#1F2937'
 
 };

@@ -56,7 +56,7 @@ const useFriendsPage = () => {
     const handleCopyCode = useCallback(async () => {
         Clipboard.setString(friendCode);
         setModalVisible(false);
-        ToastService.show("success", {t('codecopiedtoclipboard')}); 
+        ToastService.show("success", t('friendAddModal.codecopiedtoclipboard')); 
     }, [friendCode]);
 
     const handleModalDismiss = useCallback(() => {
@@ -95,7 +95,7 @@ const useFriendsPage = () => {
             setFriendModalVisible(false);
             setSelectedFriend(null);
             await fetchFriendsList();
-             ToastService.show("success", {t('friendRemovedSuccessfully')}); 
+             ToastService.show("success", t('friendAddModal.friendRemovedSuccessfully')); 
              setModalVisible(false);
 
         } catch (err) {
@@ -112,7 +112,7 @@ const useFriendsPage = () => {
             await FriendService.addFriend(code);
             await fetchFriendsList();
             handleModalDismiss();
-            ToastService.show("success", {t('friendAddedSuccessfully')}); 
+            ToastService.show("success", t('friendAddModal.friendAddedSuccessfully')); 
         } catch (err) {
             setError(err.message || 'Failed to add friend.');
         } finally {

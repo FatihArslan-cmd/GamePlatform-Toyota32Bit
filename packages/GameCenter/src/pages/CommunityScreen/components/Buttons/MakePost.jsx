@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { TouchableRipple, Tooltip } from 'react-native-paper';
-import { isTablet } from '../../../../components/isTablet';
+import { isTablet } from '../../../../utils/isTablet';
 import { useTheme } from '../../../../context/ThemeContext'; 
 
 const MakePost = ({  size }) => {
@@ -27,7 +27,7 @@ const MakePost = ({  size }) => {
         >
           <Tooltip title='Make a post' >
             <View style={[styles.circle, { width: circleSize, height: circleSize, borderRadius: circleSize / 2 }]}>
-              <Icon name="plus" size={adjustedSize} color={colors.text} />
+              <Icon name="plus" size={adjustedSize} color='white' />
             </View>
           </Tooltip>
         </TouchableRipple>

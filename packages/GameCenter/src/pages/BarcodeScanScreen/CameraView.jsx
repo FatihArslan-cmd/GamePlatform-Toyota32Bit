@@ -16,7 +16,7 @@ const CameraView = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const { onBarcodeSuccess, onBarcodeScanned } = route.params; // Yeni fonksiyonu da al
+  const { onBarcodeSuccess, onBarcodeScanned } = route.params; 
 
   useEffect(() => {
     const fetchQrCode = async () => {
@@ -37,7 +37,7 @@ const CameraView = () => {
         const { value } = codes[0];
           
           if (storedQrCode && value === storedQrCode) {
-            onBarcodeSuccess(); // Eşleşirse sadece bu fonksiyon çalışır
+            onBarcodeSuccess(); 
           }  else {
             if (onBarcodeScanned && typeof onBarcodeScanned === 'function') {
                onBarcodeScanned(value); 

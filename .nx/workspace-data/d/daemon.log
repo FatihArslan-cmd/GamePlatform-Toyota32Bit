@@ -424,3 +424,27 @@
 [NX v20.6.1 Daemon Server] - 2025-03-18T13:34:15.271Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (sources)
 [NX v20.6.1 Daemon Server] - 2025-03-18T13:34:15.271Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (outputs)
 [NX v20.6.1 Daemon Server] - 2025-03-18T13:34:15.272Z - Server stopped because: "Request to shutdown"
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.288Z - Started listening on: \\.\pipe\nx\C:\Users\Fatih\AppData\Local\Temp\8e78676fee8896d68598\d.sock
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.302Z - [WATCHER]: Subscribed to changes within: C:\GamePlatformToyota32bit (native)
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.306Z - Established a connection. Number of open connections: 1
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.308Z - Established a connection. Number of open connections: 2
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.309Z - Closed a connection. Number of open connections: 1
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.312Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.313Z - Done responding to the client Shutdown initiated
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.314Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 2.
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.314Z - Closed a connection. Number of open connections: 0
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.314Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (sources)
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.315Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (outputs)
+[NX v20.6.1 Daemon Server] - 2025-03-21T17:27:50.316Z - Server stopped because: "Request to shutdown"
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.690Z - Started listening on: \\.\pipe\nx\C:\Users\Fatih\AppData\Local\Temp\8e78676fee8896d68598\d.sock
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.720Z - [WATCHER]: Subscribed to changes within: C:\GamePlatformToyota32bit (native)
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.723Z - Established a connection. Number of open connections: 1
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.724Z - Established a connection. Number of open connections: 2
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.726Z - Closed a connection. Number of open connections: 1
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.729Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.731Z - Done responding to the client Shutdown initiated
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.731Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 2.
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.731Z - Closed a connection. Number of open connections: 0
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.732Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (sources)
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.732Z - [WATCHER]: Stopping the watcher for C:\GamePlatformToyota32bit (outputs)
+[NX v20.6.1 Daemon Server] - 2025-03-23T12:32:56.733Z - Server stopped because: "Request to shutdown"

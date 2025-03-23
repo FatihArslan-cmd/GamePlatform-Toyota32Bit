@@ -6,7 +6,7 @@ import EmptyState from '../../../../components/EmptyState';
 import { ExplorerLoadingSkeleton } from './components/ExplorerLoadingScreen';
 import { ExplorerProvider, useExplorer } from './context/ExplorerContext';
 import { useTheme } from '../../../../context/ThemeContext'; 
-
+import {useTranslation} from 'react-i18next';
 const ExplorerScreenContent = () => {
   const {
     loading,
@@ -14,6 +14,7 @@ const ExplorerScreenContent = () => {
   } = useExplorer();
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
 
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}> 
@@ -27,7 +28,7 @@ const ExplorerScreenContent = () => {
           </View>
         ) : error ? (
           <View style={styles.errorContainer}>
-            <EmptyState message="No Community" />
+            <EmptyState textColor={colors.text} message={t('communityScreen.noCommunity')} />
           </View>
         ) : (
           <RoomList/>
@@ -36,7 +37,7 @@ const ExplorerScreenContent = () => {
     );
   };
 
-const createStyles = (colors) => StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
@@ -46,7 +47,6 @@ const createStyles = (colors) => StyleSheet.create({
   marginVertical:10,
     padding: 0
 },
-
   fab: {
     position: 'absolute',
     margin: 16,

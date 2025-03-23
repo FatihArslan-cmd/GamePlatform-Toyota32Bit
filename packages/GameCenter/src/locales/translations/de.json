@@ -1,5 +1,351 @@
 {
+  "loginScreen": {
+    "title": "Betritt dein Reich",
+    "email": "E-Mail",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "login": "Anmelden",
+    "loginSuccess": "Anmeldung erfolgreich",
+    "logoutSuccess": "Erfolgreich abgemeldet",
+    "register": "Registrieren",
+    "forgotPassword": "Passwort vergessen",
     "turkish": "Türkisch",
     "english": "Englisch",
-    "german": "Deutsch"
+    "german": "Deutsch",
+    "startGame": "Spiel starten",
+    "createNewAccount": "Neues Konto erstellen",
+    "rememberMe": "Angemeldet bleiben",
+    "backToLogin": "Zurück zum Login",
+    "sendCode": "Code senden",
+    "retryIn": "Sekunden bis zum erneuten Versuch"
+  },
+  "permissionsModal": {
+    "title": "Berechtigungen",
+    "biometric": "Nutzung von Touch ID / Face ID erlauben",
+    "nfc": "Nutzung von NFC erlauben",
+    "barcode": "Nutzung des Barcode-Scanners erlauben"
+  },
+  "themeSwitcher": {
+    "themeSwitched": "Neues Thema: ",
+    "light": "Hell",
+    "dark": "Dunkel"
+  },
+  "formContextMessages": {
+    "usernameEmpty": "Benutzername darf nicht leer sein",
+    "codeSentSuccess": "Code erfolgreich gesendet",
+    "userNotFound": "Benutzer nicht gefunden",
+    "invalidUsernameEmail": "Ungültiger Benutzername oder E-Mail",
+    "rateLimitError": "Sekunden warten",
+    "sendCodeFailed": "Senden des Passwort-Reset-Codes fehlgeschlagen. Bitte versuche es erneut.",
+    "loginErrorTitle": "Anmeldefehler",
+    "loginErrorMessage": "Bei der Anmeldung ist ein Fehler aufgetreten",
+    "rememberMeTitle": "Angemeldet bleiben?",
+    "rememberMeMessage": "Bist du sicher, dass du 'Angemeldet bleiben' aktivieren möchtest?"
+  },
+  "loadingScreen": {
+    "title": "Wir navigieren dich!",
+    "subtitle": "Mach dich bereit für das Abenteuer"
+  },
+  "settingsScreen": {
+    "headerTitle": "Einstellungen",
+    "aboutSection": {
+      "title": "Über",
+      "appVersion": "App-Version",
+      "termsOfService": "Nutzungsbedingungen",
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "appVersionSnackbar": "App-Version 1.0.0"
+    },
+    "logoutButton": {
+      "logout": "Abmelden",
+      "logoutConfirmation": "Bist du sicher, dass du dich abmelden möchtest?",
+      "logoutModalTitle": "Abmelden"
+    },
+    "notificationSection": {
+      "title": "Benachrichtigungen",
+      "pushNotifications": "Push-Benachrichtigungen",
+      "pushNotificationsDescription": "Push-Benachrichtigungen erhalten",
+      "emailNotifications": "E-Mail-Benachrichtigungen",
+      "emailNotificationsDescription": "E-Mail-Updates erhalten",
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert"
+    },
+    "themeSection": {
+      "title": "Thema",
+      "chooseTheme": "Thema wählen",
+      "systemDefault": "Systemstandard",
+      "lightMode": "Heller Modus",
+      "darkMode": "Dunkler Modus",
+      "systemModeDescription": "Systemthema",
+      "lightModeDescription": "Helles Thema",
+      "darkModeDescription": "Dunkles Thema",
+      "alreadySelected": "Dieses Thema ist bereits ausgewählt",
+      "themeChanged": "Thema geändert: "
+    },
+    "langSection": {
+      "chooseLang": "Sprache wählen",
+      "language": "Sprache"
+    }
+  },
+  "updateLobbyScreen": {
+    "headerTitle": "Lobby aktualisieren",
+    "lobbyNameLabel": "Lobbyname",
+    "lobbyNamePlaceholder": "Lobbynamen eingeben",
+    "maxCapacityLabel": "Maximale Kapazität",
+    "maxCapacityPlaceholder": "Maximale Kapazität eingeben",
+    "startDateLabel": "Startdatum",
+    "endDateLabel": "Enddatum",
+    "updateLobbyButton": "Lobby aktualisieren",
+    "updatingButton": "Wird aktualisiert...",
+    "lobbyTypeLabel": "Lobbytyp",
+    "normalLobbyType": "Normal",
+    "eventLobbyType": "Event",
+    "lobbyUpdatedSuccessfully": "Lobby erfolgreich aktualisiert.",
+    "lobbyNameEmptyError": "Lobbyname darf nicht leer sein.",
+    "maxCapacityEmptyError": "Maximale Kapazität darf nicht leer sein."
+  },
+  "connectivityListener": {
+    "connectionLost": "Internetverbindung verloren!",
+    "connectionRestored": "Internetverbindung wiederhergestellt!"
+  },
+  "customModal": {
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen"
+  },
+  "chatScreen": {
+    "typeMessagePlaceholder": "Schreibe eine Nachricht..."
+  },
+  "profileScreen": {
+    "profile": "Profil",
+    "achievements": "Errungenschaften",
+    "friends": "Freunde",
+    "allAchievements": "Alle Errungenschaften",
+    "yourAchievements": "Deine Errungenschaften",
+    "getalinktoinviteusers": "Einen Code erhalten, um Benutzer einzuladen",
+    "searchFriends": "Freunde suchen",
+    "noFriendsYet": "Noch keine Freunde!"
+  },
+  "friendAddModal": {
+    "title": "Freund hinzufügen",
+    "confirmButton": "Hinzufügen",
+    "friendCodeLabel": "Freundescode eingeben",
+    "friendCodePlaceholder": "Freundescode",
+    "removeFriend": "Freund entfernen",
+    "inviteFriends": "Freunde einladen",
+    "shareCode": "Code teilen",
+    "codecopiedtoclipboard": "Code in die Zwischenablage kopiert",
+    "friendRemovedSuccessfully!": "Freund erfolgreich entfernt!",
+    "friendAddedSuccessfully!": "Freund erfolgreich hinzugefügt!"
+  },
+  "personalMessagePage": {
+    "noActiveInvites": "Du hast momentan keine aktiven Einladungen.",
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "invitedyoutothe": "hat dich in die",
+    "lobby": "Lobby eingeladen",
+    "fetchError": "Fehler beim Abrufen der Einladungen.",
+    "inviteAccepted": "Einladung angenommen!",
+    "acceptError": "Fehler beim Annehmen der Einladung.",
+    "inviteDeclined": "Einladung abgelehnt.",
+    "rejectError": "Fehler beim Ablehnen der Einladung."
+  },
+  "homeScreen": {
+    "Upcominggames": "Kommende Spiele",
+    "released": "Veröffentlicht",
+    "lastUpdated": "Letzte Aktualisierung",
+    "topRatedGames": "Top-bewertete Spiele",
+    "miniGames": "Minispiele",
+    "searchPlaceholder": "Spiel suchen",
+    "settings": "Einstellungen",
+    "helpAndDisplay": "Hilfe & Anzeige",
+    "createLobby": "Lobby erstellen",
+    "activeLobbies": "Aktive Lobbys",
+    "joinLobby": "Lobby beitreten",
+    "options": "Optionen",
+    "emailError": "E-Mail-Client konnte nicht geöffnet werden",
+    "fromTheCreator": "Besondere Spiele",
+    "exploreNow": "Jetzt erkunden",
+    "joinLobbyModalTitle": "Lobby beitreten",
+    "joinLobbyModalDescription": "Lobbycode und Passwort eingeben (falls erforderlich):",
+    "joinLobbyModalJoinButton": "Beitreten",
+    "joinLobbyModalLobbyCodeLabel": "Lobbycode",
+    "joinLobbyModalLobbyPasswordLabel": "Lobbypasswort (optional)",
+    "joinLobbySuccessToast": "Lobby erfolgreich beigetreten!",
+    "joinLobbyFailToast": "Beitritt zur Lobby fehlgeschlagen. Bitte versuche es erneut.",
+    "joinLobbyClipboardFailToast": "Einfügen aus der Zwischenablage fehlgeschlagen.",
+    "noLobby": "Du bist keiner Lobby beigetreten.",
+    "kick": "Rauswerfen",
+    "kickandblock": "Rauswerfen und blockieren",
+    "event": "Event",
+    "normal": "Normal",
+    "owner": "Besitzer",
+    "players": "Spieler",
+    "leave": "Verlassen",
+    "lobbyCodeCopied": "Lobbycode erfolgreich kopiert!",
+    "lobbyCodeCopyFailed": "Kopieren des Lobbycodes fehlgeschlagen.",
+    "onlyOwnerAction": "Nur der Lobbybesitzer kann Spieleraktionen durchführen.",
+    "playerActionSuccess": "Spieler {{action}} erfolgreich!",
+    "playerActionFailed": "Spieler {{action}} fehlgeschlagen.",
+    "deleteLobbyModalTitle": "Lobby löschen?",
+    "deleteLobbyModalDescription": "Bist du sicher, dass du diese Lobby löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteLobbyModalConfirmButton": "Lobby löschen",
+    "leaveLobbyModalTitle": "Lobby verlassen?",
+    "leaveLobbyModalDescription": "Bist du sicher, dass du diese Lobby verlassen möchtest?",
+    "leaveLobbyModalConfirmButton": "Lobby verlassen",
+    "playersInLobbyModalTitle": "Lobby-Spieler",
+    "lobbyDeletedSuccess": "Lobby erfolgreich gelöscht!",
+    "lobbyDeletedFailed": "Löschen der Lobby fehlgeschlagen.",
+    "lobbyLeaveFailed": "Verlassen der Lobby fehlgeschlagen.",
+    "playerKickFailed": "Spieler konnte nicht rausgeworfen werden.",
+    "playerKickBlockFailed": "Spieler konnte nicht rausgeworfen und blockiert werden."
+  },
+  "countDownScreen": {
+    "getReady": "Mach dich bereit!"
+  },
+  "friendInvitePage": {
+    "emptyState1": "Trete einer Lobby bei, bevor du Freunde einlädst.",
+    "emptyState2": "Trete einer Lobby bei, bevor du Freunde einlädst.",
+    "invite": "Einladen",
+    "lobbyInfoTitle": "Lobby-Info",
+    "availableSpotsText": "freie Plätze!",
+    "inviteSuccess": "Freundeseinladungsanfrage erfolgreich gesendet!",
+    "alreadyInLobby": "Dieser Freund ist bereits in der Lobby.",
+    "invitationAlreadySent": "Du hast diesem Freund bereits eine Einladung für diese Lobby gesendet.",
+    "inviteError": "Fehler beim Senden der Freundeseinladungsanfrage.",
+    "inviteFriends": "Freunde einladen"
+  },
+  "chatWithFriends": {
+    "emptyState": "Du hast keine Freunde",
+    "title": "Chatte mit Freunden",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "time": {
+    "years": "Jahre zuvor",
+    "months": "Monate zuvor",
+    "days": "Tage zuvor",
+    "hours": "Stunden zuvor",
+    "minutes": "Minuten zuvor",
+    "seconds": "Sekunden zuvor",
+    "justNow": "jetzt gerade"
+  },
+  "communityScreen": {
+    "Join a room to start chatting": "Tritt einem Raum bei, um mit dem Chatten zu beginnen",
+    "noCommunity": "Keine Community",
+    "becomeamember": "Mitglied werden",
+    "all": "Alle",
+    "You have become a supporter of this room.": "Du bist ein Unterstützer dieses Raumes geworden.",
+    "Failed to become a supporter of this room.": "Es ist nicht gelungen, ein Unterstützer dieses Raumes zu werden.",
+    "supporters": "Unterstützer",
+    "Create a Community": "Eine Community erstellen",
+    "roomName": "Raumname",
+    "Select Image": "Bild auswählen",
+    "Create Room": "Raum erstellen",
+    "roomNameEmptyError": "Raumname darf nicht leer sein",
+    "topicSelectionError": "Bitte wähle ein Thema aus",
+    "roomCreationSuccess": "Raum erfolgreich erstellt!",
+    "roomCreationFailed": "Erstellung des Raumes fehlgeschlagen",
+    "emptyPostError": "Bitte schreibe etwas oder wähle ein Bild zum Teilen aus.",
+    "postSuccess": "Beitrag erfolgreich erstellt.",
+    "postError": "Fehler beim Erstellen des Beitrags.",
+    "shareYourThoughts": "Teile deine Gedanken",
+    "postButton": "Posten",
+    "whatsHappening": "Was passiert?",
+    "everyone": "Jeder",
+    "community": "Community",
+    "home": "Startseite",
+    "explorer": "Entdecken"
+  },
+  "gameDetailsScreen": {
+    "start": "Starten",
+    "lobbies": "Lobbys",
+    "history": "Verlauf",
+    "settings": "Einstellungen",
+    "startGame": "Spiel starten",
+    "Failed to start the game. Please try again.": "Spielstart fehlgeschlagen. Bitte versuche es erneut.",
+    "bingoWin": "Bingo gewonnen!",
+    "createLobby": "Lobby erstellen",
+    "noLobbyToJoin": "Keine Lobby zum Beitreten",
+    "animated": "Animiert",
+    "classic": "Klassisch",
+    "sound": "Ton",
+    "gameSpeed": "Spielgeschwindigkeit",
+    "otomaticMarking": "Automatische Markierung",
+    "theme": "Thema",
+    "classic": "Klassisch",
+    "modern": "Modern",
+    "colorful": "Farbenfroh",
+    "soundLevel": "Lautstärke",
+    "musicLevel": "Musiklautstärke",
+    "numberreadSound": "Zahlensprech-Sounds",
+    "joinLobbyModalTitle": "Lobby beitreten?",
+    "joinLobbyModalPasswordProtectedText": "Diese Lobby ist passwortgeschützt. Bitte gib das Passwort ein, um beizutreten.",
+    "joinLobbyModalConfirmationText": "Bist du sicher, dass du dieser Lobby beitreten möchtest?",
+    "joinLobbyButton": "Lobby beitreten",
+    "password": "Passwort",
+    "started": "Gestartet",
+    "join": "Beitreten"
+  },
+  "createLobbyModal": {
+    "title": "Lobby erstellen",
+    "lobbyTypeSelector": {
+      "normal": "Normal",
+      "event": "Event",
+      "toggleLobbyType": "Lobbytyp wechseln",
+      "lobbyType": "Lobbytyp",
+      "normal": "🎮 Normal",
+      "event": "🎉 Event"
+    },
+    "dateTimeSelector": {
+      "startDate": "Startdatum",
+      "endDate": "Enddatum"
+    },
+    "gameSelector": {
+      "lobbyName": "Lobbyname",
+      "gameName": "Spielname",
+      "maxCapacity": "Maximale Kapazität",
+      "lobbyNamePlaceholder": "Lobbynamen eingeben",
+      "gameNamePlaceholder": "Spielnamen eingeben",
+      "maxCapacityPlaceholder": "Kapazität eingeben (z. B. 10)",
+      "gameSelection": "Spieleauswahl"
+    },
+    "passwordInput": {
+      "password": "Lobbypasswort",
+      "showPassword": "Passwort anzeigen",
+      "hidePassword": "Passwort verbergen",
+      "hasPassword": "Passwortgeschützte Lobby"
+    },
+    "invitationLink": {
+      "invitationCode": "Einladungscode teilen",
+      "copyCode": "In die Zwischenablage kopiert",
+      "shareLobbySubtitle": "Autorisiere deine Teamkollegen, auf diese Lobby zuzugreifen und beginne in Echtzeit zu spielen"
+    },
+    "buttons": {
+      "createLobby": "Lobby erstellen",
+      "createNewLobby": "Neue Lobby erstellen"
+    },
+    "toastMessages": {
+      "emptyLobbyName": "Lobbyname darf nicht leer sein",
+      "emptyGameName": "Spielname darf nicht leer sein",
+      "emptyMaxCapacity": "Maximale Kapazität darf nicht leer sein",
+      "emptyPassword": "Passwort darf für eine passwortgeschützte Lobby nicht leer sein.",
+      "requireStartEndDate": "Event-Lobbys erfordern Start- und Enddatum.",
+      "failedToOpenLink": "Öffnen des Links fehlgeschlagen"
+    }
+  },
+  "bingoGame": {
+    "joinedTheLobby": "ist der Lobby beigetreten",
+    "leftTheLobby": "hat die Lobby verlassen",
+    "chinko": "hat eine Linien-Bingo gemacht",
+    "players": "Spieler",
+    "noMessages": "Noch keine Nachrichten",
+    "logoutTitle": "Abmelden",
+    "logoutDescription": "Bist du sicher, dass du dich abmelden möchtest?",
+    "logout": "Abmelden",
+    "cancel": "Abbrechen",
+    "resultScreenButton": "Neues Spiel starten",
+    "scoreBoard": "Anzeigetafel",
+    "point": "Punkt",
+    "winner": "Gewinner",
+    "gameEnded": "Spiel vom Raumbesitzer beendet, du wirst zur Startseite weitergeleitet."
   }
+}

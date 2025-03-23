@@ -1,5 +1,5 @@
 import React, { createContext, useState, useRef, useContext, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';
 
 const ButtonsContext = createContext();
 
@@ -34,13 +34,11 @@ export const ButtonsContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        setTabs(prevTabs => {
-            const newTabs = [...prevTabs];
-            newTabs[0].title = achievementCount.toString();
-            newTabs[1].title = friendCount.toString();
-            return newTabs;
-        });
-    }, [achievementCount, friendCount]);
+        setTabs([
+            { id: 0, title: achievementCount.toString(), subtitle: t('profileScreen.achievements') },
+            { id: 1, title: friendCount.toString(), subtitle: t('profileScreen.friends') },
+        ]);
+    }, [achievementCount, friendCount, t]); 
 
 
     const buttonsContextValue = {

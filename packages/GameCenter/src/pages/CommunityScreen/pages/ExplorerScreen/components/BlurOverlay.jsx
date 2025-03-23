@@ -2,8 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import Animated, { useAnimatedStyle, withTiming, FadeIn, Easing } from 'react-native-reanimated';
+import {useTranslation} from 'react-i18next';
 
 const BlurOverlay = ({ isBlurred, blurRadiusValue, buttonOpacityValue, handleBecomeMemberPress }) => {
+  const { t } = useTranslation();
   const animatedBlurStyle = useAnimatedStyle(() => {
     return {
       blurRadius: blurRadiusValue.value,
@@ -34,7 +36,9 @@ const BlurOverlay = ({ isBlurred, blurRadiusValue, buttonOpacityValue, handleBec
           onPress={handleBecomeMemberPress}
           entering={FadeIn.duration(300)}
         >
-          <Text style={styles.becomeMemberButtonText}>Become a member</Text>
+          <Text style={styles.becomeMemberButtonText}>
+            {t('communityScreen.becomeamember')}
+          </Text>
         </TouchableOpacity>
       </Animated.View>
     </>

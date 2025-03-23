@@ -57,7 +57,6 @@ api.interceptors.response.use(
           if (!refreshToken) {
             navigationService.navigate('Login');
             removeToken();
-            ToastService.show('warning','Session expired. Please log in again.');
             isRefreshing = false;
             return Promise.reject(error);
           }
@@ -105,13 +104,8 @@ export const login = async (username, password) => {
     const response = await api.post('/login', { username, password });
     const { accessToken, refreshToken, profilePhoto, encryptedInfo} = response.data;
 
-    if (!accessToken) {
-      throw new Error('Access token missing in response');
-    }
-
     saveToken(accessToken);
     saveRefreshToken(refreshToken);
-
 
     const userData = {
       username,
@@ -121,7 +115,6 @@ export const login = async (username, password) => {
     await storage.set('user', JSON.stringify(userData))
     return {data: userData, resData: response.data};
   } catch (error) {
-    console.log('Login error:', error);
     throw error.response?.data || { message: 'An error occurred' };
   }
 };

@@ -5,10 +5,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserContext } from '../../../../../context/UserContext';
 import { useTheme } from '../../../../../context/ThemeContext';
 import styles from '../styles/createPostStyles';
+import {useTranslation} from 'react-i18next'; // Import useTranslation
 
 const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) => {
   const { user } = useContext(UserContext);
   const { colors } = useTheme();
+  const { t } = useTranslation(); // Use useTranslation hook
 
   const handleRemoveImage = () => {
     setSelectedImage(null);
@@ -26,7 +28,9 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
             onPress={() => { }}
           >
             <>
-              <Text style={[styles.dropdownText, { color: 'black' }]}>Everyone</Text>
+              <Text style={[styles.dropdownText, { color: 'black' }]}>
+                {t('communityScreen.everyone')}
+              </Text>
               <Icon name="chevron-down" size={24} color={colors.primary} />
             </>
           </TouchableRipple>
@@ -35,7 +39,7 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
         <Card.Content style={styles.inputArea}>
           <TextInput
             style={[styles.input, { color: colors.text }]}
-            placeholder="What's happening?"
+            placeholder={t('communityScreen.whatsHappening')} 
             placeholderTextColor={colors.subText}
             multiline
             autoFocus={true}

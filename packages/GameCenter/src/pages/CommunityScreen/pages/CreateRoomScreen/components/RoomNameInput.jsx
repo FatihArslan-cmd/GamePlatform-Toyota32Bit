@@ -3,15 +3,17 @@ import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useCreateRoom } from '../context/CreateRoomContext';
 import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const RoomNameInput = () => {
   const { roomName, setRoomName } = useCreateRoom();
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
 
   return (
     <TextInput
-      label="Room Name"
+      label={t('communityScreen.roomName')}
       value={roomName}
       onChangeText={setRoomName}
       style={[styles.input, {backgroundColor: colors.card}]}

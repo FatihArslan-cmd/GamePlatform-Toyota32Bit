@@ -12,6 +12,7 @@ import CreateLobbyModal from '../../HomeScreen/components/CreateLobbyModal/Creat
 import { useGameDetails } from '../context/GameDetailsContext';
 import { GameDetailsImageEnterAnimation } from './Animation/GameDetailsImageEnterAnimation';
 import { useTheme } from '../../../context/ThemeContext';
+
 export default function GameDetailsLayout({ gameName, about, imageSource, backgroundColors }) {
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();
   const { animatedImageStyle, animatedContentStyle } = GameDetailsImageEnterAnimation(); 

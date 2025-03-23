@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{memo} from 'react';
 import { TextInput } from 'react-native-paper';
 import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme hook
 
-const InputField = React.memo(({
+const InputField = memo(({
   label,
   value,
   onChangeText,
@@ -12,12 +12,10 @@ const InputField = React.memo(({
   onRightIconPress,
   style,
   textColor,
-  isFormSectionInput, // New prop to indicate if it's used in FormSection
+  isFormSectionInput,
 }) => {
-  console.log("InputField component rendered");
-  const { colors } = useTheme(); // Use the useTheme hook to access colors from context
+  const { colors } = useTheme(); 
 
-  // Determine primary color based on isFormSectionInput prop
   const primaryColor = isFormSectionInput ? '#8a2be2' : colors.primary;
   const placeholderColor = isFormSectionInput ? '#8a2be2' : colors.primary;
 

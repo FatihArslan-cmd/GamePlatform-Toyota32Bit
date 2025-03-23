@@ -1,11 +1,15 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 
 const LobbyTypeSelector = ({ lobbyType, onToggle }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.lobbyTypeContainer}>
-      <Text style={styles.label}>Lobby Type</Text>
+      <Text style={styles.label}>
+        {t('createLobbyModal.lobbyTypeSelector.lobbyType')} 
+      </Text>
       <Button
         mode={lobbyType === 'Normal' ? 'contained' : 'outlined'}
         onPress={onToggle}
@@ -13,7 +17,10 @@ const LobbyTypeSelector = ({ lobbyType, onToggle }) => {
         labelStyle={{   fontFamily: 'Orbitron-ExtraBold',
         }}
       >
-        {lobbyType === 'Normal' ? '🎮 Normal' : '📅 Event'}
+        {lobbyType === 'Normal' ? 
+        t('createLobbyModal.lobbyTypeSelector.normal') 
+        :
+         t('createLobbyModal.lobbyTypeSelector.event')}
       </Button>
     </View>
   );

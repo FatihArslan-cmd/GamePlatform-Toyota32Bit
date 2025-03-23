@@ -6,11 +6,13 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import { useCreateRoom } from '../context/CreateRoomContext';
 import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const ImageSelector = () => {
   const { imageUri, setImageUri } = useCreateRoom();
   const { colors } = useTheme();
   const styles = createStyles(colors);
+  const { t } = useTranslation();
 
   const handleImagePick = async () => {
     const options = {
@@ -43,7 +45,9 @@ const ImageSelector = () => {
       ) : (
         <View style={styles.imagePlaceholder}>
           <Icon name="image-plus" size={60} color={colors.subText} />
-          <Text style={[styles.imagePickerText, {color: colors.subText}]}>Select Image</Text>
+          <Text style={[styles.imagePickerText, {color: colors.subText}]}>
+            {t('communityScreen.Select Image')}
+          </Text>
         </View>
       )}
     </TouchableRipple>

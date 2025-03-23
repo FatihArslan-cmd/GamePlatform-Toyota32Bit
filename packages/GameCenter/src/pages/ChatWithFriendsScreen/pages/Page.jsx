@@ -8,11 +8,13 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import Header from '../components/Header/Header';
 import EmptyState from '../../../components/EmptyState';
 import { useTheme } from '../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 const Page = () => {
   const { friends, loading } = useFriends();
   const navigation = useNavigation(); 
   const { colors } = useTheme(); 
+  const { t } = useTranslation();
 
   const renderItem = ({ item }) => (
     <TouchableRipple 
@@ -63,7 +65,7 @@ const Page = () => {
         </List.Section>
       ) : (
         <View style={[styles.noFriendsContainer, { backgroundColor: colors.background }]}> 
-          <EmptyState message="You don't have any friend" textColor={colors.text}/>
+          <EmptyState message={t('chatWithFriends.emptyState')} textColor={colors.text}/>
         </View>
       )}
     </View>

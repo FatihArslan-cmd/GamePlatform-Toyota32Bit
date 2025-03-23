@@ -4,20 +4,21 @@ import { Surface, Text, IconButton, TouchableRipple } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { ToastService } from '../../../../../context/ToastService';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme and rename it to avoid conflict with react-native-paper's useTheme
+import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const InvitationLink = ({code}) => {
   const [copied, setCopied] = useState(false);
   const [animation] = useState(new Animated.Value(0));
-
-  const theme = useTheme(); // Use the imported theme context
+  const { t } = useTranslation(); 
+  const theme = useTheme();
 
   const handleCopy = async () => {
     if (!code) return;
     Clipboard.setString(code);
 
     setCopied(true);
-    ToastService.show('success', 'Copied to clipboard');
+    ToastService.show('success', t('createLobbyModal.invitationLink.copyCode'));
     Animated.sequence([
       Animated.spring(animation, {
         toValue: 1,
@@ -58,8 +59,7 @@ const InvitationLink = ({code}) => {
     }
 
     Linking.openURL(url).catch((err) => {
-
-      ToastService.show('error', 'Failed to open link');
+      ToastService.show('error', t('toastMessages.failedToOpenLink')); 
     });
   };
 
@@ -67,9 +67,9 @@ const InvitationLink = ({code}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: theme.colors.text }]}>Share your lobby</Text> {/* Themed title text color */}
-      <Text style={[styles.subtitle, { color: theme.colors.subText }]}> {/* Themed subtitle text color */}
-        Give your teammates access to this lobby and start playing in real time
+      <Text style={[styles.title, { color: theme.colors.text }]}>{t('createLobbyModal.invitationLink.invitationCode')}</Text>
+      <Text style={[styles.subtitle, { color: theme.colors.subText }]}>
+        {t('createLobbyModal.invitationLink.shareLobbySubtitle')} 
       </Text>
 
       <LottieView
@@ -79,7 +79,7 @@ const InvitationLink = ({code}) => {
         style={styles.lottieAnimation}
       />
 
-      <Surface style={[styles.linkContainer, { backgroundColor: theme.colors.card }]} elevation={2}> {/* Themed Surface background color */}
+      <Surface style={[styles.linkContainer, { backgroundColor: theme.colors.card }]} elevation={2}>
         <TouchableRipple
           style={styles.linkTouchable}
           onPress={handleCopy}
@@ -95,10 +95,10 @@ const InvitationLink = ({code}) => {
               <IconButton
                 icon="link-variant"
                 size={24}
-                iconColor={useTheme().colors.text} // Keep icon color from react-native-paper's theme as requested
+                iconColor={useTheme().colors.text}
                 style={styles.linkIcon}
               />
-              <Text numberOfLines={1} style={[styles.linkText, { color: theme.colors.text }]}> {/* Themed link text color */}
+              <Text numberOfLines={1} style={[styles.linkText, { color: theme.colors.text }]}>
                 {code}
               </Text>
             </View>
@@ -106,7 +106,7 @@ const InvitationLink = ({code}) => {
             <IconButton
               icon={copied ? 'check' : 'content-copy'}
               size={24}
-              iconColor={copied ? useTheme().colors.success : useTheme().colors.primary} // Keep icon color from react-native-paper's theme as requested
+              iconColor={copied ? useTheme().colors.success : useTheme().colors.primary}
               style={styles.copyIcon}
               onPress={handleCopy}
             />
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   linkContainer: {
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#fff', // Removed hardcoded white, will be set by theme
+    backgroundColor: '#fff',
   },
   linkTouchable: {
     width: '100%',

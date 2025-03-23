@@ -5,9 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '../../../../../context/ThemeContext';
 import styles from '../styles/createPostStyles';
 import GrandientText from '../../../../../components/GrandientText';
+import {useTranslation} from 'react-i18next'; 
 
 const PostHeader = ({ navigation, onPost, isPosting }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation(); 
 
   return (
     <View style={styles.header}>
@@ -20,8 +22,8 @@ const PostHeader = ({ navigation, onPost, isPosting }) => {
         <Icon name="close" size={28} color={colors.text} />
       </TouchableRipple>
      <GrandientText
-      text="Share your thoughts"
-      colors={colors.gameCenterText} 
+      text={t('communityScreen.shareYourThoughts')}
+      colors={colors.gameCenterText}
       gradientDirection="horizontal"
       width={400}
     />
@@ -33,7 +35,7 @@ const PostHeader = ({ navigation, onPost, isPosting }) => {
         loading={isPosting}
         disabled={isPosting}
       >
-        Post
+        {t('communityScreen.postButton')} 
       </Button>
     </View>
   );

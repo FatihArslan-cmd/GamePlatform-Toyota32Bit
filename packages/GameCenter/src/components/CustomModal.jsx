@@ -3,6 +3,7 @@ import { StyleSheet, Animated, Dimensions, View, TouchableWithoutFeedback } from
 import { Modal, Portal, Button, Text } from 'react-native-paper';
 import { BlurView } from '@react-native-community/blur';
 import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const CustomModal = memo(({
   visible,
@@ -19,6 +20,8 @@ const CustomModal = memo(({
   const blurFadeAnim = useRef(new Animated.Value(0)).current;
   const { height } = Dimensions.get('window');
   const { colors } = useTheme();
+  const { t } = useTranslation(); 
+
   const handleDismiss = useCallback(() => {
     Animated.parallel([
       Animated.timing(slideAnim, {
@@ -39,7 +42,7 @@ const CustomModal = memo(({
     ]).start(() => {
       onDismiss();
     });
-  }, [height, slideAnim, fadeAnim, blurFadeAnim, onDismiss]);
+  }, [height, slideAnim, fadeAnim, blurFadeAnim, onDismiss]); 
 
   useEffect(() => {
     if (visible) {
@@ -78,8 +81,8 @@ const CustomModal = memo(({
             <View style={StyleSheet.absoluteFill} >
               <Modal
                 visible={visible}
-                onDismiss={() => {}} 
-                dismissable={false} 
+                onDismiss={() => {}}
+                dismissable={false}
                 contentContainerStyle={[
                   styles.modalContainer,
                   {  backgroundColor: colors.background,},
@@ -109,7 +112,7 @@ const CustomModal = memo(({
                       onPress={handleDismiss}
                       style={styles.closeButton}
                       labelStyle={styles.closeButtonLabel}>
-                      Cancel
+                      {t('customModal.cancel')} 
                     </Button>
 
                     {showConfirmButton && (
@@ -118,7 +121,7 @@ const CustomModal = memo(({
                         onPress={onConfirm}
                         style={styles.confirmButton}
                         labelStyle={styles.confirmButtonLabel}>
-                        {confirmText}
+                        {confirmText === 'Confirm' ? t('customModal.confirm') : confirmText} 
                       </Button>
                     )}
                   </View>

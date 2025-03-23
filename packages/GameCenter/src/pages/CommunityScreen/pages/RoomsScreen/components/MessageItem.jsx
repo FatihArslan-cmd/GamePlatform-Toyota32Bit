@@ -108,12 +108,9 @@ const MessageItem = ({ message }) => {
 };
 
 const createStyles = (colors) => StyleSheet.create({
-  container: {
-   // backgroundColor: 'white', // Removed hardcoded color, using theme now
-  },
   line: {
     height: 1,
-    // backgroundColor: '#E0E0E0', // Removed hardcoded color, using theme now
+    
   },
   messageContent: {
     paddingHorizontal: 20,

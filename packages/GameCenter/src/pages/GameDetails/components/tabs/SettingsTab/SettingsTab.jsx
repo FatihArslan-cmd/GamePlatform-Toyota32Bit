@@ -8,11 +8,13 @@ import { RadioGroupSetting } from './components/RadioGroupSetting';
 import { SwitchSetting } from './components/SwitchSetting';
 import { ToastService } from '../../../../../context/ToastService';
 import { useTheme } from '../../../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 export default function SettingsTab() {
   const { gameSettings, setGameSettings } = useGameDetails();
   const { colors } = useTheme(); 
   const styles = createStyles(colors); 
+  const { t } = useTranslation();
 
   const handleSettingChange = (key, value) => {
     setGameSettings({ ...gameSettings, [key]: value });
@@ -27,7 +29,7 @@ export default function SettingsTab() {
         <Card style={styles.settingsCard} theme={{ colors: { card: colors.background} }}> 
           <Card.Content>
             <SwitchSetting
-              label="Animasyonlu"
+              label={t('gameDetailsScreen.animated')}
               value={gameSettings.animatedPlay}
               onChange={(value) => handleSettingChange('animatedPlay', value)}
               labelColor={colors.text} 
@@ -36,7 +38,7 @@ export default function SettingsTab() {
             />
 
             <SwitchSetting
-              label="Ses"
+              label={t('gameDetailsScreen.sound')}
               value={gameSettings.sound}
               onChange={(value) => handleSettingChange('sound', value)}
               labelColor={colors.text}
@@ -45,7 +47,7 @@ export default function SettingsTab() {
             />
 
             <RadioGroupSetting
-              label="Oyun Hızı"
+              label={t('gameDetailsScreen.gameSpeed')}
               value={gameSettings.gameSpeed || 'Normal'}
               onChange={(value) => handleSettingChange('gameSpeed', value)}
               options={['Yavaş', 'Normal', 'Hızlı']}
@@ -55,7 +57,7 @@ export default function SettingsTab() {
             />
 
             <SwitchSetting
-              label="Otomatik İşaretleme"
+              label={t('gameDetailsScreen.otomaticMarking')}
               value={gameSettings.autoDaub}
               onChange={(value) => handleSettingChange('autoDaub', value)}
               labelColor={colors.text}
@@ -64,7 +66,7 @@ export default function SettingsTab() {
             />
 
             <RadioGroupSetting
-              label="Tema"
+              label={t('gameDetailsScreen.theme')}
               value={gameSettings.theme || 'Klasik'}
               onChange={(value) => handleSettingChange('theme', value)}
               options={['Klasik', 'Modern', 'Renkli']}
@@ -74,7 +76,7 @@ export default function SettingsTab() {
             />
 
             <VolumeControl
-              label="Ses Efekti Seviyesi"
+              label={t('gameDetailsScreen.soundLevel')}
               value={gameSettings.soundEffectsVolume}
               onChange={(value) => handleSettingChange('soundEffectsVolume', value)}
               labelColor={colors.text} 
@@ -84,7 +86,7 @@ export default function SettingsTab() {
             />
 
             <VolumeControl
-              label="Müzik Seviyesi"
+              label={t('gameDetailsScreen.musicLevel')}
               value={gameSettings.musicVolume}
               onChange={(value) => handleSettingChange('musicVolume', value)}
               labelColor={colors.text}
@@ -94,7 +96,7 @@ export default function SettingsTab() {
             />
 
             <SwitchSetting
-              label="Sayı Okuma Sesi"
+              label={t('gameDetailsScreen.numberreadSound')}
               value={gameSettings.voiceCalloutEnabled}
               onChange={(value) => handleSettingChange('voiceCalloutEnabled', value)}
               labelColor={colors.text}

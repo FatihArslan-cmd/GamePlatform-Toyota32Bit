@@ -4,10 +4,12 @@ import { Button } from 'react-native-paper';
 import { useGameDetails } from '../context/GameDetailsContext';
 import { styles } from '../styles';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function TabNavigation() {
   const { activeTab, setActiveTab } = useGameDetails();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <View style={[styles.tabContainer,{ backgroundColor: colors.background }]}>
@@ -22,7 +24,7 @@ export default function TabNavigation() {
         icon="information"
         theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
       >
-        Start
+        {t('gameDetailsScreen.start')}
       </Button>
       <Button
         mode={activeTab === 'lobbies' ? 'contained' : 'text'}
@@ -35,7 +37,7 @@ export default function TabNavigation() {
         icon="account-group"
         theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
       >
-        Lobbies
+       {t('gameDetailsScreen.lobbies')}
       </Button>
       <Button
         mode={activeTab === 'history' ? 'contained' : 'text'}
@@ -48,7 +50,7 @@ export default function TabNavigation() {
         icon="history"
         theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
       >
-        History
+        {t('gameDetailsScreen.history')}
       </Button>
       <Button
         mode={activeTab === 'settings' ? 'contained' : 'text'}
@@ -61,7 +63,7 @@ export default function TabNavigation() {
         icon="cog"
         theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
       >
-        Settings
+        {t('gameDetailsScreen.settings')}
       </Button>
     </View>
   );

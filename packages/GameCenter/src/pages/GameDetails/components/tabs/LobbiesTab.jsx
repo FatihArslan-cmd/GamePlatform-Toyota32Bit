@@ -9,6 +9,7 @@ import LoadingIndicator from '../../../../components/LoadingIndicator';
 import FadeIn from '../../../../components/Animations/FadeInAnimation'; 
 import EmptyState from '../../../../components/EmptyState';
 import { useTheme } from '../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function LobbiesTab() {
     const { setLobbyModalVisible } = useGameDetails();
@@ -16,6 +17,7 @@ export default function LobbiesTab() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { colors } = useTheme(); 
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchLobbies = async () => {
@@ -45,7 +47,7 @@ export default function LobbiesTab() {
                 onPress={() => setLobbyModalVisible(true)}
                 style={[styles.createLobbyButton, { backgroundColor: colors.gameDetailsButton }]} 
             >
-                Create Lobby
+                {t('gameDetailsScreen.createLobby')}
             </Button>
             {loading ? (
                     <LoadingIndicator  />
@@ -55,7 +57,7 @@ export default function LobbiesTab() {
                 </View>
             ) : lobbies.length === 0 ? ( 
                 <FadeIn>
-                    <EmptyState textColor={colors.text} message="Şu anda katılabileceğiniz lobi bulunmamaktadır." />
+                    <EmptyState textColor={colors.text} message={t('gameDetailsScreen.noLobbyToJoin')} />
                 </FadeIn>
             ) : (
                 lobbies.map((lobby, index) => (

@@ -6,11 +6,13 @@ import { becomeSupporter } from '../../../services/roomApi';
 import RoomCardContent from './RoomCardContent'; // Import RoomCardContent
 import BlurOverlay from './BlurOverlay'; // Import BlurOverlay
 import { ToastService } from '../../../../../context/ToastService';
+import {useTranslation} from 'react-i18next';
 
 const RoomCard = ({ room }) => {
   const [isBlurred, setIsBlurred] = useState(false);
   const blurRadius = useSharedValue(0);
   const buttonOpacity = useSharedValue(0);
+  const { t } = useTranslation();
 
   const handlePress = () => {
     setIsBlurred(!isBlurred);
@@ -27,17 +29,10 @@ const RoomCard = ({ room }) => {
     try {
       await becomeSupporter(room.id);
       setIsBlurred(false);
-      handlePress();
-      ToastService.show('success', "You have become a supporter of this room.");
+      ToastService.show('success', t('communityScreen.You have become a supporter of this room.'));
     } catch (error) {
       setIsBlurred(false);
-      handlePress();
-      if (error.message === "Zaten supportersiniz") {
-        ToastService.show('info', "You are already a supporter of this room.");
-      }
-      else {
-        ToastService.show('error', error.message || "Failed to become a supporter of this room.");
-      }
+      ToastService.show('error', error.message || t('communityScreen.Failed to become a supporter of this room.'));
     }
   };
 
@@ -48,10 +43,10 @@ const RoomCard = ({ room }) => {
       activeOpacity={0.7}
     >
       <Card style={styles.card}>
-        <RoomCardContent room={room} /> 
+        <RoomCardContent room={room} />
       </Card>
 
-      <BlurOverlay 
+      <BlurOverlay
         isBlurred={isBlurred}
         blurRadiusValue={blurRadius}
         buttonOpacityValue={buttonOpacity}

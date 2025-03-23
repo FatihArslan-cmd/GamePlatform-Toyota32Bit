@@ -1,20 +1,19 @@
 import React, { memo, useMemo } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from '../context/ThemeContext'; // Import useTheme
+import { useTheme } from '../context/ThemeContext'; 
 
 const GradientDivider = ({ colorProps, horizontalMargin, height }) => {
-  const { resolvedTheme, colors } = useTheme(); // Use useTheme to get theme info
+  const { resolvedTheme, colors } = useTheme(); 
 
   const gradientColors = useMemo(() => {
     if (colorProps && Array.isArray(colorProps) && colorProps.length === 2) {
-      return colorProps; // Use provided colorProps if valid
+      return colorProps; 
     }
 
-    // Define theme-aware gradient colors
     if (resolvedTheme === 'dark') {
-      return colors.dividerGradientDark || ['#374151', '#4B5563']; // Dark theme colors or defaults
+      return colors.dividerGradientDark || ['#374151', '#4B5563'];
     } else {
-      return colors.dividerGradientLight || ['#4A00E0', '#FF8C00']; // Light theme colors or defaults (current light theme colors)
+      return colors.dividerGradientLight || ['#4A00E0', '#FF8C00']; 
     }
   }, [colorProps, resolvedTheme, colors.dividerGradientDark, colors.dividerGradientLight]);
 

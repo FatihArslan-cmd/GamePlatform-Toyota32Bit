@@ -6,7 +6,8 @@ import FriendsPage from './Friends/index';
 import AchivementsPage from './Achivements';
 import { useButtons } from './context/ButtonsContext';
 import { useTheme } from '../../../context/ThemeContext';
- 
+import { useTranslation } from 'react-i18next'; 
+
 const Buttons = () => {
     const {
         pagerRef,
@@ -16,6 +17,7 @@ const Buttons = () => {
         handlePageChange,
     } = useButtons();
     const { colors } = useTheme();
+    const { t } = useTranslation();
     
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>

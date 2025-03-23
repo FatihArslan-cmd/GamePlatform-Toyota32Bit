@@ -5,19 +5,22 @@ import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackButton from '../../../components/BackIcon';
 import { useTheme } from '../../../context/ThemeContext';
-import { useChat } from '../context/ChatContext'; 
+import { useChat } from '../context/ChatContext';
+import {useTranslation} from 'react-i18next';
 
 const ChatHeader = () => {
     const { friend } = useChat();
     const { colors } = useTheme();
+    const { t } = useTranslation();
 
-    const getStatusText = () => friend.isOnline ? 'Online' : 'Offline';
+    const getStatusText = () => friend.isOnline ? t('chatWithFriends.online') : t('chatWithFriends.offline');
     const getStatusColor = () => friend.isOnline ? 'green' : 'red';
 
+
     return (
-        <View style={[styles.header, { 
-            backgroundColor: colors.card, 
-            borderBottomColor: colors.border 
+        <View style={[styles.header, {
+            backgroundColor: colors.card,
+            borderBottomColor: colors.border
         }]}>
             <BackButton left={0} top={18} />
             <View style={styles.contentContainer}>
@@ -35,8 +38,8 @@ const ChatHeader = () => {
                                     resizeMode={FastImage.resizeMode.cover}
                                 />
                             ) : (
-                                <View style={[styles.avatar, styles.avatarPlaceholder, { 
-                                    backgroundColor: colors.border 
+                                <View style={[styles.avatar, styles.avatarPlaceholder, {
+                                    backgroundColor: colors.border
                                 }]} />
                             )}
                         </View>
@@ -54,7 +57,7 @@ const ChatHeader = () => {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderBottomColor: '#E0E0E0',
         flexDirection: 'row',
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontFamily: 'Orbitron-ExtraBold',
-        color: '#333', 
+        color: '#333',
     },
     headerSubtitle: {
         fontSize: 14,

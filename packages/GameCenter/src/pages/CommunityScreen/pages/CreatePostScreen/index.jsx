@@ -9,12 +9,14 @@ import { createMessageApi } from './service/service';
 import { ToastService } from '../../../../context/ToastService';
 import { useTheme } from '../../../../context/ThemeContext';
 import styles from './styles/createPostStyles';
+import {useTranslation} from 'react-i18next'; // Import useTranslation
 
 const CreatePostScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState('');
   const [isPosting, setIsPosting] = useState(false);
   const { colors } = useTheme();
+  const { t } = useTranslation(); // Use useTranslation hook
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -33,7 +35,7 @@ const CreatePostScreen = ({ navigation }) => {
     setIsPosting(true);
 
     if (!postText.trim() && !selectedImage) {
-      ToastService.show("error", "Lütfen paylaşmak için bir şeyler yazın veya bir resim seçin.");
+      ToastService.show("error", t('communityScreen.emptyPostError')); // Use translation key - changed to communityScreen
       setIsPosting(false);
       return;
     }
@@ -46,10 +48,10 @@ const CreatePostScreen = ({ navigation }) => {
       await createMessageApi(messageData);
       setIsPosting(false);
       navigation.goBack();
-      ToastService.show("success", "Gönderi başarıyla oluşturuldu.");
+      ToastService.show("success", t('communityScreen.postSuccess')); // Use translation key - changed to communityScreen
     } catch (error) {
       setIsPosting(false);
-      ToastService.show("error", error.message || "Gönderi oluşturulurken bir hata oluştu.");
+      ToastService.show("error", error.message || t('communityScreen.postError')); // Use translation key - changed to communityScreen
       console.error("Post creation error:", error);
     }
   };

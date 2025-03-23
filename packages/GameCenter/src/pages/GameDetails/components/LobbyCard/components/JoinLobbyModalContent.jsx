@@ -2,10 +2,11 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import InputField from '../../../../LoginScreen/components/FormSection/components/InputField';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useTranslation} from 'react-i18next';
 
 const JoinLobbyModalContent = ({ hasPassword, password, setPassword }) => {
   const [passwordVisible, setPasswordVisible] = React.useState(false);
-
+  const { t } = useTranslation();
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -15,7 +16,7 @@ const JoinLobbyModalContent = ({ hasPassword, password, setPassword }) => {
       {hasPassword && (
         <View style={styles.inputContainer}>
           <InputField
-            label="Password"
+            label={t('gameDetailsScreen.password')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!passwordVisible} 
