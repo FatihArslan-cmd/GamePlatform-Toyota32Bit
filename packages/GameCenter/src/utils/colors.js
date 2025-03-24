@@ -1,24 +1,57 @@
-// theme/colors.js
 export const lightColors = {
-  primary: '#6366F1', // Mor
-  background: '#FFFFFF', // Beyaz
-  text: '#1F2937', // Koyu gri
-  card: '#F3F4F6', // Açık gri
-  border: '#E5E7EB', // Gri
-  success: '#10B981', // Yeşil
-  error: '#EF4444', // Kırmızı
-  warning: '#F59E0B', // Sarı
-  info: '#3B82F6', // Mavi
+  primary: '#6366F1',
+  background: '#FFFFFF',
+  text: '#1F2937',
+  subText: '#1F2937',
+  card: 'white',
+  border: '#E5E7EB',
+  success: '#10B981',
+  error: '#EF4444',
+  warning: '#F59E0B',
+  info: '#3B82F6',
+  themeTextGradient: ['#FF6B6B', 'red', 'blue', 'green', 'purple'],
+  languageTextGradient: ['black', '#778899'],
+  usernameGradient: ['#007BFF', '#6610F2'],
+  achivementsCard: 'rgba(255, 255, 255, 0.05)',
+  navigationFill:'#4A00E0',
+  gameCenterText: ['#4A00E0', '#FF8C00'],
+  navigationBarIconBg:'white',
+  blurredImageBackground: 'rgba(245, 245, 245, 0.8)',
+  dividerGradientLight: ['#4A00E0', '#FF8C00'],
+  postBG:'white',
+  bingoText:'#4a148c',
+  gameDetailsButton:'#751cef',
+  loginScreenGradient: ['#f8f0ff', '#d8c0e8', '#f8f0ff'],
+  ripple: 'rgba(0, 0, 0, .04)',
+  messageBoxLight: '#F0F0F0'
+
 };
 
 export const darkColors = {
-  primary: '#818CF8', // Açık mor
-  background: '#111827', // Koyu gri
-  text: '#F9FAFB', // Beyaz
-  card: '#1F2937', // Koyu gri
-  border: '#374151', // Koyu gri
-  success: '#10B981', // Yeşil
-  error: '#EF4444', // Kırmızı
-  warning: '#F59E0B', // Sarı
-  info: '#3B82F6', // Mavi
+  primary: '#818CF8',
+  background: '#111827',
+  text: '#F9FAFB',
+  subText: '#8199A5',
+  card: '#1F2937',
+  border: '#374151',
+  success: '#10B981',
+  error: '#EF4444',
+  warning: '#F59E0B',
+  info: '#3B82F6',
+  themeTextGradient: ['#F48FB1', '#FFD740', '#A5D6A7', '#90CAF9', '#CE93D8'],
+  languageTextGradient: ['#D3D3D3', '#E0E0E0'],
+  usernameGradient: ['#90CAF9', '#64B5F6'],
+  achivementsCard: 'rgba(255, 255, 255, 0.05)',
+  navigationFill:'#818CF8',
+  navigationBarIconBg:'#6366F1',
+  blurredImageBackground: 'rgba(15, 15, 15, 0.8)',
+  dividerGradientDark: ['#818CF8', '#C0C0C0'] ,
+  gameCenterText: ['#F48FB1', '#FFD740', '#A5D6A7', '#90CAF9', '#CE93D8'],
+  postBG:'#172136',
+  bingoText:'white',
+  gameDetailsButton:'#818CF8',
+  loginScreenGradient: ['#1a1b2e', '#2d0a3e', '#1a1b2e'] ,
+  ripple: 'rgba(255, 255, 255, .04)', 
+  messageBoxLight: '#1F2937'
+
 };

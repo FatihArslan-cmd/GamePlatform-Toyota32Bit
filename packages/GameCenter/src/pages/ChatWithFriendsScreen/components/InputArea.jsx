@@ -1,52 +1,65 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from '../../../context/ThemeContext';
+import { useChat } from '../context/ChatContext'; 
 
-const InputArea = ({ newMessageText, setNewMessageText, sendMessage }) => {
+const InputArea = () => {
+    const { colors } = useTheme();
+    const { 
+        newMessageText, 
+        setNewMessageText, 
+        handleSendMessage 
+    } = useChat(); 
+
     return (
-        <View style={styles.inputArea}>
+        <View style={[styles.inputArea, { 
+            borderTopColor: colors.border, 
+            backgroundColor: colors.card 
+        }]}>
             <TextInput
-                style={styles.input}
+                style={[styles.input, {
+                    borderColor: colors.border,
+                    backgroundColor: colors.background,
+                    color: colors.text
+                }]}
                 placeholder="Type a message..."
+                placeholderTextColor={colors.subText}
                 value={newMessageText}
                 onChangeText={setNewMessageText}
-                onSubmitEditing={sendMessage}
+                onSubmitEditing={handleSendMessage}
                 returnKeyType="send"
             />
             <TouchableOpacity
-                style={styles.sendButton}
-                onPress={sendMessage}
+                style={[styles.sendButton, { backgroundColor: colors.primary }]}
+                onPress={handleSendMessage}
             >
-                <Icon name="send" size={24} color="#fff" />
+                <Icon name="send" size={24} color={colors.card} />
             </TouchableOpacity>
         </View>
     );
 };
 
+
 const styles = StyleSheet.create({
     inputArea: {
         flexDirection: 'row',
         paddingHorizontal: 10,
-        paddingVertical: 10,
+        paddingVertical: 5,
         borderTopWidth: 1,
-        borderTopColor: '#E0E0E0',
-        backgroundColor: '#fff',
         alignItems: 'center',
     },
     input: {
         flex: 1,
         marginRight: 10,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 15,
-        borderColor: '#E0E0E0',
         borderWidth: 1,
         borderRadius: 25,
-        backgroundColor: '#F2F2F2',
         fontSize: 16,
-        color: '#333',
+        paddingVertical: 12
     },
     sendButton: {
-        backgroundColor: '#007bff',
         borderRadius: 25,
         width: 45,
         height: 45,

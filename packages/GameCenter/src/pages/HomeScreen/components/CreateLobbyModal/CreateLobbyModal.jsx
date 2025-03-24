@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper'; // Switch ve Text'i import et
+import { Button } from 'react-native-paper';
 import BottomSheet from '../../../../components/BottomSheet';
 import LobbyTypeSelector from './components/LobbyTypeSelector';
 import CustomDateTimeSelector from './components/DateTimeSelector';
@@ -9,7 +9,8 @@ import PasswordInput from './components/PasswordInput';
 import InvitationLink from './components/InvitationLink';
 import { ToastService } from '../../../../context/ToastService';
 import { createLobby } from './service/service';
-import { useBingoWebSocket } from '../../../../context/BingoWebSocket/BingoWebSocket';
+import { useBingoWebSocket } from '../../../../context/BingoGameWebsocket';
+import { useTranslation } from 'react-i18next'; 
 
 const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
@@ -24,7 +25,8 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [hasPassword, setHasPassword] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
+    const { connectWebSocket } = useBingoWebSocket();
+    const { t } = useTranslation(); 
 
     const toggleLobbyType = useCallback(() => {
         setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
@@ -33,25 +35,25 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
 
     const handleSave = useCallback(async () => {
         if (!lobbyName.trim()) {
-            ToastService.show("error", 'Lobby name cannot be empty');
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyLobbyName')); 
             return;
         }
         if (!gameName.trim()) {
-            ToastService.show("error", 'Game name cannot be empty');
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyGameName')); 
             return;
         }
         if (!maxCapacity.trim()) {
-            ToastService.show("error", 'Max capacity cannot be empty');
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyMaxCapacity'));
             return;
         }
 
         if (hasPassword && !password.trim()) {
-            ToastService.show("error", "Password cannot be empty for a password-protected lobby.");
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyPassword')); 
             return;
         }
 
         if (lobbyType === 'Event' && (!startDate || !endDate)) {
-            ToastService.show("error", "Event lobbies require start and end date.");
+            ToastService.show("error", t('createLobbyModal.toastMessages.requireStartEndDate')); 
             return;
         }
 
@@ -75,7 +77,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         } catch (error) {
             ToastService.show("error", error.message);
         }
-    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate]);
+    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate, t]);
 
     const resetLobby = useCallback(() => {
         setLobbyType('Normal');
@@ -97,20 +99,20 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
     }, [onDismiss, resetLobby]);
 
 
-    const bottomSheetHeight = isCodeGenerated ? '50%' : (lobbyType === 'Normal' ? '55%' : '76%'); // Dynamic height calculation
+    const bottomSheetHeight = isCodeGenerated ? '50%' : (lobbyType === 'Normal' ? '55%' : '76%');
 
     return (
         <BottomSheet
             visible={visible}
             onDismiss={handleDismiss}
-            title="Create Lobby"
+            title={t('createLobbyModal.title')} 
             height={bottomSheetHeight}
             backgroundColor="white"
         >
             <View style={styles.container}>
                 {!isCodeGenerated ? (
                     <>
-                        <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} />
+                        <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} t={t} /> 
                         {lobbyType === 'Event' && (
                             <CustomDateTimeSelector
                                 initialStartDate={startDate}
@@ -122,6 +124,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                                         setEndDate(date);
                                     }
                                 }}
+                                t={t}
                             />
                         )}
                         <GameSelector
@@ -131,6 +134,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             onGameNameChange={setGameName}
                             onLobbyNameChange={setLobbyName}
                             onMaxCapacityChange={setMaxCapacity}
+                            t={t} 
                         />
                     <PasswordInput
                       password={password}
@@ -139,6 +143,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                       onToggleVisibility={() => setIsPasswordVisible(!isPasswordVisible)}
                       hasPassword={hasPassword}
                       onPasswordToggle={setHasPassword}
+                      t={t} 
                        />
                         <Button
                             mode="contained"
@@ -150,19 +155,20 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             contentStyle={styles.createButtonContent}
                             icon="plus-circle"
                         >
-                            Create Lobby
+                            {t('createLobbyModal.buttons.createLobby')} 
                         </Button>
                     </>
                 ) : (
                     <View style={styles.successContainer}>
-                        <InvitationLink code={code} />
+                        <InvitationLink code={code} t={t} /> 
                         <Button
                             mode="outlined"
                             onPress={resetLobby}
                             style={styles.resetButton}
                             icon="refresh"
+                            labelStyle={styles.resetButtonLabel}
                         >
-                            Create New Lobby
+                            {t('createLobbyModal.buttons.createNewLobby')} 
                         </Button>
                     </View>
                 )}
@@ -195,6 +201,9 @@ const styles = StyleSheet.create({
     },
     resetButton: {
         marginTop: 'auto',
+    },
+    resetButtonLabel: {
+        fontFamily: 'Orbitron-ExtraBold',
     },
     passwordSwitchContainer: {
         flexDirection: 'row',

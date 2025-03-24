@@ -4,20 +4,23 @@ import { Card, List } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
 import { ToastService } from '../../../context/ToastService';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const ThemeSection = () => {
   const [expanded, setExpanded] = useState(false);
   const { theme, setTheme, resolvedTheme, colors } = useTheme();
+  const { t } = useTranslation(); 
+
 
   const handlePress = () => setExpanded(!expanded);
 
   const handleThemeChange = (newTheme) => {
     if (theme === newTheme) {
-      ToastService.show('info', 'This theme is already selected');
+      ToastService.show('info', t('settingsScreen.themeSection.alreadySelected')); 
     } else {
       setTheme(newTheme);
       setExpanded(false);
-      ToastService.show('success', `Theme changed to ${newTheme}`);
+      ToastService.show('success', t('settingsScreen.themeSection.themeChanged') + t(`settingsScreen.themeSection.${newTheme}Mode`).toLowerCase()); 
     }
   };
 
@@ -38,7 +41,7 @@ const ThemeSection = () => {
     <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
         <GrandientText
-          text="Theme"
+          text={t('settingsScreen.themeSection.title')} 
           colors={colors.themeTextGradient}
           textStyle={{ fontSize: 22, color: colors.text }}
           gradientDirection="horizontal"
@@ -48,28 +51,28 @@ const ThemeSection = () => {
           expanded={expanded}
           onPress={handlePress}
           titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
-          title="Choose Theme"
+          title={t('settingsScreen.themeSection.chooseTheme')} 
           descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText }}
-          description={theme.charAt(0).toUpperCase() + theme.slice(1) + ' Mode'}
+          description={t(`settingsScreen.themeSection.${theme}ModeDescription`)} 
           left={props => <List.Icon {...props} color={colors.primary} icon="palette" />}
-          right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />} 
+          right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />}
         >
           <List.Item
-            title="System Default"
+            title={t('settingsScreen.themeSection.systemDefault')} 
             onPress={() => handleThemeChange('system')}
             titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
             left={props => <List.Icon {...props} icon={getThemeIcon('system')} color={colors.primary} />}
             right={() => theme === 'system' ? <List.Icon icon="check" color={colors.primary} /> : null}
           />
           <List.Item
-            title="Light Mode"
+            title={t('settingsScreen.themeSection.lightMode')} 
             onPress={() => handleThemeChange('light')}
             titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
             left={props => <List.Icon {...props} icon={getThemeIcon('light')} color={colors.primary} />}
             right={() => theme === 'light' ? <List.Icon icon="check" color={colors.primary} /> : null}
           />
           <List.Item
-            title="Dark Mode"
+            title={t('settingsScreen.themeSection.darkMode')} 
             onPress={() => handleThemeChange('dark')}
             titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
             left={props => <List.Icon {...props} icon={getThemeIcon('dark')} color={colors.primary} />}

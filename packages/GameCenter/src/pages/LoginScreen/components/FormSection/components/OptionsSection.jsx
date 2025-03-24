@@ -2,10 +2,13 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, TouchableRipple, Surface, Checkbox } from 'react-native-paper';
 import { useFormContext } from '../../../context/FormContext'; 
+import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const OptionsSection = () => {
     const { rememberMe, setRememberMe, setIsForgotPassword } = useFormContext();
-
+    const { colors } = useTheme();
+    const { t } = useTranslation();
     return (
         <Surface style={styles.container}>
             <TouchableRipple
@@ -17,12 +20,16 @@ const OptionsSection = () => {
                         onPress={() => setRememberMe(!rememberMe)}
                         color="#8a2be2"
                     />
-                    <Text style={styles.checkboxLabel}>Remember Me</Text>
+                    <Text style={[styles.checkboxLabel,{color:colors.text}]}>
+                        {t('loginScreen.rememberMe')}
+                    </Text>
                 </>
             </TouchableRipple>
 
             <TouchableRipple onPress={() => setIsForgotPassword(true)} style={styles.forgotPassword}>
-                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                <Text style={styles.forgotPasswordText}>
+                    {t('loginScreen.forgotPassword')}
+                </Text>
             </TouchableRipple>
         </Surface>
     );

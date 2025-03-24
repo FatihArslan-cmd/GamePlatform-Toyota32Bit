@@ -8,6 +8,7 @@ import { sendVerificationCode } from '../service/sendVerificationCode';
 import { Linking } from 'react-native';
 import{ fetchAndStoreGames }from '../../../utils/api.js';
 import { UserContext } from '../../../context/UserContext';
+import { useTranslation } from 'react-i18next';
 
 const FormContext = createContext();
 
@@ -15,6 +16,7 @@ export const FormProvider = ({ children }) => {
     const navigation = useNavigation();
     const { modalVisible, modalType, modalMessage, modalTitle, showModal, closeModal } = useModal();
     const { loginUser } = useContext(UserContext);
+    const { t } = useTranslation(); 
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -36,7 +38,6 @@ export const FormProvider = ({ children }) => {
             }
             navigation.navigate('Tabs');
         } catch (error) {
-            console.error('Error during post-login actions:', error);
             setIsLoading(false);
         }
     };
@@ -44,14 +45,14 @@ export const FormProvider = ({ children }) => {
     const handleLoginPress = async () => {
         try {
             if (rememberMe) {
-                showModal('bio', 'Remember Me?', 'Are you sure you want to enable Remember Me?');
+                showModal('bio', t('formContextMessages.rememberMeTitle'), t('formContextMessages.rememberMeMessage'));
             } else {
                 await handleDirectLogin();
                 deleteIfExists('permissions');
                 deleteIfExists('QrCode');
             }
         } catch (error) {
-            showModal('error', 'Login Error', error.message || 'An error occurred during login');
+            showModal('error', t('formContextMessages.loginErrorTitle'), error.message || t('formContextMessages.loginErrorMessage')); 
         }
     };
 
@@ -60,11 +61,10 @@ export const FormProvider = ({ children }) => {
             const data = await login(username, password);
             setIsLoading(true);
             loginUser(data.data);
-            console.log('Login successful:', data.data);
             await handlePostLoginActions();
             setIsLoading(false);
         } catch (error) {
-            showModal('error', 'Login Error', error.message || 'An error occurred during login');
+            showModal('error', t('formContextMessages.loginErrorTitle'), error.message || t('formContextMessages.loginErrorMessage')); 
             setIsLoading(false);
         }
     };
@@ -76,7 +76,7 @@ export const FormProvider = ({ children }) => {
 
     const handleSendCode = async () => {
         if (!username.trim()) {
-            ToastService.show("error", 'Username cannot be empty');
+            ToastService.show("error", t('formContextMessages.usernameEmpty'));
             return;
         }
         if (countdown === 0 && !loading) {
@@ -84,23 +84,22 @@ export const FormProvider = ({ children }) => {
             try {
                 await sendVerificationCode(username);
                 setCountdown(30);
-                ToastService.show("info", 'Code sent successfully');
+                ToastService.show("info", t('formContextMessages.codeSentSuccess')); 
                 setTimeout(() => {
                     Linking.openURL('https://gmail.app.goo.gl');
                 }, 2500);
             } catch (errorResponse) {
-                console.error("Error sending verification code:", errorResponse);
                 if (errorResponse.status === 404) {
-                    ToastService.show("error", 'User not found');
+                    ToastService.show("error", t('formContextMessages.userNotFound')); 
                 } else if (errorResponse.status === 400) {
-                    ToastService.show("error", 'Invalid username or email issue');
+                    ToastService.show("error", t('formContextMessages.invalidUsernameEmail'));
                 } else if (errorResponse.status === 429) {
                     const timeLeftMatch = errorResponse.data.message.match(/Please wait (\d+) seconds/);
                     const timeLeft = timeLeftMatch ? parseInt(timeLeftMatch[1], 10) : 30;
-                    ToastService.show("error", errorResponse.data.message);
+                    ToastService.show("error", t('formContextMessages.rateLimitError', { seconds: timeLeft })); 
                     setCountdown(timeLeft);
                 } else {
-                    ToastService.show("error", 'Failed to send password reset code. Please try again.');
+                    ToastService.show("error", t('formContextMessages.sendCodeFailed'));
                 }
                 setCountdown(0);
             } finally {

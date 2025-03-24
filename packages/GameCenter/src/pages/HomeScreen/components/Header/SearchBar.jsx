@@ -1,12 +1,18 @@
 import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import { TextInput, IconButton,Tooltip } from 'react-native-paper';
+import { TextInput, IconButton, Tooltip } from 'react-native-paper';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useTheme } from '../../../../context/ThemeContext';
+import { useHeader } from './context/HeaderContext'; 
+import { useTranslation } from 'react-i18next';
 
-const SearchBar = ({ searchMode, setSearchMode, searchQuery, setSearchQuery }) => {
+const SearchBar = () => { 
   const searchBarWidth = useSharedValue(0);
   const searchBarOpacity = useSharedValue(0);
   const searchInputRef = useRef(null);
+  const { colors } = useTheme();
+  const { searchMode, setSearchMode, searchQuery, setSearchQuery } = useHeader(); 
+  const { t } = useTranslation();
 
   const handleSearchPress = () => {
     setSearchMode(true);
@@ -33,7 +39,7 @@ const SearchBar = ({ searchMode, setSearchMode, searchQuery, setSearchQuery }) =
         <>
           <IconButton
             icon="arrow-left"
-            color="gray"
+            iconColor={colors.text}
             size={24}
             onPress={handleCloseSearch}
             style={styles.backButton}
@@ -41,28 +47,27 @@ const SearchBar = ({ searchMode, setSearchMode, searchQuery, setSearchQuery }) =
           <Animated.View style={[styles.animatedSearchBar, searchBarStyle]}>
             <TextInput
               ref={searchInputRef}
-              style={styles.searchInput}
-              placeholder="Search games..."
+              style={[styles.searchInput, { backgroundColor: colors.card, color: colors.text }]}
+              placeholder={t('homeScreen.searchPlaceholder')}
               value={searchQuery}
-              onChangeText={setSearchQuery}
+              onChangeText={setSearchQuery} 
               mode="outlined"
               dense
-              autoFocus={false}
-              placeholderTextColor="gray"
-              outlineStyle={{ borderRadius: 20, borderColor: '#ddd' }}
-              contentStyle={{ backgroundColor: '#fff', height: 40 }}
-              selectionColor="#007BFF"
+              autoFocus={true}
+              placeholderTextColor={colors.subText}
+              outlineStyle={{ borderRadius: 20, borderColor: colors.border }}
+              contentStyle={{ backgroundColor: colors.card, height: 40 }}
+              selectionColor={colors.primary}
             />
           </Animated.View>
         </>
       ) : (
         <Tooltip title='Search' >
-        <IconButton
-          icon="magnify"
-          onPress={handleSearchPress}
-          color="gray"
-          
-        />
+          <IconButton
+            icon="magnify"
+            onPress={handleSearchPress}
+            iconColor={colors.text}
+          />
         </Tooltip>
       )}
     </>
@@ -78,7 +83,6 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    backgroundColor: 'white',
     fontSize: 16,
     borderRadius: 20,
     height: 30,

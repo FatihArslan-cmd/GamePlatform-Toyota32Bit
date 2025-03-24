@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import GradientDivider from '../../../../components/GradientDivider';
 import GameCard from './components/GameCard';
-import gameData from '../GameDetails/gameData.json';
-import imageAssets from '../GameDetails/imageAssets';
+import gameData from '../../../GameDetails/utils/gameData.json';
+import imageAssets from '../../../GameDetails/utils/imageAssets';
 import GrandientText from '../../../../components/GrandientText';
 import PagerView from 'react-native-pager-view';
-import PaginationDots from './components/PaginationDots'; 
+import PaginationDots from './components/PaginationDots';
+import { useTheme } from '../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const FromTheCreator = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { colors } = useTheme();
+  const themedStyles = useStyles(colors);
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   const getImageSource = (imageName) => {
     return imageAssets[imageName] || null;
@@ -28,30 +34,26 @@ const FromTheCreator = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={themedStyles.container}>
       <GrandientText
-        text="From the Creator"
-        colors={['black', '#778899']}
+        text={t('homeScreen.fromTheCreator')}
+        colors={colors.themeTextGradient}
         textStyle={{ fontSize: 32 }}
         gradientDirection="horizontal"
         width={400}
       />
       <GradientDivider />
 
-      <View style={styles.pagerContainer}>
-        <PagerView
-          style={styles.pagerView}
-          initialPage={0}
-          orientation="horizontal"
-          onPageSelected={handlePageScroll}
-        >
+      <View style={themedStyles.pagerContainer}>
+        <PagerView style={themedStyles.pagerView} initialPage={0} orientation="horizontal" onPageSelected={handlePageScroll}>
           {gameData.map((game, index) => (
-            <View key={index} style={styles.page}>
+            <View key={index} style={themedStyles.page}>
               <GameCard
-                gameName={game.gameName}
-                instructions={game.instructions}
+                gameName={game.gameName?.[currentLanguage] || game.gameName?.en }
+                instructions={game.instructions?.[currentLanguage] || game.instructions?.en }
+                explanation={game.explanation?.[currentLanguage] || game.explanation?.en }
                 imageSource={getImageSource(game.imageSource)}
-                buttonText="Explore Now"
+                buttonText={t('homeScreen.exploreNow')}
                 buttonColors={buttonColorSets[index % buttonColorSets.length]}
                 backgroundColors={game.backgroundColors}
               />
@@ -59,26 +61,17 @@ const FromTheCreator = () => {
           ))}
         </PagerView>
 
-        <PaginationDots 
-          activeIndex={activeIndex}
-          count={gameData.length}
-        />
+        <PaginationDots activeIndex={activeIndex} count={gameData.length} />
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#ffffff',
-  },
-  title: {
-    fontSize: 28,
-    fontFamily: 'Orbitron-VariableFont_wght',
-    textAlign: 'center',
-    marginBottom: 16,
+    backgroundColor: colors.background,
   },
   pagerContainer: {
     flex: 1,

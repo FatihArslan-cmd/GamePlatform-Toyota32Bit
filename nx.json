@@ -10,10 +10,13 @@
       "dependsOn": []
     },
     "start": {
-      "dependsOn": []
+      "dependsOn": [],
+      "cache": true
     },
     "test": {
-      "dependsOn": []
+     "dependsOn": [
+          "build"
+        ]
     }
   }
 }

@@ -5,32 +5,47 @@ import GrandientText from '../../../components/GrandientText';
 import GradientDivider from '../../../components/GradientDivider';
 import { ToastService } from '../../../context/ToastService';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
+import * as storage from '../../../utils/storage'; 
 
 const LanguageSection = () => {
   const [expanded, setExpanded] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('Turkish');
+  const { t, i18n } = useTranslation();
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const { colors } = useTheme();
-
   const handlePress = () => setExpanded(!expanded);
 
-  const handleLanguageChange = (language) => {
-    if (selectedLanguage === language) {
-      ToastService.show('info', 'This language is already selected');
-    } else {
-      setSelectedLanguage(language);
-      setExpanded(false);
-      ToastService.show('success', `Language changed to ${language}`);
-    }
+
+  const changeLanguage = (value) => {
+    i18n.changeLanguage(value)
+      .then(() => {
+        storage.set('language', value); 
+        setSelectedLanguage(value);
+      })
+      .catch(err => console.log(err));
   };
 
   const getFlagEmoji = (language) => {
     switch (language) {
-      case 'Turkish':
+      case 'tr':
         return '🇹🇷 ';
-      case 'English':
+      case 'en':
         return '🇺🇸 ';
-      case 'German':
+      case 'de':
         return '🇩🇪 ';
+      default:
+        return '';
+    }
+  };
+
+  const getLanguageCodeDisplay = (langCode) => {
+    switch (langCode) {
+      case 'tr':
+        return 'TR';
+      case 'en':
+        return 'EN';
+      case 'de':
+        return 'DE';
       default:
         return '';
     }
@@ -40,7 +55,7 @@ const LanguageSection = () => {
     <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
         <GrandientText
-          text="Language"
+          text={t('settingsScreen.langSection.language')} 
           colors={colors.languageTextGradient}
           textStyle={{ fontSize: 22, color: colors.text }}
           gradientDirection="horizontal"
@@ -50,33 +65,35 @@ const LanguageSection = () => {
           expanded={expanded}
           onPress={handlePress}
           titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
-          title="Choose Language"
+          title={t('settingsScreen.langSection.chooseLang')}
           descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText }}
-          description={`${selectedLanguage} (${selectedLanguage === 'Turkish' ? 'TR' : selectedLanguage === 'English' ? 'EN' : 'DE'})`}
+          description={`${i18n.language} (${getLanguageCodeDisplay(i18n.language)})`} 
           left={props => <List.Icon {...props} color={colors.primary} icon="translate" />}
-          right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />} 
+          right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />}
         >
-          <List.Item
-            title={`${getFlagEmoji('Turkish')}Türkçe`}
-            onPress={() => handleLanguageChange('Turkish')}
-            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
-            left={props => <List.Icon {...props} color={colors.primary} />}
-            right={() => selectedLanguage === 'Turkish' ? <List.Icon icon="check" color={colors.primary} /> : null}
-          />
-          <List.Item
-            title={`${getFlagEmoji('English')}English`}
-            onPress={() => handleLanguageChange('English')}
-            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
-            left={props => <List.Icon {...props} color={colors.primary} />}
-            right={() => selectedLanguage === 'English' ? <List.Icon icon="check" color={colors.primary} /> : null}
-          />
-          <List.Item
-            title={`${getFlagEmoji('German')}Deutsch`}
-            titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
-            onPress={() => handleLanguageChange('German')}
-            left={props => <List.Icon {...props} color={colors.primary} />}
-            right={() => selectedLanguage === 'German' ? <List.Icon icon="check" color={colors.primary} /> : null}
-          />
+        <List.Item
+          title={`${getFlagEmoji('tr')} ${t('loginScreen.turkish')}`}
+          onPress={() => changeLanguage('tr')}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          left={props => <List.Icon {...props} color={colors.primary} />}
+          right={() => i18n.language === 'tr' ? <List.Icon icon="check" color={colors.primary} /> : null}
+        />
+
+        <List.Item
+          title={`${getFlagEmoji('en')} ${t('loginScreen.english')}`}
+          onPress={() => changeLanguage('en')}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          left={props => <List.Icon {...props} color={colors.primary} />}
+          right={() => i18n.language === 'en' ? <List.Icon icon="check" color={colors.primary} /> : null}
+        />
+
+        <List.Item
+          title={`${getFlagEmoji('de')} ${t('loginScreen.german')}`}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          onPress={() => changeLanguage('de')}
+          left={props => <List.Icon {...props} color={colors.primary} />}
+          right={() => i18n.language === 'de' ? <List.Icon icon="check" color={colors.primary} /> : null}
+        />
         </List.Accordion>
       </Card.Content>
     </Card>

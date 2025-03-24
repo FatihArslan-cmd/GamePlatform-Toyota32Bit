@@ -1,51 +1,59 @@
 import React, { useState } from 'react';
-import { StyleSheet , View } from 'react-native';
-import { Menu, Provider , Text , TouchableRipple} from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Menu, Text, TouchableRipple } from 'react-native-paper';
+import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
+import { storage } from '../../../utils/storage';
 
 const LanguageSelector = () => {
   const [visible, setVisible] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('TR');
+  const { colors } = useTheme();
+  const { t, i18n } = useTranslation(); 
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
-  const handleLanguageSelect = (language) => {
-    setSelectedLanguage(language);
-    closeMenu();
+  const changeLanguage = (value) => {
+    i18n.changeLanguage(value)
+      .then(() => storage.set('language', value))
+      .catch(err => console.log(err))
+      .finally(closeMenu);
   };
-
   return (
     <View style={styles.container}>
       <Menu
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <TouchableRipple onPress={openMenu} style={styles.button}>
-            <Text style={styles.buttonText}>{selectedLanguage}</Text>
+          <TouchableRipple onPress={openMenu} style={[styles.button]}>
+            <Text style={[styles.buttonText, { color: colors.text }]}>
+              {i18n.language.toUpperCase()}
+            </Text>
           </TouchableRipple>
         }
-        contentStyle={styles.menuContent} 
+        contentStyle={[styles.menuContent, { backgroundColor: colors.card }]}
       >
         <Menu.Item
-          onPress={() => handleLanguageSelect('TR')}
-          title="Türkçe"
-          titleStyle={styles.menuItemText}
+          onPress={() => changeLanguage('tr')}
+          title={t('loginScreen.turkish')} 
+          titleStyle={[styles.menuItemText, { color: colors.text }]}
         />
         <Menu.Item
-          onPress={() => handleLanguageSelect('EN')}
-          title="English"
-          titleStyle={styles.menuItemText} 
+          onPress={() => changeLanguage('en')}
+          title={t('loginScreen.english')} 
+          titleStyle={[styles.menuItemText, { color: colors.text }]}
         />
         <Menu.Item
-          onPress={() => handleLanguageSelect('DE')}
-          title="Deutsch"
-          titleStyle={styles.menuItemText}
+          onPress={() => changeLanguage('de')}
+          title={t('loginScreen.german')} 
+          titleStyle={[styles.menuItemText, { color: colors.text }]}
         />
       </Menu>
     </View>
   );
 };
 
+// Styles kısmı aynı kalıyor
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -54,17 +62,16 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   button: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(135, 135, 135, 0.1)',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 5,
   },
   buttonText: {
-    color: 'white',
     fontFamily: 'Orbitron-ExtraBold',
   },
   menuItemText: {
-    fontFamily: 'Orbitron-ExtraBold', 
+    fontFamily: 'Orbitron-ExtraBold',
   },
   menuContent: {
     marginTop: 75,

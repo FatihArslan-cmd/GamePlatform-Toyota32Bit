@@ -1,7 +1,7 @@
-import { useAnimatedStyle, interpolate, withSpring } from 'react-native-reanimated';
+import { useAnimatedStyle, interpolate, withSpring, useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 
-const HEADER_SCROLL_DISTANCE = 750; // Kaydırma mesafesi
-const SPRING_CONFIG = {           // Yay animasyonu konfigürasyonu
+const HEADER_SCROLL_DISTANCE = 750;
+const SPRING_CONFIG = {
   mass: 0.5,
   damping: 15,
   stiffness: 100,
@@ -10,7 +10,26 @@ const SPRING_CONFIG = {           // Yay animasyonu konfigürasyonu
   restSpeedThreshold: 0.01,
 };
 
-const useHeaderAnimation = (scrollY, appBarHeight) => {
+const useHeaderAnimation = () => {
+  const appBarHeight = useSharedValue(0);
+  const scrollY = useSharedValue(0);
+  const isScrolling = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      if (!isScrolling.value) {
+        isScrolling.value = true;
+      }
+      scrollY.value = event.contentOffset.y;
+    },
+    onEndDrag: () => {
+      isScrolling.value = false;
+    },
+    onMomentumEnd: () => {
+      isScrolling.value = false;
+    },
+  });
+
   const headerAnimatedStyle = useAnimatedStyle(() => {
     const translateY = interpolate(
       scrollY.value,
@@ -30,11 +49,19 @@ const useHeaderAnimation = (scrollY, appBarHeight) => {
       transform: [{
         translateY: withSpring(translateY, SPRING_CONFIG)
       }],
-      opacity: withSpring(opacity, SPRING_CONFIG), // Fade animation ekleniyor
+      opacity: withSpring(opacity, SPRING_CONFIG),
     };
   }, [appBarHeight]);
 
-  return headerAnimatedStyle;
+  const onLayout = (event) => {
+    appBarHeight.value = event.nativeEvent.layout.height;
+  };
+
+  return {
+    headerAnimatedStyle,
+    scrollHandler,
+    onLayout,
+  };
 };
 
 export default useHeaderAnimation;

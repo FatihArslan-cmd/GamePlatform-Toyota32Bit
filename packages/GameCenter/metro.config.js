@@ -3,9 +3,7 @@ const path = require('path');
 
 const config = {
   watchFolders: [
-    // Lerna root düzeyindeki node_modules
     path.resolve(__dirname, '../../node_modules'),
-    // Shared klasörü
     path.resolve(__dirname, '../Bingo'),
   ],
   resolver: {

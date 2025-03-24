@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useFormContext } from '../../../context/FormContext'; 
 import FadeIn from '../../../../../components/Animations/FadeInAnimation';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPasswordSection = () => {
     const { 
@@ -12,7 +13,8 @@ const ForgotPasswordSection = () => {
         setCountdown, 
         loading 
     } = useFormContext();
-
+    const { t } = useTranslation();
+    
     useEffect(() => {
         let timer;
         if (countdown > 0) {
@@ -33,7 +35,7 @@ const ForgotPasswordSection = () => {
                 disabled={countdown > 0 || loading}
                 loading={loading}
             >
-                {countdown > 0 ? `Retry in ${countdown}s` : 'Send Code'}
+                {countdown > 0 ? `${countdown} ${t('loginScreen.retryIn')}` : t('loginScreen.sendCode')}
             </Button>
 
             <Button
@@ -42,7 +44,7 @@ const ForgotPasswordSection = () => {
                 style={styles.signupButton}
                 labelStyle={styles.signupButtonLabel}
             >
-                Back to Login
+                {t('loginScreen.backToLogin')}
             </Button>
         </FadeIn>
     );

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Animated, Linking, Alert } from 'react-native';
-import { Surface, Text, IconButton, useTheme, TouchableRipple } from 'react-native-paper';
+import { StyleSheet, View, Animated, Linking } from 'react-native';
+import { Surface, Text, IconButton, TouchableRipple } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { ToastService } from '../../../../../context/ToastService';
+import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const InvitationLink = ({code}) => {
   const [copied, setCopied] = useState(false);
   const [animation] = useState(new Animated.Value(0));
-
+  const { t } = useTranslation(); 
   const theme = useTheme();
 
   const handleCopy = async () => {
@@ -16,7 +18,7 @@ const InvitationLink = ({code}) => {
     Clipboard.setString(code);
 
     setCopied(true);
-    ToastService.show('success', 'Copied to clipboard');
+    ToastService.show('success', t('createLobbyModal.invitationLink.copyCode'));
     Animated.sequence([
       Animated.spring(animation, {
         toValue: 1,
@@ -57,8 +59,7 @@ const InvitationLink = ({code}) => {
     }
 
     Linking.openURL(url).catch((err) => {
-      
-      ToastService.show('error', 'Failed to open link');
+      ToastService.show('error', t('toastMessages.failedToOpenLink')); 
     });
   };
 
@@ -66,9 +67,9 @@ const InvitationLink = ({code}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Share your lobby</Text>
-      <Text style={styles.subtitle}>
-        Give your teammates access to this lobby and start playing in real time
+      <Text style={[styles.title, { color: theme.colors.text }]}>{t('createLobbyModal.invitationLink.invitationCode')}</Text>
+      <Text style={[styles.subtitle, { color: theme.colors.subText }]}>
+        {t('createLobbyModal.invitationLink.shareLobbySubtitle')} 
       </Text>
 
       <LottieView
@@ -78,7 +79,7 @@ const InvitationLink = ({code}) => {
         style={styles.lottieAnimation}
       />
 
-      <Surface style={styles.linkContainer} elevation={2}>
+      <Surface style={[styles.linkContainer, { backgroundColor: theme.colors.card }]} elevation={2}>
         <TouchableRipple
           style={styles.linkTouchable}
           onPress={handleCopy}
@@ -94,10 +95,10 @@ const InvitationLink = ({code}) => {
               <IconButton
                 icon="link-variant"
                 size={24}
-                iconColor={theme.colors.primary}
+                iconColor={useTheme().colors.text}
                 style={styles.linkIcon}
               />
-              <Text numberOfLines={1} style={styles.linkText}>
+              <Text numberOfLines={1} style={[styles.linkText, { color: theme.colors.text }]}>
                 {code}
               </Text>
             </View>
@@ -105,7 +106,7 @@ const InvitationLink = ({code}) => {
             <IconButton
               icon={copied ? 'check' : 'content-copy'}
               size={24}
-              iconColor={copied ? theme.colors.success : theme.colors.primary}
+              iconColor={copied ? useTheme().colors.success : useTheme().colors.primary}
               style={styles.copyIcon}
               onPress={handleCopy}
             />

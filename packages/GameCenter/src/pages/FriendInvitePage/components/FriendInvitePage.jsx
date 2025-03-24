@@ -7,7 +7,8 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import FriendList from './FriendList';
 import LobbyInfo from './LobbyInfo';
 import { useFriendInvite } from '../context/FriendInviteContext';
-
+import { useTheme } from '../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 const FriendInvitePage = () => {
     const {
         friends,
@@ -17,27 +18,31 @@ const FriendInvitePage = () => {
         noLobbyError,
         handleInvite,
     } = useFriendInvite();
+    
+    const { colors, resolvedTheme } = useTheme(); 
+    const { t } = useTranslation();
+    const backgroundImageSource = resolvedTheme === 'dark'
+        ? require('../../../locales/bgImages/darkblurredimage.jpg') 
+        : require('../../../locales/bgImages/blurredimage.jpg'); 
 
     if (loading || lobbyLoading) {
         return (
-            <View style={styles.centerContainer}>
+            <View style={[styles.centerContainer, { backgroundColor: colors.background }]}> 
                 <LoadingIndicator />
             </View>
         );
     }
 
- 
-
     if (noLobbyError) {
         return (
             <ImageBackground
-                source={require('../../../locales/bgImages/darkblurredimage.jpg')}
+                source={backgroundImageSource} 
                 style={styles.backgroundImage}
             >
                 <Header />
-                <View style={styles.container}>
+                <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}> {/* Apply theme background color */}
                     <View style={styles.centerContainer}>
-                        <EmptyState message="Arkadaşları davet etmeden önce bir lobiye katılın." />
+                        <EmptyState message={t('friendInvitePage.emptyState1')} />
                     </View>
                 </View>
             </ImageBackground>
@@ -47,13 +52,13 @@ const FriendInvitePage = () => {
     if (!friends || friends.length === 0) {
         return (
             <ImageBackground
-                source={require('../../../locales/bgImages/darkblurredimage.jpg')}
+                source={backgroundImageSource} 
                 style={styles.backgroundImage}
             >
                 <Header />
-                <View style={styles.container}>
+                <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}> {/* Apply theme background color */}
                     <View style={styles.centerContainer}>
-                        <EmptyState message="Arkadaş bulunamadı." />
+                        <EmptyState textColor={colors.text} message={t('friendInvitePage.emptyState2')} />
                     </View>
                 </View>
             </ImageBackground>
@@ -62,11 +67,11 @@ const FriendInvitePage = () => {
 
     return (
         <ImageBackground
-            source={require('../../../locales/bgImages/darkblurredimage.jpg')}
+            source={backgroundImageSource}
             style={styles.backgroundImage}
         >
             <Header />
-            <View style={styles.container}>
+            <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}> 
                 {userLobby && (
                     <LobbyInfo userLobby={userLobby} />
                 )}
@@ -85,7 +90,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: 'rgba(245, 245, 245, 0.8)',
+         backgroundColor: 'rgba(245, 245, 245, 0.8)', 
     },
     centerContainer: {
         flex: 1,

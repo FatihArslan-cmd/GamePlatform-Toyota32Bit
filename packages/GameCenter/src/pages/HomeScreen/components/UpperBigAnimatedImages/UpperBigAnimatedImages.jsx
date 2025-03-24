@@ -5,10 +5,13 @@ import GameHeader from './components/GameHeader';
 import GameCard from './components/GameCard';
 import PaginationDots from './components/PaginationDots';
 import TopRatedImagePlaceHolder from '../../../../components/SkeletonPlaceHolder/TopRatedImagePlaceHolder';
+import { useTheme } from '../../../../context/ThemeContext'; 
 
 const FeaturedGames = React.memo(({ games }) => {
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const { colors } = useTheme(); 
+  const themedStyles = styles(colors); 
 
   const handlePageChange = useCallback(() => {
     setCurrentPage((prevPage) => {
@@ -26,13 +29,13 @@ const FeaturedGames = React.memo(({ games }) => {
   }, [games.length, handlePageChange]);
 
   return (
-    <View style={styles.container}>
+    <View style={themedStyles.container}>
       <GameHeader />
       {games.length > 0 ? (
-        <View style={styles.carouselContainer}>
+        <View style={themedStyles.carouselContainer}>
           <PagerView
             ref={pagerRef}
-            style={styles.pager}
+            style={themedStyles.pager}
             initialPage={0}
             onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}
           >
@@ -49,10 +52,10 @@ const FeaturedGames = React.memo(({ games }) => {
   );
 });
 
-const styles = StyleSheet.create({
+const styles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background, 
   },
   carouselContainer: {
     height: Dimensions.get('window').height * 0.55,

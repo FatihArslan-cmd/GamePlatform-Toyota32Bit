@@ -14,8 +14,7 @@ const FriendsProvider = ({ children }) => {
             setError(null);
             try {
                 const fetchedFriends = await fetchFriends();
-                console.log("Fetched Friends Data in Context:", fetchedFriends); // Log in context
-                setFriends(fetchedFriends.friends || fetchedFriends); // Handle different API responses
+                setFriends(fetchedFriends.friends || fetchedFriends); 
             } catch (e) {
                 console.error('Error in FriendsContext loadFriends:', e);
                 setError(e.message || 'Failed to fetch friends. Please check your network connection.');
@@ -31,8 +30,6 @@ const FriendsProvider = ({ children }) => {
         friends,
         loading,
         error,
-        // You might want to add a function to refresh friends here if needed later
-        // refreshFriends: loadFriends, // Example: Function to reload friends manually
     };
 
     return (

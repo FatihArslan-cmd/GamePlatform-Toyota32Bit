@@ -1,25 +1,32 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { List ,TouchableRipple} from 'react-native-paper';
+import { List, TouchableRipple } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackButton from '../../../components/BackIcon';
+import { useTheme } from '../../../context/ThemeContext';
+import { useChat } from '../context/ChatContext';
+import {useTranslation} from 'react-i18next';
 
-const ChatHeader = ({ friend, onMoreActions }) => {
-    const getStatusText = () => {
-        return friend.isOnline ? 'Online' : 'Offline';
-    };
-    const getStatusColor = () => {
-        return friend.isOnline ? 'green' : 'red';
-    };
+const ChatHeader = () => {
+    const { friend } = useChat();
+    const { colors } = useTheme();
+    const { t } = useTranslation();
+
+    const getStatusText = () => friend.isOnline ? t('chatWithFriends.online') : t('chatWithFriends.offline');
+    const getStatusColor = () => friend.isOnline ? 'green' : 'red';
+
 
     return (
-        <View style={styles.header}>
+        <View style={[styles.header, {
+            backgroundColor: colors.card,
+            borderBottomColor: colors.border
+        }]}>
             <BackButton left={0} top={18} />
             <View style={styles.contentContainer}>
                 <List.Item
                     title={friend.username}
-                    titleStyle={styles.headerTitle}
+                    titleStyle={[styles.headerTitle, { color: colors.text }]}
                     description={getStatusText()}
                     descriptionStyle={[styles.headerSubtitle, { color: getStatusColor() }]}
                     left={() => (
@@ -27,19 +34,18 @@ const ChatHeader = ({ friend, onMoreActions }) => {
                             {friend.profilePhoto ? (
                                 <FastImage
                                     style={styles.avatar}
-                                    source={{
-                                        uri: friend.profilePhoto,
-                                        priority: FastImage.priority.normal,
-                                    }}
+                                    source={{ uri: friend.profilePhoto }}
                                     resizeMode={FastImage.resizeMode.cover}
                                 />
                             ) : (
-                                <View style={[styles.avatar, styles.avatarPlaceholder]} />
+                                <View style={[styles.avatar, styles.avatarPlaceholder, {
+                                    backgroundColor: colors.border
+                                }]} />
                             )}
                         </View>
                     )}
                     right={() => (
-                        <TouchableRipple style={styles.headerButton} onPress={onMoreActions}>
+                        <TouchableRipple style={styles.headerButton}>
                             <Icon name="ellipsis-vertical" size={24} color="#555" />
                         </TouchableRipple>
                     )}

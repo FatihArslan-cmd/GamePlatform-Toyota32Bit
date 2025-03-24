@@ -4,7 +4,7 @@ import { useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
-import InputArea from '../../ChatWithFriendsScreen/components/InputArea';
+import InputArea from './InputArea';
 import { useWebSocket } from '../context/WebSocketContext';
 import { useTheme } from '../../../context/ThemeContext';
 

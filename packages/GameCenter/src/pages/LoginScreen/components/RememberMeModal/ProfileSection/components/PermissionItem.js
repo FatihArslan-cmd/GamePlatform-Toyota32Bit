@@ -2,21 +2,26 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Checkbox, Surface } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../../../../../../context/ThemeContext';
 
-const PermissionItem = ({ title, icon, permission, isChecked, onToggle }) => (
-  <Surface style={styles.permissionItem}>
-    <View style={styles.permissionContent}>
-      <Icon name={icon} size={24} color="#bb86fc" style={styles.icon} />
-      <Text style={styles.permissionText}>{title}</Text>
-    </View>
-    <Checkbox
-      status={isChecked ? 'checked' : 'unchecked'}
-      onPress={() => onToggle(permission)}
-      color="#bb86fc"
-      uncheckedColor="#777"
-    />
-  </Surface>
-);
+const PermissionItem = ({ title, icon, permission, isChecked, onToggle }) => {
+  const { colors } = useTheme(); 
+
+  return (
+    <Surface style={[styles.permissionItem, { backgroundColor: colors.card }]}> 
+      <View style={styles.permissionContent}>
+        <Icon name={icon} size={24} color={colors.primary} style={styles.icon} /> 
+        <Text style={[styles.permissionText, { color: colors.text }]}>{title}</Text> 
+      </View>
+      <Checkbox
+        status={isChecked ? 'checked' : 'unchecked'}
+        onPress={() => onToggle(permission)}
+        color={colors.primary} 
+        uncheckedColor={colors.subText} 
+      />
+    </Surface>
+  );
+};
 
 const styles = StyleSheet.create({
   permissionItem: {
@@ -24,7 +29,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 8,
     elevation: 2,
-    backgroundColor: '#1e1e1e',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
   },
   permissionText: {
     fontSize: 16,
-    color: '#e0e0e0',
     flex: 1,
     fontFamily:'Orbitron-ExtraBold'
   },

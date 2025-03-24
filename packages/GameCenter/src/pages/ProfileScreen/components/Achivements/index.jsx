@@ -1,69 +1,28 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SegmentedButtons } from 'react-native-paper';
+import { SegmentedButtons, Text } from 'react-native-paper';
 import { FlashList } from "@shopify/flash-list";
 import AchievementCard from './components/AchievementCard';
 import OwnedAchievementCard from './components/OwnedAchievementCard';
 import ErrorComponents from '../../../../components/ErrorComponents';
 import EmptyState from '../../../../components/EmptyState';
-import { getAchievements, getOwnedAchievements } from './services/service';
-import useLevelCalculation from './hooks/useLevelCalculation';
 import LevelProgressBar from './components/LevelProgressBar';
+import { useAchievements } from './context/AchievementsContext';
+import { useTheme } from '../../../../context/ThemeContext'; 
+import { useTranslation } from 'react-i18next'; 
 
-const AchievementsPage = ({ onAchievementCountChange }) => {
-    const [activeTab, setActiveTab] = useState('all');
-    const [allAchievements, setAllAchievements] = useState([]);
-    const [ownedAchievements, setOwnedAchievements] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const fetchAchievements = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const [allAchievementsData, ownedAchievementsData] = await Promise.all([
-                getAchievements(),
-                getOwnedAchievements(),
-            ]);
-    
-            // Her başarıya isOwned özelliği ekle
-            const enhancedAllAchievements = allAchievementsData.map(achievement => ({
-                ...achievement,
-                isOwned: ownedAchievementsData.some(owned => owned.id === achievement.id)
-            }));
-    
-            setAllAchievements(enhancedAllAchievements);
-            setOwnedAchievements(ownedAchievementsData);
-            console.log("Owned Achievements Data:", ownedAchievementsData);
-            const ownedCount = ownedAchievementsData.length;
-            onAchievementCountChange(ownedCount);
-        } catch (err) {
-            console.error("Error fetching achievements:", err);
-            setError(err.message || 'An unexpected error occurred');
-        } finally {
-            setLoading(false);
-        }
-    }, [onAchievementCountChange]);
-
-    useEffect(() => {
-        fetchAchievements();
-    }, [fetchAchievements]);
-
-    // Toplam XP’yi hesapla
-    const totalXp = useMemo(() => {
-        return ownedAchievements.reduce((sum, achievement) => sum + parseInt(achievement.xp), 0);
-    }, [ownedAchievements]);
-
-    // Toplam XP’ye göre seviye bilgilerini al
-    const { level, xpForNextLevel, xpProgress } = useLevelCalculation(totalXp);
+const AchievementsPage = () => {
+    const { activeTab, setActiveTab, allAchievements, ownedAchievements, loading, error } = useAchievements();
+    const { colors } = useTheme(); 
+    const { t } = useTranslation();
 
     const renderItem = useCallback(({ item }) => {
         if (activeTab === 'all') {
-            return <AchievementCard item={item} />;
+            return <AchievementCard item={item} colors={colors} />; 
         } else {
-            return <OwnedAchievementCard item={item} />;
+            return <OwnedAchievementCard item={item} colors={colors} />; 
         }
-    }, [activeTab]);
+    }, [activeTab, colors]);
 
     const filteredData = useMemo(() => {
         if (activeTab === 'all') {
@@ -74,27 +33,34 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
     }, [activeTab, allAchievements, ownedAchievements]);
 
     return (
-        <View style={[styles.container, { backgroundColor: '#1e1e1e' }]}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}> 
             <SegmentedButtons
                 value={activeTab}
                 onValueChange={setActiveTab}
                 buttons={[
-                    { value: 'all', label: 'All Achievements', labelStyle: styles.buttonLabel },
-                    { value: 'owned', label: 'Your Achievements', labelStyle: styles.buttonLabel },
+                    {
+                        value: 'all',
+                        label:  t('profileScreen.allAchievements'),
+                        labelStyle: [styles.buttonLabel, { color: colors.text }], 
+                        style: { backgroundColor: colors.card } 
+                    },
+                    {
+                        value: 'owned',
+                        label: t('profileScreen.yourAchievements'),
+                        labelStyle: [styles.buttonLabel, { color: colors.text }], 
+                        style: { backgroundColor: colors.card } 
+                    },
                 ]}
-                style={styles.segmentedButtons}
+                style={[styles.segmentedButtons, { backgroundColor: colors.buttonBackground }]} 
+                theme={{ colors: { primary: colors.primary, surface: colors.card, text: colors.text } }} 
             />
             {activeTab === 'owned' && (
-                <LevelProgressBar
-                    level={level}
-                    currentXP={xpProgress}
-                    nextLevelXP={xpForNextLevel}
-                />
+                <LevelProgressBar colors={colors} /> 
             )}
             {loading ? (
                 <></>
             ) : error ? (
-                <ErrorComponents errorMessage={error} width={300} height={300} />
+                <ErrorComponents message={error} />
             ) : (
                 <FlashList
                     data={filteredData}
@@ -102,7 +68,7 @@ const AchievementsPage = ({ onAchievementCountChange }) => {
                     keyExtractor={(item) => item.id.toString()}
                     estimatedItemSize={15}
                     contentContainerStyle={styles.listContainer}
-                    ListEmptyComponent={() => <EmptyState textColor="white" message="Henüz bir başarımınız bulunmamaktadır." />}
+                    ListEmptyComponent={() => <EmptyState textColor={colors.text} message="No achievements yet!"/>} 
                 />
             )}
         </View>
@@ -117,6 +83,7 @@ const styles = StyleSheet.create({
     segmentedButtons: {
         marginHorizontal: 16,
         marginBottom: 16,
+        borderRadius: 16,
     },
     listContainer: {
         paddingHorizontal: 16,

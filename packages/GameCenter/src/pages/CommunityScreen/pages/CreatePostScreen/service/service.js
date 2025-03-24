@@ -5,7 +5,7 @@ import { getToken } from "../../../../../shared/states/api";
 export const createMessageApi = async (messageData) => {
   try {
     const token = await getToken();
-    const response = await api.post('/postmessages', messageData, { // POST request to /messages
+    const response = await api.post('/postmessages', messageData, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },

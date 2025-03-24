@@ -9,13 +9,13 @@ import Animated, {
 
 const FadeIn = ({ 
   children, 
-  duration = 500, // Süreyi biraz arttırdım
+  duration = 500, 
   delay = 0,
   from = 0,
   to = 1,
 }) => {
   const opacity = useSharedValue(from);
-  const translateY = useSharedValue(20); // Yukarı kayma efekti için
+  const translateY = useSharedValue(20); 
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -25,7 +25,6 @@ const FadeIn = ({
   });
 
   useEffect(() => {
-    // Daha yumuşak bir geçiş için easing fonksiyonu
     const easing = Easing.bezier(0.25, 0.1, 0.25, 1);
 
     opacity.value = withTiming(to, {
@@ -34,7 +33,6 @@ const FadeIn = ({
       easing,
     });
 
-    // Yukarı kayma animasyonu için spring efekti
     translateY.value = withSpring(0, {
       damping: 20,
       stiffness: 90,

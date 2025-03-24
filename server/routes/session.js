@@ -2,7 +2,6 @@ const express = require('express');
 const authenticate = require('../middleware/authenticate');
 const router = express.Router();
 
-//Mesajları getirme session bazlı
 router.get('/messages', authenticate, (req, res) => {
     if (!req.session.messages) {
         return res.json([]);
@@ -10,7 +9,6 @@ router.get('/messages', authenticate, (req, res) => {
     res.json(req.session.messages);
 });
 
-//Odaları Getirme
 router.get('/joined-rooms', authenticate, (req, res) => {
     if(!req.session.joinedRooms){
         return res.json([])

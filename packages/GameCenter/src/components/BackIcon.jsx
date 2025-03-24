@@ -9,13 +9,14 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { isTablet } from './isTablet';
+import { isTablet } from '../utils/isTablet.js';
+import { useTheme } from '../context/ThemeContext'; 
 
-const BackButton = ({ color = '#000', size, top = 24, left = 16, padding = 8 }) => {
+const BackButton = ({ size, top = 24, left = 16, padding = 8 }) => {
   const navigation = useNavigation();
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(-20);
-
+  const { colors } = useTheme(); 
   const adjustedSize = size || (isTablet() ? 32 : 24);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const BackButton = ({ color = '#000', size, top = 24, left = 16, padding = 8 }) 
         onPress={handleGoBack}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
-        <Icon name="chevron-back" size={adjustedSize} color={color} />
+        <Icon name="chevron-back" size={adjustedSize} color={colors.text} /> 
       </TouchableRipple>
     </Animated.View>
   );

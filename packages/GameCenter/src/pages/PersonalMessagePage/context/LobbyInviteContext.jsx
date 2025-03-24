@@ -1,14 +1,17 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import lobbyService from '../service/service';
-import { ToastService } from '../../../context/ToastService'; // Adjust path if needed
+import { ToastService } from '../../../context/ToastService';
 import { useBingoWebSocket } from '../../../context/BingoGameWebsocket.js';
+import { useTranslation } from 'react-i18next';
+
 const LobbyInviteContext = createContext();
 
 const LobbyInviteProvider = ({ children }) => {
     const [invitations, setInvitations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { connectWebSocket } = useBingoWebSocket(); // messages eklendi
+    const { connectWebSocket } = useBingoWebSocket();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchInvitations = async () => {
@@ -16,10 +19,10 @@ const LobbyInviteProvider = ({ children }) => {
             setError('');
             try {
                 const data = await lobbyService.getLobbyInvites();
-                setInvitations(data.invitations); // Assuming your API response is like the provided JSON
+                setInvitations(data.invitations);
             } catch (err) {
                 setError(err.message);
-                ToastService.show('error', 'Davetler alınırken bir hata oluştu.');
+                ToastService.show('error', t('personalMessagePage.fetchError'));
             } finally {
                 setLoading(false);
             }
@@ -30,36 +33,36 @@ const LobbyInviteProvider = ({ children }) => {
 
     const handleAcceptInvite = async (lobbyCode) => {
         try {
-            setLoading(true); // Start loading when accepting
+            setLoading(true);
             await lobbyService.acceptLobbyInvite(lobbyCode);
             connectWebSocket(lobbyCode);
             setInvitations(prevInvitations =>
-                prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode) // Optimistically remove from list
+                prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode)
             );
-            ToastService.show('success', 'Davet kabul edildi!');
+            ToastService.show('success', t('personalMessagePage.inviteAccepted')); 
         } catch (err) {
             setError(err.message);
-            ToastService.show('error', 'Davet kabul edilirken bir hata oluştu.');
+            ToastService.show('error', t('personalMessagePage.acceptError')); 
             console.error("Accept invite error:", err);
         } finally {
-            setLoading(false); // End loading regardless of success/failure
+            setLoading(false);
         }
     };
 
     const handleRejectInvite = async (lobbyCode) => {
         try {
-            setLoading(true); // Start loading when rejecting
+            setLoading(true);
             await lobbyService.rejectLobbyInvite(lobbyCode);
             setInvitations(prevInvitations =>
-                prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode) // Optimistically remove from list
+                prevInvitations.filter(invite => invite.lobbyCode !== lobbyCode)
             );
-            ToastService.show('info', 'Davet reddedildi.');
+            ToastService.show('info', t('personalMessagePage.inviteDeclined'));
         } catch (err) {
             setError(err.message);
-            ToastService.show('error', 'Davet reddedilirken bir hata oluştu.');
+            ToastService.show('error', t('personalMessagePage.rejectError'));
             console.error("Reject invite error:", err);
         } finally {
-            setLoading(false); // End loading regardless of success/failure
+            setLoading(false);
         }
     };
 

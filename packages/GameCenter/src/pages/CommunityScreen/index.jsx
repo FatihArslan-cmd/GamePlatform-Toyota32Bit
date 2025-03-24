@@ -1,53 +1,32 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
-  useAnimatedScrollHandler,
-  useSharedValue,
 } from 'react-native-reanimated';
 import PagerView from 'react-native-pager-view';
 import Header from './components/Header/Header';
 import RoomsScreen from './pages/RoomsScreen/RoomsScreen';
 import Buttons from './components/Buttons/Buttons';
 import ExplorerScreen from './pages/ExplorerScreen/ExplorerScreen';
-import { useHeaderAnimatedStyle, useButtonsAnimatedStyle } from './components/Animations/HeaderAnimation'; // Import animation styles
+import useCommunityScreenAnimations from './hooks/useCommunityScreenAnimations';
 import MakePost from './components/Buttons/MakePost';
-import BackButton from './components/Buttons/UpIcon';
+import { useTheme } from '../../context/ThemeContext';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const CommunityScreen = () => {
   const pagerRef = useRef(null);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const { colors } = useTheme();
+  const styles = createStyles(colors); 
 
-  const appBarHeight = useSharedValue(0);
-  const buttonsBarHeight = useSharedValue(0);
-  const scrollY = useSharedValue(0);
-  const isScrolling = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      if (!isScrolling.value) {
-        isScrolling.value = true;
-      }
-      scrollY.value = event.contentOffset.y;
-    },
-    onEndDrag: () => {
-      isScrolling.value = false;
-    },
-    onMomentumEnd: () => {
-      isScrolling.value = false;
-    },
-  });
-
-  const headerAnimatedStyle = useHeaderAnimatedStyle(scrollY, appBarHeight);
-  const buttonsAnimatedStyle = useButtonsAnimatedStyle(scrollY, buttonsBarHeight);
-
-  const onHeaderLayout = (event) => {
-    appBarHeight.value = event.nativeEvent.layout.height;
-  };
-  const onButtonsLayout = (event) => {
-    buttonsBarHeight.value = event.nativeEvent.layout.height;
-  };
+  const {
+    scrollY,
+    scrollHandler,
+    headerAnimatedStyle,
+    buttonsAnimatedStyle,
+    onHeaderLayout,
+    onButtonsLayout,
+  } = useCommunityScreenAnimations();
 
   const goToPage = (pageIndex) => {
     pagerRef.current?.setPage(pageIndex);
@@ -56,23 +35,22 @@ const CommunityScreen = () => {
 
   const onPageSelected = (e) => {
     setCurrentPageIndex(e.nativeEvent.position);
-    if (e.nativeEvent.position === 1) { // Explorer ekranına geçildiğinde
-      scrollY.value = 0; // scrollY değerini sıfırla
+    if (e.nativeEvent.position === 1) {
+      scrollY.value = 0;
     }
   };
 
   return (
-    <View style={styles.safeArea}>
+    <View style={[styles.safeArea, { backgroundColor: colors.background }]}> 
     <MakePost />
-
       <Animated.View
-        style={[styles.appBar, headerAnimatedStyle]}
+        style={[styles.appBar, headerAnimatedStyle, { backgroundColor: colors.background }]} 
         onLayout={onHeaderLayout}
       >
         <Header />
       </Animated.View>
       <Animated.View
-        style={[styles.buttonsBar, buttonsAnimatedStyle]}
+        style={[styles.buttonsBar, buttonsAnimatedStyle, { backgroundColor: colors.background }]} 
         onLayout={onButtonsLayout}
       >
       <Buttons
@@ -87,7 +65,7 @@ const CommunityScreen = () => {
         initialPage={0}
         ref={pagerRef}
         scrollEnabled={true}
-        onPageSelected={onPageSelected} // onPageSelected olayını ekleyin
+        onPageSelected={onPageSelected}
       >
         <View key="0">
           <AnimatedScrollView
@@ -109,10 +87,9 @@ const CommunityScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({ 
   safeArea: {
     flex: 1,
-    backgroundColor: 'white',
   },
   appBar: {
     position: 'absolute',
@@ -120,7 +97,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 2,
-    backgroundColor: 'white',
     elevation: 4,
   },
   buttonsBar: {
@@ -129,7 +105,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 1,
-    backgroundColor: 'white',
      elevation: 2,
   },
   pagerView: {

@@ -2,29 +2,31 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { storage } from '../utils/storage';
 import { useBingoWebSocket } from './BingoGameWebsocket.js';
 import { ToastService } from './ToastService';
+import { useTranslation } from 'react-i18next';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null); // Token durumunu da yönetiyoruz
-  const { closeWebSocket } = useBingoWebSocket(); // Get closeWebSocket function from context
+  const [token, setToken] = useState(null);
+  const { closeWebSocket } = useBingoWebSocket();
+  const { t } = useTranslation();
 
   const loginUser = async (userData, newToken) => {
       setUser(userData);
-      setToken(newToken); // Token'ı da state'e kaydet
+      setToken(newToken); 
       await storage.set('user', JSON.stringify(userData));
-      await storage.set('token', newToken); // Token'ı da storage'e kaydet
-      ToastService.show('success', 'Logged in successfully');
+      await storage.set('token', newToken); 
+      ToastService.show('success', t('loginScreen.loginSuccess'));
   };
 
   const logoutUser = async () => {
     setUser(null);
-    setToken(null); // Token'ı da sıfırla
+    setToken(null); 
     await storage.delete('user');
-    await storage.delete('token'); // Token'ı da storage'den sil
-    closeWebSocket(); // Close the WebSocket connection
-    ToastService.show('success', 'Logged out successfully');
+    await storage.delete('token');
+    closeWebSocket(); 
+    ToastService.show('success', t('loginScreen.logoutSuccess'));
   };
 
   useEffect(() => {

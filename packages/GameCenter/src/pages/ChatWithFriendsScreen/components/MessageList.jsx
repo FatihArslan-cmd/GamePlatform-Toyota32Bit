@@ -1,12 +1,17 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import MessageBubble from './MessageBubble';
+import { useChat } from '../context/ChatContext'; 
 
-const MessageList = ({ messages, userId, messageListRef }) => {
-    const renderItem = ({ item }) => {
-        const isCurrentUserMessage = item.senderId === userId;
-        return <MessageBubble message={item} isCurrentUserMessage={isCurrentUserMessage} />;
-    };
+const MessageList = ({ messageListRef }) => {
+    const { messages, userId } = useChat(); 
+
+    const renderItem = ({ item }) => (
+        <MessageBubble 
+            message={item} 
+            isCurrentUserMessage={item.senderId === userId} 
+        />
+    );
 
     return (
         <FlatList

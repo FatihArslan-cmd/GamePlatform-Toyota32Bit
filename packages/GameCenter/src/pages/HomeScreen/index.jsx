@@ -4,10 +4,7 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
-import Animated, {
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { getGamesFromStorage } from '../../utils/api';
 import Header from './components/Header/Header';
 import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
@@ -17,31 +14,15 @@ import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
 import useDisableBackButton from './hooks/useDisableBackButton';
 import { hideNavigationBar } from '../../utils/NavBarManager';
 import useHeaderAnimation from './hooks/useHeaderAnimation';
+import { useTheme } from '../../context/ThemeContext';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const HomeScreen = () => {
   const [games, setGames] = useState([]);
-  const appBarHeight = useSharedValue(0);
-  const scrollY = useSharedValue(0);
-  const isScrolling = useSharedValue(0);
+  const { headerAnimatedStyle, scrollHandler, onLayout } = useHeaderAnimation();
+  const { resolvedTheme } = useTheme(); // Consume the theme
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      if (!isScrolling.value) {
-        isScrolling.value = true;
-      }
-      scrollY.value = event.contentOffset.y;
-    },
-    onEndDrag: () => {
-      isScrolling.value = false;
-    },
-    onMomentumEnd: () => {
-      isScrolling.value = false;
-    },
-  });
-
-  const headerAnimatedStyle = useHeaderAnimation(scrollY, appBarHeight);
   useEffect(() => {
     hideNavigationBar();
     const loadGames = async () => {
@@ -54,14 +35,12 @@ const HomeScreen = () => {
 
   useDisableBackButton();
 
-  const onLayout = (event) => {
-    appBarHeight.value = event.nativeEvent.layout.height;
-  };
+  const statusBarBarStyle = resolvedTheme === 'dark' ? 'light-content' : 'dark-content'; 
 
   return (
     <View style={styles.container}>
-      
-      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+
+      <StatusBar backgroundColor="transparent" barStyle={statusBarBarStyle} /> 
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onLayout}
@@ -78,12 +57,12 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <UpperBigAnimatedImages games={games} />
-        <MiniGamesBlock games={games} />  
+        <MiniGamesBlock games={games} />
         <FromTheCreator />
         <VideoPlayBlock />
       </AnimatedScrollView>
 
-   
+
     </View>
   );
 };
@@ -98,7 +77,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 1,
-    backgroundColor: 'white',
     elevation: 4,
   },
 });

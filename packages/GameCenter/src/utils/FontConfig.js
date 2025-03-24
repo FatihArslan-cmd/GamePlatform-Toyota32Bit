@@ -64,5 +64,5 @@ const fontConfig = {
 
 export const theme = {
   ...MD2LightTheme,
-  fonts: configureFonts({ config: fontConfig, isV3: false }),
+  fonts: configureFonts({ config: fontConfig, isV3: false ,}),
 };

@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1e1e1e',
         paddingHorizontal: 15,
     },
     topBar: {
@@ -18,7 +17,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 28,
-        color: '#e5e6ea',
         alignSelf: "center",
         paddingLeft: 10,
         fontFamily: 'Orbitron-ExtraBold'
@@ -45,12 +43,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         right: 0,
-        borderRadius: 25, // Increased for larger profile image
+        borderRadius: 25,
         overflow: 'hidden',
     },
     cameraIcon: {
         margin: 0,
-        borderRadius: 25, // Increased to match container
+        borderRadius: 25,
     },
 });
 

@@ -5,26 +5,28 @@ import { storage } from '../utils/storage';
 import AdvancedPagerView from '../pages/IntroScreen/components/AdvancedPagerView.jsx';
 import LoginScreen from '../pages/LoginScreen/index.jsx';
 import TabNavigator from './TabBarNavigator.jsx';
-import GameDetails from '../pages/HomeScreen/components/GameDetails/GameDetails.jsx';
+import GameDetails from '../pages/GameDetails/GameDetails.jsx';
 import SettingScreen from '../pages/SettingsScreen/index.jsx';
 import BootSplash from 'react-native-bootsplash';
 import { Animated } from 'react-native';
 import GameScreen from '../pages/GameScreen/index.jsx';
-import BarcodeScan from '../components/BarcodeScanScreen/BarcodeScan.jsx';
-import CreateQRcodeScreen from '../pages/LoginScreen/components/Biometrics/CreateQRcodeScreen.jsx';
+import BarcodeScan from '../pages/BarcodeScanScreen/BarcodeScan.jsx';
 import RoomsScreen from '../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.jsx';
 import CreateRoomScreen from '../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js';
 import CreatePostScreen from '../pages/CommunityScreen/pages/CreatePostScreen/index.jsx';
-import ProfileDetailsScreen from '../pages/SettingsScreen/pages/ProfileDetailsScreen.jsx';
-import index from '../pages/FriendInvitePage/index.jsx';
 import PersonalMessagePage from '../pages/PersonalMessagePage/index.jsx';
 import ChatWithFriendsScreen from '../pages/ChatWithFriendsScreen/index.jsx';
 import ChatScreen from '../pages/ChatWithFriendsScreen/pages/ChatScreen.jsx';
 import RoomChatScreen from '../pages/RoomChatScreen/index.jsx';
 import UpdateLobbyScreen from '../pages/UpdateLobbyScreen/UpdateLobbyScreen.jsx';
-import CountDownSplashScreen from '../components/CountDownSplashScreen.jsx';
+import CountDownSplashScreen from '../pages/GameScreen/CountDownSplashScreen.jsx';
+import FriendInvite from '../pages/FriendInvitePage/index.jsx';
+import navigationService from '../shared/states/navigationService.js';
+import LoadingFullScreen from '../components/LoadingFullScreen.jsx';
 
 const Stack = createNativeStackNavigator();
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default function Navigation() {
   const [isIntroSeen, setIsIntroSeen] = useState(null);
@@ -33,12 +35,6 @@ export default function Navigation() {
 
   useEffect(() => {
     async function initializeApp() {
-      const hasSeenIntro = storage.getBoolean('hasSeenIntro');
-      setIsIntroSeen(hasSeenIntro ?? false);
-
-      const token = storage.getString('token');
-      setIsLoggedIn(!!token);
-
       setTimeout(() => {
         BootSplash.hide({ fade: true }).then(() => {
           Animated.timing(scaleAnim, {
@@ -48,18 +44,26 @@ export default function Navigation() {
           }).start();
         });
       }, 175);
+      
+      const hasSeenIntro = storage.getBoolean('hasSeenIntro');
+      const token = storage.getString('token');
+
+      await delay(2000);
+
+      setIsIntroSeen(hasSeenIntro ?? false);
+      setIsLoggedIn(!!token);
     }
 
     initializeApp();
   }, []);
 
   if (isIntroSeen === null) {
-    return null; // Return a loading state or placeholder if necessary
+    return <LoadingFullScreen />;
   }
-
+  
   return (
     <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
-      <NavigationContainer>
+      <NavigationContainer  ref={navigationService.navigationRef}>
         <Stack.Navigator
           initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
           screenOptions={{
@@ -78,6 +82,7 @@ export default function Navigation() {
               },
             }}
           />
+          
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
             name="Tabs"
@@ -94,13 +99,7 @@ export default function Navigation() {
               animation: 'fade',
             }}
           />
-              <Stack.Screen
-            name="QRCode"
-            component={CreateQRcodeScreen}
-            options={{
-              animation: 'fade',
-            }}
-          />
+          
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
@@ -121,27 +120,19 @@ export default function Navigation() {
             options={{
               animation: 'fade',
             }}
-          />
-          <Stack.Screen
-            name="ProfileDetailsScreen"
-            component={ProfileDetailsScreen}
-            options={{
-              presentation: 'transparentModal',
-              animation: 'fade',
-            }}
-          />
+          />   
           <Stack.Screen
             name="CreateRoom"
             component={CreateRoomScreen}
             options={{
-              animation: 'slide_from_bottom', // Use slide_from_bottom for bottom-up animation
+              animation: 'slide_from_bottom', 
             }}
           />
              <Stack.Screen
             name="CreatePost"
             component={CreatePostScreen}
             options={{
-              animation: 'slide_from_bottom', // Use slide_from_bottom for bottom-up animation
+              animation: 'slide_from_bottom', 
             }}
           />
         <Stack.Screen name="GameScreen"
@@ -151,7 +142,7 @@ export default function Navigation() {
             }}
          />
           <Stack.Screen name="FriendInvitePage"
-         component={index}  
+         component={FriendInvite}  
           options={{
               animation: 'fade',
             }}

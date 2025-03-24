@@ -1,16 +1,23 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text, IconButton, Snackbar,Tooltip } from 'react-native-paper';
+import { Text, IconButton, Snackbar, Tooltip } from 'react-native-paper';
 import styles from '../styles/ProfileScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import CustomModal from '../../../components/CustomModal';
 import useModal from '../../../hooks/useModal';
-import useFriendsPage from '../hooks/useFriendsPage';
+import useFriendsPage from './Friends/hooks/useFriendsPage';
+import { useProfile } from '../context/ProfileContext';
+import {useTheme} from '../../../context/ThemeContext';
+import GrandientText from '../../../components/GrandientText';
+import { useTranslation } from 'react-i18next'; 
 
-const TopBar = ({ onPencilPress, isEditMode }) => { // Receive onPencilPress and isEditMode as props
+const TopBar = () => {
     const navigation = useNavigation();
     const { modalVisible, modalMessage, modalTitle, showModal, closeModal } = useModal();
     const { handleAddFriend, error, snackbarVisible, setSnackbarVisible, snackbarMessage } = useFriendsPage();
+    const { isEditMode, toggleEditMode } = useProfile();
+    const { colors } = useTheme();
+    const { t } = useTranslation();
 
     const navigateToCamera = () => {
         navigation.navigate('BarcodeScan', {
@@ -37,7 +44,7 @@ const TopBar = ({ onPencilPress, isEditMode }) => { // Receive onPencilPress and
     };
 
     return (
-        <View style={styles.topBar}>
+        <View style={[styles.topBar, { backgroundColor: colors.background }]}>
             <CustomModal
                 visible={modalVisible}
                 onDismiss={closeModal}
@@ -56,18 +63,23 @@ const TopBar = ({ onPencilPress, isEditMode }) => { // Receive onPencilPress and
             <IconButton
                 icon="pencil"
                 size={24}
-                iconColor={isEditMode ? "#6200ee" : "#a5a7ac"} // Change color when edit mode is on
+                iconColor={isEditMode ? colors.primary : colors.subText}
                 style={styles.topBarIcon}
-                onPress={onPencilPress} // Call the prop function
+                onPress={toggleEditMode}
             />
             </Tooltip>
-            <Text style={styles.title}>Profile</Text>
+              <GrandientText
+                        text={t('profileScreen.profile')}
+                        colors={colors.gameCenterText}
+                        textStyle={{ fontSize: 28 }}
+                        gradientDirection="horizontal"
+                      />
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-                <Tooltip title="Add Friend"> 
-                <IconButton icon="camera" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} onPress={navigateToCamera} />
+                <Tooltip title="Add Friend">
+                <IconButton icon="camera" size={24} iconColor={colors.subText} style={styles.topBarIcon} onPress={navigateToCamera} />
                 </Tooltip>
                 <Tooltip title="Options">
-                <IconButton icon="dots-vertical" size={24} iconColor="#a5a7ac" style={styles.topBarIcon} />
+                <IconButton icon="dots-vertical" size={24} iconColor={colors.subText} style={styles.topBarIcon} />
                 </Tooltip>
             </View>
         </View>

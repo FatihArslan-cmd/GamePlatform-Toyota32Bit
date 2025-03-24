@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GameCenter</string>
+    <string name="game_center_title">Game Center</string>
+    <string name="explore_now">Explore Now</string>
 </resources>

@@ -1,22 +1,27 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
+import { TouchableRipple } from 'react-native-paper'; 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from '../../../../../context/ThemeContext';
+const ScrollArrow = ({ direction, onPress }) => {
+  const { colors } = useTheme(); 
+  const themedStyles = useStyles(colors); 
 
-const ScrollArrow = ({ direction, onPress }) => (
-  <TouchableRipple
-    style={[styles.arrow, direction === 'left' ? styles.left : styles.right]}
-    onPress={onPress}
-  >
-    <Icon
-      name={direction === 'left' ? 'chevron-left' : 'chevron-right'}
-      size={48}
-      style={styles.icon}
-    />
-  </TouchableRipple>
-);
+  return (
+    <TouchableRipple
+      style={[themedStyles.arrow, direction === 'left' ? themedStyles.left : themedStyles.right]}
+      onPress={onPress}
+    >
+      <Icon
+        name={direction === 'left' ? 'chevron-left' : 'chevron-right'}
+        size={48}
+        style={[themedStyles.icon, { color: colors.text }]} 
+      />
+    </TouchableRipple>
+  );
+};
 
-const styles = StyleSheet.create({
+const useStyles = (colors) => StyleSheet.create({
   arrow: {
     position: 'absolute',
     zIndex: 1,

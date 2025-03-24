@@ -2,6 +2,7 @@ import React, { createContext, useState, useRef, useCallback ,useContext, useEff
 import { getToken } from '../shared/states/api';
 import { ToastService } from './ToastService';
 import { storage } from '../utils/storage';
+import {useTranslation} from 'react-i18next';
 
 export const BingoWebSocketContext = createContext();
 
@@ -12,23 +13,17 @@ export const BingoWebSocketProvider = ({ children }) => {
     const wsRef = useRef(null);
     const tokenRef = useRef(null);
     const lastLobbyCodeRef = useRef(null);
+    const { t } = useTranslation();
 
     const connectWebSocket = useCallback(async (lobbyCode) => {
-        if (!lobbyCode) {
-            console.log("WebSocketContext: Lobby Code is missing for connection.");
-            return;
-        }
-
+       
         const token = getToken();
         if (!token) {
-            console.log("WebSocketContext: JWT token not found.");
-            ToastService.show('error', 'Kimlik doğrulama için token bulunamadı.');
             return;
         }
         tokenRef.current = token;
 
         const wsURL = `ws://10.0.2.2:3000/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
-        console.log("WebSocket'e bağlanılıyor:", wsURL);
 
         setConnectionError(null);
         setIsConnected(false);
@@ -36,7 +31,7 @@ export const BingoWebSocketProvider = ({ children }) => {
 
         wsRef.current = new WebSocket(wsURL);
         lastLobbyCodeRef.current = lobbyCode;
-        storage.set('bingoLobbyCode', lobbyCode); // MMKV: Lobi kodunu kaydet
+        storage.set('bingoLobbyCode', lobbyCode); 
 
         wsRef.current.onopen = () => {
             console.log("WebSocket bağlantısı açıldı.");
@@ -49,13 +44,12 @@ export const BingoWebSocketProvider = ({ children }) => {
                 const messageData = JSON.parse(event.data);
                 setMessages((prevMessages) => [...prevMessages, messageData]);
                 console.log("WebSocket mesajı alındı:", messageData);
-
                 if (messageData.type === 'user-connected') {
-                    const username = messageData.username || messageData.userName || 'Kullanıcı'; // Assuming username or userName field
-                    ToastService.show('success', `${username} joined the lobby`);
+                    const username = messageData.username || messageData.userName || 'Kullanıcı'; 
+                    ToastService.show('success', `${username} ${t('bingoGame.joinedTheLobby')}`);
                 } else if (messageData.type === 'user-disconnected') {
-                    const username = messageData.username  || messageData.userName || 'Kullanıcı'; // Assuming username or userName field
-                    ToastService.show('info', `${username} left the lobby`);
+                    const username = messageData.username  || messageData.userName || 'Kullanıcı'; 
+                    ToastService.show('info', `${username} ${t('bingoGame.leftTheLobby')}`);
                 }
 
             } catch (error) {
@@ -70,15 +64,13 @@ export const BingoWebSocketProvider = ({ children }) => {
             setIsConnected(false);
             setConnectionError(error);
             wsRef.current = null;
-            storage.delete('bingoLobbyCode'); // MMKV: Hata olursa lobi kodunu sil
-            ToastService.show('error', 'WebSocket bağlantı hatası.');
+            storage.delete('bingoLobbyCode'); 
         };
 
         wsRef.current.onclose = () => {
-            console.log("WebSocket bağlantısı kapandı.");
             setIsConnected(false);
             wsRef.current = null;
-            storage.delete('bingoLobbyCode'); // MMKV: Bağlantı kapanınca lobi kodunu sil
+            storage.delete('bingoLobbyCode'); 
             setMessages((prevMessages) => [...prevMessages, { type: 'system', message: 'Bağlantı kapatıldı.' }]);
         };
     }, [sendMessage]);
@@ -89,17 +81,14 @@ export const BingoWebSocketProvider = ({ children }) => {
             const messageString = JSON.stringify(message);
             wsRef.current.send(messageString);
             console.log("WebSocket mesajı gönderildi:", messageString);
-        } else {
-            console.error("WebSocket bağlantısı açık değil. Mesaj gönderilemedi.");
-            ToastService.show('error', 'Sohbet sunucusuna bağlı değil.');
-        }
+        } 
     }, []);
 
     const closeWebSocket = useCallback(() => {
         if (wsRef.current) {
             wsRef.current.close();
             clearMessages();
-            storage.delete('bingoLobbyCode'); // MMKV: Manuel kapatmada lobi kodunu sil
+            storage.delete('bingoLobbyCode'); 
             console.log("WebSocket bağlantısı manuel olarak kapatıldı.");
         }
     }, [clearMessages]);

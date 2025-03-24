@@ -1,0 +1,71 @@
+import React, { createContext, useState, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+const HeaderContext = createContext();
+
+export const HeaderProvider = ({ children }) => {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [lobbyModalVisible, setLobbyModalVisible] = useState(false);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [joinLobbyModalVisible, setJoinLobbyModalVisible] = useState(false);
+  const navigation = useNavigation();
+
+  const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
+  const closeMenu = () => setMenuVisible(false);
+  const openBottomSheet = () => setIsBottomSheetVisible(true);
+  const closeBottomSheet = () => setIsBottomSheetVisible(false);
+  const openLobbyModal = () => setLobbyModalVisible(true);
+  const closeLobbyModal = () => setLobbyModalVisible(false);
+  const openJoinLobbyModal = () => setJoinLobbyModalVisible(true);
+  const closeJoinLobbyModal = () => setJoinLobbyModalVisible(false);
+
+  const navigateToFriendInvite = () => {
+    navigation.navigate('FriendInvitePage');
+    closeBottomSheet();
+  };
+  
+  const navigateToUpdateLobby = () => {
+    navigation.navigate('UpdateLobbyScreen');
+    closeBottomSheet();
+  };
+  const navigateToPersonalMessagePage = () => {
+    navigation.navigate('PersonalMessagePage');
+  };
+  const contextValues = {
+    menuVisible,
+    setMenuVisible,
+    searchMode,
+    setSearchMode,
+    searchQuery,
+    setSearchQuery,
+    lobbyModalVisible,
+    setLobbyModalVisible,
+    isBottomSheetVisible,
+    setIsBottomSheetVisible,
+    joinLobbyModalVisible,
+    setJoinLobbyModalVisible,
+    openMenu,
+    closeMenu,
+    openBottomSheet,
+    closeBottomSheet,
+    openLobbyModal,
+    closeLobbyModal,
+    openJoinLobbyModal,
+    closeJoinLobbyModal,
+    navigateToFriendInvite,
+    navigateToUpdateLobby,
+    navigateToPersonalMessagePage
+  };
+
+  return (
+    <HeaderContext.Provider value={contextValues}>
+      {children}
+    </HeaderContext.Provider>
+  );
+};
+
+export const useHeader = () => {
+  return useContext(HeaderContext);
+};

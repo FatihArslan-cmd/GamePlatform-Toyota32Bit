@@ -19,6 +19,9 @@ const getAchievements = async () => {
 const getOwnedAchievements = async () => {
   try {
     const token = await getToken();
+    if (!token) {
+      return null; 
+    }
     const headers = {
       'Authorization': `Bearer ${token}`,
     };

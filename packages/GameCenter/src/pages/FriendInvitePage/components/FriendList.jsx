@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { List, Avatar, Button } from 'react-native-paper';
-import { useTheme } from 'react-native-paper';
-import { useFriendInvite } from '../context/FriendInviteContext'; // Import context hook
+import { useFriendInvite } from '../context/FriendInviteContext'; 
+import { useTheme } from '../../../context/ThemeContext'; 
+import {useTranslation} from 'react-i18next';
 
 const FriendList = () => {
-    const { colors } = useTheme();
-    const styles = createStyles(colors);
-    const { friends, handleInvite } = useFriendInvite(); // Get friends and handleInvite from context
+    const { colors } = useTheme(); 
+    const styles = createStyles(colors); 
+    const { friends, handleInvite } = useFriendInvite(); 
+    const { t } = useTranslation();
 
     return (
         <List.Section>
@@ -31,7 +33,7 @@ const FriendList = () => {
                                 style={styles.inviteButtonPaper}
                                 labelStyle={styles.inviteButtonTextPaper}
                             >
-                                Invite
+                                {t('friendInvitePage.invite')}
                             </Button>
                         </View>
                     )}
@@ -42,9 +44,9 @@ const FriendList = () => {
     );
 };
 
-const createStyles = () => StyleSheet.create({
+const createStyles = (themeColors) => StyleSheet.create({ 
     listItem: {
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backgroundColor: themeColors.card, 
         borderRadius: 25,
         marginBottom: 10,
         elevation: 5,
@@ -59,15 +61,16 @@ const createStyles = () => StyleSheet.create({
     username: {
         fontSize: 22,
         fontFamily: 'Orbitron-ExtraBold',
-        color: '#333',
+        color: themeColors.text, 
     },
     inviteButtonPaper: {
         borderRadius: 20,
         paddingHorizontal: 5,
         height: 35,
+        backgroundColor: themeColors.primary, 
     },
     inviteButtonTextPaper: {
-        color: 'white',
+        color: themeColors.text, 
         fontFamily: 'Orbitron-ExtraBold',
         fontSize: 14,
     },

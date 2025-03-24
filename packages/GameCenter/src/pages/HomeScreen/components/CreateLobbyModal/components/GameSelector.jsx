@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { TextInput, Text } from 'react-native-paper';
 import { useState, useRef } from 'react';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 const GameSelector = ({
     gameName,
@@ -10,10 +11,11 @@ const GameSelector = ({
     onGameNameChange,
     onLobbyNameChange,
     onMaxCapacityChange,
+    t 
 }) => {
     const [pressedScale] = useState(new Animated.Value(1));
     const games = ['Bingo', 'Chess', 'Poker', 'Checkers', 'Monopoly', 'Scrabble', 'Clue', 'Risk', 'Catan', 'Ticket to Ride'];
-    console.log('GameSelector rendered'); // Add this line
+    const { colors } = useTheme();
 
     const handlePressIn = () => {
         Animated.spring(pressedScale, {
@@ -30,15 +32,13 @@ const GameSelector = ({
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.gameSelectorLabel}>Game Selection</Text>
-            <View style={styles.gameSelectorContainer}>
-                <ScrollView 
-                    horizontal={true} 
-                    showsHorizontalScrollIndicator={false} 
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={[styles.gameSelectorContainer, { backgroundColor: 'transparent' }]}>
+                <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.scrollViewContent}
-                    fadingEdgeLength={50} // fadingEdgeLength is correctly placed here to add fade effect at the edges of horizontal scroll.
-
+                    fadingEdgeLength={50}
                 >
                     {games.map((game, index) => (
                         <TouchableOpacity
@@ -47,13 +47,15 @@ const GameSelector = ({
                             onPressOut={handlePressOut}
                             style={[
                                 styles.gameButton,
-                                gameName === game && styles.gameButtonSelected
+                                { backgroundColor: colors.primary },
+                                gameName === game && styles.gameButtonSelected,
                             ]}
                             onPress={() => onGameNameChange(game)}
                         >
                             <Text style={[
                                 styles.gameButtonText,
-                                gameName === game && styles.gameButtonTextSelected
+                                { color: colors.card },
+                                gameName === game && styles.gameButtonTextSelected,
                             ]}>
                                 {game}
                             </Text>
@@ -63,29 +65,38 @@ const GameSelector = ({
             </View>
 
             <TextInput
-                label="Lobby Name"
+                label={
+                    <Text style={{ color: colors.text }}>{t('createLobbyModal.gameSelector.lobbyName')}</Text> 
+                }
                 mode="outlined"
                 value={lobbyName}
-                placeholder="Create your lobby name..."
-                left={<TextInput.Icon icon="home" color="#8a2be2" />}
-                style={styles.input}
+                placeholder={t('createLobbyModal.gameSelector.lobbyNamePlaceholder')} 
+                left={<TextInput.Icon icon="home" color={colors.primary} />}
+                style={[styles.input, { backgroundColor: colors.card }]}
                 onChangeText={onLobbyNameChange}
-                outlineColor="#8a2be2"
-                activeOutlineColor="#8a2be2"
+                outlineColor={colors.border}
+                activeOutlineColor={colors.primary}
+                textColor={colors.text}
+                placeholderTextColor={colors.subText}
             />
 
             <TextInput
-                label="Max Players"
+                label={
+                    <Text style={{ color: colors.text }}>{t('createLobbyModal.gameSelector.maxCapacity')}</Text> 
+                }
                 mode="outlined"
                 value={maxCapacity}
-                placeholder="Set player limit..."
+                placeholder={t('createLobbyModal.gameSelector.maxCapacityPlaceholder')} 
                 keyboardType="numeric"
-                left={<TextInput.Icon icon="account-group" color="#8a2be2" />}
-                right={<TextInput.Icon icon="information" color="#8a2be2" />}
-                style={styles.input}
+                left={<TextInput.Icon icon="account-group" color={colors.primary} />}
+                right={<TextInput.Icon icon="information" color={colors.primary} />}
+                style={[styles.input, { backgroundColor: colors.card }]}
                 onChangeText={onMaxCapacityChange}
-                outlineColor="#8a2be2"
-                activeOutlineColor="#8a2be2"
+                outlineColor={colors.border}
+                activeOutlineColor={colors.primary}
+                textColor={colors.text}
+                placeholderTextColor={colors.subText}
+                
             />
         </View>
     );
@@ -111,10 +122,11 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         borderRadius: 12,
         padding: 8,
+        backgroundColor: 'transparent',
     },
     gameSelectorLabel: {
         marginBottom: 12,
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: '600',
         color: '#8a2be2',
         fontFamily: 'Orbitron-ExtraBold',

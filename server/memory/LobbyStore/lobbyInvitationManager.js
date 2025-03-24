@@ -1,6 +1,6 @@
 const { sessionStore } = require('../../config/sessionConfig');
-const lobbyManager = require('./lobbyManager'); // Import lobbyManager to use getLobbiesFromSession and saveLobbiesToSession
-const { getUserDetails } = require('../../utils/getUserDetails'); // Import getUserDetails from usersUtil
+const lobbyManager = require('./lobbyManager'); 
+const { getUserDetails } = require('../../utils/getUserDetails');
 
 const lobbyInvitationManager = {
     sendLobbyInvite: (inviterUserId, invitedUserId, lobbyCode, callback) => {
@@ -20,7 +20,6 @@ const lobbyInvitationManager = {
                 if (err) return callback(err);
 
                 const invitations = invitedUserSession?.lobbyInvitations || [];
-                // Aynı lobiden zaten bir davet var mı kontrol et
                 if (invitations.some(invite => invite.lobbyCode === lobbyCode && invite.inviterUserId === inviterUserId)) {
                     return callback(new Error('Invitation already sent to this user for this lobby'));
                 }
@@ -28,7 +27,7 @@ const lobbyInvitationManager = {
                 const newInvitation = {
                     lobbyCode: lobbyCode,
                     inviterUserId: inviterUserId,
-                    inviterUsername: getUserDetails(inviterUserId).username, // Davet eden kullanıcının adını ekle
+                    inviterUsername: getUserDetails(inviterUserId).username, 
                     timestamp: Date.now(),
                     status: 'pending',
                 };

@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{memo} from 'react';
 import { TextInput } from 'react-native-paper';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme hook
 
-const InputField = React.memo(({ 
+const InputField = memo(({
   label,
   value,
   onChangeText,
@@ -11,8 +12,14 @@ const InputField = React.memo(({
   onRightIconPress,
   style,
   textColor,
+  isFormSectionInput,
 }) => {
-  console.log("InputField component rendered"); 
+  const { colors } = useTheme(); 
+
+  const primaryColor = isFormSectionInput ? '#8a2be2' : colors.primary;
+  const placeholderColor = isFormSectionInput ? '#8a2be2' : colors.primary;
+
+
   return (
     <TextInput
       mode="flat"
@@ -22,18 +29,22 @@ const InputField = React.memo(({
       secureTextEntry={secureTextEntry}
       style={style}
       contentStyle={{ fontFamily: "Orbitron-ExtraBold" }}
-      left={<TextInput.Icon icon={leftIcon} color="#8a2be2" />}
+      left={<TextInput.Icon icon={leftIcon} color={primaryColor} />}
       right={
         rightIcon && (
           <TextInput.Icon
             icon={rightIcon}
             onPress={onRightIconPress}
-            color="#8a2be2"
+            color={primaryColor}
           />
         )
       }
       theme={{
-        colors: { primary: '#8a2be2', placeholder: '#8a2be2', text: textColor || '#fff' },
+        colors: {
+          primary: primaryColor, // Use conditionally determined primary color
+          placeholder: placeholderColor, // Use conditionally determined placeholder color
+          text: textColor || colors.text, // Use text color from theme or textColor prop
+        },
         fonts: {
           regular: { fontFamily: "Orbitron-ExtraBold" }
         }

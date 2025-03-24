@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { fetchFriends } from '../../ProfileScreen/services/service';
 import lobbyService from '../../HomeScreen/components/Header/services/lobbyService';
 import { ToastService } from '../../../context/ToastService';
-
+import { useTranslation } from 'react-i18next';
 const FriendInviteContext = createContext();
 
 const FriendInviteProvider = ({ children }) => {
@@ -13,6 +13,7 @@ const FriendInviteProvider = ({ children }) => {
     const [lobbyLoading, setLobbyLoading] = useState(true);
     const [lobbyError, setLobbyError] = useState('');
     const [noLobbyError, setNoLobbyError] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const loadFriendsAndLobby = async () => {
@@ -37,7 +38,7 @@ const FriendInviteProvider = ({ children }) => {
                     }
                 } else {
                     setNoLobbyError(true);
-                    ToastService.show('info', 'Arkadaşları davet etmeden önce bir lobiye katılın.');
+                    ToastService.show('info', t('friendInvitePage.emptyState1'));
                 }
             } catch (err) {
                 setLobbyError(err.message);
@@ -51,24 +52,19 @@ const FriendInviteProvider = ({ children }) => {
     }, []);
 
     const handleInvite = async (friendId) => {
-        if (!userLobby) {
-            ToastService.show('error', 'Lobi bilgisi alınamadı, lütfen tekrar deneyin.');
-            return;
-        }
-    
         try {
-            await lobbyService.inviteFriendToLobby(friendId, userLobby.code); // Backend davet servisini çağır
-            ToastService.show('success', 'Arkadaş davet isteği başarıyla gönderildi!'); // Başarı mesajı
+            await lobbyService.inviteFriendToLobby(friendId, userLobby.code);
+            ToastService.show('success', t('friendInvitePage.inviteSuccess')); 
         } catch (err) {
-            if (err.response && err.response.status === 400 && err.response.data && err.response.data.message === 'Invited user is already in the lobby') { // Güncellenmiş hata mesajını kontrol et
-                ToastService.show('warning', 'Bu arkadaşınız zaten lobide.'); // Daha kullanıcı dostu mesaj
+            if (err.response && err.response.status === 400 && err.response.data && err.response.data.message === 'Invited user is already in the lobby') {
+                ToastService.show('warning', t('friendInvitePage.alreadyInLobby')); 
             } else if (err.response && err.response.status === 400 && err.response.data && err.response.data.message === 'Invitation already sent to this user for this lobby') {
-                ToastService.show('warning', 'Bu arkadaşınıza zaten bu lobi için davet gönderdiniz.'); // Uyarı mesajı (Eski mesaj için de kalabilir, isteğe bağlı)
+                ToastService.show('warning', t('friendInvitePage.invitationAlreadySent')); 
             }
              else {
-                ToastService.show('error', 'Arkadaş davet isteği gönderilirken bir hata oluştu.'); // Genel hata mesajı
-                setError(err.message); // Hata durumunu ayarla (isteğe bağlı)
-                console.error("Davet hatası:", err); // Hata detaylarını konsola yazdır (isteğe bağlı)
+                ToastService.show('error', t('friendInvitePage.inviteError'));
+                setError(err.message);
+                console.error("Davet hatası:", err);
             }
         }
     };

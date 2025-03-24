@@ -5,19 +5,22 @@ import GrandientText from '../../../components/GrandientText';
 import { ToastService } from '../../../context/ToastService';
 import GradientDivider from '../../../components/GradientDivider';
 import { useTheme } from '../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; 
 
 const NotificationSection = () => {
   const [pushEnabled, setPushEnabled] = React.useState(true);
   const [emailEnabled, setEmailEnabled] = React.useState(true);
   const { colors } = useTheme();
+  const { t } = useTranslation();
+
 
   const handlePushToggle = () => {
     const newValue = !pushEnabled;
     setPushEnabled(newValue);
     if (newValue) {
-      ToastService.show("info", "Push Notifications enabled");
+      ToastService.show("info", t('settingsScreen.notificationSection.pushNotifications') + " " + t('settingsScreen.notificationSection.enabled').toLowerCase());
     } else {
-      ToastService.show("info", "Push Notifications disabled");
+      ToastService.show("info", t('settingsScreen.notificationSection.pushNotifications') + " " + t('settingsScreen.notificationSection.disabled').toLowerCase()); 
     }
   };
 
@@ -25,9 +28,9 @@ const NotificationSection = () => {
     const newValue = !emailEnabled;
     setEmailEnabled(newValue);
     if (newValue) {
-      ToastService.show("info", "Email Notifications enabled");
+      ToastService.show("info",  t('settingsScreen.notificationSection.emailNotifications') + " " + t('settingsScreen.notificationSection.enabled').toLowerCase()); 
     } else {
-      ToastService.show("info", "Email Notifications disabled");
+      ToastService.show("info", t('settingsScreen.notificationSection.emailNotifications') + " " + t('settingsScreen.notificationSection.disabled').toLowerCase());
     }
   };
 
@@ -35,7 +38,7 @@ const NotificationSection = () => {
     <Card style={[styles.card, { backgroundColor: colors.card }]}>
       <Card.Content>
         <GrandientText
-          text="Notifications"
+          text={t('settingsScreen.notificationSection.title')} 
           colors={colors.languageTextGradient}
           textStyle={{ fontSize: 22, color: colors.text }}
           gradientDirection="horizontal"
@@ -43,14 +46,14 @@ const NotificationSection = () => {
         <TouchableOpacity onPress={handlePushToggle} style={styles.listItemContainer}>
           <List.Item
             style={{ backgroundColor: colors.card }}
-            title="Push Notifications"
+            title={t('settingsScreen.notificationSection.pushNotifications')} 
             titleStyle={[styles.titleStyle, { color: colors.text }]}
-            description="Receive push notifications"
+            description={t('settingsScreen.notificationSection.pushNotificationsDescription')} 
             descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
             left={props => <List.Icon {...props} icon="bell" color={colors.primary} />}
             right={() => (
               <GrandientText
-                text={pushEnabled ? "Enabled" : "Disabled"}
+                text={pushEnabled ? t('settingsScreen.notificationSection.enabled') : t('settingsScreen.notificationSection.disabled')} 
                 colors={pushEnabled ? ['green', 'darkgreen'] : ['red', 'darkred']}
                 textStyle={[styles.rightTextStyle, { color: colors.text }]}
                 gradientDirection="horizontal"
@@ -62,14 +65,14 @@ const NotificationSection = () => {
         <TouchableOpacity onPress={handleEmailToggle} style={styles.listItemContainer}>
           <List.Item
             style={{ backgroundColor: colors.card }}
-            title="Email Notifications"
+            title={t('settingsScreen.notificationSection.emailNotifications')} 
             titleStyle={[styles.titleStyle, { color: colors.text }]}
-            description="Receive email updates"
+            description={t('settingsScreen.notificationSection.emailNotificationsDescription')}
             descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
             left={props => <List.Icon {...props} icon="email" color={colors.primary} />}
             right={() => (
               <GrandientText
-                text={emailEnabled ? "Enabled" : "Disabled"}
+                text={emailEnabled ?  t('settingsScreen.notificationSection.enabled') : t('settingsScreen.notificationSection.disabled')}
                 colors={emailEnabled ? ['green', 'darkgreen'] : ['red', 'darkred']}
                 textStyle={[styles.rightTextStyle, { color: colors.text }]}
                 gradientDirection="horizontal"

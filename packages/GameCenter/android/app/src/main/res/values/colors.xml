@@ -1,3 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bootsplash_background">#e0ccff</color>
+    <color name="bootsplash_background">#4a00e0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="purple_primary">#4A00E0</color>
+    <color name="orange_accent">#FF8C00</color>
 </resources>

@@ -1,25 +1,30 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Card, IconButton, useTheme } from 'react-native-paper';
+import { Text, Card, IconButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addAchievement } from '../services/service';
 import { ToastService } from '../../../../../context/ToastService';
+import { useAchievements } from '../context/AchievementsContext';
+import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
 
-const AchievementCardBase = ({ item, isOwned }) => {
-    const theme = useTheme();
+const AchievementCardBase = ({ item: propItem, isOwned }) => {
+    const { colors } = useTheme();
+    const { allAchievements } = useAchievements();
+
+    const item = allAchievements.find(achievement => achievement.id === propItem.id);
 
     const getRarityStyle = () => {
         switch (item.rarity) {
             case 'Rare':
-                return { color: theme.colors.secondary, fontWeight: 'bold' };
+                return { color: colors.warning, fontWeight: 'bold' };
             case 'Uncommon':
-                return { color: '#2ecc71', fontWeight: 'bold' };
+                return { color: colors.success, fontWeight: 'bold' };
             case 'Epic':
-                return { color: '#9b59b6', fontWeight: 'bold' };
+                return { color: colors.error, fontWeight: 'bold' };
             case 'Legendary':
-                return { color: '#f1c40f', fontWeight: 'bold' };
+                return { color: colors.primary, fontWeight: 'bold' };
             default:
-                return { color: theme.colors.surfaceVariant };
+                return { color: colors.subText };
         }
     };
 
@@ -38,7 +43,7 @@ const AchievementCardBase = ({ item, isOwned }) => {
     };
 
     return (
-        <Card style={styles.card} mode="outlined">
+        <Card style={[styles.card, { backgroundColor: colors.achivementsCard }]} mode="outlined">
             <Card.Content style={styles.cardContent}>
                 <View style={styles.iconContainer}>
                     <View
@@ -49,8 +54,8 @@ const AchievementCardBase = ({ item, isOwned }) => {
                     />
                 </View>
                 <View style={styles.textContainer}>
-                    <Text variant="titleMedium" style={styles.title}>{item.title}</Text>
-                    <Text variant="bodyMedium" style={styles.description}>{item.description}</Text>
+                    <Text variant="titleMedium" style={[styles.title, { color: colors.text }]}>{item.title}</Text>
+                    <Text variant="bodyMedium" style={[styles.description, { color: colors.subText }]}>{item.description}</Text>
                     <View style={styles.detailsContainer}>
                         <Text variant="labelMedium" style={[styles.rarity, getRarityStyle()]}>
                             {item.rarity}
@@ -59,10 +64,10 @@ const AchievementCardBase = ({ item, isOwned }) => {
                             <IconButton
                                 icon="star"
                                 size={16}
-                                iconColor={theme.colors.primary}
+                                iconColor={colors.primary}
                                 style={styles.xpIcon}
                             />
-                            <Text variant="labelMedium" style={styles.xp}>
+                            <Text variant="labelMedium" style={[styles.xp, { color: colors.subText }]}>
                                 {item.xp} XP
                             </Text>
                         </View>
@@ -70,7 +75,7 @@ const AchievementCardBase = ({ item, isOwned }) => {
                 </View>
                 {!isOwned && (
                     <IconButton
-                        icon={() => <Icon name="plus" size={24} color={theme.colors.primary} />}
+                        icon={() => <Icon name="plus" size={24} color={colors.primary} />}
                         onPress={handleAddAchievement}
                         style={styles.addButton}
                     />
@@ -83,8 +88,7 @@ const AchievementCardBase = ({ item, isOwned }) => {
 const styles = StyleSheet.create({
     card: {
         marginBottom: 12,
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        borderRadius: 20
+        borderRadius: 20,
     },
     cardContent: {
         flexDirection: 'row',
@@ -110,11 +114,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: 'bold',
-        color: '#ffffff',
         fontFamily: 'SQR721B',
     },
     description: {
-        color: 'rgba(255, 255, 255, 0.7)',
         marginTop: 2,
         fontFamily: 'SQR721B',
     },
@@ -136,7 +138,6 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     xp: {
-        color: 'rgba(255, 255, 255, 0.7)',
         marginLeft: -4,
         fontFamily: 'SQR721B',
     },

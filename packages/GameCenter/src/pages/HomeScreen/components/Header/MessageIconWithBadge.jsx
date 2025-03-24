@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
-import { useNavigation, useFocusEffect } from '@react-navigation/native'; // useFocusEffect import edildi
+import { useFocusEffect } from '@react-navigation/native';
 import lobbyService from './services/lobbyService';
-import { useCallback } from 'react'; // useCallback import edildi
+import { useTheme } from '../../../../context/ThemeContext';
+import { useHeader } from './context/HeaderContext'; // Import the context hook
 
-const MessageIconWithBadge = ({ navigateTo }) => {
-  const navigation = useNavigation();
+const MessageIconWithBadge = () => {
   const [unreadCount, setUnreadCount] = useState(0);
+  const { colors } = useTheme(); 
+  const { navigateToPersonalMessagePage} = useHeader(); // Get context values and functions
 
-  const fetchInvitationCount = useCallback(async () => { // useCallback ile fonksiyonu sar
+  const fetchInvitationCount = useCallback(async () => {
     try {
       const count = await lobbyService.getInvitationCount();
       setUnreadCount(count);
     } catch (error) {
       console.error("Failed to fetch invitation count:", error);
     }
-  }, []); // useCallback için boş bağımlılık dizisi, fonksiyon referansı sabit kalsın
+  }, []);
 
-  useFocusEffect( // useEffect yerine useFocusEffect kullanılıyor
+  useFocusEffect(
     useCallback(() => {
       fetchInvitationCount();
       return () => {
-        // Component focus dışına çıktığında yapılacak işlemler (isteğe bağlı)
-        // Örneğin, bir temizleme işlemi veya state resetleme
       };
-    }, [fetchInvitationCount]) // useCallback ile oluşturulan fetchInvitationCount fonksiyonunu bağımlılık olarak ekle
+    }, [fetchInvitationCount])
   );
 
   const handlePress = () => {
-    if (navigateTo) {
-      navigation.navigate(navigateTo);
-    }
+    navigateToPersonalMessagePage();
   };
 
   return (
@@ -42,7 +40,7 @@ const MessageIconWithBadge = ({ navigateTo }) => {
     >
       <IconButton
         icon="bell-outline"
-        color="gray"
+        iconColor={colors.text}
         size={24}
         style={{margin: 0, opacity: 0.8}}
       />
@@ -67,7 +65,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -2,
     top: -2,
-    backgroundColor: '#FF3B30',
+    backgroundColor: '#FF3B30', 
     borderRadius: 12,
     minWidth: 20,
     height: 20,
@@ -78,7 +76,7 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
   },
   badgeText: {
-    color: '#FFFFFF',
+    color: '#FFFFFF', 
     fontSize: 12,
     fontFamily: 'Orbitron-ExtraBold',
   },

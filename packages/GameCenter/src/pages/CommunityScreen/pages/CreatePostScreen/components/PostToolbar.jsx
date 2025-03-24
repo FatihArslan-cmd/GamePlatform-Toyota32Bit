@@ -2,10 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import styles from '../styles/createPostStyles';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useTheme } from '../../../../../context/ThemeContext';
+import styles from '../styles/createPostStyles';
 
 const PostToolbar = ({ setSelectedImage }) => {
+  const { colors } = useTheme();
 
   const handleImageSelection = async () => {
     const options = {
@@ -23,9 +25,9 @@ const PostToolbar = ({ setSelectedImage }) => {
       }
     });
   };
-
+  {[styles.dropdownText, { color: 'black' }]}
   return (
-    <View style={styles.toolbarContainer}>
+    <View style={[styles.toolbarContainer,{backgroundColor:colors.background}]}>
       <View style={styles.toolbar}>
         <TouchableRipple
           style={styles.toolbarButton}
@@ -33,7 +35,7 @@ const PostToolbar = ({ setSelectedImage }) => {
           rippleColor="rgba(0,0,0,0.1)"
           onPress={handleImageSelection}
         >
-          <Icon name="image" size={28} color="#1DA1F2" />
+          <Icon name="image" size={28} color={colors.primary} />
         </TouchableRipple>
         <TouchableRipple
           style={styles.toolbarButton}
@@ -41,7 +43,7 @@ const PostToolbar = ({ setSelectedImage }) => {
           rippleColor="rgba(0,0,0,0.1)"
           onPress={() => { /* Handle GIF selection */ }}
         >
-          <Icon name="file-gif-box" size={28} color="#1DA1F2" />
+          <Icon name="file-gif-box" size={28} color={colors.primary} />
         </TouchableRipple>
         <TouchableRipple
           style={styles.toolbarButton}
@@ -49,7 +51,7 @@ const PostToolbar = ({ setSelectedImage }) => {
           rippleColor="rgba(0,0,0,0.1)"
           onPress={() => {  }}
         >
-          <Icon name="format-list-bulleted" size={28} color="#1DA1F2" />
+          <Icon name="format-list-bulleted" size={28} color={colors.primary} />
         </TouchableRipple>
         <TouchableRipple
           style={styles.toolbarButton}
@@ -57,7 +59,7 @@ const PostToolbar = ({ setSelectedImage }) => {
           rippleColor="rgba(0,0,0,0.1)"
           onPress={() => {  }}
         >
-          <Icon name="map-marker" size={28} color="#1DA1F2" />
+          <Icon name="map-marker" size={28} color={colors.primary} />
         </TouchableRipple>
       </View>
     </View>

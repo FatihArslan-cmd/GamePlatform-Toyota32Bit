@@ -10,8 +10,11 @@ import LoadingFullScreen from '../../../../components/LoadingFullScreen';
 import { useFormContext } from '../../context/FormContext';
 import FadeIn from '../../../../components/Animations/FadeInAnimation';
 import { usePermissionsContext } from '../../context/PermissionContext';
+import { useTranslation } from 'react-i18next';
 
 const FormSection = () => {
+    const { t } = useTranslation(); 
+
     const {
         username,
         setUsername,
@@ -29,7 +32,7 @@ const FormSection = () => {
         closeModal,
         handleConfirmBioModal,
     } = useFormContext();
-    
+
     const {
         appIsLoading,
     } = usePermissionsContext();
@@ -41,18 +44,19 @@ const FormSection = () => {
     return (
         <View style={styles.formContainer}>
             <InputField
-                label="Username"
+                label={t('loginScreen.username')} 
                 value={username}
                 onChangeText={setUsername}
                 leftIcon="account-circle"
                 style={styles.input}
+                isFormSectionInput={true}
             />
 
             { !isForgotPassword ? (
              <FadeIn>
                 <View style={styles.contentContainer}>
                     <InputField
-                        label="Password"
+                        label={t('loginScreen.password')}
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={!showPassword}
@@ -60,6 +64,7 @@ const FormSection = () => {
                         rightIcon={showPassword ? 'eye-off' : 'eye'}
                         onRightIconPress={() => setShowPassword(!showPassword)}
                         style={styles.input}
+                        isFormSectionInput={true}
                     />
                     <OptionsSection />
                     <ActionButtons />

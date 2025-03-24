@@ -2,25 +2,25 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   appbar: {
-    backgroundColor: 'rgba(245, 245, 245, 0.6)', // Optional: Semi-transparent background for content
+    backgroundColor: 'rgba(245, 245, 245, 0.6)', 
     elevation: 5,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    justifyContent: 'space-between', // Distributes space evenly
+    justifyContent: 'space-between', 
   },
   leftContainer: {
     left: 15,
-    flex: 1, // Takes up 1/3 of the available space
-    alignItems: 'flex-start', // Align content to the start (left)
+    flex: 1, 
+    alignItems: 'flex-start', 
   },
   centerContainer: {
-    flex: 1, // Takes up 1/3 of the available space
-    alignItems: 'center', // Centers the text horizontally
+    flex: 1, 
+    alignItems: 'center',
   },
   rightContainer: {
-    flex: 1, // Takes up 1/3 of the available space
-    alignItems: 'flex-end', // Align content to the end (right)
+    flex: 1, 
+    alignItems: 'flex-end',
   },
   rightActions: {
     flexDirection: 'row',

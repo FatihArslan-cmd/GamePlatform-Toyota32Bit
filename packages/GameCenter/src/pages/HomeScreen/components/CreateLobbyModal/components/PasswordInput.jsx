@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput, Text, Switch } from 'react-native-paper';
+import { useTheme } from '../../../../../context/ThemeContext';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const PasswordInput = ({
   password,
@@ -8,34 +10,46 @@ const PasswordInput = ({
   onPasswordChange,
   onToggleVisibility,
   hasPassword,
-  onPasswordToggle
+  onPasswordToggle,
+  t // Receive t function as prop
 }) => {
+  const { colors } = useTheme();
+  // const { t } = useTranslation(); // No need to use hook here, it's passed as prop
+
   return (
     <View style={styles.container}>
       <View style={styles.passwordSwitchContainer}>
-        <Text variant="bodyMedium" style={styles.passwordSwitchText}>Password Protected Lobby</Text>
+        <Text variant="bodyMedium" style={[styles.passwordSwitchText, { color: colors.text }]}>
+          {t('createLobbyModal.passwordInput.hasPassword')} {/* Translated text */}
+        </Text>
         <Switch
           value={hasPassword}
           onValueChange={onPasswordToggle}
-          thumbColor={hasPassword ? '#8a2be2' : null} // Set thumb color when switch is on
-          trackColor={{ true: 'rgba(138, 43, 226, 0.6)', false: null }} // Set track color when switch is on
+          thumbColor={hasPassword ? colors.primary : null}
+          trackColor={{ true: colors.primary, false: null }}
         />
       </View>
 
       {hasPassword && (
         <TextInput
-          label="Lobby Password"
+        label={
+          <Text style={{ color: colors.text }}>{t('createLobbyModal.passwordInput.password')}</Text> 
+        }
           mode="outlined"
           value={password}
           onChangeText={onPasswordChange}
           secureTextEntry={!isPasswordVisible}
+          left={<TextInput.Icon icon="lock" color={colors.primary} />}
           right={
             <TextInput.Icon
               icon={isPasswordVisible ? "eye-off" : "eye"}
               onPress={onToggleVisibility}
+              iconColor={colors.text}
             />
           }
-          style={styles.input}
+          style={[styles.input, { backgroundColor: colors.card }]}
+          outlineStyle={{ borderColor: colors.border }}
+          textColor={colors.text}
         />
       )}
     </View>
@@ -58,7 +72,6 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 8,
-    backgroundColor: 'white',
   },
 });
 

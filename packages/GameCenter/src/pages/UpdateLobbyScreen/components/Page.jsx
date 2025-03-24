@@ -11,6 +11,7 @@ import TextInputWithIcon from './TextInputWithIcon';
 import { UserContext } from '../../../context/UserContext';
 import { useTheme } from '../../../context/ThemeContext';
 import{ useLobbyUpdate }from '../context/LobbyUpdateContext';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const Page = () => {
   const {
@@ -25,7 +26,9 @@ const Page = () => {
   } = useLobbyUpdate();
 
   const { user } = useContext(UserContext);
-  const { colors } = useTheme(); 
+  const { colors } = useTheme();
+  const { t } = useTranslation(); 
+
 
   if (error) {
     return (
@@ -48,22 +51,22 @@ const Page = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Surface style={[styles.card, { backgroundColor: colors.card }]} elevation={4}>
           <View style={styles.headerContainer}>
-            <Text style={[styles.title, { color: colors.text }]}>Update Lobby</Text>
+            <Text style={[styles.title, { color: colors.text }]}>{t('updateLobbyScreen.headerTitle')}</Text> 
           </View>
 
           <TextInputWithIcon
-            label="Lobby Name"
+            label={t('updateLobbyScreen.lobbyNameLabel')}
             value={lobbyName}
             onChangeText={setLobbyName}
-            placeholder="Enter lobby name"
+            placeholder={t('updateLobbyScreen.lobbyNamePlaceholder')} 
             iconName="tag"
           />
 
           <TextInputWithIcon
-            label="Max Capacity"
+            label={t('updateLobbyScreen.maxCapacityLabel')} 
             value={maxCapacity}
             onChangeText={setMaxCapacity}
-            placeholder="Enter max capacity"
+            placeholder={t('updateLobbyScreen.maxCapacityPlaceholder')} 
             keyboardType="number-pad"
             iconName="account-group"
           />
@@ -73,12 +76,12 @@ const Page = () => {
           {lobbyType === 'Event' && (
             <>
               <DatePickerInput
-                label="Start Date"
+                label={t('updateLobbyScreen.startDateLabel')} 
                 dateType="startDate"
               />
 
               <DatePickerInput
-                label="End Date"
+                label={t('updateLobbyScreen.endDateLabel')} 
                 dateType="endDate"
               />
             </>

@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
-import { Switch, Text, TouchableRipple, IconButton, Menu } from 'react-native-paper';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../../../context/ThemeContext';
+import { ToastService } from '../../../context/ToastService';
+import { useTranslation } from 'react-i18next'; 
 
-const ThemeSwitcher = ({ onThemeChange }) => {
-  const [isDarkMode, setIsDarkMode] = useState(true); 
+const ThemeSwitcher = () => {
+  const { theme, setTheme, colors } = useTheme();
+  const { t } = useTranslation();
+
+  const isDarkMode = theme === 'dark';
 
   const toggleTheme = () => {
-    const newThemeValue = !isDarkMode;
-    setIsDarkMode(newThemeValue);
-    if (onThemeChange) {
-      onThemeChange(newThemeValue ? 'dark' : 'light');
-    }
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    setTheme(newTheme);
+    ToastService.show('success', `${t('themeSwitcher.themeSwitched')} ${t(`themeSwitcher.${newTheme}`)}`);
   };
 
   return (
@@ -20,7 +24,7 @@ const ThemeSwitcher = ({ onThemeChange }) => {
         <MaterialCommunityIcons
           name={isDarkMode ? "weather-night" : "weather-sunny"}
           size={24}
-          color="white"
+          color={colors.text}
         />
       </TouchableRipple>
     </View>
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   button: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(135, 135, 135, 0.1)',
     padding: 8,
     borderRadius: 5,
     width: 40,

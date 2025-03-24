@@ -5,13 +5,14 @@ import { Text, Chip } from 'react-native-paper';
 import { LinearGradient } from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import formatDate from '../../../../../utils/FormatDate';
+import {useTranslation} from 'react-i18next';
 
-const { height } = Dimensions.get('window'); // Ekran boyutlarını al
+const { height } = Dimensions.get('window'); 
 
 const GameCard = ({ game }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
+  const { t } = useTranslation();
   const handleLayout = useCallback(
     (event) => {
       const { y } = event.nativeEvent.layout; 
@@ -44,8 +45,8 @@ const GameCard = ({ game }) => {
           >
             <View style={styles.infoContainer}>
               <Text style={styles.gameTitle}>{game.name}</Text>
-              <Text style={styles.releaseInfo}>Released: {game.released}</Text>
-              <Text style={styles.releaseInfo}>Last Updated: {formatDate(game.updated)}</Text>
+              <Text style={styles.releaseInfo}>{t('homeScreen.released')} {game.released}</Text>
+              <Text style={styles.releaseInfo}>{t('homeScreen.lastUpdated')} {formatDate(game.updated)}</Text>
               {game.genres && (
                 <View style={styles.genreContainer}>
                   {game.genres.slice(0, 3).map((genre) => (
