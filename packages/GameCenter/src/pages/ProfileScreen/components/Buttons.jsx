@@ -17,7 +17,6 @@ const Buttons = () => {
         handlePageChange,
     } = useButtons();
     const { colors } = useTheme();
-    const { t } = useTranslation();
     
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -27,7 +26,7 @@ const Buttons = () => {
                         key={tab.id}
                         style={[styles.tab, { width: `${100 / tabs.length}%` }]}
                         onPress={() => handleTabPress(index)}
-                        rippleColor={colors.ripple} 
+                        rippleColor='red'
                     >
                         <View style={styles.tabContent}>
                             <Text style={[styles.tabNumber, { color: colors.subText }, activeTabIndex === index && { color: colors.primary }]}>

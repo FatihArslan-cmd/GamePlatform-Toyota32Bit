@@ -4,8 +4,8 @@ const routes = require('./routes');
 const cookieParser = require('cookie-parser');
 const http = require('http');
 const cors = require('cors');
-const WebsocketManager = require('./websocket/websocketManager'); // Ensure path is correct
-const lobbyManager = require('./memory/LobbyStore/lobbyManager'); // Adjust path to your lobbyManager.js
+const WebsocketManager = require('./websocket/websocketManager');
+const lobbyManager = require('./memory/LobbyStore/lobbyManager'); 
 
 const app = express();
 const server = http.createServer(app);
@@ -20,18 +20,14 @@ app.use(cors({
 }));
 app.use('/api', routes);
 
-setInterval(lobbyManager.cleanupEventLobbies, 60 * 1000); // Clean event lobbies every minute
-setInterval(lobbyManager.cleanupInactiveLobbies, 60 * 1000); // Clean inactive lobbies every minute
+setInterval(lobbyManager.cleanupEventLobbies, 60 * 1000);
+setInterval(lobbyManager.cleanupInactiveLobbies, 60 * 1000);
 
 
-// 1. Instantiate WebsocketManager
-const websocketManagerInstance = new WebsocketManager(server); // Pass the server instance during creation
+const websocketManagerInstance = new WebsocketManager(server); 
 
-// 2. Store the instance in app.set
 app.set('WebsocketManager', websocketManagerInstance);
 
-// 3. (Remove the function call - initialization is likely in constructor now or a separate method if needed)
-// WebsocketManager(server); // REMOVE THIS LINE
 
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

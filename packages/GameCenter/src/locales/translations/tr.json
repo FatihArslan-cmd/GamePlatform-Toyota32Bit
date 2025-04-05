@@ -286,7 +286,11 @@
       "joinLobbyButton": "Lobiye Katıl",
       "password": "Şifre",
       "started":"Başladı",
-      "join":"Katıl"
+      "join":"Katıl",
+      "gameSpeedInfo":"Hatırlatma! Oyun hızını sadece lobi sahibi ayarlar.",
+      "slow":"Yavaş",
+      "normal":"Normal",
+      "fast":"Hızlı"
     },
     
     

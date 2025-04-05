@@ -4,7 +4,7 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 import { PermissionsAndroid, Platform } from 'react-native';
 
 const app = getApp();
-const messaging = getMessaging(app); // Initialize getMessaging once and store it in 'messaging'
+const messaging = getMessaging(app); 
 
 export const requestUserPermission = async () => {
   if (Platform.OS === 'android') {
@@ -12,42 +12,38 @@ export const requestUserPermission = async () => {
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     );
     if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Bildirim izni reddedildi');
       return;
     }
   }
 
-  const authStatus = await messaging.requestPermission(); // Use the 'messaging' instance
+  const authStatus = await messaging.requestPermission(); 
   const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED || // Use the 'messaging' instance
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL; // Use the 'messaging' instance
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED || 
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
   if (enabled) {
-    console.log('Bildirim izni verildi');
     await getFCMToken();
   }
 };
 
 export const getFCMToken = async () => {
-  const token = await messaging.getToken(); // Use the 'messaging' instance
+  const token = await messaging.getToken(); 
   console.log('FCM Token:', token);
   return token;
 };
 
 export const setupForegroundNotifications = () => {
-  return messaging.onMessage(async remoteMessage => { // Use the 'messaging' instance
-    console.log('Foreground bildirim alındı:', remoteMessage);
-
+  return messaging.onMessage(async remoteMessage => { 
     if (remoteMessage) {
       await notifee.displayNotification({
-        title: remoteMessage.notification?.title || 'Yeni Bildirim',
-        body: remoteMessage.notification?.body || 'Bildirime dokunun',
+        title: remoteMessage.notification?.title || 'Notification',
+        body: remoteMessage.notification?.body || 'Notification body',
         android: {
-          channelId: 'varsayılan',
+          channelId: 'default',
           importance: AndroidImportance.HIGH,
           smallIcon: 'ic_launcher',
           pressAction: {
-            id: 'varsayılan',
+            id: 'default',
           },
           sound: 'lumos_sound_effect',
         },
@@ -58,21 +54,21 @@ export const setupForegroundNotifications = () => {
 
 export const setupBackgroundNotifications = () => {
   messaging.setBackgroundMessageHandler(async remoteMessage => { 
-    console.log('Arkaplan bildirimi alındı:', remoteMessage);
+    console.log(remoteMessage);
   });
 };
 
 export const checkInitialNotification = async () => {
   const remoteMessage = await messaging.getInitialNotification();
   if (remoteMessage) {
-    console.log('Uygulama bildirimle açıldı:', remoteMessage);
+    console.log(remoteMessage);
   }
 };
 
 export const createDefaultChannel = async () => {
   await notifee.createChannel({
-    id: 'varsayılan',
-    name: 'Varsayılan Kanal',
+    id: 'default',
+    name: 'Default Channel',
     importance: AndroidImportance.HIGH,
   });
 };

@@ -2,8 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "gamecenter": "cd packages/GameCenter && react-native run-android --port=8083",
-    "start:bingo": "cd packages/Bingo && react-native run-android --port=8083"
+    "gamecenter": "cd packages/GameCenter && npx react-native run-android --port=8081"
   },
   "workspaces": {
     "packages": [
@@ -27,10 +26,7 @@
       "**/react-native-reanimated",
       "**/@react-native-community/blur",
       "**/react-native-gesture-handler",
-      "**/@shopify/react-native-skia",
-      "**/react-native-reanimated",
       "**/react-native-mmkv",
-      "**/react-native-fast-image",
       "**/@shopify/flash-list",
       "**/react-content-loader",
       "**/react-native-svg",
@@ -46,16 +42,14 @@
       "**/@react-native-firebase/app",
       "**/@react-native-firebase/messaging",
       "**/@notifee/react-native",
-      "**/react-native-tts",
-      "**/react-native-sound",
       "**/@react-native-community/netinfo",
       "**/react-i18next",
-      "**/i18next"
-
+      "**/i18next",
+      "**/react-native-sound",
+      "**/react-native-tts"
     ]
   },
   "devDependencies": {
-    "lerna": "^8.1.9",
-    "nx": "^20.6.1"
+    "lerna": "^8.1.9"
   }
 }

@@ -283,7 +283,11 @@
     "joinLobbyButton": "Join Lobby",
     "password": "Password",
     "started": "Started",
-    "join": "Join"
+    "join": "Join",
+    "gameSpeedInfo":"Don't forget only lobby owner can change the game speed.",
+    "slow":"Slow",
+    "normal":"Normal",
+    "fast":"Fast"
   },
   "createLobbyModal": {
     "title": "Create Lobby",

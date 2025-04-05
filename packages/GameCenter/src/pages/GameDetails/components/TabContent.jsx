@@ -30,7 +30,7 @@ export default function TabContent({ explanation }) {
   };
 
   return (
-    <View style={[styles.tabContent,{ backgroundColor: colors.background }]}>
+    <View style={[styles.tabContent, { backgroundColor: colors.background }]}>
       {renderContent()}
     </View>
   );

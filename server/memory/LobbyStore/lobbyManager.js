@@ -350,24 +350,24 @@ const lobbyManager = {
                 lobby.members.some(member => member.id === userId)
             );
 
-            callback(null, userLobby || null); // Return null if user is not in any lobby
+            callback(null, userLobby || null); 
         });
     },
 
-    cleanupInactiveLobbies: () => { // Yeni temizlik fonksiyonu
+    cleanupInactiveLobbies: () => { 
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) {
                 return console.error('Error cleaning up inactive lobbies:', err);
             }
 
             const now = Date.now();
-            const timeoutDuration = 2 * 60 * 60 * 1000; // 2 hours
+            const timeoutDuration = 2 * 60 * 60 * 1; 
 
             let updated = false;
             Object.keys(lobbies).forEach(ownerId => {
                 const lobby = lobbies[ownerId];
-                if (lobby.lobbyType === 'Normal' && lobby.lastOwnerLeave) { // Normal lobi ve lastOwnerLeave varsa
-                    if (now - lobby.lastOwnerLeave >= timeoutDuration) { // 2 hours geçmiş mi?
+                if (lobby.lobbyType === 'Normal' && lobby.lastOwnerLeave) { 
+                    if (now - lobby.lastOwnerLeave >= timeoutDuration) { 
                         delete lobbies[ownerId];
                         updated = true;
                         console.log(`Normal lobby ${lobby.lobbyName} owned by ${ownerId} has been deleted due to inactivity timeout.`);
@@ -385,7 +385,7 @@ const lobbyManager = {
         });
     },
 
-    cleanupEventLobbies: () => { // Mevcut event lobi temizliği (değişiklik yok)
+    cleanupEventLobbies: () => { 
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) {
                 return console.error('Error cleaning up event lobbies:', err);
