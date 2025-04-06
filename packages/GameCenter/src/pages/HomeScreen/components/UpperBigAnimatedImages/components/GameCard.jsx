@@ -1,13 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { Text, Chip } from 'react-native-paper';
-import { LinearGradient } from 'react-native-linear-gradient';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import formatDate from '../../../../../utils/FormatDate';
-import {useTranslation} from 'react-i18next';
+import FastImage from "react-native-fast-image";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import React, { useCallback, useState } from "react";
+import formatDate from "../../../../../utils/FormatDate";
+import { useTranslation } from "react-i18next";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { LinearGradient } from "react-native-linear-gradient";
+import { Chip, Text } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
 
 const { height } = Dimensions.get('window'); 
+const TABLET_DEVICE = isTablet();
 
 const GameCard = ({ game }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -62,10 +64,10 @@ const GameCard = ({ game }) => {
               )}
               <View style={styles.statsContainer}>
                 <Chip style={styles.chip} textStyle={styles.chipText}>
-                  <MaterialIcons name="star" size={16} color="#FFD700" /> {game.rating}
+                  <MaterialIcons name="star" size={TABLET_DEVICE ? 16 : 12} color="#FFD700" /> {game.rating}
                 </Chip>
                 <Chip style={styles.chip} textStyle={styles.chipText}>
-                  <MaterialIcons name="people" size={16} color="#fff" /> {game.ratings_count} ratings
+                  <MaterialIcons name="people" size={TABLET_DEVICE ? 16 : 12} color="#fff" /> {game.ratings_count} ratings
                 </Chip>
               </View>
             </View>
@@ -78,7 +80,7 @@ const GameCard = ({ game }) => {
 
 const styles = StyleSheet.create({
   page: {
-    paddingHorizontal: 20,
+    paddingHorizontal: TABLET_DEVICE ? 20 : 10,
   },
   cardContainer: {
     borderRadius: 24,
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
   },
   genreChipText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-VariableFont_wght',
   },
   image: {
@@ -118,11 +120,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
   },
   infoContainer: {
-    padding: 20,
+    padding: TABLET_DEVICE ? 20 : 10,
   },
   gameTitle: {
     color: '#fff',
-    fontSize: 36,
+    fontSize: TABLET_DEVICE ? 36 : 19,
     marginBottom: 8,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: 0, height: 1 },
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
   },
   releaseInfo: {
     color: '#ccc',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     marginBottom: 4,
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 0, height: 1 },
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flexDirection: 'row',
-    gap: 11,
+    gap: TABLET_DEVICE ? 11 : 5,
   },
   chip: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
   },
   chipText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 10,
     fontFamily: 'Orbitron-VariableFont_wght',
   },
 });

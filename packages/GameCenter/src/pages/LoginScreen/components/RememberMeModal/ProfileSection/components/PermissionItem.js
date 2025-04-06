@@ -1,8 +1,11 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Checkbox, Surface } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../../../../../context/ThemeContext';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { Checkbox, Surface, Text } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const PermissionItem = ({ title, icon, permission, isChecked, onToggle }) => {
   const { colors } = useTheme(); 
@@ -25,7 +28,7 @@ const PermissionItem = ({ title, icon, permission, isChecked, onToggle }) => {
 
 const styles = StyleSheet.create({
   permissionItem: {
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 8,
     marginBottom: 12,
     borderRadius: 8,
     elevation: 2,
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   permissionText: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     flex: 1,
     fontFamily:'Orbitron-ExtraBold'
   },

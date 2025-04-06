@@ -1,6 +1,9 @@
-import React,{memo} from 'react';
-import { TextInput } from 'react-native-paper';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme hook
+import React, { memo } from "react";
+import { TextInput } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); // Check if the device is a tablet
 
 const InputField = memo(({
   label,
@@ -41,9 +44,9 @@ const InputField = memo(({
       }
       theme={{
         colors: {
-          primary: primaryColor, // Use conditionally determined primary color
-          placeholder: placeholderColor, // Use conditionally determined placeholder color
-          text: textColor || colors.text, // Use text color from theme or textColor prop
+          primary: primaryColor, 
+          placeholder: placeholderColor, 
+          text: textColor || colors.text, 
         },
         fonts: {
           regular: { fontFamily: "Orbitron-ExtraBold" }

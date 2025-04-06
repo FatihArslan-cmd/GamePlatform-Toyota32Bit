@@ -1,8 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
-import { TextInput, Text } from 'react-native-paper';
-import { useState, useRef } from 'react';
-import { useTheme } from '../../../../../context/ThemeContext';
+import React from "react";
+import { useState } from "react";
+import { Animated, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text, TextInput } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const GameSelector = ({
     gameName,
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     },
     gameSelectorLabel: {
         marginBottom: 12,
-        fontSize: 18,
+        fontSize: TABLET_DEVICE ? 18 : 12,
         fontWeight: '600',
         color: '#8a2be2',
         fontFamily: 'Orbitron-ExtraBold',
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
         borderColor: '#8a2be2',
     },
     gameButtonText: {
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 12,
         color: '#333',
         fontFamily: 'Orbitron-ExtraBold',
     },

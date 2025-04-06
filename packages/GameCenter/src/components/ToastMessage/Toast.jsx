@@ -1,52 +1,25 @@
-import React, { useEffect, useRef } from "react";
-import { StyleSheet, View, Animated, TouchableOpacity, Dimensions, PanResponder } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
-const { width } = Dimensions.get('window');
+import { isTablet } from "../../utils/isTablet";
 
-const ToastMessage = ({ type = "info", message = "", onHide, action }) => {
+const TABLET_DEVICE = isTablet();
+
+const ToastMessage = forwardRef(({ action: initialAction }, ref) => {
   const translateY = useRef(new Animated.Value(-100)).current;
   const translateX = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.8)).current;
   const progress = useRef(new Animated.Value(0)).current;
+  const timeoutRef = useRef(null);
+  const isCurrentlyVisible = useRef(false);
 
-  // Pan Responder for swipe gestures
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(gestureState.dx);
-        opacity.setValue(1 - Math.abs(gestureState.dx) / 200);
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (Math.abs(gestureState.dx) > width * 0.4) {
-          Animated.timing(translateX, {
-            toValue: gestureState.dx > 0 ? width : -width,
-            duration: 200,
-            useNativeDriver: true,
-          }).start(hideToast);
-        } else {
-          Animated.parallel([
-            Animated.spring(translateX, {
-              toValue: 0,
-              useNativeDriver: true,
-              tension: 50,
-              friction: 8,
-            }),
-            Animated.timing(opacity, {
-              toValue: 1,
-              duration: 200,
-              useNativeDriver: true,
-            }),
-          ]).start();
-        }
-      },
-    })
-  ).current;
+  const [currentType, setCurrentType] = useState("info");
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [currentAction, setCurrentAction] = useState(initialAction);
 
-  useEffect(() => {
+  const showAnimation = (callback) => {
     Animated.parallel([
       Animated.spring(translateY, {
         toValue: 0,
@@ -65,16 +38,19 @@ const ToastMessage = ({ type = "info", message = "", onHide, action }) => {
         tension: 50,
         friction: 8,
       }),
-    ]).start();
+    ]).start(() => {
+      isCurrentlyVisible.current = true;
+      timeoutRef.current = setTimeout(internalHideToast, 3000);
+      Animated.timing(progress, {
+        toValue: 1,
+        duration: 3000,
+        useNativeDriver: false,
+      }).start(callback);
+    });
+  };
 
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: false,
-    }).start();
-  }, []);
-
-  const hideToast = () => {
+  const internalHideToast = (callback) => {
+    isCurrentlyVisible.current = false;
     Animated.parallel([
       Animated.timing(translateY, {
         toValue: -100,
@@ -92,14 +68,35 @@ const ToastMessage = ({ type = "info", message = "", onHide, action }) => {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      if (onHide) onHide();
+      progress.setValue(0);
+      setCurrentMessage("");
+      if (callback) callback();
     });
   };
 
-  useEffect(() => {
-    const timeout = setTimeout(hideToast, 3000);
-    return () => clearTimeout(timeout);
-  }, []);
+  useImperativeHandle(ref, () => ({
+    showToast: (toastType = "info", toastMessage = "", toastAction) => {
+      if (isCurrentlyVisible.current) {
+        internalHideToast(() => { // Önceki toast varsa hemen kapat ve sonra yenisini göster
+          clearTimeout(timeoutRef.current); // Mevcut timeout'u temizle
+          setCurrentType(toastType);
+          setCurrentMessage(toastMessage);
+          setCurrentAction(toastAction);
+          showAnimation();
+        });
+      } else {
+        clearTimeout(timeoutRef.current); // Önceki timeout'u temizle (garanti için)
+        setCurrentType(toastType);
+        setCurrentMessage(toastMessage);
+        setCurrentAction(toastAction);
+        showAnimation();
+      }
+    },
+    hideToast: (callback) => { // Harici hide fonksiyonu yine de hızlıca kapatabilir. İsteğe bağlı olarak kaldırılabilir.
+      internalHideToast(callback);
+    },
+  }));
+
 
   const progressWidth = progress.interpolate({
     inputRange: [0, 1],
@@ -116,7 +113,7 @@ const ToastMessage = ({ type = "info", message = "", onHide, action }) => {
       inputRange: [0, 1],
       outputRange: [0.5, 1],
     });
-    
+
     return {
       transform: [
         { rotate },
@@ -125,63 +122,55 @@ const ToastMessage = ({ type = "info", message = "", onHide, action }) => {
     };
   };
 
+
   return (
     <Animated.View
-      {...panResponder.panHandlers}
       style={[
         styles.toastContainer,
         {
           opacity,
           transform: [
             { translateY },
-            { translateX },
+            { translateX }, // translateX kaldırılabilir, animasyon etkilemiyor şu an
             { scale },
           ],
         },
       ]}
     >
-      <View style={[styles.content, { backgroundColor: getBackgroundColor(type) }]}>
+      <View style={[styles.content, { backgroundColor: getBackgroundColor(currentType) }]}>
         <Animated.View style={[styles.iconContainer, getIconAnimation()]}>
-          <Icon name={getIconName(type)} size={24} color="#fff" />
+          <Icon name={getIconName(currentType)} size={24} color="#fff" />
         </Animated.View>
-        
+
         <View style={styles.messageContainer}>
           <Text style={styles.message} numberOfLines={2}>
-            {message}
+            {currentMessage}
           </Text>
-          {action && (
-            <TouchableOpacity 
-              onPress={action.onPress} 
+          {currentAction && (
+            <TouchableOpacity
+              onPress={currentAction.onPress}
               style={styles.actionButton}
               activeOpacity={0.7}
             >
-              <Text style={styles.actionText}>{action.label}</Text>
+              <Text style={styles.actionText}>{currentAction.label}</Text>
             </TouchableOpacity>
           )}
         </View>
 
-        <TouchableOpacity 
-          onPress={hideToast} 
-          style={styles.closeButton}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-          activeOpacity={0.7}
-        >
-          <Icon name="close" size={20} color="#fff" />
-        </TouchableOpacity>
       </View>
 
-      <Animated.View 
+      <Animated.View
         style={[
           styles.progressBar,
-          { 
+          {
             width: progressWidth,
-            backgroundColor: getBackgroundColor(type),
+            backgroundColor: getBackgroundColor(currentType),
           }
-        ]} 
+        ]}
       />
     </Animated.View>
   );
-};
+});
 
 const getBackgroundColor = (type) => {
   switch (type) {
@@ -226,17 +215,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     alignSelf: 'center',
     width: '90%',
-    zIndex: 1000,
+    zIndex: 1000000,
   },
   content: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 8,
     borderRadius: 12,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
+    width: TABLET_DEVICE ? 40 : 28,
+    height: TABLET_DEVICE ? 40 : 28,
     borderRadius: 20,
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
@@ -249,21 +238,12 @@ const styles = StyleSheet.create({
   },
   message: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 13,
     letterSpacing: 0.3,
     fontWeight:'bold'
   },
-  closeButton: {
-    padding: 4,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 20,
-    width: 28,
-    height: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   progressBar: {
-    height: 3,
+    height: TABLET_DEVICE ? 3 : 2,
     backgroundColor: '#fff',
   },
   actionButton: {

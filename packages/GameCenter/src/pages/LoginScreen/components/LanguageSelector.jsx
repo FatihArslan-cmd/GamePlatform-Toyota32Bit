@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Menu, Text, TouchableRipple } from 'react-native-paper';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
-import { storage } from '../../../utils/storage';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Menu, Text, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { storage } from "../../../utils/storage";
+
+const TABLET_DEVICE = isTablet();
 
 const LanguageSelector = () => {
   const [visible, setVisible] = useState(false);
   const { colors } = useTheme();
-  const { t, i18n } = useTranslation(); 
+  const { t, i18n } = useTranslation();
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -25,7 +28,11 @@ const LanguageSelector = () => {
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <TouchableRipple onPress={openMenu} style={[styles.button]}>
+          <TouchableRipple
+            onPress={openMenu}
+            style={styles.button}
+            rippleColor={colors.ripple} // Optional: Use theme-based ripple
+          >
             <Text style={[styles.buttonText, { color: colors.text }]}>
               {i18n.language.toUpperCase()}
             </Text>
@@ -35,17 +42,17 @@ const LanguageSelector = () => {
       >
         <Menu.Item
           onPress={() => changeLanguage('tr')}
-          title={t('loginScreen.turkish')} 
+          title={t('loginScreen.turkish')}
           titleStyle={[styles.menuItemText, { color: colors.text }]}
         />
         <Menu.Item
           onPress={() => changeLanguage('en')}
-          title={t('loginScreen.english')} 
+          title={t('loginScreen.english')}
           titleStyle={[styles.menuItemText, { color: colors.text }]}
         />
         <Menu.Item
           onPress={() => changeLanguage('de')}
-          title={t('loginScreen.german')} 
+          title={t('loginScreen.german')}
           titleStyle={[styles.menuItemText, { color: colors.text }]}
         />
       </Menu>
@@ -56,24 +63,28 @@ const LanguageSelector = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 40,
-    right: 20,
+    top: TABLET_DEVICE ? 50 : 40, // Adjusted top position
+    right: TABLET_DEVICE ? 30 : 15, // Adjusted right position
     zIndex: 1000,
   },
   button: {
-    backgroundColor: 'rgba(135, 135, 135, 0.1)',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    backgroundColor: 'rgba(135, 135, 135, 0.1)', // Consider using theme colors
+    paddingVertical: TABLET_DEVICE ? 10 : 6, // Adjusted vertical padding
+    paddingHorizontal: TABLET_DEVICE ? 16 : 4, // Adjusted horizontal padding
     borderRadius: 5,
+    minWidth: TABLET_DEVICE ? 60 : 50, // Ensure minimum width
+    alignItems: 'center',
   },
   buttonText: {
-    fontFamily: 'Orbitron-ExtraBold',
+    fontFamily: 'Orbitron-ExtraBold', 
+    fontSize: TABLET_DEVICE ? 14 : 10,
   },
   menuItemText: {
-    fontFamily: 'Orbitron-ExtraBold',
+    fontFamily: 'Orbitron-ExtraBold', 
+    fontSize: TABLET_DEVICE ? 14 : 13, 
   },
   menuContent: {
-    marginTop: 75,
+    marginTop: TABLET_DEVICE ? 5 : 4, 
   },
 });
 

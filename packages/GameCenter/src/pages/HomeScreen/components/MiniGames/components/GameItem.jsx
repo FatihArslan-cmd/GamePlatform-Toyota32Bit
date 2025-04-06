@@ -1,18 +1,21 @@
-import React, { memo } from 'react';
-import { StyleSheet, Pressable, View } from 'react-native';
-import { Card, Surface } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import LinearGradient from 'react-native-linear-gradient';
-import { BlurView } from '@react-native-community/blur';
+import FastImage from "react-native-fast-image";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import LinearGradient from "react-native-linear-gradient";
+import React, { memo } from "react";
+import { BlurView } from "@react-native-community/blur";
+import { useNavigation } from "@react-navigation/native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Card, Surface } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
+
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
 
 const AnimatedSurface = Animated.createAnimatedComponent(Surface);
+const TABLET_DEVICE = isTablet();
 
 const GameItem = memo(({ item }) => {
   const scale = useSharedValue(1);
@@ -39,7 +42,6 @@ const GameItem = memo(({ item }) => {
 
   return (
     <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}   onPress={() => {
-      console.log("GameItem: ", item.image_background);
       navigation.navigate('GameDetails', {
         gameName:item.name,
         about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
@@ -92,7 +94,7 @@ const GameItem = memo(({ item }) => {
           <View
             style={styles.playButton}
           >
-            <Icon name="play-circle-outline" size={32} color="white" />
+            <Icon name="play-circle-outline" size={TABLET_DEVICE ? 32 : 20} color="white" />
           </View>
         </View>
       </AnimatedSurface>
@@ -103,8 +105,8 @@ const GameItem = memo(({ item }) => {
 const styles = StyleSheet.create({
   surface: {
     borderRadius: 20,
-    padding: 12,
-    paddingBottom: 52,
+    padding: TABLET_DEVICE ? 12 : 8,
+    paddingBottom: TABLET_DEVICE ? 52 : 39,
     overflow: 'hidden',
   },
   backgroundContainer: {
@@ -126,8 +128,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   card: {
-    width: 150,
-    height: 180,
+    width: TABLET_DEVICE ? 150 : 125,
+    height: TABLET_DEVICE ? 180 : 180,
     borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: 'transparent',
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     color: 'white',
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 14 : 11,
     lineHeight: 18,
     textAlign: 'center',
     paddingHorizontal: 8,

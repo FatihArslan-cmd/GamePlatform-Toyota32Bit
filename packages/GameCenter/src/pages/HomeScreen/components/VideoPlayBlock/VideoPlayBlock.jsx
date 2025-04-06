@@ -1,13 +1,16 @@
-import React, { useEffect, memo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { useIsFocused } from '@react-navigation/native';
-import games from './components/games';
-import VideoPlayItems from './components/VideoPlayItems';
-import GradientDivider from '../../../../components/GradientDivider';
-import GrandientText from '../../../../components/GrandientText';
-import { useTheme } from '../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import FastImage from "react-native-fast-image";
+import GradientDivider from "../../../../components/GradientDivider";
+import GrandientText from "../../../../components/GrandientText";
+import React, { memo, useEffect } from "react";
+import VideoPlayItems from "./components/VideoPlayItems";
+import games from "./components/games";
+import { useIsFocused } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const VideoPlayBlock = memo(() => {
   const isFocused = useIsFocused();
@@ -26,7 +29,7 @@ const VideoPlayBlock = memo(() => {
       <GrandientText
         text= {t('homeScreen.Upcominggames')}
         colors={colors.languageTextGradient} 
-        textStyle={{ fontSize: 32 }}
+        textStyle={{ fontSize: TABLET_DEVICE ? 32 : 20 }}
         gradientDirection="horizontal"
         width={400}
       />
@@ -48,7 +51,7 @@ const VideoPlayBlock = memo(() => {
 
 const styles = (colors) => StyleSheet.create({
   container: {
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 12,
     backgroundColor: colors.background, 
   },
   gridContainer: {
@@ -57,7 +60,6 @@ const styles = (colors) => StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 28,
     fontFamily: 'Orbitron-VariableFont_wght',
     textAlign: 'center',
     marginBottom: 16,

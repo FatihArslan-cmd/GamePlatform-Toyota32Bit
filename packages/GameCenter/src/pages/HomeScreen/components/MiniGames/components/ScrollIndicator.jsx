@@ -1,7 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from '../../../../../context/ThemeContext'; 
+import LinearGradient from "react-native-linear-gradient";
+import React from "react";
+import { Animated, StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const ScrollIndicator = ({ scrollProgress }) => {
     const { colors } = useTheme(); 
@@ -51,11 +54,11 @@ const ScrollIndicator = ({ scrollProgress }) => {
 
 const useStyles = (colors) => StyleSheet.create({
     progressContainer: {
-        height: 4,
+        height: TABLET_DEVICE ? 4 : 2,
         backgroundColor: colors.border, 
         borderRadius: 2,
         marginHorizontal: 20,
-        marginVertical: 12,
+        marginVertical: TABLET_DEVICE ? 12 : 8,
         overflow: 'hidden',
     },
     progressBar: {

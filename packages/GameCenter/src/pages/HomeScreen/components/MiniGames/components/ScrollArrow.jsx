@@ -1,12 +1,16 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableRipple } from 'react-native-paper'; 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from '../../../../../context/ThemeContext';
+import Icon from "react-native-vector-icons/MaterialIcons";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
+
 const ScrollArrow = ({ direction, onPress }) => {
   const { colors } = useTheme(); 
   const themedStyles = useStyles(colors); 
-
+  
   return (
     <TouchableRipple
       style={[themedStyles.arrow, direction === 'left' ? themedStyles.left : themedStyles.right]}
@@ -14,7 +18,7 @@ const ScrollArrow = ({ direction, onPress }) => {
     >
       <Icon
         name={direction === 'left' ? 'chevron-left' : 'chevron-right'}
-        size={48}
+        size={TABLET_DEVICE ? 42 : 30}
         style={[themedStyles.icon, { color: colors.text }]} 
       />
     </TouchableRipple>

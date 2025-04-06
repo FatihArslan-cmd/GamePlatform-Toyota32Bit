@@ -1,20 +1,22 @@
-import React, { useEffect, useRef, useReducer, useMemo, useCallback, useState } from 'react';
-import { Pressable, StyleSheet, View, Text } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Svg, { Path } from 'react-native-svg';
-import Animated, { useAnimatedStyle, withTiming, useDerivedValue } from 'react-native-reanimated';
-import Lottie from 'lottie-react-native';
-import HomeScreen from '../pages/HomeScreen/index';
-import ProfileScreen from '../pages/ProfileScreen/index';
-import CommunityScreen from '../pages/CommunityScreen/index';
-import { useBingoWebSocket } from '../context/BingoGameWebsocket';
-import { useNavigation } from '@react-navigation/native';
-import { ToastService } from '../context/ToastService';
-import { useTheme } from '../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import Animated, { useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated";
+import CommunityScreen from "../pages/CommunityScreen/index";
+import HomeScreen from "../pages/HomeScreen/index";
+import Lottie from "lottie-react-native";
+import ProfileScreen from "../pages/ProfileScreen/index";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import Svg, { Path } from "react-native-svg";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useBingoWebSocket } from "../context/BingoGameWebsocket";
+import { useTheme } from "../context/ThemeContext";
+import { ToastService } from "../context/ToastService";
+import { isTablet } from "../utils/isTablet";
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const Tab = createMaterialTopTabNavigator();
+const TABLET_DEVICE = isTablet();
 
 const lottieSources = {
   'homeIcon-light': require('../locales/lottie/homeIcon-light.json'),
@@ -231,8 +233,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   component: {
-    height: 60,
-    width: 60,
+    height: TABLET_DEVICE ? 60 : 50,
+    width: TABLET_DEVICE ? 60 : 50,
     marginTop: -5,
   },
   componentCircle: {
@@ -249,8 +251,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    height: 36,
-    width: 36,
+    height: TABLET_DEVICE ? 36 : 24,
+    width:  TABLET_DEVICE ? 36 : 24,
   },
 });
 

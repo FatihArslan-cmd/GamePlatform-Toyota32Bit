@@ -1,5 +1,8 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const PaginationDots = ({ games, currentPage }) => (
   <View style={styles.paginationContainer}>
@@ -27,14 +30,14 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   paginationDot: {
-    width: 8,
-    height: 8,
+    width: TABLET_DEVICE ? 8 : 5,
+    height:  TABLET_DEVICE ? 8 : 5,
     borderRadius: 4,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
   },
   paginationDotActive: {
     backgroundColor: '#fff',
-    width: 24,
+    width: TABLET_DEVICE ? 24 : 14
   },
 });
 

@@ -1,6 +1,13 @@
-import React, { memo, useEffect } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
-import LottieView from 'lottie-react-native';
+import LinearGradient from "react-native-linear-gradient";
+import LottieView from "lottie-react-native";
+import React, { memo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Dimensions, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
+import { getOwnedAchievements } from "../pages/ProfileScreen/components/Achivements/services/service.js";
+import { hideNavigationBar } from "../utils/NavBarManager";
+import { isTablet } from "../utils/isTablet.js";
+
 import Animated, {
   FadeIn,
   useAnimatedStyle,
@@ -9,15 +16,9 @@ import Animated, {
   useSharedValue,
   Easing,
 } from 'react-native-reanimated';
-import { Text } from 'react-native-paper';
-import LinearGradient from 'react-native-linear-gradient';
-import { hideNavigationBar } from '../utils/NavBarManager';
-import { useTranslation } from 'react-i18next';
-import storage from '../utils/storage';
-import api from '../shared/states/api.js';
-import { getOwnedAchievements } from '../pages/ProfileScreen/components/Achivements/services/service.js'; // Changed import here
 
 const { width } = Dimensions.get('window');
+const TABLET_DEVICE = isTablet();
 
 const LoadingFullScreen = () => {
   const scale = useSharedValue(1);
@@ -103,14 +104,14 @@ const styles = StyleSheet.create({
     width: width * 0.85,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 24,
-    padding: 24,
+    padding: TABLET_DEVICE ? 24 : 18,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.15)',
   },
   lottie: {
-    width: 200,
-    height: 200,
+    width: TABLET_DEVICE ? 200 : 150,
+    height: TABLET_DEVICE ? 200 : 150,
   },
   textContainer: {
     alignItems: 'center',
@@ -119,13 +120,13 @@ const styles = StyleSheet.create({
   title: {
     color: '#fff',
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 28,
+    fontSize: TABLET_DEVICE ? 28 : 20,
     marginBottom: 8,
   },
   subtitle: {
     color: 'rgba(255, 255, 255, 0.8)',
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 14,
   },
 });
 

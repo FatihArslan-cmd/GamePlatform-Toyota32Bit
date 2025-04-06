@@ -1,10 +1,13 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../../context/ThemeContext';
-import { ToastService } from '../../../context/ToastService';
-import { useTranslation } from 'react-i18next'; 
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { ToastService } from "../../../context/ToastService";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const ThemeSwitcher = () => {
   const { theme, setTheme, colors } = useTheme();
@@ -20,10 +23,15 @@ const ThemeSwitcher = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableRipple onPress={toggleTheme} style={styles.button}>
+      <TouchableRipple
+        onPress={toggleTheme}
+        style={styles.button}
+        rippleColor={colors.ripple} 
+        borderless={true} 
+      >
         <MaterialCommunityIcons
           name={isDarkMode ? "weather-night" : "weather-sunny"}
-          size={24}
+          size={TABLET_DEVICE ? 28 : 22} 
           color={colors.text}
         />
       </TouchableRipple>
@@ -34,16 +42,16 @@ const ThemeSwitcher = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 40,
-    left: 20,
+    top: TABLET_DEVICE ? 50 : 40, 
+    left: TABLET_DEVICE ? 30 : 15, 
     zIndex: 1000,
   },
   button: {
-    backgroundColor: 'rgba(135, 135, 135, 0.1)',
-    padding: 8,
-    borderRadius: 5,
-    width: 40,
-    height: 40,
+    backgroundColor: 'rgba(135, 135, 135, 0.1)', 
+    padding: TABLET_DEVICE ? 10 : 8,
+    borderRadius: TABLET_DEVICE ? 24 : 20,
+    width: TABLET_DEVICE ? 48 : 40,
+    height: TABLET_DEVICE ? 48 : 40, 
     justifyContent: 'center',
     alignItems: 'center',
   },

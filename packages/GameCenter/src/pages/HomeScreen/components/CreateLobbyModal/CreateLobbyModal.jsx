@@ -1,16 +1,19 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import BottomSheet from '../../../../components/BottomSheet';
-import LobbyTypeSelector from './components/LobbyTypeSelector';
-import CustomDateTimeSelector from './components/DateTimeSelector';
-import GameSelector from './components/GameSelector';
-import PasswordInput from './components/PasswordInput';
-import InvitationLink from './components/InvitationLink';
-import { ToastService } from '../../../../context/ToastService';
-import { createLobby } from './service/service';
-import { useBingoWebSocket } from '../../../../context/BingoGameWebsocket';
-import { useTranslation } from 'react-i18next'; 
+import BottomSheet from "../../../../components/BottomSheet";
+import CustomDateTimeSelector from "./components/DateTimeSelector";
+import GameSelector from "./components/GameSelector";
+import InvitationLink from "./components/InvitationLink";
+import LobbyTypeSelector from "./components/LobbyTypeSelector";
+import PasswordInput from "./components/PasswordInput";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Button } from "react-native-paper";
+import { useBingoWebSocket } from "../../../../context/BingoGameWebsocket";
+import { ToastService } from "../../../../context/ToastService";
+import { isTablet } from "../../../../utils/isTablet";
+import { createLobby } from "./service/service";
+
+const TABLET_DEVICE = isTablet(); 
 
 const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
@@ -98,8 +101,12 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         onDismiss();
     }, [onDismiss, resetLobby]);
 
-
-    const bottomSheetHeight = isCodeGenerated ? '50%' : (lobbyType === 'Normal' ? '55%' : '76%');
+    
+    const bottomSheetHeight = isCodeGenerated 
+    ? (TABLET_DEVICE ? '50%' : '75%') 
+    : (lobbyType === 'Normal' 
+        ? (TABLET_DEVICE ? '55%' : '75%') 
+        : (TABLET_DEVICE ? '76%' : '90%'));
 
     return (
         <BottomSheet
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     createButtonContent: {
-        height: 36,
+        height: TABLET_DEVICE ? 36 : 28,
     },
     resetButton: {
         marginTop: 'auto',

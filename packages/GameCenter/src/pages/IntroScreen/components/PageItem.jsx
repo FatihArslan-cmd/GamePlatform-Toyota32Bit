@@ -1,10 +1,13 @@
+import FastImage from "react-native-fast-image";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { BlurView } from "@react-native-community/blur";
+import { Animated, Dimensions, StyleSheet, View } from "react-native";
+import { Divider, Text, TouchableRipple } from "react-native-paper";
+import { isTablet } from "../../../utils/isTablet";
 
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Animated } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { BlurView } from '@react-native-community/blur';
-import { Divider,Text } from 'react-native-paper';
+// Determine if the device is a tablet *once* before defining styles
+const TABLET_DEVICE = isTablet();
 
 const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
   <View style={styles.container}>
@@ -17,7 +20,8 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
       <BlurView
         style={styles.blur}
         blurType="light"
-        blurAmount={200}
+        // Apply conditional blur amount directly here if needed
+        blurAmount={TABLET_DEVICE ? 200 : 150}
         reducedTransparencyFallbackColor="black"
       />
     </View>
@@ -33,6 +37,7 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         },
       ]}
     >
+      {/* Use conditional source logic */}
       <FastImage
         source={page.icon ? { uri: page.icon } : page.image}
         style={[styles.image, { borderColor: '#8a2be250' }]}
@@ -44,17 +49,24 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
       </View>
 
       <Text style={styles.subtitle}>{page.subtitle}</Text>
-   
+
       {page.button && (
-        <TouchableOpacity
+        <TouchableRipple
           style={styles.startButton}
           onPress={() => navigation.navigate('Login')}
+          rippleColor="rgba(255, 255, 255, 0.3)"
         >
           <View style={styles.startButtonContent}>
             <Text style={styles.startButtonText}>START YOUR JOURNEY</Text>
-            <Icon name="chevron-double-right" size={20} color="#fff" style={styles.buttonIcon} />
+            {/* Apply conditional icon size directly here */}
+            <Icon
+              name="chevron-double-right"
+              size={TABLET_DEVICE ? 20 : 18} // Conditional size
+              color="#fff"
+              style={styles.buttonIcon}
+            />
           </View>
-        </TouchableOpacity>
+        </TouchableRipple>
       )}
     </Animated.View>
   </View>
@@ -63,6 +75,7 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: Dimensions.get('window').width,
   },
   backgroundImageContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -78,14 +91,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: TABLET_DEVICE ? 20 : 15, // Conditional padding
     zIndex: 1,
   },
   image: {
-    width: 250,
-    height: 250,
+    width: TABLET_DEVICE ? 250 : 180, // Conditional width
+    height: TABLET_DEVICE ? 250 : 180, // Conditional height
     borderRadius: 20,
-    marginBottom: 20,
+    marginBottom: TABLET_DEVICE ? 20 : 15, // Conditional margin
     borderWidth: 2,
     shadowColor: '#8a2be2',
     shadowOpacity: 0.5,
@@ -94,65 +107,60 @@ const styles = StyleSheet.create({
   },
   dividerContainer: {
     width: '100%',
-    marginVertical: 10,
+    marginVertical: TABLET_DEVICE ? 10 : 8, // Conditional margin
     alignItems: 'center',
   },
   divider: {
-    width: '40%',
+    width: TABLET_DEVICE ? '40%' : '50%', // Conditional width
     height: 1,
     backgroundColor: '#8a2be2',
-    marginVertical: 10,
     borderRadius: 1,
     shadowColor: '#8a2be2',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 10,
     elevation: 5,
   },
   title: {
-    fontSize: 28,
-    marginTop: 20,
+    fontSize: TABLET_DEVICE ? 28 : 22, // Conditional font size
+    marginTop: TABLET_DEVICE ? 20 : 15, // Conditional margin
     color: '#fff',
     letterSpacing: 2,
     textTransform: 'uppercase',
+    textAlign: 'center',
     textShadowColor: '#8a2be2',
     textShadowRadius: 10,
     fontFamily: 'Orbitron-ExtraBold',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 14, // Conditional font size
     textAlign: 'center',
     color: '#fff',
-    marginTop: 10,
-    marginHorizontal: 20,
-    lineHeight: 24,
+    marginTop: TABLET_DEVICE ? 10 : 8, // Conditional margin
+    marginHorizontal: TABLET_DEVICE ? 20 : 15, // Conditional margin
+    lineHeight: TABLET_DEVICE ? 24 : 20, // Conditional line height
     fontFamily: 'Orbitron-ExtraBold',
   },
   startButton: {
-    marginTop: 30,
-    paddingVertical: 15,
-    paddingHorizontal: 30,
+    marginTop: TABLET_DEVICE ? 30 : 25, // Conditional margin
+    paddingVertical: TABLET_DEVICE ? 15 : 12, // Conditional padding
+    paddingHorizontal: TABLET_DEVICE ? 30 : 25, // Conditional padding
     backgroundColor: '#8a2be2',
     borderRadius: 30,
     elevation: 5,
     shadowColor: '#8a2be2',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 10,
   },
   startButtonContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   startButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 14, // Conditional font size
     letterSpacing: 1,
     fontFamily: 'Orbitron-ExtraBold',
   },

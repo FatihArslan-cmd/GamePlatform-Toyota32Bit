@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { storage } from '../../../../../utils/storage';
-import UserIcon from './components/UserIcon';
-import PermissionsModal from './components/PermissionsModal';
-import LoadingFullScreen from '../../../../../components/LoadingFullScreen';
-import { usePermissionsContext } from '../../../context/PermissionContext';
+import LoadingFullScreen from "../../../../../components/LoadingFullScreen";
+import PermissionsModal from "./components/PermissionsModal";
+import React, { useEffect, useState } from "react";
+import UserIcon from "./components/UserIcon";
+import { StyleSheet, View } from "react-native";
+import { storage } from "../../../../../utils/storage";
+import { usePermissionsContext } from "../../../context/PermissionContext";
 
 const SavedUserSection = () => {
 

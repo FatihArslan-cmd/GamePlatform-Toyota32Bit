@@ -1,6 +1,6 @@
-import React from 'react';
-import ToastMessage from '../components/ToastMessage/Toast2';
-import { View } from 'react-native';
+import React from "react";
+import ToastMessage from "../components/ToastMessage/Toast";
+import { View } from "react-native";
 
 let toastRef; // ToastMessage ref'ini tutacak değişken
 let isToastVisible = false; // Toast'un görünür olup olmadığını takip eden değişken

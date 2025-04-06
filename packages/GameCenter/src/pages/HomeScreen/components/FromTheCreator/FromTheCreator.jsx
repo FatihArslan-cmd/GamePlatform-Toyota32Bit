@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import GradientDivider from '../../../../components/GradientDivider';
-import GameCard from './components/GameCard';
-import gameData from '../../../GameDetails/utils/gameData.json';
-import imageAssets from '../../../GameDetails/utils/imageAssets';
-import GrandientText from '../../../../components/GrandientText';
-import PagerView from 'react-native-pager-view';
-import PaginationDots from './components/PaginationDots';
-import { useTheme } from '../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import GameCard from "./components/GameCard";
+import GradientDivider from "../../../../components/GradientDivider";
+import GrandientText from "../../../../components/GrandientText";
+import PagerView from "react-native-pager-view";
+import PaginationDots from "./components/PaginationDots";
+import React, { useState } from "react";
+import gameData from "../../../GameDetails/utils/gameData.json";
+import imageAssets from "../../../GameDetails/utils/imageAssets";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const FromTheCreator = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -38,7 +41,7 @@ const FromTheCreator = () => {
       <GrandientText
         text={t('homeScreen.fromTheCreator')}
         colors={colors.themeTextGradient}
-        textStyle={{ fontSize: 32 }}
+        textStyle={{ fontSize: TABLET_DEVICE ? 32 : 20 }}
         gradientDirection="horizontal"
         width={400}
       />
@@ -70,7 +73,7 @@ const FromTheCreator = () => {
 const useStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 10,
     backgroundColor: colors.background,
   },
   pagerContainer: {

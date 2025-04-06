@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { Card, Button } from 'react-native-paper';
-import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
-import { BlurView } from '@react-native-community/blur';
+import FastImage from "react-native-fast-image";
+import LinearGradient from "react-native-linear-gradient";
+import React from "react";
+import { BlurView } from "@react-native-community/blur";
+import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, Card } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const GameCard = ({ gameName, instructions,explanation, imageSource, buttonText, onButtonPress, buttonColors, backgroundColors }) => {
   const navigation = useNavigation();
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   description: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     color: '#FFFFFF', 
     marginBottom: 16,
     textAlign: 'center',
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
   },
   transparentButton: {},
   buttonText: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     color: '#FFFFFF',
   },

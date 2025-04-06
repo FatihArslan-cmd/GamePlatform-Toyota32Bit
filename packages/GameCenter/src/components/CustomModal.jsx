@@ -1,9 +1,12 @@
-import React, { useEffect, useRef, useCallback, memo } from 'react';
-import { StyleSheet, Animated, Dimensions, View, TouchableWithoutFeedback } from 'react-native';
-import { Modal, Portal, Button, Text } from 'react-native-paper';
-import { BlurView } from '@react-native-community/blur';
-import { useTheme } from '../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import React, { memo, useCallback, useEffect, useRef } from "react";
+import { BlurView } from "@react-native-community/blur";
+import { useTranslation } from "react-i18next";
+import { Animated, Dimensions, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { Button, Modal, Portal, Text } from "react-native-paper";
+import { useTheme } from "../context/ThemeContext";
+import { isTablet } from "../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const CustomModal = memo(({
   visible,
@@ -148,14 +151,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontSize: 24,
+    fontSize: TABLET_DEVICE ? 24 : 20,
     color: '#ffffff',
     fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 10,
     textAlign: 'center',
   },
   text: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 14,
     color: '#d3d3d3',
     fontFamily: 'Orbitron-VariableFont_wght',
     marginBottom: 20,
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
   },
   closeButtonLabel: {
     color: '#8a2be2',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
   },
   confirmButtonLabel: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },

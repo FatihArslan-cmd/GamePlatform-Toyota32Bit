@@ -1,7 +1,10 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import {useTranslation} from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const LobbyTypeSelector = ({ lobbyType, onToggle }) => {
   const { t } = useTranslation();
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#8a2be2',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,
   },
