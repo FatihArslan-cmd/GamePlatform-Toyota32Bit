@@ -6,7 +6,6 @@ import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import { Divider, Text, TouchableRipple } from "react-native-paper";
 import { isTablet } from "../../../utils/isTablet";
 
-// Determine if the device is a tablet *once* before defining styles
 const TABLET_DEVICE = isTablet();
 
 const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
@@ -20,7 +19,6 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
       <BlurView
         style={styles.blur}
         blurType="light"
-        // Apply conditional blur amount directly here if needed
         blurAmount={TABLET_DEVICE ? 200 : 150}
         reducedTransparencyFallbackColor="black"
       />
@@ -37,7 +35,6 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         },
       ]}
     >
-      {/* Use conditional source logic */}
       <FastImage
         source={page.icon ? { uri: page.icon } : page.image}
         style={[styles.image, { borderColor: '#8a2be250' }]}
@@ -58,10 +55,9 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         >
           <View style={styles.startButtonContent}>
             <Text style={styles.startButtonText}>START YOUR JOURNEY</Text>
-            {/* Apply conditional icon size directly here */}
             <Icon
               name="chevron-double-right"
-              size={TABLET_DEVICE ? 20 : 18} // Conditional size
+              size={TABLET_DEVICE ? 20 : 18} 
               color="#fff"
               style={styles.buttonIcon}
             />
@@ -91,14 +87,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: TABLET_DEVICE ? 20 : 15, // Conditional padding
+    padding: TABLET_DEVICE ? 20 : 15, 
     zIndex: 1,
   },
   image: {
-    width: TABLET_DEVICE ? 250 : 180, // Conditional width
-    height: TABLET_DEVICE ? 250 : 180, // Conditional height
+    width: TABLET_DEVICE ? 250 : 180, 
+    height: TABLET_DEVICE ? 250 : 180, 
     borderRadius: 20,
-    marginBottom: TABLET_DEVICE ? 20 : 15, // Conditional margin
+    marginBottom: TABLET_DEVICE ? 20 : 15,
     borderWidth: 2,
     shadowColor: '#8a2be2',
     shadowOpacity: 0.5,
@@ -107,11 +103,11 @@ const styles = StyleSheet.create({
   },
   dividerContainer: {
     width: '100%',
-    marginVertical: TABLET_DEVICE ? 10 : 8, // Conditional margin
+    marginVertical: TABLET_DEVICE ? 10 : 8,
     alignItems: 'center',
   },
   divider: {
-    width: TABLET_DEVICE ? '40%' : '50%', // Conditional width
+    width: TABLET_DEVICE ? '40%' : '50%',
     height: 1,
     backgroundColor: '#8a2be2',
     borderRadius: 1,
@@ -122,8 +118,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: TABLET_DEVICE ? 28 : 22, // Conditional font size
-    marginTop: TABLET_DEVICE ? 20 : 15, // Conditional margin
+    fontSize: TABLET_DEVICE ? 28 : 22, 
+    marginTop: TABLET_DEVICE ? 20 : 15, 
     color: '#fff',
     letterSpacing: 2,
     textTransform: 'uppercase',
@@ -133,18 +129,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Orbitron-ExtraBold',
   },
   subtitle: {
-    fontSize: TABLET_DEVICE ? 16 : 14, // Conditional font size
+    fontSize: TABLET_DEVICE ? 16 : 14,
     textAlign: 'center',
     color: '#fff',
-    marginTop: TABLET_DEVICE ? 10 : 8, // Conditional margin
-    marginHorizontal: TABLET_DEVICE ? 20 : 15, // Conditional margin
-    lineHeight: TABLET_DEVICE ? 24 : 20, // Conditional line height
+    marginTop: TABLET_DEVICE ? 10 : 8, 
+    marginHorizontal: TABLET_DEVICE ? 20 : 15, 
+    lineHeight: TABLET_DEVICE ? 24 : 20,
     fontFamily: 'Orbitron-ExtraBold',
   },
   startButton: {
-    marginTop: TABLET_DEVICE ? 30 : 25, // Conditional margin
-    paddingVertical: TABLET_DEVICE ? 15 : 12, // Conditional padding
-    paddingHorizontal: TABLET_DEVICE ? 30 : 25, // Conditional padding
+    marginTop: TABLET_DEVICE ? 30 : 25,
+    paddingVertical: TABLET_DEVICE ? 15 : 12, 
+    paddingHorizontal: TABLET_DEVICE ? 30 : 25, 
     backgroundColor: '#8a2be2',
     borderRadius: 30,
     elevation: 5,
@@ -160,7 +156,7 @@ const styles = StyleSheet.create({
   },
   startButtonText: {
     color: '#fff',
-    fontSize: TABLET_DEVICE ? 16 : 14, // Conditional font size
+    fontSize: TABLET_DEVICE ? 16 : 14,
     letterSpacing: 1,
     fontFamily: 'Orbitron-ExtraBold',
   },

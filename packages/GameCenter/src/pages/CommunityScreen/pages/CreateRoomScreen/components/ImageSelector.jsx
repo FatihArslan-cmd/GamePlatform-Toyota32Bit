@@ -1,12 +1,15 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, TouchableRipple } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { launchImageLibrary } from 'react-native-image-picker';
-import FastImage from 'react-native-fast-image';
-import { useCreateRoom } from '../context/CreateRoomContext';
-import { useTheme } from '../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import FastImage from "react-native-fast-image";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
+import { Text, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useCreateRoom } from "../context/CreateRoomContext";
+
+const TABLET_DEVICE = isTablet();
 
 const ImageSelector = () => {
   const { imageUri, setImageUri } = useCreateRoom();
@@ -18,14 +21,14 @@ const ImageSelector = () => {
     const options = {
       mediaType: 'photo',
       includeBase64: false,
-      maxHeight: 300,
-      maxWidth: 300,
+      maxHeight: TABLET_DEVICE ? 300 : 200,
+      maxWidth: TABLET_DEVICE ? 300 : 200,
+
     };
 
     launchImageLibrary(options, (response) => {
       if (response.didCancel) return;
       if (response.error) {
-        console.error('Image selection failed');
         return;
       }
       if (response.assets && response.assets.length > 0) {
@@ -44,7 +47,7 @@ const ImageSelector = () => {
         />
       ) : (
         <View style={styles.imagePlaceholder}>
-          <Icon name="image-plus" size={60} color={colors.subText} />
+          <Icon name="image-plus" size={TABLET_DEVICE ? 60 : 30} color={colors.subText} />
           <Text style={[styles.imagePickerText, {color: colors.subText}]}>
             {t('communityScreen.Select Image')}
           </Text>
@@ -54,7 +57,7 @@ const ImageSelector = () => {
   );
 };
 
-const createStyles = (colors) => StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   imagePicker: {
     height: 200,
     borderRadius: 10,
@@ -73,7 +76,7 @@ const createStyles = (colors) => StyleSheet.create({
     alignItems: 'center',
   },
   imagePickerText: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     marginTop: 10,
   },

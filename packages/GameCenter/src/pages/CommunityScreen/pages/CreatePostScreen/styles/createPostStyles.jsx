@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const styles = StyleSheet.create({
   container: {
@@ -9,7 +12,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
   },
   postButtonLabel: {
     color: 'white',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     paddingHorizontal: 8,
   },
   postArea: {
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   input: {
-    fontSize: 18,
+    fontSize: TABLET_DEVICE ? 18 : 13,
     color: '#000',
     minHeight: 100,
     backgroundColor: 'white',
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropdownText: {
-    fontSize: 14, 
+    fontSize: TABLET_DEVICE ? 14 : 11
   },
   postMediaContainer: {
     marginTop: 10,
@@ -79,8 +82,8 @@ const styles = StyleSheet.create({
     position: 'relative', 
   },
   postMediaImage: {
-    width: 200,
-    height: 300, 
+    width: TABLET_DEVICE ? 200 : 125,
+    height: TABLET_DEVICE ? 300 : 175,
     resizeMode: 'cover',
   },
   removeMediaButton: {

@@ -1,10 +1,13 @@
-import React, { useState, useContext } from 'react';
-import { List } from 'react-native-paper';
-import CustomModal from '../../../components/CustomModal';
-import { UserContext } from '../../../context/UserContext';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import CustomModal from "../../../components/CustomModal";
+import React, { useContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { List } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { UserContext } from "../../../context/UserContext";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const LogoutButton = ({ showText = true, showChevron = true }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -26,7 +29,7 @@ const LogoutButton = ({ showText = true, showChevron = true }) => {
     <>
       <List.Item
         title={showText ? t('settingsScreen.logoutButton.logout') : null} 
-        titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+        titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text ,fontSize: TABLET_DEVICE ? 18 : 12}}
         left={props => <List.Icon {...props} color={colors.error} icon="logout" />}
         right={props => showChevron ? <List.Icon {...props} color={colors.error} icon="chevron-right" /> : null}
         onPress={() => setModalVisible(true)}

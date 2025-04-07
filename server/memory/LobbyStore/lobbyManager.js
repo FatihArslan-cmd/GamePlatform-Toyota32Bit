@@ -215,13 +215,11 @@ const lobbyManager = {
                         let invitations = session.lobbyInvitations;
                         const initialInvitationCount = invitations.length;
                         invitations = invitations.filter(invite => invite.lobbyCode !== deletedLobbyCode); // Silinen lobiye ait davetleri filtrele
-                        if (invitations.length !== initialInvitationCount) { // Eğer davetler silindiyse oturumu güncelle
+                        if (invitations.length !== initialInvitationCount) {
                             session.lobbyInvitations = invitations;
-                            sessionStore.set(sessionId, session, (err) => { // Oturumu güncelle
+                            sessionStore.set(sessionId, session, (err) => { 
                                 if (err) {
                                     console.error('Error updating session after lobby deletion:', err);
-                                    // Oturum güncelleme hatasını burada nasıl yöneteceğinize karar verin.
-                                    // Belki hatayı callback'e döndürmek veya sadece loglamak istersiniz.
                                 } else {
                                     updatedSessions++;
                                 }

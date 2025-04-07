@@ -1,12 +1,13 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import RoomList from './components/RoomList';
-import CommunityTopics from './components/CommunityTopics';
-import EmptyState from '../../../../components/EmptyState';
-import { ExplorerLoadingSkeleton } from './components/ExplorerLoadingScreen';
-import { ExplorerProvider, useExplorer } from './context/ExplorerContext';
-import { useTheme } from '../../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import CommunityTopics from "./components/CommunityTopics";
+import EmptyState from "../../../../components/EmptyState";
+import React from "react";
+import RoomList from "./components/RoomList";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../context/ThemeContext";
+import { ExplorerLoadingSkeleton } from "./components/ExplorerLoadingScreen";
+import { ExplorerProvider, useExplorer } from "./context/ExplorerContext";
+
 const ExplorerScreenContent = () => {
   const {
     loading,

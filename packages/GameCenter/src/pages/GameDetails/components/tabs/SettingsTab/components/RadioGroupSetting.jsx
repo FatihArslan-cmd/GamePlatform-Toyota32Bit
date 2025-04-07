@@ -2,6 +2,9 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { RadioButton, Text } from "react-native-paper";
 import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 export const RadioGroupSetting = ({ label, value, onChange, options }) => {
   const { colors } = useTheme();
@@ -42,10 +45,10 @@ export const RadioGroupSetting = ({ label, value, onChange, options }) => {
 
 const createStyles = () => StyleSheet.create({
   settingItem: {
-    marginBottom: 25,
+    marginBottom: TABLET_DEVICE ? 25 : 15,
   },
   settingLabel: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 12,
   },

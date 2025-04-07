@@ -1,15 +1,18 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Text, IconButton, Snackbar, Tooltip } from 'react-native-paper';
-import styles from '../styles/ProfileScreenStyles';
-import { useNavigation } from '@react-navigation/native';
-import CustomModal from '../../../components/CustomModal';
-import useModal from '../../../hooks/useModal';
-import useFriendsPage from './Friends/hooks/useFriendsPage';
-import { useProfile } from '../context/ProfileContext';
-import {useTheme} from '../../../context/ThemeContext';
-import GrandientText from '../../../components/GrandientText';
-import { useTranslation } from 'react-i18next'; 
+import CustomModal from "../../../components/CustomModal";
+import GrandientText from "../../../components/GrandientText";
+import React from "react";
+import styles from "../styles/ProfileScreenStyles";
+import useFriendsPage from "./Friends/hooks/useFriendsPage";
+import useModal from "../../../hooks/useModal";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { IconButton, Snackbar, Text, Tooltip } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useProfile } from "../context/ProfileContext";
+
+const TABLET_DEVICE = isTablet();
 
 const TopBar = () => {
     const navigation = useNavigation();
@@ -36,7 +39,6 @@ const TopBar = () => {
             }
 
         } catch (err) {
-            console.error('Arkadaş ekleme hatası:', err);
             showModal('error', 'Hata', 'Arkadaş eklenirken bir sorun oluştu. Lütfen tekrar deneyin.');
         } finally {
             navigation.goBack();
@@ -62,7 +64,7 @@ const TopBar = () => {
             <Tooltip title="Update">
             <IconButton
                 icon="pencil"
-                size={24}
+                size={TABLET_DEVICE ? 24 : 18}
                 iconColor={isEditMode ? colors.primary : colors.subText}
                 style={styles.topBarIcon}
                 onPress={toggleEditMode}
@@ -71,15 +73,17 @@ const TopBar = () => {
               <GrandientText
                         text={t('profileScreen.profile')}
                         colors={colors.gameCenterText}
-                        textStyle={{ fontSize: 28 }}
+                        textStyle={{ fontSize: TABLET_DEVICE ? 24 : 20 }}
                         gradientDirection="horizontal"
                       />
             <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
                 <Tooltip title="Add Friend">
-                <IconButton icon="camera" size={24} iconColor={colors.subText} style={styles.topBarIcon} onPress={navigateToCamera} />
+                <IconButton icon="camera" size={TABLET_DEVICE ? 24 : 18}
+ iconColor={colors.subText} style={styles.topBarIcon} onPress={navigateToCamera} />
                 </Tooltip>
                 <Tooltip title="Options">
-                <IconButton icon="dots-vertical" size={24} iconColor={colors.subText} style={styles.topBarIcon} />
+                <IconButton icon="dots-vertical" size={TABLET_DEVICE ? 24 : 18}
+ iconColor={colors.subText} style={styles.topBarIcon} />
                 </Tooltip>
             </View>
         </View>

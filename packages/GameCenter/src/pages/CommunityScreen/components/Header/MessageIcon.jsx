@@ -1,12 +1,17 @@
-import React from 'react';
-import {  TouchableOpacity } from 'react-native';
-import { IconButton, Tooltip } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../../../../context/ThemeContext'; // Import useTheme
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
+import { IconButton, Tooltip } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
+
 
 const MessageIcon = ({ navigateTo }) => {
   const navigation = useNavigation();
   const { colors } = useTheme(); 
+  const iconSize = TABLET_DEVICE ? 24 : 18;
 
   const handlePress = () => {
     if (navigateTo) {
@@ -22,7 +27,7 @@ const MessageIcon = ({ navigateTo }) => {
       <IconButton
         icon="message-outline"
         iconColor={colors.text} 
-        size={24}
+        size={iconSize}
         style={{ opacity: 0.7 }}
       />
     </TouchableOpacity>

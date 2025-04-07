@@ -1,11 +1,15 @@
-import React, {useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Title, Button, Text } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import LobbyDetails from './LobbyDetails'; 
-import { UserContext } from '../../../../../../context/UserContext';
-import { useTheme } from '../../../../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import LobbyDetails from "./LobbyDetails";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { UserContext } from "../../../../../../context/UserContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
+
 const LobbyCardContent = ({ lobby, ownerUsername, setLeaveModalVisible, togglePlayerModal }) => {
   const { user } = useContext(UserContext);
   const { colors } = useTheme(); 
@@ -27,7 +31,7 @@ const LobbyCardContent = ({ lobby, ownerUsername, setLeaveModalVisible, togglePl
           style={styles.leaveButton} 
           labelStyle={styles.buttonLabel}
         >
-          <Icon name="exit-run" size={20} color="white" />
+          <Icon name="exit-run" size={TABLET_DEVICE ? 20 :14} color="white" />
           <Text style={styles.buttonText}>
              {t('homeScreen.leave')}  
           </Text> 
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
   },
   buttonLabel: { 
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 16, 
+    fontSize: TABLET_DEVICE ? 16 : 10,
   },
   buttonText: {
     color: 'white', 

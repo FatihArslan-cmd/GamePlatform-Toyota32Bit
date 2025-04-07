@@ -1,17 +1,20 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Surface, Text } from 'react-native-paper';
-import EmptyState from '../../../components/EmptyState';
-import ErrorComponents from '../../../components/ErrorComponents';
-import LobbyTypeSegmentedButtons from './LobbyTypeSegmentedButtons';
-import DatePickerInput from './DatePickerInput';
-import LobbyUpdateButton from './LobbyUpdateButton';
-import TextInputWithIcon from './TextInputWithIcon';
-import { UserContext } from '../../../context/UserContext';
-import { useTheme } from '../../../context/ThemeContext';
+import DatePickerInput from "./DatePickerInput";
+import EmptyState from "../../../components/EmptyState";
+import ErrorComponents from "../../../components/ErrorComponents";
+import LobbyTypeSegmentedButtons from "./LobbyTypeSegmentedButtons";
+import LobbyUpdateButton from "./LobbyUpdateButton";
+import React, { useContext } from "react";
+import TextInputWithIcon from "./TextInputWithIcon";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Surface, Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+
 import{ useLobbyUpdate }from '../context/LobbyUpdateContext';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+
+const TABLET_DEVICE = isTablet();
 
 const Page = () => {
   const {
@@ -25,7 +28,6 @@ const Page = () => {
     lobbyType,
   } = useLobbyUpdate();
 
-  const { user } = useContext(UserContext);
   const { colors } = useTheme();
   const { t } = useTranslation(); 
 
@@ -118,22 +120,11 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    fontSize: 26,
+    fontSize: TABLET_DEVICE ? 26 : 22,
     fontFamily: 'Orbitron-ExtraBold',
     marginLeft: 10,
   },
-  unauthorizedContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  unauthorizedText: {
-    fontSize: 18,
-    color: 'red',
-    textAlign: 'center',
-    fontFamily: 'Orbitron-ExtraBold',
-  },
+
 });
 
 export default Page;

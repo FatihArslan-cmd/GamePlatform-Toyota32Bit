@@ -1,15 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import Buttons from "./components/Buttons/Buttons";
+import ExplorerScreen from "./pages/ExplorerScreen/ExplorerScreen";
+import Header from "./components/Header/Header";
+import MakePost from "./components/Buttons/MakePost";
+import PagerView from "react-native-pager-view";
+import React, { useRef, useState } from "react";
+import RoomsScreen from "./pages/RoomsScreen/RoomsScreen";
+import useCommunityScreenAnimations from "./hooks/useCommunityScreenAnimations";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
+
 import Animated, {
 } from 'react-native-reanimated';
-import PagerView from 'react-native-pager-view';
-import Header from './components/Header/Header';
-import RoomsScreen from './pages/RoomsScreen/RoomsScreen';
-import Buttons from './components/Buttons/Buttons';
-import ExplorerScreen from './pages/ExplorerScreen/ExplorerScreen';
-import useCommunityScreenAnimations from './hooks/useCommunityScreenAnimations';
-import MakePost from './components/Buttons/MakePost';
-import { useTheme } from '../../context/ThemeContext';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
@@ -87,7 +88,7 @@ const CommunityScreen = () => {
   );
 };
 
-const createStyles = (colors) => StyleSheet.create({ 
+const createStyles = () => StyleSheet.create({ 
   safeArea: {
     flex: 1,
   },

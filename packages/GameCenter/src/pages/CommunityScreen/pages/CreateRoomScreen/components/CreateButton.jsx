@@ -1,8 +1,11 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { useCreateRoom } from '../context/CreateRoomContext';
-import {useTranslation} from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useCreateRoom } from "../context/CreateRoomContext";
+
+const TABLET_DEVICE = isTablet();
 
 const CreateButton = () => {
   const { loading, isCreateSuccess, handleCreateRoom } = useCreateRoom(); 
@@ -18,7 +21,7 @@ const CreateButton = () => {
       contentStyle={styles.createButtonContent}
       labelStyle={{ color: 'white' }}
     >
-      <Text style={{ fontFamily: 'Orbitron-ExtraBold', color: 'white' }}>
+      <Text style={{ fontFamily: 'Orbitron-ExtraBold', color: 'white', fontSize: TABLET_DEVICE ? 16 : 11 }}>
         {t('communityScreen.Create Room')}
       </Text>
     </Button>
@@ -31,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007bff',
   },
   createButtonContent: {
-    height: 50,
+    height: TABLET_DEVICE ? 50 : 35,
   },
 });
 

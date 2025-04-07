@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { styles } from '../../styles';
-import { useGameDetails } from '../../context/GameDetailsContext';
-import lobbyService from '../../service/service'; 
-import JoinableLobbyCard from '../LobbyCard/JoinableLobbyCard';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import FadeIn from '../../../../components/Animations/FadeInAnimation'; 
-import EmptyState from '../../../../components/EmptyState';
-import { useTheme } from '../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import EmptyState from "../../../../components/EmptyState";
+import FadeIn from "../../../../components/Animations/FadeInAnimation";
+import JoinableLobbyCard from "../LobbyCard/JoinableLobbyCard";
+import LoadingIndicator from "../../../../components/LoadingIndicator";
+import React, { useEffect, useState } from "react";
+import lobbyService from "../../service/service";
+import { useTranslation } from "react-i18next";
+import { ScrollView, View } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+import { useGameDetails } from "../../context/GameDetailsContext";
+import { styles } from "../../styles";
+
+const TABLET_DEVICE = isTablet();
 
 export default function LobbiesTab() {
     const { setLobbyModalVisible } = useGameDetails();
@@ -46,6 +49,8 @@ export default function LobbiesTab() {
                 icon="plus-circle"
                 onPress={() => setLobbyModalVisible(true)}
                 style={[styles.createLobbyButton, { backgroundColor: colors.gameDetailsButton }]} 
+                labelStyle={{ fontSize: TABLET_DEVICE ? 14 : 10 }}
+
             >
                 {t('gameDetailsScreen.createLobby')}
             </Button>

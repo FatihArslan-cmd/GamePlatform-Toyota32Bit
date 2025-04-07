@@ -1,16 +1,19 @@
-import React, {  useEffect } from 'react';
-import { View, StyleSheet, ScrollView,  StatusBar } from 'react-native';
-import { Surface } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import ProfileSection from './components/ProfileSection';
-import NotificationSection from './components/NotificationSection';
-import AboutSection from './components/AboutSection';
-import Header from './components/Header/Header';
-import LanguageSection from './components/LanguageSection';
-import { AnimatedSection } from '../../components/Animations/EnteringPageAnimation';
-import ThemeSection from './components/ThemeSection';
-import { useTheme } from '../../context/ThemeContext';
+import AboutSection from "./components/AboutSection";
+import Header from "./components/Header/Header";
+import LanguageSection from "./components/LanguageSection";
+import NotificationSection from "./components/NotificationSection";
+import ProfileSection from "./components/ProfileSection";
+import React, { useEffect } from "react";
+import ThemeSection from "./components/ThemeSection";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Surface } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AnimatedSection } from "../../components/Animations/EnteringPageAnimation";
+import { useTheme } from "../../context/ThemeContext";
+import { isTablet } from "../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     gap: 16,
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 2,
   },
 });
 

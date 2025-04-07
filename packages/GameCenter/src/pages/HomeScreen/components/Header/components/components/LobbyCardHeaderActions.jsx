@@ -1,21 +1,24 @@
-import React, {useContext} from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, TouchableRipple } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UserContext } from '../../../../../../context/UserContext';
-import { useTheme } from '../../../../../../context/ThemeContext'; 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React, { useContext } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { UserContext } from "../../../../../../context/UserContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, ownerUsername, setDeleteModalVisible }) => {
  const { user } = useContext(UserContext);
  const { colors } = useTheme(); 
-
+ 
     return (
     <View style={styles.cardHeaderActions}>
       <TouchableOpacity
         style={styles.codeContainer}
         onPress={() => copyLobbyCodeToClipboard(lobbyCode)}
       >
-        <Icon name="code-tags" size={20} color={colors.text} />
+        <Icon name="code-tags" size={TABLET_DEVICE ? 24 :16} color={colors.text} />
         <Text style={[styles.lobbyCode, { color: colors.text }]}>{lobbyCode}</Text> 
       </TouchableOpacity>
       <View style={styles.headerIcons}>
@@ -25,7 +28,7 @@ const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, ownerUser
             <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
               <Icon
                 name="close"
-                size={24}
+                size={TABLET_DEVICE ? 24 :16}
                 color={colors.error}
                 style={styles.iconButton}
               />
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
   lobbyCode: {
     marginLeft: 5,
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 14 : 10,
   },
   headerIcons: {
     flexDirection: 'row',

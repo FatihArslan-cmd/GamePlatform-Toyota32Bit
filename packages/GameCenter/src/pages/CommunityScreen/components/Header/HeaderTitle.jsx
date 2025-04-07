@@ -1,7 +1,10 @@
-import React from 'react';
-import GrandientText from '../../../../components/GrandientText';
-import { useTheme } from '../../../../context/ThemeContext'; // Import useTheme
-import { useTranslation } from 'react-i18next';
+import GrandientText from "../../../../components/GrandientText";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const HeaderTitle = () => {
   const { colors } = useTheme(); 
@@ -11,7 +14,7 @@ const HeaderTitle = () => {
     <GrandientText
       text={t('communityScreen.community')}
       colors={colors.gameCenterText} 
-      textStyle={{ fontSize: 28 }}
+      textStyle={{ fontSize: TABLET_DEVICE ? 28 : 20 }}
       gradientDirection="horizontal"
     />
   );

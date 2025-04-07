@@ -19,7 +19,7 @@ const BottomSheet = React.memo(({
   title,
   children,
   height = '50%',
-  backgroundColorProp, // Renamed prop to avoid conflict with theme.colors.background
+  backgroundColorProp, 
 }) => {
   const { height: screenHeight } = Dimensions.get('window');
   const { colors, resolvedTheme } = useTheme(); // Use the useTheme hook

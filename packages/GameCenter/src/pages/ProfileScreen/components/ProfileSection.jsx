@@ -1,15 +1,18 @@
-import React, { useContext } from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import GrandientText from '../../../components/GrandientText';
-import styles from '../styles/ProfileScreenStyles';
-import { UserContext } from '../../../context/UserContext';
-import { IconButton, Tooltip } from 'react-native-paper';
-import { launchImageLibrary } from 'react-native-image-picker';
-import Animated from 'react-native-reanimated';
-import { useProfile } from '../context/ProfileContext';
-import useProfileSectionAnimation from './hooks/useProfileSectionAnimation';
-import { useTheme } from '../../../context/ThemeContext'; 
+import Animated from "react-native-reanimated";
+import FastImage from "react-native-fast-image";
+import GrandientText from "../../../components/GrandientText";
+import React, { useContext } from "react";
+import styles from "../styles/ProfileScreenStyles";
+import useProfileSectionAnimation from "./hooks/useProfileSectionAnimation";
+import { TouchableOpacity, View } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
+import { IconButton, Tooltip } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { UserContext } from "../../../context/UserContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useProfile } from "../context/ProfileContext";
+
+const TABLET_DEVICE = isTablet();
 
 const ProfileSection = () => {
     const { user } = useContext(UserContext);
@@ -67,7 +70,7 @@ const ProfileSection = () => {
                         >
                             <IconButton
                                 icon="camera"
-                                size={24}
+                                size={TABLET_DEVICE ? 24 : 18}
                                 iconColor={colors.card} 
                                 style={styles.cameraIcon}
                                 containerColor={colors.primary} 

@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   lottieAnimation: {
-    width: TABLET_DEVICE ? 250 : 125,
-    height: TABLET_DEVICE ? 250 : 125,
+    width: TABLET_DEVICE ? 250 : 150,
+    height: TABLET_DEVICE ? 250 : 150,
   },
   textStyle:{
-    fontSize: TABLET_DEVICE ? 18 : 14,
+    fontSize: TABLET_DEVICE ? 18 : 12,
     marginTop:20,
     fontFamily: 'Orbitron-ExtraBold',
   }

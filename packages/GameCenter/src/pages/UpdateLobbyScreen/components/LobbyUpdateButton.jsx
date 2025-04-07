@@ -1,10 +1,13 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useLobbyUpdate } from '../context/LobbyUpdateContext';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useLobbyUpdate } from "../context/LobbyUpdateContext";
+
+const TABLET_DEVICE = isTablet();
 
 const LobbyUpdateButton = () => {
   const { loading, handleUpdateLobby } = useLobbyUpdate();
@@ -20,7 +23,7 @@ const LobbyUpdateButton = () => {
       loading={loading}
       disabled={loading}
       buttonColor={colors.primary}
-      icon={({ size, color }) => <Icon name="check" size={size} color={colors.card} />}
+      icon={({ size }) => <Icon name="check" size={size} color={colors.card} />}
     >
       <Text style={[styles.updateButtonText, { color: colors.card }]}>
         {loading ? t('updateLobbyScreen.updatingButton') : t('updateLobbyScreen.updateLobbyButton')} {/* Translated "Updating..." and "Update Lobby" */}
@@ -40,6 +43,7 @@ const styles = StyleSheet.create({
   },
   updateButtonText: {
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 16 : 10,
   },
 });
 

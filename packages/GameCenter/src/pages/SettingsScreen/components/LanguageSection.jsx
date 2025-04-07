@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import {  StyleSheet } from 'react-native';
-import { Card, List } from 'react-native-paper';
-import GrandientText from '../../../components/GrandientText';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
-import { storage } from '../../../utils/storage'; 
+import GrandientText from "../../../components/GrandientText";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Card, List } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { storage } from "../../../utils/storage";
+
+const TABLET_DEVICE = isTablet();
 
 const LanguageSection = () => {
   const [expanded, setExpanded] = useState(false);
   const { t, i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const [setSelectedLanguage] = useState(i18n.language);
   const { colors } = useTheme();
   const handlePress = () => setExpanded(!expanded);
 
@@ -55,16 +58,16 @@ const LanguageSection = () => {
         <GrandientText
           text={t('settingsScreen.langSection.language')} 
           colors={colors.languageTextGradient}
-          textStyle={{ fontSize: 22, color: colors.text }}
+          textStyle={{ fontSize: TABLET_DEVICE ? 22 : 18 , color: colors.text }}
           gradientDirection="horizontal"
         />
         <List.Accordion
           style={{ backgroundColor: colors.card }}
           expanded={expanded}
           onPress={handlePress}
-          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text ,fontSize: TABLET_DEVICE ? 19 : 14 }}
           title={t('settingsScreen.langSection.chooseLang')}
-          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText }}
+          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText,fontSize: TABLET_DEVICE ? 18 : 12 }}
           description={`${i18n.language} (${getLanguageCodeDisplay(i18n.language)})`} 
           left={props => <List.Icon {...props} color={colors.primary} icon="translate" />}
           right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />}
@@ -72,7 +75,7 @@ const LanguageSection = () => {
         <List.Item
           title={`${getFlagEmoji('tr')} ${t('loginScreen.turkish')}`}
           onPress={() => changeLanguage('tr')}
-          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text ,fontSize: TABLET_DEVICE ? 18 : 12}}
           left={props => <List.Icon {...props} color={colors.primary} />}
           right={() => i18n.language === 'tr' ? <List.Icon icon="check" color={colors.primary} /> : null}
         />
@@ -80,14 +83,14 @@ const LanguageSection = () => {
         <List.Item
           title={`${getFlagEmoji('en')} ${t('loginScreen.english')}`}
           onPress={() => changeLanguage('en')}
-          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text ,fontSize: TABLET_DEVICE ? 18 : 12}}
           left={props => <List.Icon {...props} color={colors.primary} />}
           right={() => i18n.language === 'en' ? <List.Icon icon="check" color={colors.primary} /> : null}
         />
 
         <List.Item
           title={`${getFlagEmoji('de')} ${t('loginScreen.german')}`}
-          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text }}
+          titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: colors.text,fontSize: TABLET_DEVICE ? 18 : 12 }}
           onPress={() => changeLanguage('de')}
           left={props => <List.Icon {...props} color={colors.primary} />}
           right={() => i18n.language === 'de' ? <List.Icon icon="check" color={colors.primary} /> : null}

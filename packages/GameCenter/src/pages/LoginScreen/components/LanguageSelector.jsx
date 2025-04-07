@@ -31,7 +31,7 @@ const LanguageSelector = () => {
           <TouchableRipple
             onPress={openMenu}
             style={styles.button}
-            rippleColor={colors.ripple} // Optional: Use theme-based ripple
+            rippleColor={colors.ripple} 
           >
             <Text style={[styles.buttonText, { color: colors.text }]}>
               {i18n.language.toUpperCase()}
@@ -63,16 +63,16 @@ const LanguageSelector = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: TABLET_DEVICE ? 50 : 40, // Adjusted top position
-    right: TABLET_DEVICE ? 30 : 15, // Adjusted right position
+    top: TABLET_DEVICE ? 50 : 40,
+    right: TABLET_DEVICE ? 30 : 15, 
     zIndex: 1000,
   },
   button: {
-    backgroundColor: 'rgba(135, 135, 135, 0.1)', // Consider using theme colors
-    paddingVertical: TABLET_DEVICE ? 10 : 6, // Adjusted vertical padding
-    paddingHorizontal: TABLET_DEVICE ? 16 : 4, // Adjusted horizontal padding
+    backgroundColor: 'rgba(135, 135, 135, 0.1)', 
+    paddingVertical: TABLET_DEVICE ? 10 : 6, 
+    paddingHorizontal: TABLET_DEVICE ? 16 : 4,
     borderRadius: 5,
-    minWidth: TABLET_DEVICE ? 60 : 50, // Ensure minimum width
+    minWidth: TABLET_DEVICE ? 60 : 50,
     alignItems: 'center',
   },
   buttonText: {

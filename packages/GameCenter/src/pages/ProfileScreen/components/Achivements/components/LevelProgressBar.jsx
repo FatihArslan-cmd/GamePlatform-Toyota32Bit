@@ -1,13 +1,16 @@
-import React, { useEffect, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import { LinearGradient } from 'react-native-linear-gradient';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
-import { useAchievements } from '../context/AchievementsContext';
-import { useTheme } from '../../../../../context/ThemeContext'; 
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import React, { useEffect, useMemo } from "react";
+import { StyleSheet, View } from "react-native";
+import { LinearGradient } from "react-native-linear-gradient";
+import { Text } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useAchievements } from "../context/AchievementsContext";
+
+const TABLET_DEVICE = isTablet();
 
 const LevelProgressBar = () => {
-    const { ownedAchievements, level, xpForNextLevel, xpProgress } = useAchievements();
+    const { level, xpForNextLevel, xpProgress } = useAchievements();
     const { colors } = useTheme(); 
 
     const progressAnim = useSharedValue(0);
@@ -85,11 +88,11 @@ const styles = StyleSheet.create({
     },
     currentLevelText: {
         fontFamily: 'Orbitron-ExtraBold',
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 12,
     },
     nextLevelText: {
         fontFamily: 'Orbitron-ExtraBold',
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 12,
     },
     progressSection: {
         flex: 1,
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
     xpText: {
         fontFamily: 'Orbitron-ExtraBold',
         textAlign: 'center',
-        fontSize: 12,
+        fontSize: TABLET_DEVICE ? 12 : 9,
     },
 });
 

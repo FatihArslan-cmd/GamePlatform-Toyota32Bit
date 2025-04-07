@@ -2,6 +2,9 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Switch, Text } from "react-native-paper";
 import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 export const SwitchSetting = ({ label, value, onChange }) => {
   const { colors } = useTheme(); 
@@ -21,13 +24,13 @@ export const SwitchSetting = ({ label, value, onChange }) => {
 
 const createStyles = () => StyleSheet.create({
   settingItem: {
-    marginBottom: 25,
+    marginBottom: TABLET_DEVICE ? 25 : 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   settingLabel: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     marginRight: 8,
   },

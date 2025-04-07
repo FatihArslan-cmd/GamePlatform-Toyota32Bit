@@ -8,7 +8,7 @@ import { useFormContext } from "../../../context/FormContext";
 const TABLET_DEVICE = isTablet();
 
 const ActionButtons = () => {
-  const { handleLoginPress, isLoading, handleSignUpPress } = useFormContext(); // Assuming handleSignUpPress exists in context
+  const { handleLoginPress, isLoading, handleSignUpPress } = useFormContext(); 
   const { t } = useTranslation();
 
   return (
@@ -20,7 +20,7 @@ const ActionButtons = () => {
           style={styles.loginButton}
           labelStyle={styles.buttonLabel}
           disabled={isLoading}
-          contentStyle={styles.buttonContent} // To control inner padding/height
+          contentStyle={styles.buttonContent} 
         >
           {isLoading ? (
             <ActivityIndicator animating={true} color="#fff" size={TABLET_DEVICE ? "medium" : "small"} />
@@ -32,11 +32,11 @@ const ActionButtons = () => {
 
       <Button
         mode="outlined"
-        onPress={handleSignUpPress} // Assuming you have a handler for sign up
+        onPress={handleSignUpPress} 
         style={styles.signupButton}
         labelStyle={styles.signupButtonLabel}
-        contentStyle={styles.buttonContent} // To control inner padding/height
-        disabled={isLoading} // Optionally disable signup during login attempt
+        contentStyle={styles.buttonContent} 
+        disabled={isLoading} 
       >
         {t('loginScreen.createNewAccount')}
       </Button>

@@ -1,12 +1,15 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useGameDetails } from '../context/GameDetailsContext';
-import { styles } from '../styles';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Button } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useGameDetails } from "../context/GameDetailsContext";
+import { styles } from "../styles";
 
-export default function TabNavigation({explanation}) {
+const TABLET_DEVICE = isTablet();
+
+export default function TabNavigation({ explanation }) {
   const { activeTab, setActiveTab } = useGameDetails();
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -14,16 +17,18 @@ export default function TabNavigation({explanation}) {
   const shouldRenderTabs = !!explanation;
   const startButtonStyle = explanation ? styles.tabButton : { ...styles.tabButton, flex: 0, width: '50%', marginHorizontal: '25%' };
 
+  const FontSize = TABLET_DEVICE ? 15 : 8;
 
   return (
-    <View style={[styles.tabContainer,{ backgroundColor: colors.background }]}>
+    <View style={[styles.tabContainer, { backgroundColor: colors.background }]}>
       <Button
         mode={activeTab === 'about' ? 'contained' : 'text'}
         onPress={() => setActiveTab('about')}
         style={startButtonStyle}
         labelStyle={{
           fontFamily: 'Orbitron-ExtraBold',
-          color: activeTab === 'about' ? 'white' : colors.text
+          color: activeTab === 'about' ? 'white' : colors.text,
+          fontSize: FontSize // Font boyutu eklendi
         }}
         icon="information"
         theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
@@ -38,12 +43,13 @@ export default function TabNavigation({explanation}) {
             style={styles.tabButton}
             labelStyle={{
               fontFamily: 'Orbitron-ExtraBold',
-              color: activeTab === 'lobbies' ? 'white' : colors.text
+              color: activeTab === 'lobbies' ? 'white' : colors.text,
+              fontSize: FontSize // Font boyutu eklendi
             }}
             icon="account-group"
             theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
           >
-           {t('gameDetailsScreen.lobbies')}
+            {t('gameDetailsScreen.lobbies')}
           </Button>
           <Button
             mode={activeTab === 'history' ? 'contained' : 'text'}
@@ -51,7 +57,8 @@ export default function TabNavigation({explanation}) {
             style={styles.tabButton}
             labelStyle={{
               fontFamily: 'Orbitron-ExtraBold',
-              color: activeTab === 'history' ? 'white' : colors.text
+              color: activeTab === 'history' ? 'white' : colors.text,
+              fontSize: FontSize // Font boyutu eklendi
             }}
             icon="history"
             theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
@@ -64,7 +71,8 @@ export default function TabNavigation({explanation}) {
             style={styles.tabButton}
             labelStyle={{
               fontFamily: 'Orbitron-ExtraBold',
-              color: activeTab === 'settings' ? 'white' : colors.text
+              color: activeTab === 'settings' ? 'white' : colors.text,
+              fontSize: FontSize // Font boyutu eklendi
             }}
             icon="cog"
             theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}

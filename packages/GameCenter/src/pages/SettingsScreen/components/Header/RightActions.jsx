@@ -1,8 +1,11 @@
-import React from 'react';
-import { View } from 'react-native';
-import { IconButton,Tooltip } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '../../../../context/ThemeContext'; // Import useTheme hook
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { View } from "react-native";
+import { IconButton, Tooltip } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const RightActions = () => {
   const navigation = useNavigation();
@@ -13,7 +16,7 @@ const RightActions = () => {
       <Tooltip title="Search">
       <IconButton
         icon="magnify"
-        size={28}
+        size={TABLET_DEVICE ? 28 : 20}
         iconColor={colors.text} 
         onPress={() => {
           navigation.navigate('SearchScreen');

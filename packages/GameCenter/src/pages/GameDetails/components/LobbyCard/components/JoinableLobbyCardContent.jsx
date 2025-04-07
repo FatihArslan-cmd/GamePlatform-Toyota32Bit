@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Title, Button, Text } from 'react-native-paper'; 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import LobbyDetails from '../../../../HomeScreen/components/Header/components/components/LobbyDetails';
-import { useTheme } from '../../../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import LobbyDetails from "../../../../HomeScreen/components/Header/components/components/LobbyDetails";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const JoinableLobbyCardContent = ({ lobby, setJoinModalVisible }) => {
   const { colors } = useTheme(); 
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 14 : 11,
   },
   buttonText: {
     color: 'white', 

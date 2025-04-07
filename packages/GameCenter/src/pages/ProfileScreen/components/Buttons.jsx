@@ -5,7 +5,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { TouchableRipple } from "react-native-paper";
 import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
 import { useButtons } from "./context/ButtonsContext";
+
+const TABLET_DEVICE = isTablet();
 
 const Buttons = () => {
     const {
@@ -115,11 +118,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     tabNumber: {
-        fontSize: 20,
+        fontSize: TABLET_DEVICE ? 20 : 14,
         fontFamily: 'Orbitron-ExtraBold',
     },
     tabText: {
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 20 : 12,
         fontFamily: 'Orbitron-ExtraBold',
         marginTop: 4, 
     },

@@ -7,7 +7,7 @@ import { Animated, Dimensions, StatusBar, StyleSheet, View } from "react-native"
 import { setNavigationBar } from "../../../utils/NavBarManager";
 import { isTablet } from "../../../utils/isTablet";
 
-const TABLET_DEVICE = isTablet(); // Determine device type once
+const TABLET_DEVICE = isTablet();
 
 const AdvancedPagerView = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -96,24 +96,24 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   },
-   pageWrapper: { // Added wrapper to ensure each page takes full dimensions
+   pageWrapper: {
     width: Dimensions.get('window').width,
-    height: '100%', // Ensure full height within PagerView
+    height: '100%', 
    },
   indicatorContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: TABLET_DEVICE ? 40 : 30, // Conditional bottom position
+    bottom: TABLET_DEVICE ? 40 : 30, 
     width: '100%',
-    paddingBottom: TABLET_DEVICE ? 0 : 10, // Add some padding on phones if navbar overlaps
+    paddingBottom: TABLET_DEVICE ? 0 : 10, 
   },
   indicator: {
-    width: TABLET_DEVICE ? 10 : 8, // Conditional width
-    height: TABLET_DEVICE ? 10 : 8, // Conditional height
-    borderRadius: TABLET_DEVICE ? 5 : 4, // Conditional border radius
+    width: TABLET_DEVICE ? 10 : 8, 
+    height: TABLET_DEVICE ? 10 : 8,
+    borderRadius: TABLET_DEVICE ? 5 : 4, 
     backgroundColor: '#ffffff30',
-    marginHorizontal: TABLET_DEVICE ? 5 : 4, // Conditional margin
+    marginHorizontal: TABLET_DEVICE ? 5 : 4, 
   },
   activeIndicator: {
     backgroundColor: '#8a2be2',
@@ -121,10 +121,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 5,
     elevation: 3,
-    // Optionally make active indicator slightly larger
-    // width: TABLET_DEVICE ? 12 : 10,
-    // height: TABLET_DEVICE ? 12 : 10,
-    // borderRadius: TABLET_DEVICE ? 6 : 5,
   },
 });
 

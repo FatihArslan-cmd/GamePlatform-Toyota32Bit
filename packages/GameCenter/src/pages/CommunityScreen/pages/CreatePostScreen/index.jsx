@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Keyboard} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import PostHeader from './components/PostHeader';
-import PostInput from './components/PostInput';
-import PostToolbar from './components/PostToolbar';
-import createPostStyles from './styles/createPostStyles';
-import { createMessageApi } from './service/service';
-import { ToastService } from '../../../../context/ToastService';
-import { useTheme } from '../../../../context/ThemeContext';
-import styles from './styles/createPostStyles';
-import {useTranslation} from 'react-i18next'; // Import useTranslation
+import PostHeader from "./components/PostHeader";
+import PostInput from "./components/PostInput";
+import PostToolbar from "./components/PostToolbar";
+import React, { useEffect, useState } from "react";
+import styles from "./styles/createPostStyles";
+import { useTranslation } from "react-i18next";
+import { Keyboard } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../../../context/ThemeContext";
+import { ToastService } from "../../../../context/ToastService";
+import { createMessageApi } from "./service/service";
 
 const CreatePostScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState('');
   const [isPosting, setIsPosting] = useState(false);
   const { colors } = useTheme();
-  const { t } = useTranslation(); // Use useTranslation hook
+  const { t } = useTranslation(); 
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(

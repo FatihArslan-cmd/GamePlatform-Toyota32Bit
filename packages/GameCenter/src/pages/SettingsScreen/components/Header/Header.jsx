@@ -1,14 +1,14 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Appbar } from 'react-native-paper';
-import HeaderTitle from './HeaderTitle';
-import RightActions from './RightActions';
-import styles from './styles';
-import BackButton from '../../../../components/BackIcon';
-import { useTheme } from '../../../../context/ThemeContext'; // Import useTheme hook
+import BackButton from "../../../../components/BackIcon";
+import HeaderTitle from "./HeaderTitle";
+import React from "react";
+import RightActions from "./RightActions";
+import styles from "./styles";
+import { View } from "react-native";
+import { Appbar } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
 
 const Header = () => {
-  const { colors } = useTheme(); // Consume colors from ThemeContext
+  const { colors } = useTheme(); 
 
   return (
     <Appbar.Header style={[styles.appbar, { backgroundColor: colors.card }]}> 

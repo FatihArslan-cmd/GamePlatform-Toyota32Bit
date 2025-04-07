@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, lobby }) => {
   const { colors } = useTheme(); 
@@ -15,16 +18,16 @@ const JoinableLobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, l
         style={styles.codeContainer}
         onPress={() => copyLobbyCodeToClipboard(lobbyCode)}
       >
-        <Icon name="code-tags" size={20} color={colors.subText} />
+        <Icon name="code-tags" size={TABLET_DEVICE ? 20 : 16} color={colors.subText} />
         <Text style={[styles.lobbyCode, { color: colors.text }]}>{lobbyCode}</Text>
       </TouchableOpacity>
       <View style={styles.headerIcons}>
         {lobby.hasPassword && (
-          <Icon name="lock" size={24} color={colors.text} style={styles.headerIcon} />
+          <Icon name="lock" size={TABLET_DEVICE ? 24 : 20} color={colors.text} style={styles.headerIcon} />
         )}
         {lobby.gameStarted && (
           <View style={styles.gameStartedContainer}>
-            <Icon name="run-fast" size={24} color="#FF6F61" style={styles.headerIcon} />
+            <Icon name="run-fast" size={TABLET_DEVICE ? 24 : 20} color="#FF6F61" style={styles.headerIcon} />
             <Text style={[styles.gameStartedText, { color: colors.error }]}>
               {t('gameDetailsScreen.started')}
               </Text> 
@@ -50,6 +53,7 @@ const styles = StyleSheet.create({
   lobbyCode: {
     marginLeft: 5,
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 14 : 10,
   },
   headerIcons: {
     flexDirection: 'row',
