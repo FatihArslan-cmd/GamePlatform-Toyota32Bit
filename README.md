@@ -1,9 +1,9 @@
 <p align="center">
   <h3 align="center">GamePlatform</h3>
   <p align="center">
-    <br/><br/>
+    <br/>
     <a href="https://github.com/FatihArslan-cmd/GamePlatform-Toyota32Bit"><strong>🌟 Explore the docs »</strong></a>
-    <br/><br/>
+    <br/>
     <a href="https://github.com/FatihArslan-cmd/GamePlatform-Toyota32Bit/issues">🐛 Report Bug</a>
     .
     <a href="https://github.com/FatihArslan-cmd/GamePlatform-Toyota32Bit/issues">✨ Request Feature</a>
@@ -14,8 +14,8 @@
 
 1. [📘 About The Project](#about-the-project)
 2. [🚀 Getting Started](#getting-started)
-    - [📋 Environment Configuration](#env)
     - [📋 Prerequisites](#prerequisites)
+    - [📋 Environment Configuration](#env)
     - [⚙️ Installation](#installation)
     - [🛠️ Usage](#usage)
 3. [📷 Screenshots](#screenshots)
@@ -24,22 +24,27 @@
 6. [📞 Contact](#contact)
 7. [📌 Important Versions](#important-versions)
 
-## <a id="about-the-project"></a>📘 About The Project
+## <a id="about-the-project"></a>📘 About The Project.
 
-This project was developed using a monorepo structure with Lerna. GamePlatform is built with React Native and includes submodules such as the game "Tombala" (Bingo).
+This project was developed using a monorepo structure with Lerna. GamePlatform is built with React Native and includes submodules such as the game Tombala (Bingo).
 
 GamePlatform is a gaming platform that currently includes one game: Tombala. To get started, launch the server and log into the app. You can create or join a lobby, add friends using a barcode or code, and exchange private messages via WebSocket. Group messaging is also supported.
 
 Once a lobby is created, the host can start the game, and all players will be navigated to the game screen. The first player to get Bingo wins the game.
 
+The backend is developed using Express.js and handles real-time communication using WebSocket. All runtime data such as active lobbies, players, and game states are stored in MemoryStore, meaning the data is kept in memory during server uptime and is not persisted after restarts.
+
+🔗 Check out the Tombala (Bingo) game on GitHub:
+<a href="https://github.com/FatihArslan-cmd/Bingo" target="_blank">Tombala GitHub Repository</a>
+
 For the full experience, download and try out the app!
 <hr>
 
 <br/>
-### <a id="screenshots">📷 Screenshots</a>
-<br/>
+## <a id="screenshots">📷 Screenshots</a>
 <br/>
 
+<img src="https://github.com/user-attachments/assets/643bbab3-393d-403d-ac91-5505f519cb44" width="300" alt="Screenshot 1"/>
 <img src="https://github.com/user-attachments/assets/d3dd6040-3a58-43a5-bc2e-f3858860f6d9" width="300" alt="Screenshot 1"/>
 <img src="https://github.com/user-attachments/assets/605eddca-fc0f-435a-92c4-c621ca68119f" width="300" alt="Screenshot 2"/>
 <img src="https://github.com/user-attachments/assets/785abd2a-dc15-4c57-a694-7aee9b2c100d" width="300" alt="Screenshot 3"/>
@@ -50,10 +55,6 @@ For the full experience, download and try out the app!
 <br/>
 
 <hr>
-
-## <a id="getting-started"></a>🚀 Getting Started
-
-To get a local copy up and running, follow these simple steps.
 
 ### <a id="prerequisites"></a>📋 Prerequisites
 
@@ -76,6 +77,9 @@ REFRESH_SECRET_KEY=your_refresh_secret_key_here
 EMAIL_USER=your_email@example.com
 EMAIL_PASS=your_email_password
   ```
+## <a id="getting-started"></a>🚀 Getting Started
+
+To get a local copy up and running, follow these simple steps.
 
 ### <a id="installation"></a>⚙️ Installation
 
@@ -156,7 +160,6 @@ To contribute:
   "react-native-pager-view": "^6.6.1",  
   "react-native-paper": "^5.12.5",  
   "react-native-qrcode-skia": "^0.3.1",  
-  "react-native-qrcode-svg": "^6.3.14",  
   "react-native-reanimated": "^3.16.6",  
   "react-native-safe-area-context": "^5.0.0",  
   "react-native-screens": "^4.4.0",  
