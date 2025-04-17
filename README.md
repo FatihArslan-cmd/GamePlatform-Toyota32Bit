@@ -50,6 +50,9 @@ For the full experience, download and try out the app!
 <img src="https://github.com/user-attachments/assets/785abd2a-dc15-4c57-a694-7aee9b2c100d" width="300" alt="Screenshot 3"/>
 <img src="https://github.com/user-attachments/assets/669acd0b-2138-47c2-b316-53db4acc112e" width="300" alt="Screenshot 4"/>
 <img src="https://github.com/user-attachments/assets/f8217818-1e8a-432d-a344-5af2ee62d51c" width="300" alt="Screenshot 5"/>
+<img src="https://github.com/user-attachments/assets/4e2a9f4e-db2e-4a93-85d2-3d712249f02e" width="300" alt="Screenshot 5"/>
+<img src="https://github.com/user-attachments/assets/e9ad49b1-ad64-4d6a-ae5c-a6f8e8e01c2d" width="300" alt="Screenshot 5"/>
+<img src="https://github.com/user-attachments/assets/1289aea4-3177-4576-b563-1d8178d9f70d" width="300" alt="Screenshot 5"/>
 
 <br/>
 <br/>
