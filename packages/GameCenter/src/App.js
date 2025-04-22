@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import Navigation from './navigation/Navigation.js';
-import { theme } from './utils/FontConfig.js';
-import { UserProvider } from './context/UserContext.jsx';
-import { ToastProvider } from './context/ToastService.jsx';
-import { createDefaultChannel, requestUserPermission, setupForegroundNotifications, setupBackgroundNotifications, checkInitialNotification } from './utils/Firebase/notificationHandlers.js';
-import { LogBox } from 'react-native';
-import { BingoWebSocketProvider } from './context/BingoGameWebsocket.js';
-import { ThemeProvider } from './context/ThemeContext.jsx';
-import { PaperProvider } from 'react-native-paper'
-import ConnectivityListener from './context/ConnectivityListener.jsx';
-import './context/i18n'
+import "./context/i18n";
+import ConnectivityListener from "./context/ConnectivityListener.jsx";
+import Navigation from "./navigation/Navigation.js";
+import React, { useEffect } from "react";
+import { LogBox } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { BingoWebSocketProvider } from "./context/BingoGameWebsocket.js";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { ToastProvider } from "./context/ToastService.jsx";
+import { UserProvider } from "./context/UserContext.jsx";
+import { checkInitialNotification, createDefaultChannel, requestUserPermission, setupBackgroundNotifications, setupForegroundNotifications } from "./utils/Firebase/notificationHandlers.js";
+import { theme } from "./utils/FontConfig.js";
 
 const App = () => {
   LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
-  
+
   useEffect(() => {
     createDefaultChannel();
     requestUserPermission();

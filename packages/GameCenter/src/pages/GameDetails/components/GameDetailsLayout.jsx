@@ -1,17 +1,17 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Surface, Title } from 'react-native-paper';
-import LinearGradient from 'react-native-linear-gradient';
-import Animated from 'react-native-reanimated';
-import BackButton from '../../../components/BackIcon';
-import TabNavigation from './TabNavigation';
-import TabContent from './TabContent';
-import { styles } from '../styles';
-import GradientDivider from '../../../components/GradientDivider';
-import CreateLobbyModal from '../../HomeScreen/components/CreateLobbyModal/CreateLobbyModal';
-import { useGameDetails } from '../context/GameDetailsContext';
-import { GameDetailsImageEnterAnimation } from './Animation/GameDetailsImageEnterAnimation';
-import { useTheme } from '../../../context/ThemeContext';
+import Animated from "react-native-reanimated";
+import BackButton from "../../../components/BackIcon";
+import CreateLobbyModal from "../../HomeScreen/components/CreateLobbyModal/CreateLobbyModal";
+import GradientDivider from "../../../components/GradientDivider";
+import LinearGradient from "react-native-linear-gradient";
+import React from "react";
+import TabContent from "./TabContent";
+import TabNavigation from "./TabNavigation";
+import { View } from "react-native";
+import { Surface, Title } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { useGameDetails } from "../context/GameDetailsContext";
+import { styles } from "../styles";
+import { GameDetailsImageEnterAnimation } from "./Animation/GameDetailsImageEnterAnimation";
 
 export default function GameDetailsLayout({ gameName, explanation, imageSource, backgroundColors }) {
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();

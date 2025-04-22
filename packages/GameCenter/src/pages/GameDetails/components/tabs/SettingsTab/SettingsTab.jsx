@@ -1,14 +1,14 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Card } from 'react-native-paper';
-import { useGameDetails } from '../../../context/GameDetailsContext';
-import FadeIn from '../../../../../components/Animations/FadeInAnimation';
-import { VolumeControl } from './components/VolumeControl';
-import { RadioGroupSetting } from './components/RadioGroupSetting';
-import { SwitchSetting } from './components/SwitchSetting';
-import { ToastService } from '../../../../../context/ToastService';
-import { useTheme } from '../../../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import FadeIn from "../../../../../components/Animations/FadeInAnimation";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Card } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { ToastService } from "../../../../../context/ToastService";
+import { useGameDetails } from "../../../context/GameDetailsContext";
+import { RadioGroupSetting } from "./components/RadioGroupSetting";
+import { SwitchSetting } from "./components/SwitchSetting";
+import { VolumeControl } from "./components/VolumeControl";
 
 export default function SettingsTab() {
   const { gameSettings, setGameSettings } = useGameDetails();
@@ -19,10 +19,14 @@ export default function SettingsTab() {
   const handleSettingChange = (key, value) => {
     setGameSettings({ ...gameSettings, [key]: value });
     if (key === 'gameSpeed') {
-      ToastService.show('info', 'Hatırlatma! Oyun hızını sadece lobi sahibi ayarlar.');
+      ToastService.show('info', t('gameDetailsScreen.gameSpeedInfo'));
     }
   };
-
+  const speedOptions = [
+    { label: t('gameDetailsScreen.slow'), value: 'Slow' },
+    { label: t('gameDetailsScreen.normal'), value: 'Normal' },
+    { label: t('gameDetailsScreen.fast'), value: 'Fast' }
+  ];
   return (
     <FadeIn>
       <View style={styles.settingsContainer}>
@@ -36,7 +40,14 @@ export default function SettingsTab() {
               thumbColor={colors.primary} 
               trackColor={{ true: colors.primary, false: colors.border }}
             />
-
+            <SwitchSetting
+              label={t('gameDetailsScreen.numberreadSound')}
+              value={gameSettings.voiceCalloutEnabled}
+              onChange={(value) => handleSettingChange('voiceCalloutEnabled', value)}
+              labelColor={colors.text}
+              thumbColor={colors.primary}
+              trackColor={{ true: colors.primary, false: colors.border }}
+            />
             <SwitchSetting
               label={t('gameDetailsScreen.sound')}
               value={gameSettings.sound}
@@ -45,17 +56,6 @@ export default function SettingsTab() {
               thumbColor={colors.primary}
               trackColor={{ true: colors.primary, false: colors.border }}
             />
-
-            <RadioGroupSetting
-              label={t('gameDetailsScreen.gameSpeed')}
-              value={gameSettings.gameSpeed || 'Normal'}
-              onChange={(value) => handleSettingChange('gameSpeed', value)}
-              options={['Yavaş', 'Normal', 'Hızlı']}
-              labelColor={colors.text} 
-              activeColor={colors.primary} 
-              uncheckedColor={colors.subText}
-            />
-
             <SwitchSetting
               label={t('gameDetailsScreen.otomaticMarking')}
               value={gameSettings.autoDaub}
@@ -64,17 +64,15 @@ export default function SettingsTab() {
               thumbColor={colors.primary}
               trackColor={{ true: colors.primary, false: colors.border }}
             />
-
-            <RadioGroupSetting
-              label={t('gameDetailsScreen.theme')}
-              value={gameSettings.theme || 'Klasik'}
-              onChange={(value) => handleSettingChange('theme', value)}
-              options={['Klasik', 'Modern', 'Renkli']}
+                <RadioGroupSetting
+              label={t('gameDetailsScreen.gameSpeed')}
+              value={gameSettings.gameSpeed || 'Normal'}
+              onChange={(value) => handleSettingChange('gameSpeed', value)}
+              options={speedOptions}
               labelColor={colors.text}
               activeColor={colors.primary}
               uncheckedColor={colors.subText}
             />
-
             <VolumeControl
               label={t('gameDetailsScreen.soundLevel')}
               value={gameSettings.soundEffectsVolume}
@@ -83,25 +81,6 @@ export default function SettingsTab() {
               thumbColor={colors.primary}
               trackColor={{ true: colors.primary, false: colors.border }} 
               iconColor={colors.primary} 
-            />
-
-            <VolumeControl
-              label={t('gameDetailsScreen.musicLevel')}
-              value={gameSettings.musicVolume}
-              onChange={(value) => handleSettingChange('musicVolume', value)}
-              labelColor={colors.text}
-              thumbColor={colors.primary}
-              trackColor={{ true: colors.primary, false: colors.border }}
-              iconColor={colors.primary}
-            />
-
-            <SwitchSetting
-              label={t('gameDetailsScreen.numberreadSound')}
-              value={gameSettings.voiceCalloutEnabled}
-              onChange={(value) => handleSettingChange('voiceCalloutEnabled', value)}
-              labelColor={colors.text}
-              thumbColor={colors.primary}
-              trackColor={{ true: colors.primary, false: colors.border }}
             />
           </Card.Content>
         </Card>
@@ -112,9 +91,10 @@ export default function SettingsTab() {
 
 const createStyles = (colors) => StyleSheet.create({
   settingsContainer: {
-    padding: 20,
+    padding: 15,
   },
   settingsCard: {
     backgroundColor: colors.card, 
+    borderRadius: 20,
   },
 });

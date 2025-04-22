@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, RadioButton } from 'react-native-paper';
-import { useTheme } from '../../../../../../context/ThemeContext';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { RadioButton, Text } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
 
 export const RadioGroupSetting = ({ label, value, onChange, options }) => {
-  const { colors } = useTheme(); 
+  const { colors } = useTheme();
   const themedStyles = createStyles(colors);
 
   return (
@@ -14,11 +14,24 @@ export const RadioGroupSetting = ({ label, value, onChange, options }) => {
         onValueChange={onChange}
         value={value}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', alignItems: 'center' }}>
+        <View style={{ 
+          flexDirection: 'row', 
+          justifyContent: 'space-around', 
+          width: '100%', 
+          alignItems: 'center' 
+        }}>
           {options.map((option) => (
-            <View key={option} style={{ alignItems: 'center' }}>
-              <Text style={[themedStyles.settingLabel, { color: colors.text }]}>{option}</Text>
-              <RadioButton value={option} color={colors.primary} />
+            <View 
+              key={option.value} 
+              style={{ alignItems: 'center' }}
+            >
+              <Text style={[themedStyles.settingLabel, { color: colors.text }]}>
+                {option.label}
+              </Text>
+              <RadioButton 
+                value={option.value} 
+                color={colors.primary} 
+              />
             </View>
           ))}
         </View>
@@ -29,12 +42,11 @@ export const RadioGroupSetting = ({ label, value, onChange, options }) => {
 
 const createStyles = () => StyleSheet.create({
   settingItem: {
-    marginBottom: 15,
+    marginBottom: 25,
   },
   settingLabel: {
     fontSize: 16,
     fontFamily: 'Orbitron-ExtraBold',
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });
-

@@ -107,7 +107,6 @@ const useStyles = (colors) => StyleSheet.create({
     },
     flashListContent: {
         paddingHorizontal: 20,
-        gap: 24,
     },
     column: {
         gap: 20,

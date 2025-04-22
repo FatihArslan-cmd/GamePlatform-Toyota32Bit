@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Linking, StyleSheet } from 'react-native';
-import { Card, List, RadioButton } from 'react-native-paper';
+import {  StyleSheet } from 'react-native';
+import { Card, List } from 'react-native-paper';
 import GrandientText from '../../../components/GrandientText';
-import GradientDivider from '../../../components/GradientDivider';
-import { ToastService } from '../../../context/ToastService';
 import { useTheme } from '../../../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import * as storage from '../../../utils/storage'; 
+import { storage } from '../../../utils/storage'; 
 
 const LanguageSection = () => {
   const [expanded, setExpanded] = useState(false);

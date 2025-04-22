@@ -1,4 +1,3 @@
-import { BlendMode } from '@shopify/react-native-skia';
 import { configureFonts, MD2LightTheme } from 'react-native-paper';
 
 const fontConfig = {

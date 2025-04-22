@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Switch } from 'react-native-paper';
-import { useTheme } from '../../../../../../context/ThemeContext'; 
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { Switch, Text } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
 
 export const SwitchSetting = ({ label, value, onChange }) => {
   const { colors } = useTheme(); 
@@ -21,7 +21,7 @@ export const SwitchSetting = ({ label, value, onChange }) => {
 
 const createStyles = () => StyleSheet.create({
   settingItem: {
-    marginBottom: 15,
+    marginBottom: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

@@ -3,6 +3,7 @@ import { useNetInfo } from '@react-native-community/netinfo';
 import { Snackbar, Text } from 'react-native-paper';
 import { View } from 'react-native';
 import {useTranslation} from 'react-i18next';
+
 const ConnectivityListener = ({ children }) => {
   const netInfo = useNetInfo();
   const isConnected = netInfo.isConnected;

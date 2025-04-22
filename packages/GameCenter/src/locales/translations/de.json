@@ -283,7 +283,11 @@
     "joinLobbyButton": "Lobby beitreten",
     "password": "Passwort",
     "started": "Gestartet",
-    "join": "Beitreten"
+    "join": "Beitreten",
+    "gameSpeedInfo": "Vergiss nicht, nur der Lobby-Besitzer kann die Spielgeschwindigkeit ändern.",
+    "slow": "Langsam",
+    "normal": "Normal",
+    "fast": "Schnell"
   },
   "createLobbyModal": {
     "title": "Lobby erstellen",
