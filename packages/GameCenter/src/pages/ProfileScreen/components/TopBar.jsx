@@ -7,7 +7,7 @@ import useModal from "../../../hooks/useModal";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { IconButton, Snackbar, Text, Tooltip } from "react-native-paper";
+import { IconButton, Snackbar, Tooltip } from "react-native-paper";
 import { useTheme } from "../../../context/ThemeContext";
 import { isTablet } from "../../../utils/isTablet";
 import { useProfile } from "../context/ProfileContext";
@@ -76,7 +76,7 @@ const TopBar = () => {
                         textStyle={{ fontSize: TABLET_DEVICE ? 24 : 20 }}
                         gradientDirection="horizontal"
                       />
-            <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+            <View style={{ flexDirection: "row", alignSelf: "flex-end",marginBottom: 10 }}>
                 <Tooltip title="Add Friend">
                 <IconButton icon="camera" size={TABLET_DEVICE ? 24 : 18}
  iconColor={colors.subText} style={styles.topBarIcon} onPress={navigateToCamera} />

@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     lobbyType: {
         marginLeft: 5,
         fontFamily: 'Orbitron-VariableFont_wght',
+        fontSize: TABLET_DEVICE ? 16 : 12,
     },
     eventDateContainer: {
         marginTop: 5,

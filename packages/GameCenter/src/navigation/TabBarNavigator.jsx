@@ -3,7 +3,7 @@ import CommunityScreen from "../pages/CommunityScreen/index";
 import HomeScreen from "../pages/HomeScreen/index";
 import Lottie from "lottie-react-native";
 import ProfileScreen from "../pages/ProfileScreen/index";
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 import Svg, { Path } from "react-native-svg";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useNavigation } from "@react-navigation/native";
@@ -27,9 +27,8 @@ const lottieSources = {
   'Profileicon-dark': require('../locales/lottie/Profileicon-dark.json'),
 };
 
-
 const TabNavigator = () => {
-  const { messages,clearMessages } = useBingoWebSocket();
+  const { messages, clearMessages } = useBingoWebSocket();
   const navigation = useNavigation();
   const { colors, theme } = useTheme();
   const { t } = useTranslation();
@@ -38,10 +37,10 @@ const TabNavigator = () => {
     const gameStartMessage = messages.find(msg => msg.type === 'game-started');
     if (gameStartMessage) {
       navigation.navigate('CountDownSplashScreen');
-      clearMessages()
-
+      clearMessages();
     }
-  }, [messages, navigation ]);
+  }, [messages, navigation, clearMessages]);
+
   useEffect(() => {
     const gameEndMessage = messages.find(msg => msg.type === 'game-ended');
     if (gameEndMessage) {
@@ -49,17 +48,16 @@ const TabNavigator = () => {
       navigation.navigate('Tabs');
       ToastService.show("info", t('bingoGame.gameEnded'));
     }
-  }, [messages, navigation]);
+  }, [messages, navigation, t, clearMessages]);
 
-  const getLottieSource = (iconName) => {
+  const getLottieSource = useCallback((iconName) => {
     const themeSuffix = theme === 'dark' ? 'dark' : 'light';
     const sourceName = `${iconName}-${themeSuffix}`;
-    return lottieSources[sourceName] || lottieSources['homeIcon-light']; 
-  };
-
+    return lottieSources[sourceName] || lottieSources['homeIcon-light'];
+  }, [theme]);
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Tab.Navigator
         tabBar={(props) => <AnimatedTabBar {...props} />}
         swipeEnabled={true}
@@ -83,11 +81,10 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={getLottieSource('homeIcon')} // Use getLottieSource with icon name
+                source={getLottieSource('homeIcon')}
                 style={[styles.icon, { tintColor: colors.text }]}
               />
             ),
-            
           }}
         />
         <Tab.Screen
@@ -98,7 +95,7 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={getLottieSource('ChatIcon')} // Use getLottieSource with icon name
+                source={getLottieSource('ChatIcon')}
                 style={[styles.icon, { tintColor: colors.text }]}
               />
             ),
@@ -112,13 +109,12 @@ const TabNavigator = () => {
               <Lottie
                 ref={ref}
                 loop={false}
-                source={getLottieSource('Profileicon')} // Use getLottieSource with icon name
+                source={getLottieSource('Profileicon')}
                 style={[styles.icon, { tintColor: colors.text }]}
               />
             ),
           }}
         />
-
       </Tab.Navigator>
     </View>
   );
@@ -130,7 +126,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
   };
 
   const [layout, dispatch] = useReducer(reducer, []);
-  const {colors} = useTheme()
+  const { colors } = useTheme();
 
   const handleLayout = useCallback((event, index) => {
     dispatch({ x: event.nativeEvent.layout.x, index });
@@ -138,7 +134,18 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
 
   const xOffset = useDerivedValue(() => {
     if (layout.length !== routes.length) return 0;
-    return layout.find(({ index }) => index === activeIndex)?.x - 25;
+
+    const buttonLayout = layout.find(({ index }) => index === activeIndex);
+    if (!buttonLayout) return 0;
+
+    const buttonX = buttonLayout.x;
+    const buttonWidth = TABLET_DEVICE ? 60 : 50;
+    const buttonCenter = buttonX + buttonWidth / 2;
+
+    const svgCenterPoint = 55;
+    const translateX = buttonCenter - svgCenterPoint;
+
+    return translateX;
   }, [activeIndex, layout]);
 
   const animatedStyles = useAnimatedStyle(() => ({
@@ -184,7 +191,7 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
 
 const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
   const ref = useRef(null);
-  const {colors, theme} = useTheme()
+  const { colors, theme } = useTheme();
 
   useEffect(() => {
     if (active && ref?.current) {
@@ -201,11 +208,10 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
     opacity: withTiming(active ? 1 : 0.5, { duration: 500 }),
   }));
 
-  const getLottieSourceForComponent = (iconName) => {
+  const getLottieSourceForComponent = useCallback((iconName) => {
     const themeSuffix = theme === 'dark' ? 'dark' : 'light';
-    return lottieSources[`${iconName}-${themeSuffix}`] || lottieSources['homeIcon-light']; // Default to light home icon if not found
-  };
-
+    return lottieSources[`${iconName}-${themeSuffix}`] || lottieSources['homeIcon-light'];
+  }, [theme]);
 
   return (
     <Pressable onPress={onPress} onLayout={onLayout} style={styles.component}>
@@ -223,7 +229,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
   activeBackground: {
     position: 'absolute',
   },
@@ -251,8 +256,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: TABLET_DEVICE ? 36 : 24,
-    width:  TABLET_DEVICE ? 36 : 24,
+    width: TABLET_DEVICE ? 36 : 24,
   },
+  tabBar: {
+    height: 50,
+  }
 });
 
 export default TabNavigator;

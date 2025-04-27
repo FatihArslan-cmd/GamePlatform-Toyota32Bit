@@ -13,7 +13,7 @@ import { ToastService } from "../../../../context/ToastService";
 import { isTablet } from "../../../../utils/isTablet";
 import { createLobby } from "./service/service";
 
-const TABLET_DEVICE = isTablet(); 
+const TABLET_DEVICE = isTablet();
 
 const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
@@ -29,7 +29,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const { connectWebSocket } = useBingoWebSocket();
-    const { t } = useTranslation(); 
+    const { t } = useTranslation();
 
     const toggleLobbyType = useCallback(() => {
         setLobbyType((current) => (current === 'Normal' ? 'Event' : 'Normal'));
@@ -38,11 +38,11 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
 
     const handleSave = useCallback(async () => {
         if (!lobbyName.trim()) {
-            ToastService.show("error", t('createLobbyModal.toastMessages.emptyLobbyName')); 
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyLobbyName'));
             return;
         }
         if (!gameName.trim()) {
-            ToastService.show("error", t('createLobbyModal.toastMessages.emptyGameName')); 
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyGameName'));
             return;
         }
         if (!maxCapacity.trim()) {
@@ -51,12 +51,12 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         }
 
         if (hasPassword && !password.trim()) {
-            ToastService.show("error", t('createLobbyModal.toastMessages.emptyPassword')); 
+            ToastService.show("error", t('createLobbyModal.toastMessages.emptyPassword'));
             return;
         }
 
         if (lobbyType === 'Event' && (!startDate || !endDate)) {
-            ToastService.show("error", t('createLobbyModal.toastMessages.requireStartEndDate')); 
+            ToastService.show("error", t('createLobbyModal.toastMessages.requireStartEndDate'));
             return;
         }
 
@@ -80,7 +80,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         } catch (error) {
             ToastService.show("error", error.message);
         }
-    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate, t]);
+    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate, t, connectWebSocket]);
 
     const resetLobby = useCallback(() => {
         setLobbyType('Normal');
@@ -94,32 +94,32 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         setHasPassword(false);
         setStartDate(new Date());
         setEndDate(new Date());
-    }, [gameName]);
+    }, []);
 
     const handleDismiss = useCallback(() => {
         resetLobby();
         onDismiss();
     }, [onDismiss, resetLobby]);
 
-    
-    const bottomSheetHeight = isCodeGenerated 
-    ? (TABLET_DEVICE ? '50%' : '75%') 
-    : (lobbyType === 'Normal' 
-        ? (TABLET_DEVICE ? '55%' : '75%') 
-        : (TABLET_DEVICE ? '76%' : '90%'));
+
+    const bottomSheetHeight = isCodeGenerated
+    ? (TABLET_DEVICE ? '50%' : '95%')
+    : (lobbyType === 'Normal'
+        ? (TABLET_DEVICE ? '55%' : '75%')
+        : (TABLET_DEVICE ? '76%' : '99%'));
 
     return (
         <BottomSheet
             visible={visible}
             onDismiss={handleDismiss}
-            title={t('createLobbyModal.title')} 
+            title={t('createLobbyModal.title')}
             height={bottomSheetHeight}
             backgroundColor="white"
         >
             <View style={styles.container}>
                 {!isCodeGenerated ? (
                     <>
-                        <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} t={t} /> 
+                        <LobbyTypeSelector lobbyType={lobbyType} onToggle={toggleLobbyType} t={t} />
                         {lobbyType === 'Event' && (
                             <CustomDateTimeSelector
                                 initialStartDate={startDate}
@@ -141,7 +141,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             onGameNameChange={setGameName}
                             onLobbyNameChange={setLobbyName}
                             onMaxCapacityChange={setMaxCapacity}
-                            t={t} 
+                            t={t}
                         />
                     <PasswordInput
                       password={password}
@@ -150,7 +150,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                       onToggleVisibility={() => setIsPasswordVisible(!isPasswordVisible)}
                       hasPassword={hasPassword}
                       onPasswordToggle={setHasPassword}
-                      t={t} 
+                      t={t}
                        />
                         <Button
                             mode="contained"
@@ -160,14 +160,15 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                                 isCodeGenerated && styles.createButtonWithLink,
                             ]}
                             contentStyle={styles.createButtonContent}
+                            labelStyle={styles.createButtonLabel}
                             icon="plus-circle"
                         >
-                            {t('createLobbyModal.buttons.createLobby')} 
+                            {t('createLobbyModal.buttons.createLobby')}
                         </Button>
                     </>
                 ) : (
                     <View style={styles.successContainer}>
-                        <InvitationLink code={code} t={t} /> 
+                        <InvitationLink code={code} t={t} />
                         <Button
                             mode="outlined"
                             onPress={resetLobby}
@@ -175,7 +176,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             icon="refresh"
                             labelStyle={styles.resetButtonLabel}
                         >
-                            {t('createLobbyModal.buttons.createNewLobby')} 
+                            {t('createLobbyModal.buttons.createNewLobby')}
                         </Button>
                     </View>
                 )}
@@ -204,7 +205,10 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     createButtonContent: {
-        height: TABLET_DEVICE ? 36 : 28,
+        height:36,
+    },
+    createButtonLabel: {
+        fontSize: TABLET_DEVICE ? 16 : 12,
     },
     resetButton: {
         marginTop: 'auto',

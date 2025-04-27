@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     inviteButtonText: {
-        fontSize: TABLET_DEVICE ? 16 : 12,
+        fontSize: TABLET_DEVICE ? 16 : 8,
     },
     friendsList: {
         flex: 1,

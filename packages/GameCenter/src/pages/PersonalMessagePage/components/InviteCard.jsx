@@ -1,19 +1,19 @@
-import React from 'react';
-import { View, Image } from 'react-native';
-import { Card, Text, Button, Surface } from 'react-native-paper';
-import { getTimeAgo } from '../../../utils/getTimeAgo';
-import { invitationCardStyles } from '../styles/InvitationsPageStyles';
-import { useTheme } from '../../../context/ThemeContext';
-import { useLobbyInvite } from '../context/LobbyInviteContext';
-import { useTranslation } from 'react-i18next'; 
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Image, View } from "react-native";
+import { Button, Card, Surface, Text } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { getTimeAgo } from "../../../utils/getTimeAgo";
+import { useLobbyInvite } from "../context/LobbyInviteContext";
+import { invitationCardStyles } from "../styles/InvitationsPageStyles";
 
 const InviteCard = ({ invite }) => { 
-  const inviteMessage = `${invite.inviterUsername.toUpperCase()} ${t('personalMessagePage.invitedyoutothe')} ${invite.lobbyName.toUpperCase()} ${t('personalMessagePage.lobby')}`;
   const { colors } = useTheme();
   const styles = invitationCardStyles(colors);
   const { handleAcceptInvite, handleRejectInvite } = useLobbyInvite();
   const { t } = useTranslation();
-  
+  const inviteMessage = `${invite.inviterUsername.toUpperCase()} ${t('personalMessagePage.invitedyoutothe')} ${invite.lobbyName.toUpperCase()} ${t('personalMessagePage.lobby')}`;
+
   return (
     <Surface style={styles.surfaceCard} elevation={4}>
       <Card style={styles.card}>

@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNetInfo } from '@react-native-community/netinfo';
-import { Snackbar, Text } from 'react-native-paper';
-import { View } from 'react-native';
-import {useTranslation} from 'react-i18next';
+import React, { useEffect, useRef, useState } from "react";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Snackbar, Text } from "react-native-paper";
 
 const ConnectivityListener = ({ children }) => {
   const netInfo = useNetInfo();
@@ -20,7 +20,7 @@ const ConnectivityListener = ({ children }) => {
         setSnackbarBackgroundColor('red');
         setSnackbarVisible(true);
       } else if (previousIsConnected.current === false && isConnected === true) {
-        setSnackbarMessage('connectivityListener.connectionRestored');
+        setSnackbarMessage(t('connectivityListener.connectionRestored'));
         setSnackbarBackgroundColor('green');
         setSnackbarVisible(true);
       }

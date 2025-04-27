@@ -1,14 +1,17 @@
-import React from 'react';
-import { StyleSheet, View ,FlatList } from 'react-native'; 
-import { useFriends } from '../context/FriendsContext';
-import { List,TouchableRipple } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import { useNavigation } from '@react-navigation/native';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import Header from '../components/Header/Header';
-import EmptyState from '../../../components/EmptyState';
-import { useTheme } from '../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import EmptyState from "../../../components/EmptyState";
+import FastImage from "react-native-fast-image";
+import Header from "../components/Header/Header";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { FlatList, StyleSheet, View } from "react-native";
+import { List, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useFriends } from "../context/FriendsContext";
+
+const TABLET_DEVICE = isTablet();
 
 const Page = () => {
   const { friends, loading } = useFriends();
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   friendUsername: {
-    fontSize: 24,
+    fontSize: TABLET_DEVICE ? 24 : 18,
     fontFamily: 'Orbitron-ExtraBold',
     color: 'black', 
   },
@@ -120,8 +123,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatar: {
-    width: 70,
-    height: 70,
+    width: TABLET_DEVICE ? 70 : 50,
+    height: TABLET_DEVICE ? 70 : 50,
     borderRadius: 50,
   },
   avatarPlaceholder: {

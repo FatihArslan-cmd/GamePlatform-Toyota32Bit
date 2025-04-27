@@ -53,9 +53,8 @@ export const styles = StyleSheet.create({
       },
       tabButton: {
         flex: 1,
-        marginHorizontal: 4,
+        marginHorizontal: TABLET_DEVICE ? 4 : 0,
         borderRadius: 20,
-        
       },
       tabContent: {
         flex: 1,
@@ -100,7 +99,7 @@ export const styles = StyleSheet.create({
  
       modernInstructionText: {
         flex: 1,
-        padding: TABLET_DEVICE ? 16 : 0,
+        padding: TABLET_DEVICE ? 16 : 8,
         fontSize: TABLET_DEVICE ? 16 : 11,
         lineHeight: TABLET_DEVICE ? 24 : 18,
         color: '#333333',
@@ -173,10 +172,10 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         alignSelf: 'center',
         position: 'absolute',
-        bottom: 0,
+        bottom: -15,
         left: 0,
         right: 0,
-        margin: 16,
+        margin: 0,
       },
       instructionNumber: {
         width: 28,

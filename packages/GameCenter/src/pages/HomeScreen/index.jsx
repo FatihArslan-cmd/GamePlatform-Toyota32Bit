@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import Animated from "react-native-reanimated";
+import FromTheCreator from "./components/FromTheCreator/FromTheCreator";
+import Header from "./components/Header/Header";
+import MiniGamesBlock from "./components/MiniGames/MiniGames";
+import React, { useEffect, useState } from "react";
+import UpperBigAnimatedImages from "./components/UpperBigAnimatedImages/UpperBigAnimatedImages";
+import VideoPlayBlock from "./components/VideoPlayBlock/VideoPlayBlock";
+import useDisableBackButton from "./hooks/useDisableBackButton";
+import useHeaderAnimation from "./hooks/useHeaderAnimation";
+import { useTheme } from "../../context/ThemeContext";
+import { hideNavigationBar } from "../../utils/NavBarManager";
+import { getGamesFromStorage } from "../../utils/api";
+
 import {
   View,
   StyleSheet,
   StatusBar,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
-import { getGamesFromStorage } from '../../utils/api';
-import Header from './components/Header/Header';
-import UpperBigAnimatedImages from './components/UpperBigAnimatedImages/UpperBigAnimatedImages';
-import MiniGamesBlock from './components/MiniGames/MiniGames';
-import FromTheCreator from './components/FromTheCreator/FromTheCreator';
-import VideoPlayBlock from './components/VideoPlayBlock/VideoPlayBlock';
-import useDisableBackButton from './hooks/useDisableBackButton';
-import { hideNavigationBar } from '../../utils/NavBarManager';
-import useHeaderAnimation from './hooks/useHeaderAnimation';
-import { useTheme } from '../../context/ThemeContext';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
 
 const HomeScreen = () => {
   const [games, setGames] = useState([]);
   const { headerAnimatedStyle, scrollHandler, onLayout } = useHeaderAnimation();
-  const { resolvedTheme } = useTheme(); // Consume the theme
+  const { resolvedTheme } = useTheme(); 
 
   useEffect(() => {
     hideNavigationBar();
@@ -35,12 +36,11 @@ const HomeScreen = () => {
 
   useDisableBackButton();
 
-  const statusBarBarStyle = resolvedTheme === 'dark' ? 'light-content' : 'dark-content'; 
 
   return (
     <View style={styles.container}>
 
-      <StatusBar backgroundColor="transparent" barStyle={statusBarBarStyle} /> 
+      <StatusBar translucent backgroundColor="transparent" barStyle={resolvedTheme === 'dark' ? 'light-content' : 'dark-content'} />
       <Animated.View
         style={[styles.appBar, headerAnimatedStyle]}
         onLayout={onLayout}

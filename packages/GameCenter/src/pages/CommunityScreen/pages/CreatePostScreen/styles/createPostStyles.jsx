@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
   },
   postButtonLabel: {
     color: 'white',
-    fontSize: TABLET_DEVICE ? 16 : 12,
-    paddingHorizontal: 8,
+    fontSize: TABLET_DEVICE ? 16 : 10,
   },
   postArea: {
     padding: 16,

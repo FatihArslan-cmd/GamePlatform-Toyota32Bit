@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import formatDate from '../../../../../utils/FormatDate';
-import { useTheme } from '../../../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import FastImage from "react-native-fast-image";
+import React from "react";
+import formatDate from "../../../../../utils/FormatDate";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, View } from "react-native";
+import { useTheme } from "../../../../../context/ThemeContext";
 
 const RoomCardContent = ({ room }) => {
   const { colors } = useTheme(); 
@@ -47,7 +47,7 @@ const createStyles = (colors) => StyleSheet.create({
   image: {
     width: 140,
     height: '100%',
-    borderRadius:20,
+    borderRadius:85,
   },
   content: {
     flex: 1,

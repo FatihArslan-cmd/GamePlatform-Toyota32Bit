@@ -1,7 +1,8 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TouchableRipple } from 'react-native-paper';
+import Ionicons from "react-native-vector-icons/Ionicons";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+
 const ActionButtons = ({ toggleFlash, flashMode, toggleCamera, zoomIn, zoomOut,goBack }) => {
     return (
         <>
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
         top: 35,
         left: 20,
         padding: 10,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         borderRadius: 50,
     },
     flashButton: {
@@ -42,14 +43,14 @@ const styles = StyleSheet.create({
         top: 35,
         right: 20,
         padding: 10,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         borderRadius: 50,
     },
     toggleButton: {
         position: 'absolute',
         bottom: 20,
         left: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 10,
         borderRadius: 50,
     },
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 80,
         right: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 10,
         borderRadius: 50,
     },
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         right: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 10,
         borderRadius: 50,
     },

@@ -8,13 +8,23 @@ import { BingoWebSocketProvider } from "./context/BingoGameWebsocket.js";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { ToastProvider } from "./context/ToastService.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
-import { checkInitialNotification, createDefaultChannel, requestUserPermission, setupBackgroundNotifications, setupForegroundNotifications } from "./utils/Firebase/notificationHandlers.js";
 import { theme } from "./utils/FontConfig.js";
 
+import {
+  createDefaultChannel,
+  requestUserPermission,
+  setupForegroundNotifications,
+  setupBackgroundNotifications,
+  checkInitialNotification,
+} from "./utils/Firebase/notificationHandlers.js";
+
+
 const App = () => {
+  // Tekrar eden hata loglarını kapat
   LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
 
   useEffect(() => {
+    // Android notification kanalı, izin isteği, listener’lar vs.
     createDefaultChannel();
     requestUserPermission();
     setupForegroundNotifications();
@@ -23,20 +33,19 @@ const App = () => {
   }, []);
 
   return (
-    <BingoWebSocketProvider> 
-     <ToastProvider>
-      <UserProvider>
-        <ThemeProvider>
-        <PaperProvider theme={theme}>
-          <ConnectivityListener>
-          <Navigation />
-          </ConnectivityListener>
-        </PaperProvider>
-        </ThemeProvider>
-       </UserProvider>
-     </ToastProvider>
-   </BingoWebSocketProvider>
-
+    <BingoWebSocketProvider>
+      <ToastProvider>
+        <UserProvider>
+          <ThemeProvider>
+            <PaperProvider theme={theme}>
+              <ConnectivityListener>
+                <Navigation />
+              </ConnectivityListener>
+            </PaperProvider>
+          </ThemeProvider>
+        </UserProvider>
+      </ToastProvider>
+    </BingoWebSocketProvider>
   );
 };
 

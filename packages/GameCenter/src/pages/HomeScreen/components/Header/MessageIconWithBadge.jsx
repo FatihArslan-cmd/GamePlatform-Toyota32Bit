@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     top: -2,
     backgroundColor: '#FF3B30', 
     borderRadius: 12,
-    minWidth: 20,
-    height: 20,
+    minWidth: TABLET_DEVICE ? 20 : 15,
+    height: TABLET_DEVICE ? 20 : 15,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 4,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: '#FFFFFF', 
-    fontSize: 12,
+    fontSize: TABLET_DEVICE ? 12 : 8,
     fontFamily: 'Orbitron-ExtraBold',
   },
 });

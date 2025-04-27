@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import lobbyService from '../services/lobbyService';
-import LobbyCard from './components/LobbyCard';
-import NoLobby from '../components/components/NoLobby';
-import { ToastService } from '../../../../../context/ToastService';
-import FadeIn from '../../../../../components/Animations/FadeInAnimation';
-import { useTheme } from '../../../../../context/ThemeContext'; 
+import FadeIn from "../../../../../components/Animations/FadeInAnimation";
+import LobbyCard from "./components/LobbyCard";
+import NoLobby from "../components/components/NoLobby";
+import React, { useCallback, useEffect, useState } from "react";
+import lobbyService from "../services/lobbyService";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { ToastService } from "../../../../../context/ToastService";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const ActiveLobbiesContent = ({ showNoLobby = true }) => {
   const [userLobby, setUserLobby] = useState(null);
@@ -61,7 +64,7 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: TABLET_DEVICE ? 10 : 0,
     justifyContent: 'center',
   },
 });

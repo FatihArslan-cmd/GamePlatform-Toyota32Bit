@@ -40,7 +40,7 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
           translateX: withTiming(
             currentPageIndex === 0
               ? 16 + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2
-              : 16 + BUTTON_WIDTH + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2,
+              : 28 + BUTTON_WIDTH + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2,
             { duration: 300 }
           )
         }

@@ -1,10 +1,13 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Card, Text, Surface } from 'react-native-paper';
-import FadeIn from '../../../components/Animations/FadeInAnimation';
-import { useFriendInvite } from '../context/FriendInviteContext';
-import { useTheme } from '../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import FadeIn from "../../../components/Animations/FadeInAnimation";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Card, Surface, Text } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useFriendInvite } from "../context/FriendInviteContext";
+
+const TABLET_DEVICE = isTablet();
 
 const LobbyInfo = () => {
     const { userLobby } = useFriendInvite();
@@ -47,7 +50,7 @@ const styles = StyleSheet.create({
     },
     cardContent: {
         alignItems: 'center',
-        padding: 16,
+        padding: TABLET_DEVICE ? 16 : 12,
     },
     title: {
         fontFamily: 'Orbitron-ExtraBold',
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
     },
     lobbyName: {
         fontFamily: 'Orbitron-ExtraBold',
-        fontSize: 20,
+        fontSize: TABLET_DEVICE ? 20 : 16,
         marginBottom: 12,
     },
     availableSpots: {

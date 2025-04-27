@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Share } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useTheme } from 'react-native-paper';
-import * as FriendService from '../../../services/service';
-import { ToastService } from '../../../../../context/ToastService';
-import { useFocusEffect } from '@react-navigation/native'; 
-import { useTranslation } from 'react-i18next'; 
+import * as FriendService from "../../../services/service";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Share } from "react-native";
+import { useTheme } from "react-native-paper";
+import { ToastService } from "../../../../../context/ToastService";
 
 const useFriendsPage = () => {
     const { colors } = useTheme();
@@ -95,7 +95,7 @@ const useFriendsPage = () => {
             setFriendModalVisible(false);
             setSelectedFriend(null);
             await fetchFriendsList();
-             ToastService.show("success", t('friendAddModal.friendRemovedSuccessfully')); 
+             ToastService.show("success", t('friendAddModal.friendRemovedSuccessfully!')); 
              setModalVisible(false);
 
         } catch (err) {
@@ -112,7 +112,7 @@ const useFriendsPage = () => {
             await FriendService.addFriend(code);
             await fetchFriendsList();
             handleModalDismiss();
-            ToastService.show("success", t('friendAddModal.friendAddedSuccessfully')); 
+            ToastService.show("success", t('friendAddModal.friendAddedSuccessfully!')); 
         } catch (err) {
             setError(err.message || 'Failed to add friend.');
         } finally {

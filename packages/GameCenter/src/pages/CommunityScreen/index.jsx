@@ -8,11 +8,13 @@ import RoomsScreen from "./pages/RoomsScreen/RoomsScreen";
 import useCommunityScreenAnimations from "./hooks/useCommunityScreenAnimations";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
+import { isTablet } from "../../utils/isTablet";
 
 import Animated, {
 } from 'react-native-reanimated';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
+const TABLET_DEVICE = isTablet();
 
 const CommunityScreen = () => {
   const pagerRef = useRef(null);
@@ -102,7 +104,7 @@ const createStyles = () => StyleSheet.create({
   },
   buttonsBar: {
     position: 'absolute',
-    top: 80,
+    top: TABLET_DEVICE ? 80 : 90,
     left: 0,
     right: 0,
     zIndex: 1,
@@ -110,7 +112,7 @@ const createStyles = () => StyleSheet.create({
   },
   pagerView: {
     flex: 1,
-    marginTop: 80,
+    marginTop: TABLET_DEVICE ? 80 : 90,
   },
 });
 

@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import LottieView from "lottie-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import Sound from "react-native-sound";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { LinearGradient } from "react-native-linear-gradient";
+import { hideNavigationBar } from "../../utils/NavBarManager";
+
 import {
   View,
   StyleSheet,
   Animated,
   Dimensions,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { hideNavigationBar } from '../../utils/NavBarManager';
-import { LinearGradient } from 'react-native-linear-gradient';
-import LottieView from 'lottie-react-native';
-import {useTranslation} from 'react-i18next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,7 +29,18 @@ const CountDownSplashScreen = ({ onComplete }) => {
 
   useEffect(() => {
     hideNavigationBar();
-
+  
+    const timeoutId = setTimeout(() => {
+      const sound = new Sound('countdown.mp3', Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+          return;
+        }
+        sound.play(() => {
+          sound.release(); 
+        });
+      });
+    }, 1500); 
+  
     Animated.sequence([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -38,16 +51,19 @@ const CountDownSplashScreen = ({ onComplete }) => {
         toValue: 1,
         duration: 500,
         useNativeDriver: true,
-      })
+      }),
     ]).start(() => {
       if (lottieRef.current) {
         lottieRef.current.play();
       }
       setStarted(true);
     });
-
-
+  
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
+  
 
   useEffect(() => {
     if (!started) return;
