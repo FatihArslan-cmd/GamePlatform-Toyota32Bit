@@ -1,16 +1,16 @@
-import React, { useState, useCallback} from 'react';
-import { StyleSheet } from 'react-native';
-import { Card } from 'react-native-paper';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { ToastService } from '../../../../context/ToastService';
-import CustomModal from '../../../../components/CustomModal';
-import JoinableLobbyCardHeaderActions from './components/JoinableLobbyCardHeaderActions';
-import JoinableLobbyCardContent from './components/JoinableLobbyCardContent';
-import lobbyService from '../../../HomeScreen/components/Header/services/lobbyService';
-import JoinLobbyModalContent from './components/JoinLobbyModalContent';
-import { useBingoWebSocket } from '../../../../context/BingoGameWebsocket';
-import { useTheme } from '../../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import Clipboard from "@react-native-clipboard/clipboard";
+import CustomModal from "../../../../components/CustomModal";
+import JoinLobbyModalContent from "./components/JoinLobbyModalContent";
+import JoinableLobbyCardContent from "./components/JoinableLobbyCardContent";
+import JoinableLobbyCardHeaderActions from "./components/JoinableLobbyCardHeaderActions";
+import React, { useCallback, useState } from "react";
+import lobbyService from "../../../HomeScreen/components/Header/services/lobbyService";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Card } from "react-native-paper";
+import { useBingoWebSocket } from "../../../../context/BingoGameWebsocket";
+import { useTheme } from "../../../../context/ThemeContext";
+import { ToastService } from "../../../../context/ToastService";
 
 const JoinableLobbyCard = ({ lobby}) => {
   const [joinModalVisible, setJoinModalVisible] = useState(false);
@@ -23,7 +23,7 @@ const JoinableLobbyCard = ({ lobby}) => {
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
       await Clipboard.setString(code);
-      ToastService.show('success', t('gameDetailsScreen.lobbyCodeCopied')); 
+      ToastService.show('success', t('homeScreen.lobbyCodeCopied')); 
     } catch (error) {
       console.error("Error copying to clipboard:", error);
       ToastService.show('error', t('gameDetailsScreen.failedToCopyLobbyCode'));

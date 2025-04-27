@@ -26,7 +26,7 @@ const SettingsScreen = () => {
   return (
     <GestureHandlerRootView>
       <StatusBar backgroundColor={colors.card} barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
-      <Surface style={[styles.container, { paddingTop: insets.top, backgroundColor: colors.background }]}>
+      <Surface style={[styles.container, {  backgroundColor: colors.background }]}>
         <Header />
 
         <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scrollView}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    gap: 16,
+    gap: TABLET_DEVICE ? 16 : 8,
     padding: TABLET_DEVICE ? 16 : 2,
   },
 });

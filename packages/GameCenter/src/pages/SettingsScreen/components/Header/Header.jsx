@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <Appbar.Header style={[styles.appbar, { backgroundColor: colors.card }]}> 
       <View style={styles.leftContainer}>
-        <BackButton top={-20} left={0} padding={0} />
+        <BackButton top={-15} left={0} padding={0} />
       </View>
 
       <View style={styles.centerContainer}>

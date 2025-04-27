@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
       },
       tabContainer: {
         flexDirection: 'row',
-        marginBottom: 20,
+        marginBottom: 10,
         justifyContent: 'space-between',
       },
       tabButton: {

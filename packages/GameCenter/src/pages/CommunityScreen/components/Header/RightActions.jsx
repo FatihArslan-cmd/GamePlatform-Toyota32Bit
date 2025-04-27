@@ -14,31 +14,32 @@ const RightActions = () => {
   const iconSize = TABLET_DEVICE ? 24 : 18;
 
   return (
-    <View style={{ flexDirection: 'row' }}>
-        <MessageIcon navigateTo="ChatWithFriendsScreen"/>
-        <Tooltip title="Create Community">
-      <IconButton
-        icon="plus"
-        size={iconSize}
-        style={{ opacity: 0.7 }}
-        iconColor={colors.text} 
-        onPress={() => {
-          navigation.navigate('CreateRoom');
-        }}
-      />
-        </Tooltip>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <MessageIcon navigateTo="ChatWithFriendsScreen" />
 
-        <Tooltip title="Search">
-      <IconButton
-        icon="magnify"
-        size={iconSize}
-        style={{ opacity: 0.7 }}
-        iconColor={colors.text} 
-        onPress={() => {
-          navigation.navigate('SearchScreen');
-        }}
-      />
-        </Tooltip>
+      <Tooltip title="Create Community">
+        <IconButton
+          icon="plus"
+          size={iconSize}
+          style={{ opacity: 0.7, marginHorizontal: -1 }}
+          iconColor={colors.text}
+          onPress={() => {
+            navigation.navigate('CreateRoom');
+          }}
+        />
+      </Tooltip>
+
+      <Tooltip title="Search">
+        <IconButton
+          icon="magnify"
+          size={iconSize}
+          style={{ opacity: 0.7, marginHorizontal: -1 }}
+          iconColor={colors.text}
+          onPress={() => {
+            navigation.navigate('SearchScreen');
+          }}
+        />
+      </Tooltip>
     </View>
   );
 };
