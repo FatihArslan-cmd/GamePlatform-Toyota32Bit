@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     width: TABLET_DEVICE ? 200 : 125,
     height: TABLET_DEVICE ? 300 : 175,
     resizeMode: 'cover',
+    borderRadius : 15
   },
   removeMediaButton: {
     position: 'absolute',

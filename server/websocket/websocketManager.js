@@ -7,8 +7,7 @@ function WebsocketManager(server) {
     const wss = new WebSocket.Server({ server });
 
     wss.on('connection', (ws, request) => {
-        const urlPath = request.url.split('?')[0]; // URL yolunu al (query parametrelerini atla)
-        console.log(`WebSocketManager: Yeni bağlantı yolu: ${urlPath}`);
+        const urlPath = request.url.split('?')[0]; 
 
         if (urlPath === '/friendchat') {
             FriendChatWebsocketHandler(ws, request);
@@ -19,7 +18,6 @@ function WebsocketManager(server) {
             BingoGameWebsocket(ws, request);
         }
         else {
-            console.log(`WebSocketManager: Geçersiz WebSocket yolu: ${urlPath}`);
             ws.send(JSON.stringify({ type: 'error', message: 'WebSocketManager: Geçersiz WebSocket yolu' }));
             ws.close();
         }
@@ -33,8 +31,6 @@ function WebsocketManager(server) {
         BingoGameWebsocket.broadcast(lobbyCode, message);
     };
 
-
-    console.log('WebSocketManager: Başlatıldı.');
 }
 
 module.exports = WebsocketManager;

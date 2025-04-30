@@ -202,7 +202,9 @@ export const styles = StyleSheet.create({
         marginBottom: 16,
         backgroundColor: '#4a148c',
         borderRadius: 20,
-      },
+        width: '90%',  // Set width to 90%
+        alignSelf: 'center',  // Center the button horizontally
+    },
       lobbyCard: {
         marginBottom: 12,
         elevation: 2,

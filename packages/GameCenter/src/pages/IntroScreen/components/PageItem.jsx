@@ -1,7 +1,6 @@
 import FastImage from "react-native-fast-image";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
-import { BlurView } from "@react-native-community/blur";
 import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import { Divider, Text, TouchableRipple } from "react-native-paper";
 import { isTablet } from "../../../utils/isTablet";
@@ -16,11 +15,9 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         style={styles.backgroundImage}
         resizeMode={FastImage.resizeMode.cover}
       />
-      <BlurView
-        style={styles.blur}
-        blurType="light"
-        blurAmount={TABLET_DEVICE ? 200 : 150}
-        reducedTransparencyFallbackColor="black"
+      {/* Replaced BlurView with a simple View for a dark overlay */}
+      <View
+        style={styles.backgroundOverlay}
       />
     </View>
 
@@ -57,7 +54,7 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
             <Text style={styles.startButtonText}>START YOUR JOURNEY</Text>
             <Icon
               name="chevron-double-right"
-              size={TABLET_DEVICE ? 20 : 18} 
+              size={TABLET_DEVICE ? 20 : 18}
               color="#fff"
               style={styles.buttonIcon}
             />
@@ -79,20 +76,21 @@ const styles = StyleSheet.create({
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
   },
-  blur: {
+  // New style for the overlay, replacing the blur style
+  backgroundOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Keeps the dark, semi-transparent overlay
   },
   page: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: TABLET_DEVICE ? 20 : 15, 
+    padding: TABLET_DEVICE ? 20 : 15,
     zIndex: 1,
   },
   image: {
-    width: TABLET_DEVICE ? 250 : 180, 
-    height: TABLET_DEVICE ? 250 : 180, 
+    width: TABLET_DEVICE ? 250 : 180,
+    height: TABLET_DEVICE ? 250 : 180,
     borderRadius: 20,
     marginBottom: TABLET_DEVICE ? 20 : 15,
     borderWidth: 2,
@@ -118,8 +116,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: TABLET_DEVICE ? 28 : 22, 
-    marginTop: TABLET_DEVICE ? 20 : 15, 
+    fontSize: TABLET_DEVICE ? 28 : 22,
+    marginTop: TABLET_DEVICE ? 20 : 15,
     color: '#fff',
     letterSpacing: 2,
     textTransform: 'uppercase',
@@ -132,15 +130,15 @@ const styles = StyleSheet.create({
     fontSize: TABLET_DEVICE ? 16 : 14,
     textAlign: 'center',
     color: '#fff',
-    marginTop: TABLET_DEVICE ? 10 : 8, 
-    marginHorizontal: TABLET_DEVICE ? 20 : 15, 
+    marginTop: TABLET_DEVICE ? 10 : 8,
+    marginHorizontal: TABLET_DEVICE ? 20 : 15,
     lineHeight: TABLET_DEVICE ? 24 : 20,
     fontFamily: 'Orbitron-ExtraBold',
   },
   startButton: {
     marginTop: TABLET_DEVICE ? 30 : 25,
-    paddingVertical: TABLET_DEVICE ? 15 : 12, 
-    paddingHorizontal: TABLET_DEVICE ? 30 : 25, 
+    paddingVertical: TABLET_DEVICE ? 15 : 12,
+    paddingHorizontal: TABLET_DEVICE ? 30 : 25,
     backgroundColor: '#8a2be2',
     borderRadius: 30,
     elevation: 5,

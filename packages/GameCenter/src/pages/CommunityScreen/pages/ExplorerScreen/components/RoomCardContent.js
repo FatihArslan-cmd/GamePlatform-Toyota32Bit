@@ -4,6 +4,9 @@ import formatDate from "../../../../../utils/FormatDate";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const RoomCardContent = ({ room }) => {
   const { colors } = useTheme(); 
@@ -38,16 +41,16 @@ const RoomCardContent = ({ room }) => {
   );
 };
 
-const createStyles = (colors) => StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 140,
+    height: TABLET_DEVICE ? 140 : 100,
     borderRadius: 20,
   },
   image: {
-    width: 140,
+    width: TABLET_DEVICE ? 140 : 100,
     height: '100%',
-    borderRadius:85,
+    borderRadius:50,
   },
   content: {
     flex: 1,
@@ -61,13 +64,13 @@ const createStyles = (colors) => StyleSheet.create({
     marginBottom: 4,
   },
   title: {
-    fontSize: 18,
+    fontSize: TABLET_DEVICE ? 18 : 14,
     fontFamily: 'Orbitron-ExtraBold',
     flex: 1,
   },
   topic: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 14 : 12,
     marginBottom: 8,
     height: 35,
     overflow: 'hidden',
@@ -79,7 +82,7 @@ const createStyles = (colors) => StyleSheet.create({
   },
   date: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 12,
+    fontSize: TABLET_DEVICE ? 12 : 10,
   },
   supporterContainer: {
     paddingHorizontal: 8,
@@ -88,7 +91,7 @@ const createStyles = (colors) => StyleSheet.create({
   },
   supporters: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 12,
+    fontSize: TABLET_DEVICE ? 12 : 10,
   },
 });
 

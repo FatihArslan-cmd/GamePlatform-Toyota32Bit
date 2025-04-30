@@ -28,7 +28,7 @@ export const WebSocketProvider = ({ children }) => {
 
         updateState({ connectionStatus: 'connecting' });
         
-        const ws = new WebSocket('ws://192.168.1.105:3000/friendchat');
+        const ws = new WebSocket('ws://192.168.0.101:3000/friendchat');
         socket.current = ws;
         const accessToken = getToken();
 

@@ -1,7 +1,6 @@
 import ActionButtons from "./ActionButtons";
 import React, { useEffect, useState } from "react";
 import ScannerOverlay from "./ScannerOverlay";
-import useSound from "../../hooks/useSound";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { Camera, useCameraDevice, useCodeScanner } from "react-native-vision-camera";
@@ -19,9 +18,6 @@ const CameraView = () => {
 
   const { onBarcodeSuccess, onBarcodeScanned } = route.params;
 
-  const playScanSound = useSound('number_draw.wav'); 
-
-
   useEffect(() => {
     const fetchQrCode = async () => {
         if(storage.contains('qrCode')) {
@@ -38,8 +34,6 @@ const CameraView = () => {
     onCodeScanned: (codes) => {
       if (codes.length > 0 && isScanning) {
         setIsScanning(false);
-
-        playScanSound(); 
 
         const { value } = codes[0];
 
@@ -94,7 +88,7 @@ const CameraView = () => {
         frameProcessorFps={2}
         torch={flashMode ? 'on' : 'off'}
         zoom={zoomLevel}
-        codeScanner={isScanning ? codeScanner : undefined} 
+        codeScanner={isScanning ? codeScanner : undefined}
       />
       <ScannerOverlay />
 

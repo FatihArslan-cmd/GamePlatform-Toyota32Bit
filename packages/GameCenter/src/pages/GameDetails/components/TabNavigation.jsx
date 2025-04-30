@@ -17,7 +17,7 @@ export default function TabNavigation({ explanation }) {
   const shouldRenderTabs = !!explanation;
   const startButtonStyle = explanation ? styles.tabButton : { ...styles.tabButton, flex: 0, width: '50%', marginHorizontal: '25%' };
 
-  const FontSize = TABLET_DEVICE ? 15 : 8;
+  const FontSize = TABLET_DEVICE ? 15 : 7.5;
 
   return (
     <View style={[styles.tabContainer, { backgroundColor: colors.background }]}>

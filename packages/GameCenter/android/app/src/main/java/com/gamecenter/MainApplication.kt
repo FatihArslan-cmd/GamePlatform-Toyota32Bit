@@ -13,20 +13,16 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.gamecenter.NFCReaderPackage 
 import com.gamecenter.NavigationBarPackage
-import com.gamecenter.DominantColorPackage; // Paket adınızı buraya girin
 
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> {
-          // Varsayılan paketleri al
           val packages = PackageList(this).packages
           packages.add(NFCReaderPackage())
           packages.add(FingerprintPackage())
           packages.add(NavigationBarPackage())
-          packages.add(DominantColorPackage())
-
           return packages
         }
 

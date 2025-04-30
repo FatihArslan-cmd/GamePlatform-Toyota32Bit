@@ -2,7 +2,6 @@ import FastImage from "react-native-fast-image";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import LinearGradient from "react-native-linear-gradient";
 import React, { memo } from "react";
-import { BlurView } from "@react-native-community/blur";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Card, Surface } from "react-native-paper";
@@ -58,14 +57,8 @@ const GameItem = memo(({ item }) => {
               cache: FastImage.cacheControl.immutable,
             }}
             style={styles.backgroundImage}
-
           />
-          <BlurView
-            style={styles.absoluteFill}
-            blurType="light"
-            blurAmount={50}
-            reducedTransparencyFallbackColor="white"
-          />
+          <View style={styles.whiteOverlay} />
         </View>
 
         <Card style={styles.card}>
@@ -74,10 +67,8 @@ const GameItem = memo(({ item }) => {
               uri: item.image_background,
               priority: FastImage.priority.high,
               cache: FastImage.cacheControl.immutable,
-
             }}
             style={styles.cardCover}
-
           />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.8)']}
@@ -120,12 +111,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  absoluteFill: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  whiteOverlay: {
+    ...StyleSheet.absoluteFillObject, 
+    backgroundColor: 'white',
+    opacity: 0.5, 
   },
   card: {
     width: TABLET_DEVICE ? 150 : 125,

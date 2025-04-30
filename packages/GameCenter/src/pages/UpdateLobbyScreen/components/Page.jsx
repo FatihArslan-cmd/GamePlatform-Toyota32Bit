@@ -7,7 +7,7 @@ import React, { useContext } from "react";
 import TextInputWithIcon from "./TextInputWithIcon";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Surface, Text } from "react-native-paper";
+import { ActivityIndicator, Surface, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "../../../context/ThemeContext";
 import { isTablet } from "../../../utils/isTablet";
@@ -29,8 +29,16 @@ const Page = () => {
   } = useLobbyUpdate();
 
   const { colors } = useTheme();
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
+
+  if (loading) {
+    return (
+      <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator animating={true} color={colors.primary} size="large" />
+      </SafeAreaView>
+    );
+  }
 
   if (error) {
     return (
@@ -53,22 +61,22 @@ const Page = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Surface style={[styles.card, { backgroundColor: colors.card }]} elevation={4}>
           <View style={styles.headerContainer}>
-            <Text style={[styles.title, { color: colors.text }]}>{t('updateLobbyScreen.headerTitle')}</Text> 
+            <Text style={[styles.title, { color: colors.text }]}>{t('updateLobbyScreen.headerTitle')}</Text>
           </View>
 
           <TextInputWithIcon
             label={t('updateLobbyScreen.lobbyNameLabel')}
             value={lobbyName}
             onChangeText={setLobbyName}
-            placeholder={t('updateLobbyScreen.lobbyNamePlaceholder')} 
+            placeholder={t('updateLobbyScreen.lobbyNamePlaceholder')}
             iconName="tag"
           />
 
           <TextInputWithIcon
-            label={t('updateLobbyScreen.maxCapacityLabel')} 
+            label={t('updateLobbyScreen.maxCapacityLabel')}
             value={maxCapacity}
             onChangeText={setMaxCapacity}
-            placeholder={t('updateLobbyScreen.maxCapacityPlaceholder')} 
+            placeholder={t('updateLobbyScreen.maxCapacityPlaceholder')}
             keyboardType="number-pad"
             iconName="account-group"
           />
@@ -78,12 +86,12 @@ const Page = () => {
           {lobbyType === 'Event' && (
             <>
               <DatePickerInput
-                label={t('updateLobbyScreen.startDateLabel')} 
+                label={t('updateLobbyScreen.startDateLabel')}
                 dateType="startDate"
               />
 
               <DatePickerInput
-                label={t('updateLobbyScreen.endDateLabel')} 
+                label={t('updateLobbyScreen.endDateLabel')}
                 dateType="endDate"
               />
             </>
@@ -124,7 +132,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Orbitron-ExtraBold',
     marginLeft: 10,
   },
-
 });
 
 export default Page;

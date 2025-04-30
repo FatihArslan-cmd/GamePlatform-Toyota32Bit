@@ -1,25 +1,27 @@
-import React from 'react';
-import { View, ScrollView, ImageBackground, StatusBar } from 'react-native';
-import { useLobbyInvite } from '../context/LobbyInviteContext';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import EmptyState from '../../../components/EmptyState';
-import InviteCard from '../components/InviteCard';
-import { pageStyles } from '../styles/InvitationsPageStyles';
-import BackButton from '../../../components/BackIcon';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import BackButton from "../../../components/BackIcon";
+import EmptyState from "../../../components/EmptyState";
+import Header from "../components/Header/Header";
+import InviteCard from "../components/InviteCard";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ImageBackground, ScrollView, StatusBar, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
+import { useLobbyInvite } from "../context/LobbyInviteContext";
+import { pageStyles } from "../styles/InvitationsPageStyles";
 
 const Page = () => {
   const { invitations, loading } = useLobbyInvite();
   const { colors, resolvedTheme } = useTheme();
   const styles = pageStyles(colors);
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
   return (
     <>
       <StatusBar translucent backgroundColor="transparent" barStyle={resolvedTheme === 'dark' ? 'light-content' : 'dark-content'} />
       <View style={styles.safeArea}>
-        <BackButton />
+        <Header />
+
         <ImageBackground
           source={require('../../../locales/bgImages/darkblurredimage.jpg')}
           style={styles.backgroundImage}

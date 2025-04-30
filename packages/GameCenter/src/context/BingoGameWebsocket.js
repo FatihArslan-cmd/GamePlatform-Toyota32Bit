@@ -24,7 +24,7 @@ export const BingoWebSocketProvider = ({ children }) => {
         }
         tokenRef.current = token;
 
-        const wsURL = `ws://192.168.1.105:3000/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
+        const wsURL = `ws://192.168.0.101:3000/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
         
         setConnectionError(null);
         setIsConnected(false);

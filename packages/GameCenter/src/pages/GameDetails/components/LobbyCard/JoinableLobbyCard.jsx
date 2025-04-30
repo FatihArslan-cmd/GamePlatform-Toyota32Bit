@@ -12,7 +12,7 @@ import { useBingoWebSocket } from "../../../../context/BingoGameWebsocket";
 import { useTheme } from "../../../../context/ThemeContext";
 import { ToastService } from "../../../../context/ToastService";
 
-const JoinableLobbyCard = ({ lobby}) => {
+const JoinableLobbyCard = ({ lobby, onLobbyJoined }) => {
   const [joinModalVisible, setJoinModalVisible] = useState(false);
   const [currentLobby] = useState(lobby);
   const [password, setPassword] = useState('');
@@ -23,7 +23,7 @@ const JoinableLobbyCard = ({ lobby}) => {
   const copyLobbyCodeToClipboard = useCallback(async (code) => {
     try {
       await Clipboard.setString(code);
-      ToastService.show('success', t('homeScreen.lobbyCodeCopied')); 
+      ToastService.show('success', t('homeScreen.lobbyCodeCopied'));
     } catch (error) {
       console.error("Error copying to clipboard:", error);
       ToastService.show('error', t('gameDetailsScreen.failedToCopyLobbyCode'));
@@ -39,10 +39,18 @@ const JoinableLobbyCard = ({ lobby}) => {
         await lobbyService.joinLobby(currentLobby.code);
       }
       connectWebSocket(currentLobby.code);
+
+      if (onLobbyJoined && typeof onLobbyJoined === 'function') {
+         onLobbyJoined();
+      }
+
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
           ToastService.show('error', error.response.data.message);
+      } else {
+          ToastService.show('error', t('gameDetailsScreen.failedToJoinLobby'));
       }
+       console.error("Error joining lobby:", error);
     }
   };
 

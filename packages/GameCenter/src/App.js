@@ -18,19 +18,20 @@ import {
   checkInitialNotification,
 } from "./utils/Firebase/notificationHandlers.js";
 
-
+if (__DEV__) {
+  LogBox.ignoreAllLogs();
+}
 const App = () => {
-  // Tekrar eden hata loglarını kapat
-  LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
 
+/*
   useEffect(() => {
-    // Android notification kanalı, izin isteği, listener’lar vs.
     createDefaultChannel();
     requestUserPermission();
     setupForegroundNotifications();
     setupBackgroundNotifications();
     checkInitialNotification();
   }, []);
+*/
 
   return (
     <BingoWebSocketProvider>
@@ -38,10 +39,8 @@ const App = () => {
         <UserProvider>
           <ThemeProvider>
             <PaperProvider theme={theme}>
-              <ConnectivityListener>
-                <Navigation />
-              </ConnectivityListener>
-            </PaperProvider>
+,                <Navigation />
+,            </PaperProvider>
           </ThemeProvider>
         </UserProvider>
       </ToastProvider>

@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { Modal, Portal, Text } from 'react-native-paper';
-import { StyleSheet, Dimensions, TouchableWithoutFeedback, View } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Dimensions, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { PanResponder } from "react-native";
+import { Modal, Portal, Text } from "react-native-paper";
+import { useTheme } from "../../src/context/ThemeContext";
+
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -10,8 +12,6 @@ import Animated, {
   runOnJS,
   interpolate,
 } from 'react-native-reanimated';
-import { PanResponder } from 'react-native';
-import { useTheme } from '../../src/context/ThemeContext'; // Import useTheme
 
 const BottomSheet = React.memo(({
   visible,
@@ -19,11 +19,11 @@ const BottomSheet = React.memo(({
   title,
   children,
   height = '50%',
-  backgroundColorProp, 
+  backgroundColorProp,
 }) => {
   const { height: screenHeight } = Dimensions.get('window');
-  const { colors, resolvedTheme } = useTheme(); // Use the useTheme hook
-  const backgroundColor = backgroundColorProp || colors.background; // Default to theme card color if backgroundColorProp is not provided
+  const { colors, resolvedTheme } = useTheme();
+  const backgroundColor = backgroundColorProp || colors.background;
 
   const defaultHeight = useMemo(() => (
     typeof height === 'string'
@@ -99,6 +99,7 @@ const BottomSheet = React.memo(({
 
     return {
       opacity: opacity.value * backdropOpacity,
+      backgroundColor: 'rgba(0,0,0,0.5)' // Add a semi-transparent background color
     };
   });
 
@@ -111,21 +112,13 @@ const BottomSheet = React.memo(({
 
   const handleDismiss = useCallback(() => onDismiss(), [onDismiss]);
 
-  const blurType = resolvedTheme === 'dark' ? 'dark' : 'light'; // Determine blurType based on theme
-  const handleColor = resolvedTheme === 'dark' ? colors.border : '#ccc'; // Theme handle color
+  const handleColor = resolvedTheme === 'dark' ? colors.border : '#ccc';
 
   return (
     <Portal>
       <Modal visible={visible} onDismiss={handleDismiss} contentContainerStyle={styles.container}>
         <TouchableWithoutFeedback onPress={handleDismiss}>
-          <Animated.View style={[StyleSheet.absoluteFill, backdropAnimatedStyle]}>
-            <BlurView
-              style={[StyleSheet.absoluteFill, styles.blurView]}
-              blurType={blurType} // Themed blurType
-              blurAmount={5}
-              reducedTransparencyFallbackColor={colors.background} // Themed fallback color
-            />
-          </Animated.View>
+          <Animated.View style={[StyleSheet.absoluteFill, backdropAnimatedStyle]} />
         </TouchableWithoutFeedback>
 
         <Animated.View
@@ -133,13 +126,13 @@ const BottomSheet = React.memo(({
           style={[
             styles.modalContent,
             modalAnimatedStyle,
-            { height: defaultHeight, backgroundColor }, // Themed background color
+            { height: defaultHeight, backgroundColor },
           ]}
         >
-          <View style={[styles.handle, { backgroundColor: handleColor }]} /> {/* Themed handle color */}
+          <View style={[styles.handle, { backgroundColor: handleColor }]} />
 
-          <View style={[styles.header, { borderBottomColor: colors.border }]}> {/* Themed border color for header */}
-            <Text style={[styles.title, { color: colors.text }]}>{title}</Text> {/* Themed text color for title */}
+          <View style={[styles.header, { borderBottomColor: colors.border }]}>
+            <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
           </View>
 
           <View style={styles.content}>
@@ -156,11 +149,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     zIndex:5
-  },
-  blurView: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
   },
   modalContent: {
     marginHorizontal: 15,

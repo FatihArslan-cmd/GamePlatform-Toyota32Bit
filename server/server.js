@@ -20,8 +20,8 @@ app.use(cors({
 }));
 app.use('/api', routes);
 
-setInterval(lobbyManager.cleanupEventLobbies, 60 * 1000);
-setInterval(lobbyManager.cleanupInactiveLobbies, 60 * 1000);
+setInterval(lobbyManager.cleanupEventLobbies, 60 * 100);
+setInterval(lobbyManager.cleanupInactiveLobbies, 60 * 100);
 
 
 const websocketManagerInstance = new WebsocketManager(server); 

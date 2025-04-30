@@ -18,10 +18,13 @@ export const PermissionsProvider = ({ children }) => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const { loginUser } = useContext(UserContext);
 
+  const dismissModalAndReset = () => {
+    setVisible(false);
+    setActivePermission(null);
+  };
 
   const handlePostLoginActions = async () => {
     try {
-        setAppIsLoading(true);
         await fetchAndStoreGames();
         const minimumDelay = 2500;
         const startTime = Date.now();
@@ -29,17 +32,103 @@ export const PermissionsProvider = ({ children }) => {
         if (elapsedTime < minimumDelay) {
             await new Promise((resolve) => setTimeout(resolve, minimumDelay - elapsedTime));
         }
+        dismissModalAndReset();
         navigation.navigate('Tabs');
     } catch (error) {
         console.error('Error during post-login actions:', error);
+        dismissModalAndReset();
+    } finally {
+        // setAppIsLoading is handled in handleLoading's finally
+    }
+  };
+
+  const handleLoading = async () => {
+    setAppIsLoading(true);
+
+    try {
+      const refreshToken = getRefreshToken();
+      console.log('Refresh token:', refreshToken ? 'Found' : 'Not Found');
+
+      if (!refreshToken) {
+        console.warn('No refresh token found. Cannot auto-login.');
+        dismissModalAndReset();
+        return;
+      }
+
+      console.log('Attempting token refresh...');
+      const data = await refreshAccessToken(refreshToken);
+
+      if (data && data.accessToken) {
+        console.log('Token refresh successful. Logging user in.');
+        dismissModalAndReset();
+        loginUser(data);
+        await handlePostLoginActions();
+      } else {
+          console.warn('Token refresh did not return valid data.');
+          dismissModalAndReset();
+      }
+    } catch (error) {
+      console.error('Error during token refresh or handleLoading:', error);
+      dismissModalAndReset();
     } finally {
         setAppIsLoading(false);
     }
   };
 
-  const dismissModalAndReset = () => {
-    setVisible(false);
-    setActivePermission(null);
+  const handleFingerprintAuth = async () => {
+    try {
+      console.log('Fingerprint authentication started');
+      const isAuthenticated = await authenticateWithFingerprint();
+      console.log('Fingerprint authentication finished, isAuthenticated:', isAuthenticated);
+      if (isAuthenticated) {
+        console.log('Biometric authentication successful. Proceeding to loading...');
+        await handleLoading();
+      } else {
+         console.log('Biometric authentication failed, cancelled, or not available.');
+         dismissModalAndReset();
+      }
+    } catch (error) {
+      console.error('Error during fingerprint authentication:', error);
+      dismissModalAndReset();
+    }
+  };
+
+  const handleNfc = async () => {
+    try {
+      console.log('NFC operation started');
+      const isNfcValid = await HandleNFCRead();
+      console.log('NFC operation finished, isNfcValid:', isNfcValid);
+      if (isNfcValid) {
+        console.log('NFC successful (ID matched). Proceeding to loading...');
+        await handleLoading();
+      } else {
+         console.log('NFC failed or invalid ID.');
+         dismissModalAndReset();
+      }
+    } catch (error) {
+      console.error('Error during NFC operation:', error);
+      dismissModalAndReset();
+    }
+  };
+
+  const handleBarcode = async () => {
+    try {
+        dismissModalAndReset();
+
+        const hasQr = storage.contains('qrCode');
+        const navigateTo = hasQr ? 'BarcodeScan' : 'QRCode';
+
+        navigation.navigate(navigateTo, {
+            onBarcodeSuccess: async () => {
+                console.log('Barcode successful. Proceeding to loading...');
+                await handleLoading();
+            },
+        });
+
+    } catch (error) {
+        console.error('Error during Barcode operation:', error);
+        dismissModalAndReset();
+    }
   };
 
 
@@ -58,97 +147,15 @@ export const PermissionsProvider = ({ children }) => {
                 handleBarcode();
                 break;
             default:
-                setActivePermission(null);
+                dismissModalAndReset();
                 break;
         }
     } catch (error) {
       console.error(`Error handling permission ${permissionType}:`, error);
-      setActivePermission(null);
-    }
-  };
-
-  const handleFingerprintAuth = async () => {
-    try {
-      console.log('Fingerprint authentication started');
-      const isAuthenticated = await authenticateWithFingerprint();
-      console.log('Fingerprint authentication finished, isAuthenticated:', isAuthenticated);
-      if (isAuthenticated) {
-        await handleLoading();
-      } else {
-         setActivePermission(null);
-      }
-    } catch (error) {
-      console.error('Error during fingerprint authentication:', error);
-      setActivePermission(null);
-    }
-  };
-
-
-  const handleNfc = async () => {
-    try {
-      console.log('NFC operation started');
-      const isNfcValid = await HandleNFCRead();
-      console.log('NFC operation finished, isNfcValid:', isNfcValid);
-      if (isNfcValid) {
-        await handleLoading();
-      } else {
-         setActivePermission(null);
-      }
-    } catch (error) {
-      console.error('Error during NFC operation:', error);
-      setActivePermission(null);
-    }
-  };
-
-  const handleBarcode = async () => {
-    try {
-        const hasQr = storage.contains('qrCode');
-        setVisible(false);
-
-        const navigateTo = hasQr ? 'BarcodeScan' : 'QRCode';
-
-        navigation.navigate(navigateTo, {
-            onBarcodeSuccess: async () => {
-                setActivePermission(null);
-                await handleLoading();
-            },
-        });
-
-    } catch (error) {
-        console.error('Error during Barcode operation:', error);
-        setActivePermission(null);
-    }
-  };
-
-  const handleLoading = async () => {
-    try {
-      setAppIsLoading(true);
-      const refreshToken = getRefreshToken();
-      console.log('Refresh token:', refreshToken ? 'Found' : 'Not Found');
-
-      if (!refreshToken) {
-        console.warn('No refresh token found. Cannot auto-login.');
-        dismissModalAndReset();
-        return;
-      }
-
-      console.log('Attempting token refresh...');
-      const data = await refreshAccessToken(refreshToken);
-
-      if (data && data.accessToken) {
-        console.log('Token refresh successful.');
-        loginUser(data);
-        dismissModalAndReset();
-        await handlePostLoginActions();
-      } else {
-          console.warn('Token refresh did not return valid data.');
-           dismissModalAndReset();
-      }
-    } catch (error) {
-      console.error('Error during token refresh or handleLoading:', error);
       dismissModalAndReset();
     }
   };
+
 
   const value = {
     activePermission,

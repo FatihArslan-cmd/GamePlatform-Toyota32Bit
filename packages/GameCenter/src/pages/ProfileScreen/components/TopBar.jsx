@@ -73,7 +73,7 @@ const TopBar = () => {
               <GrandientText
                         text={t('profileScreen.profile')}
                         colors={colors.gameCenterText}
-                        textStyle={{ fontSize: TABLET_DEVICE ? 24 : 20 }}
+                        textStyle={{ fontSize: TABLET_DEVICE ? 28 : 20 }}
                         gradientDirection="horizontal"
                       />
             <View style={{ flexDirection: "row", alignSelf: "flex-end",marginBottom: 10 }}>
