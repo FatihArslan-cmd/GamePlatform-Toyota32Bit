@@ -1,32 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { Card, Button } from 'react-native-paper';
-import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
-import { BlurView } from '@react-native-community/blur';
+import FastImage from "react-native-fast-image";
+import LinearGradient from "react-native-linear-gradient";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, Card } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
 
-const GameCard = ({ gameName, instructions,explanation, imageSource, buttonText, onButtonPress, buttonColors, backgroundColors }) => {
+const TABLET_DEVICE = isTablet();
+
+const GameCard = ({ gameName, instructions, explanation, imageSource, buttonText, onButtonPress, buttonColors, backgroundColors }) => {
   const navigation = useNavigation();
 
   const defaultButtonColors = ['#4A00E0', '#FF8C00'];
-  const colorsToUse = buttonColors || defaultButtonColors; 
+  const colorsToUse = buttonColors || defaultButtonColors;
 
   return (
     <Card style={styles.card}>
       <FastImage style={styles.imageBackground} source={imageSource}>
-        <View style={styles.overlay} />
+        {/* Top part overlay removed */}
       </FastImage>
-      
+
       <View style={styles.cardContentContainer}>
-        <FastImage style={styles.blurredImageBackground} source={imageSource} />
-        <BlurView
-          style={StyleSheet.absoluteFill}
-          blurType="dark"
-          blurAmount={20}
-          reducedTransparencyFallbackColor="white"
-        />
-        
+        <FastImage style={styles.contentBackgroundImage} source={imageSource} />
+        {/* Arka plana daha çok kaplı gri opaklık katmanı eklendi */}
+        <View style={styles.greyOverlay} />
+
         <View style={styles.cardContent}>
           <Text style={styles.description}>{instructions}</Text>
           <LinearGradient colors={colorsToUse} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.gradientButton, { opacity: 0.75 }]}>
@@ -67,26 +65,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 220,
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-  },
   cardContentContainer: {
     position: 'relative',
     overflow: 'hidden',
   },
-  blurredImageBackground: {
+  contentBackgroundImage: {
     ...StyleSheet.absoluteFillObject,
     width: '100%',
+  },
+  greyOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(50, 50, 50, 0.9)', 
   },
   cardContent: {
     padding: 16,
     width: '100%',
-    zIndex: 1,
+    position: 'relative',
+    zIndex: 1, 
   },
   description: {
-    fontSize: 16,
-    color: '#FFFFFF', 
+    fontSize: TABLET_DEVICE ? 16 : 12,
+    color: '#FFFFFF',
     marginBottom: 16,
     textAlign: 'center',
     fontFamily: 'Orbitron-VariableFont_wght',
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
   },
   transparentButton: {},
   buttonText: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     color: '#FFFFFF',
   },

@@ -1,11 +1,10 @@
-const { sessionStore } = require('../config/sessionConfig'); // Import sessionStore
+const { sessionStore } = require('../config/sessionConfig');
 
 let globalMessages = [];
 
 const createMessage = (req, messageData) => {
     const userId = req.user.id;
     return new Promise((resolve, reject) => {
-        // Oturumda saklamaya devam edelim (isteğe bağlı, sadece kullanıcının kendi mesajları için oturumda kalabilir)
         sessionStore.get(userId, (err, session) => {
             if (err) {
                 console.error('Session error in createMessage:', err);
@@ -19,7 +18,6 @@ const createMessage = (req, messageData) => {
                     console.error('Session set error in createMessage:', err);
                     return reject(err);
                 }
-                // Global diziye ekle
                 globalMessages.push(messageData);
                 resolve(messageData);
             });
@@ -28,9 +26,8 @@ const createMessage = (req, messageData) => {
 };
 
 const getMessages = (req) => {
-    // Artık global diziyi döndürüyor
     return new Promise((resolve, reject) => {
-        resolve(globalMessages); // Tüm mesajları döndür
+        resolve(globalMessages); 
     });
 };
 
@@ -53,7 +50,6 @@ const deleteMessage = (req, messageId) => {
                         console.error('Session set error in deleteMessage:', err);
                         return reject(err);
                     }
-                    // Global diziden de sil
                     globalMessages = globalMessages.filter(msg => msg.id !== messageId);
                     resolve(true);
                 });

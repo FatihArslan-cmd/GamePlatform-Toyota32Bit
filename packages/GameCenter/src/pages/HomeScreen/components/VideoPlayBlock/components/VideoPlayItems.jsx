@@ -1,16 +1,19 @@
-import React, { memo } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { Text,TouchableRipple } from 'react-native-paper';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import FastImage from "react-native-fast-image";
+import React, { memo } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Text, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const { width } = Dimensions.get('window');
 const CARD_SPACING = 10;
 const CARD_WIDTH = (width - CARD_SPACING * 3) / 2.1;
 
 const VideoPlayItems = memo(({ title, imageUri, index, resizeMode = 'cover', onPress }) => {
-    const { colors } = useTheme(); // Use theme context
-    const styles = createStyles(colors); // Create styles with theme colors
+    const { colors } = useTheme(); 
+    const styles = createStyles(colors); 
 
     return (
         <TouchableRipple
@@ -38,18 +41,12 @@ const VideoPlayItems = memo(({ title, imageUri, index, resizeMode = 'cover', onP
 
 
 const createStyles = (colors) => StyleSheet.create({
-    headerText: {
-        fontSize: 24,
-        marginBottom: 16,
-        color: '#333',
-        textAlign: 'center',
-    },
     pressable: {
         marginBottom: CARD_SPACING,
     },
     cardContainer: {
         width: CARD_WIDTH,
-        height: 200,
+        height: TABLET_DEVICE ? 200 : 150,
         borderRadius: 30,
         backgroundColor: colors.card, // Use theme card color
         elevation: 5,
@@ -74,7 +71,7 @@ const createStyles = (colors) => StyleSheet.create({
     },
     titleText: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 14 : 11,
         fontFamily: 'Orbitron-VariableFont_wght',
         textAlign: 'center',
     },

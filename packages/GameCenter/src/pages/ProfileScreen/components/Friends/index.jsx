@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { View, FlatList } from 'react-native';
-import { Button, TouchableRipple,Text,Tooltip } from 'react-native-paper';
-import InputField from '../../../LoginScreen/components/FormSection/components/InputField';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useFriendsPage from './hooks/useFriendsPage';
-import styles from '../../styles/FriendPageStyles';
-import FriendAddModal from './components/FriendModals/FriendAddModal';
-import FriendItem from './components/FrientItem';
-import InviteModal from './components/FriendModals/InviteModal';
-import FriendDetailsModal from './components/FriendModals/FriendDetailsModal';
-import EmptyState from '../../../../components/EmptyState';
-import { ToastService } from '../../../../context/ToastService';
-import { useButtons } from '../context/ButtonsContext';
-import {useTheme} from '../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import EmptyState from "../../../../components/EmptyState";
+import FriendAddModal from "./components/FriendModals/FriendAddModal";
+import FriendDetailsModal from "./components/FriendModals/FriendDetailsModal";
+import FriendItem from "./components/FrientItem";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import InputField from "../../../LoginScreen/components/FormSection/components/InputField";
+import InviteModal from "./components/FriendModals/InviteModal";
+import React, { useEffect, useState } from "react";
+import styles from "../../styles/FriendPageStyles";
+import useFriendsPage from "./hooks/useFriendsPage";
+import { useTranslation } from "react-i18next";
+import { FlatList, View } from "react-native";
+import { Button, Text, Tooltip, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { ToastService } from "../../../../context/ToastService";
+import { isTablet } from "../../../../utils/isTablet";
+import { useButtons } from "../context/ButtonsContext";
+
+const TABLET_DEVICE = isTablet();
 
 const FriendsPage = () => {
     const {
@@ -77,14 +80,14 @@ const FriendsPage = () => {
             />
             <View style={styles.searchContainer}>
                 <InputField
-                    label={t('profileScreen.searchFriends')} // Translated "Arkadaş Ara"
+                    label={t('profileScreen.searchFriends')} 
                     leftIcon="magnify"
                     style={styles.input}
                     onChangeText={handleSearchChange}
                     rightIcon={() => (
                         <Tooltip title='Add friends' > 
                         <TouchableRipple onPress={handleOpenAddModal}>
-                            <Icon name="plus" size={28} color={colors.primary} />
+                            <Icon name="plus" size={TABLET_DEVICE ? 28 : 20} color={colors.primary} />
                         </TouchableRipple>
                         </Tooltip>
                     )}
@@ -102,7 +105,7 @@ const FriendsPage = () => {
                 style={[styles.inviteButton, { backgroundColor: `${colors.primary}` }]}
                 buttonColor={colors.primary}
                 labelStyle={[styles.inviteButtonText, { color: 'white', opacity: 0.80, fontFamily:'Orbitron-ExtraBold' }]}
-                icon={() => <Icon name="link-variant" color='white' size={24} />}
+                icon={() => <Icon name="link-variant" color='white' size={TABLET_DEVICE ? 24 : 20} />}
                 iconPosition="trailing"
                 onPress={handleInvitePress}
                 loading={loading}

@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useFormContext } from '../../../context/FormContext'; 
-import FadeIn from '../../../../../components/Animations/FadeInAnimation';
-import { useTranslation } from 'react-i18next';
+import FadeIn from "../../../../../components/Animations/FadeInAnimation";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useFormContext } from "../../../context/FormContext";
+
+const TABLET_DEVICE = isTablet();
 
 const ForgotPasswordSection = () => {
     const { 
@@ -54,11 +57,11 @@ const styles = StyleSheet.create({
     loginButton: {
         marginVertical: 10,
         backgroundColor: '#8a2be2',
-        paddingVertical: 8,
+        paddingVertical: TABLET_DEVICE ? 8 : 4,
         borderRadius: 30,
     },
     buttonLabel: {
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 12,
         color: '#fff',
         fontFamily: 'Orbitron-ExtraBold',
     },
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
     },
     signupButtonLabel: {
         color: '#8a2be2',
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 12,
         fontFamily: 'Orbitron-ExtraBold',
         letterSpacing: 1,
     },

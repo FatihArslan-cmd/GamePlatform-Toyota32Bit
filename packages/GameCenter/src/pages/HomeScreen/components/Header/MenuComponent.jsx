@@ -1,11 +1,14 @@
-import React from 'react';
-import { StyleSheet, Linking } from 'react-native';
-import { Menu, Divider, Appbar, Tooltip } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { ToastService } from '../../../../context/ToastService';
-import { useTheme } from '../../../../context/ThemeContext';
-import { useHeader } from './context/HeaderContext';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { Linking, StyleSheet } from "react-native";
+import { Appbar, Divider, Menu, Tooltip } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { ToastService } from "../../../../context/ToastService";
+import { isTablet } from "../../../../utils/isTablet";
+import { useHeader } from "./context/HeaderContext";
+
+const TABLET_DEVICE = isTablet();
 
 const MenuComponent = () => {
   const navigation = useNavigation();
@@ -33,12 +36,13 @@ const MenuComponent = () => {
       mode="elevated"
       anchor={
         <Tooltip title={t('homeScreen.options')}>
-          <Appbar.Action icon="dots-vertical" onPress={openMenu} color={colors.text} />
+          <Appbar.Action icon="dots-vertical" size={TABLET_DEVICE ? 24 : 18} onPress={openMenu} color={colors.text} />
         </Tooltip>
       }
       contentStyle={[styles.menu, { backgroundColor: colors.card }]}
     >
       <Menu.Item
+        style={styles.menuItemContainer}
         onPress={() => {
           closeMenu();
           navigation.navigate('Settings');
@@ -46,14 +50,16 @@ const MenuComponent = () => {
         title={t('homeScreen.settings')}
         titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
-      <Divider />
+      <Divider style={styles.divider} /> 
       <Menu.Item
+        style={styles.menuItemContainer}
         onPress={handleHelpAndDisplay}
         title={t('homeScreen.helpAndDisplay')}
         titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
-      <Divider />
+      <Divider style={styles.divider} />
       <Menu.Item
+        style={styles.menuItemContainer}
         onPress={() => {
           closeMenu();
           openLobbyModal();
@@ -61,8 +67,9 @@ const MenuComponent = () => {
         title={t('homeScreen.createLobby')}
         titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
-      <Divider />
+      <Divider style={styles.divider} />
       <Menu.Item
+        style={styles.menuItemContainer}
         onPress={() => {
           closeMenu();
           openBottomSheet();
@@ -70,8 +77,9 @@ const MenuComponent = () => {
         title={t('homeScreen.activeLobbies')}
         titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
-      <Divider />
+      <Divider style={styles.divider} />
       <Menu.Item
+        style={styles.menuItemContainer}
         onPress={() => {
           closeMenu();
           openJoinLobbyModal();
@@ -85,11 +93,20 @@ const MenuComponent = () => {
 
 const styles = StyleSheet.create({
   menu: {
-    marginTop: 70,
+    marginTop: 50,
+  },
+  menuItemContainer: {
+    minHeight: 38,
+    paddingVertical: 4, 
+    justifyContent: 'center', 
   },
   menuItemText: {
     color: 'black',
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 13 : 12, 
+  },
+  divider: {
+    marginVertical: 2, 
   },
 });
 

@@ -1,6 +1,9 @@
-import React, { memo } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import React, { memo } from "react";
+import { Animated, StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const useStyles = (colors) => StyleSheet.create({
   paginationContainer: {
@@ -8,7 +11,7 @@ const useStyles = (colors) => StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
-    height: 24,
+    height: TABLET_DEVICE ? 24 : 16,
   },
   dot: {
     borderRadius: 4,
@@ -24,7 +27,7 @@ const useStyles = (colors) => StyleSheet.create({
   },
 });
 
-const PaginationDots = memo(({ activeIndex, count, dotSize = 8 }) => {
+const PaginationDots = memo(({ activeIndex, count, dotSize = TABLET_DEVICE ? 8 : 5}) => {
   const { colors } = useTheme(); // Use the useTheme hook
   const themedStyles = useStyles(colors); // Get themed styles
 

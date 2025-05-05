@@ -1,12 +1,11 @@
-import React, { createContext, useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { getRefreshToken, refreshAccessToken } from '../../../shared/states/api';
-import { authenticateWithFingerprint } from '../components/RememberMeModal/ProfileSection/Biometrics/FingerPrint';
-import { HandleNFCRead } from '../components/RememberMeModal/ProfileSection/Biometrics/NfcReadScreen';
-import { useNavigation } from '@react-navigation/native';
-import { storage } from '../../../utils/storage';
-import { fetchAndStoreGames } from '../../../utils/api.js'; // Import fetchAndStoreGames here
-import { UserContext } from '../../../context/UserContext';
+import React, { createContext, useContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { UserContext } from "../../../context/UserContext";
+import { getRefreshToken, refreshAccessToken } from "../../../shared/states/api";
+import { fetchAndStoreGames } from "../../../utils/api.js";
+import { storage } from "../../../utils/storage";
+import { authenticateWithFingerprint } from "../components/RememberMeModal/ProfileSection/Biometrics/FingerPrint";
+import { HandleNFCRead } from "../components/RememberMeModal/ProfileSection/Biometrics/NfcReadScreen";
 
 const PermissionsContext = createContext();
 
@@ -19,124 +18,144 @@ export const PermissionsProvider = ({ children }) => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const { loginUser } = useContext(UserContext);
 
+  const dismissModalAndReset = () => {
+    setVisible(false);
+    setActivePermission(null);
+  };
 
   const handlePostLoginActions = async () => {
     try {
-        setAppIsLoading(true);
         await fetchAndStoreGames();
         const minimumDelay = 2500;
-        const elapsedTime = Date.now() - Date.now();
+        const startTime = Date.now();
+        const elapsedTime = Date.now() - startTime;
         if (elapsedTime < minimumDelay) {
             await new Promise((resolve) => setTimeout(resolve, minimumDelay - elapsedTime));
         }
+        dismissModalAndReset();
         navigation.navigate('Tabs');
     } catch (error) {
         console.error('Error during post-login actions:', error);
-        setAppIsLoading(false);
+        dismissModalAndReset();
+    } finally {
+        // setAppIsLoading is handled in handleLoading's finally
     }
-};
+  };
 
-  const handlePermissionAction = async (permissionType) => {
+  const handleLoading = async () => {
+    setAppIsLoading(true);
+
     try {
-      switch (permissionType) {
-        case 'biometric':
-          await handleFingerprintAuth();
-          break;
-        case 'nfc':
-          await handleNfc();
-          break;
-        case 'barcode':
-          handleBarcode();
-          break;
-        default:
-          break;
+      const refreshToken = getRefreshToken();
+      console.log('Refresh token:', refreshToken ? 'Found' : 'Not Found');
+
+      if (!refreshToken) {
+        console.warn('No refresh token found. Cannot auto-login.');
+        dismissModalAndReset();
+        return;
+      }
+
+      console.log('Attempting token refresh...');
+      const data = await refreshAccessToken(refreshToken);
+
+      if (data && data.accessToken) {
+        console.log('Token refresh successful. Logging user in.');
+        dismissModalAndReset();
+        loginUser(data);
+        await handlePostLoginActions();
+      } else {
+          console.warn('Token refresh did not return valid data.');
+          dismissModalAndReset();
       }
     } catch (error) {
-      console.error(`Error handling permission ${permissionType}:`, error);
+      console.error('Error during token refresh or handleLoading:', error);
+      dismissModalAndReset();
+    } finally {
+        setAppIsLoading(false);
     }
   };
 
   const handleFingerprintAuth = async () => {
     try {
-      setActivePermission('finger');
       console.log('Fingerprint authentication started');
       const isAuthenticated = await authenticateWithFingerprint();
-      console.log('Fingerprint authentication finished');
-      console.log('isAuthenticated:', isAuthenticated);
-      setActivePermission(null);
+      console.log('Fingerprint authentication finished, isAuthenticated:', isAuthenticated);
       if (isAuthenticated) {
+        console.log('Biometric authentication successful. Proceeding to loading...');
         await handleLoading();
+      } else {
+         console.log('Biometric authentication failed, cancelled, or not available.');
+         dismissModalAndReset();
       }
     } catch (error) {
       console.error('Error during fingerprint authentication:', error);
+      dismissModalAndReset();
     }
   };
-
 
   const handleNfc = async () => {
     try {
-      setActivePermission('nfc');
       console.log('NFC operation started');
       const isNfcValid = await HandleNFCRead();
-        console.log('NFC operation finished');
-      setActivePermission(null);
+      console.log('NFC operation finished, isNfcValid:', isNfcValid);
       if (isNfcValid) {
+        console.log('NFC successful (ID matched). Proceeding to loading...');
         await handleLoading();
+      } else {
+         console.log('NFC failed or invalid ID.');
+         dismissModalAndReset();
       }
     } catch (error) {
       console.error('Error during NFC operation:', error);
+      dismissModalAndReset();
     }
   };
+
   const handleBarcode = async () => {
     try {
-        setActivePermission('barcode');
+        dismissModalAndReset();
 
         const hasQr = storage.contains('qrCode');
-        setVisible(false); 
-        if (hasQr) {
-            navigation.navigate('BarcodeScan', {
-                onBarcodeSuccess: async () => {
-                    setActivePermission(null);
-                    await handleLoading();
-                }
-            });
-        } else {
-            navigation.navigate('QRCode',{
-               onBarcodeSuccess: async () => {
-                    setActivePermission(null);
-                    await handleLoading();
-                }
-            });
-        }
+        const navigateTo = hasQr ? 'BarcodeScan' : 'QRCode';
+
+        navigation.navigate(navigateTo, {
+            onBarcodeSuccess: async () => {
+                console.log('Barcode successful. Proceeding to loading...');
+                await handleLoading();
+            },
+        });
+
     } catch (error) {
         console.error('Error during Barcode operation:', error);
-        setActivePermission(null);
+        dismissModalAndReset();
     }
   };
-  const handleLoading = async () => {
-    try {
-      setAppIsLoading(true);
-      const refreshToken = getRefreshToken();
-      console.log('Refresh token:', refreshToken);
-      if (!refreshToken) {
-        setAppIsLoading(false);
-        return;
-      }
-      console.log('test');
 
-      const data = await refreshAccessToken(refreshToken); 
-      if (data) {
-        loginUser(data); 
-        setVisible(false);
-        await handlePostLoginActions();
-      }
-      console.log('Access token:', data?.accessToken); // Log accessToken from data (optional)
+
+  const handlePermissionAction = async (permissionType) => {
+    try {
+        setActivePermission(permissionType);
+
+        switch (permissionType) {
+            case 'biometric':
+                await handleFingerprintAuth();
+                break;
+            case 'nfc':
+                await handleNfc();
+                break;
+            case 'barcode':
+                handleBarcode();
+                break;
+            default:
+                dismissModalAndReset();
+                break;
+        }
     } catch (error) {
-      console.error('Error during token refresh:', error);
-    } finally {
-      setAppIsLoading(false);
+      console.error(`Error handling permission ${permissionType}:`, error);
+      dismissModalAndReset();
     }
   };
+
 
   const value = {
     activePermission,
@@ -145,16 +164,12 @@ export const PermissionsProvider = ({ children }) => {
     setHasPermissions,
     visible,
     setVisible,
-    onDismiss: () => setVisible(false),
+    onDismiss: dismissModalAndReset,
     permissions,
     setPermissions,
     setAppIsLoading,
     appIsLoading,
     handlePermissionAction,
-    handleFingerprintAuth,
-    handleNfc,
-    handleBarcode,
-    handleLoading,
   };
 
   return (
@@ -165,5 +180,9 @@ export const PermissionsProvider = ({ children }) => {
 };
 
 export const usePermissionsContext = () => {
-  return useContext(PermissionsContext);
+  const context = useContext(PermissionsContext);
+  if (!context) {
+    throw new Error('usePermissionsContext must be used within a PermissionsProvider');
+  }
+  return context;
 };

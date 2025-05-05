@@ -1,11 +1,14 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Card, IconButton } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { addAchievement } from '../services/service';
-import { ToastService } from '../../../../../context/ToastService';
-import { useAchievements } from '../context/AchievementsContext';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { Card, IconButton, Text } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { ToastService } from "../../../../../context/ToastService";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useAchievements } from "../context/AchievementsContext";
+import { addAchievement } from "../services/service";
+
+const TABLET_DEVICE = isTablet(); 
 
 const AchievementCardBase = ({ item: propItem, isOwned }) => {
     const { colors } = useTheme();
@@ -54,10 +57,10 @@ const AchievementCardBase = ({ item: propItem, isOwned }) => {
                     />
                 </View>
                 <View style={styles.textContainer}>
-                    <Text variant="titleMedium" style={[styles.title, { color: colors.text }]}>{item.title}</Text>
-                    <Text variant="bodyMedium" style={[styles.description, { color: colors.subText }]}>{item.description}</Text>
+                    <Text style={[styles.title, { color: colors.text }]}>{item.title}</Text>
+                    <Text  style={[styles.description, { color: colors.subText }]}>{item.description}</Text>
                     <View style={styles.detailsContainer}>
-                        <Text variant="labelMedium" style={[styles.rarity, getRarityStyle()]}>
+                        <Text style={[styles.rarity, getRarityStyle()]}>
                             {item.rarity}
                         </Text>
                         <View style={styles.xpContainer}>
@@ -67,7 +70,7 @@ const AchievementCardBase = ({ item: propItem, isOwned }) => {
                                 iconColor={colors.primary}
                                 style={styles.xpIcon}
                             />
-                            <Text variant="labelMedium" style={[styles.xp, { color: colors.subText }]}>
+                            <Text style={[styles.xp, { color: colors.subText }]}>
                                 {item.xp} XP
                             </Text>
                         </View>
@@ -75,7 +78,7 @@ const AchievementCardBase = ({ item: propItem, isOwned }) => {
                 </View>
                 {!isOwned && (
                     <IconButton
-                        icon={() => <Icon name="plus" size={24} color={colors.primary} />}
+                        icon={() => <Icon name="plus" size={TABLET_DEVICE ? 24 : 18} color={colors.primary} />}
                         onPress={handleAddAchievement}
                         style={styles.addButton}
                     />
@@ -93,7 +96,6 @@ const styles = StyleSheet.create({
     cardContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 12,
         justifyContent: 'space-between'
     },
     iconContainer: {
@@ -103,8 +105,8 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     userIconWrapper: {
-        width: 48,
-        height: 48,
+        width: TABLET_DEVICE ? 48 : 36,
+        height: TABLET_DEVICE ? 48 : 36,
         borderRadius: 24,
         alignItems: 'center',
         justifyContent: 'center',
@@ -115,10 +117,12 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontFamily: 'SQR721B',
+        fontSize: TABLET_DEVICE ? 18 : 12,
     },
     description: {
         marginTop: 2,
         fontFamily: 'SQR721B',
+        fontSize: TABLET_DEVICE ? 16 : 11,
     },
     detailsContainer: {
         flexDirection: 'row',
@@ -128,6 +132,8 @@ const styles = StyleSheet.create({
     rarity: {
         marginRight: 8,
         fontFamily: 'SQR721B',
+        fontSize: TABLET_DEVICE ? 16 : 11,
+
     },
     xpContainer: {
         flexDirection: 'row',
@@ -140,6 +146,7 @@ const styles = StyleSheet.create({
     xp: {
         marginLeft: -4,
         fontFamily: 'SQR721B',
+        fontSize: TABLET_DEVICE ? 16 : 11,
     },
     addButton: {
         margin: 0,

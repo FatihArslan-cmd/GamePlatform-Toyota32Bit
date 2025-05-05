@@ -1,10 +1,13 @@
-import React, { useState, useRef, useCallback,useEffect } from 'react';
-import { StyleSheet, View, Animated,StatusBar } from 'react-native';
-import PagerView from 'react-native-pager-view';
-import PageItem from './PageItem';
-import pages from './pages';
-import { useNavigation } from '@react-navigation/native';
-import { setNavigationBar } from '../../../utils/NavBarManager';
+import PageItem from "./PageItem";
+import PagerView from "react-native-pager-view";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import pages from "./pages";
+import { useNavigation } from "@react-navigation/native";
+import { Animated, Dimensions, StatusBar, StyleSheet, View } from "react-native";
+import { setNavigationBar } from "../../../utils/NavBarManager";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const AdvancedPagerView = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -46,13 +49,14 @@ const AdvancedPagerView = () => {
 
   const renderPage = useCallback(
     (page, index) => (
-      <PageItem
-        key={index}
-        page={page}
-        scaleAnim={animValues[index].scaleAnim}
-        translateAnim={animValues[index].translateAnim}
-        navigation={navigation}
-      />
+      <View key={index} style={styles.pageWrapper}>
+          <PageItem
+            page={page}
+            scaleAnim={animValues[index].scaleAnim}
+            translateAnim={animValues[index].translateAnim}
+            navigation={navigation}
+          />
+      </View>
     ),
     [navigation, animValues]
   );
@@ -84,21 +88,32 @@ const AdvancedPagerView = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#1a1b2e' },
-  pagerView: { flex: 1, width: '100%' },
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1b2e'
+  },
+  pagerView: {
+    flex: 1,
+    width: '100%'
+  },
+   pageWrapper: {
+    width: Dimensions.get('window').width,
+    height: '100%', 
+   },
   indicatorContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 40,
+    bottom: TABLET_DEVICE ? 40 : 30, 
     width: '100%',
+    paddingBottom: TABLET_DEVICE ? 0 : 10, 
   },
   indicator: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: TABLET_DEVICE ? 10 : 8, 
+    height: TABLET_DEVICE ? 10 : 8,
+    borderRadius: TABLET_DEVICE ? 5 : 4, 
     backgroundColor: '#ffffff30',
-    marginHorizontal: 5,
+    marginHorizontal: TABLET_DEVICE ? 5 : 4, 
   },
   activeIndicator: {
     backgroundColor: '#8a2be2',

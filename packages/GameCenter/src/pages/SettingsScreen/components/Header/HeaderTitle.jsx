@@ -1,7 +1,11 @@
-import React from 'react';
-import GrandientText from '../../../../components/GrandientText';
-import { useTheme } from '../../../../context/ThemeContext';  
-import { useTranslation } from 'react-i18next';
+import GrandientText from "../../../../components/GrandientText";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
+
 const HeaderTitle = () => {
   const { colors } = useTheme(); 
   const { t } = useTranslation();
@@ -9,7 +13,7 @@ const HeaderTitle = () => {
     <GrandientText
       text={t('settingsScreen.headerTitle')}
       colors={colors.gameCenterText} 
-      textStyle={{ fontSize: 28, color: colors.text }} 
+      textStyle={{ fontSize: TABLET_DEVICE ? 28 : 20, color: colors.text }} 
       gradientDirection="horizontal"
     />
   );

@@ -2,9 +2,10 @@ const lobbyManager = require('../memory/LobbyStore/lobbyManager'); // Adjust pat
 const lobbyInvitationManager = require('../memory/LobbyStore/lobbyInvitationManager'); // Adjust path if necessary
 const lobbyGameManager = require('../memory/LobbyStore/lobbyGameManager'); // Adjust path if necessary
 const { getUserDetails } = require('../utils/getUserDetails'); // Import getUserDetails function using destructuring
+
 const createLobbyHandler = (req, res) => {
     const userId = req.user.id;
-    const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword } = req.body; // hasPassword eklendi
+    const { lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword } = req.body; // hasPassword added
 
     if (!lobbyName) {
         return res.status(400).json({ message: 'Lobby name is required' });
@@ -26,7 +27,7 @@ const createLobbyHandler = (req, res) => {
         return res.status(400).json({ message: 'Max capacity must be a positive number' });
     }
 
-    lobbyManager.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword, (err, lobby) => { // hasPassword parametresi eklendi
+    lobbyManager.createLobby(userId, lobbyName, lobbyType, maxCapacity, gameName, password, startDate, endDate, hasPassword, (err, lobby) => { // hasPassword parameter added
         if (err) {
             return res.status(400).json({ message: err.message });
         }
@@ -51,7 +52,7 @@ const joinLobbyHandler = (req, res) => {
         // Broadcast user joined message - CORRECTED to use 'user-connected'
         if (websocketManager) {
             const userDetails = getUserDetails(userId); // Get user details to get username
-            const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
+            const username = userDetails ? userDetails.username : 'Unknown User'; // Translated
             websocketManager.broadcastBingoGameMessage(code, { type: 'user-connected', userId: userId, username: username }); // Broadcast join event - using 'user-connected' now
         } else {
             console.error("websocketManager is not defined in app.js, WebSocket broadcast will not work.");
@@ -73,7 +74,7 @@ const leaveLobbyHandler = (req, res) => {
         // Broadcast user left message - Let's use 'user-disconnected' to be consistent with WebSocket close event
         if (websocketManager && lobby) { // Check if lobby exists before broadcasting
             const userDetails = getUserDetails(userId); // Get user details to get username
-            const username = userDetails ? userDetails.username : 'Bilinmeyen Kullanıcı';
+            const username = userDetails ? userDetails.username : 'Unknown User'; // Translated
             websocketManager.broadcastBingoGameMessage(lobby.code, { type: 'user-disconnected', userId: userId, username: username }); // Broadcast leave event - using 'user-disconnected'
         } else {
             console.error("websocketManager is not defined in app.js or lobby is null, WebSocket broadcast will not work.");
@@ -100,14 +101,14 @@ const leaveLobbyHandler = (req, res) => {
 const deleteLobbyHandler = (req, res) => {
     const userId = req.user.id;
 
-    lobbyManager.deleteLobby(userId, (err, success) => { // success parametresi eklendi
+    lobbyManager.deleteLobby(userId, (err, success) => { // success parameter added
         if (err) {
             return res.status(400).json({ message: err.message });
         }
         if (success) {
             res.status(200).json({ message: 'Lobby deleted successfully' });
         } else {
-            res.status(500).json({ message: 'Lobby deletion failed' }); // veya başka bir hata mesajı
+            res.status(500).json({ message: 'Lobby deletion failed' }); // or another error message
         }
 
     });
@@ -242,12 +243,13 @@ const startGameHandler = (req, res) => {
             return res.status(400).json({ message: err.message });
         }
 
+        // Improved message for clarity
         if (!lobby) {
-            return res.status(404).json({ message: 'It is an obligation to have a lobby to start' });
+             return res.status(404).json({ message: 'User is not in a lobby or lobby not found' }); // Translated and improved
         }
 
         if (lobby.ownerId !== userId) {
-            return res.status(403).json({ message: 'Only the lobby owner can start the game' });
+            return res.status(403).json({ message: 'Only the lobby owner can start the game' }); // Translated
         }
 
         if (lobby.gameStarted) {
@@ -284,21 +286,21 @@ const drawNumberHandler = (req, res) => {
         if (websocketManager) {
             websocketManager.broadcastBingoGameMessage(lobbyCode, { type: 'number-drawn', number: drawnNumber, drawnNumbers: lobby.drawnNumbers });
         } else {
-            console.error("websocketManager tanımlı değil, WebSocket yayın çalışmayacak.");
+            console.error("websocketManager is not defined, WebSocket broadcast will not work."); // Translated
         }
 
-        res.status(200).json({ message: 'Sayı çekildi', drawnNumber: drawnNumber, drawnNumbers: lobby.drawnNumbers, lobby });
+        res.status(200).json({ message: 'Number drawn', drawnNumber: drawnNumber, drawnNumbers: lobby.drawnNumbers, lobby }); // Translated
     });
 };
 
 const markNumberHandler = (req, res) => {
     const userId = req.user.id;
     const lobbyCode = req.params.lobbyCode;
-    const { number } = req.body; // İşaretlenecek sayıyı body'den alıyoruz
+    const { number } = req.body; // Getting the number to be marked from the body // Translated
     const websocketManager = req.app.get('WebsocketManager');
 
     if (typeof number !== 'number') {
-        return res.status(400).json({ message: 'Geçersiz sayı formatı' });
+        return res.status(400).json({ message: 'Invalid number format' }); // Translated
     }
 
     lobbyGameManager.markNumberOnCard(lobbyCode, userId, number, (err, lobby, isBingo, markedNumber, cellPosition) => {
@@ -312,52 +314,52 @@ const markNumberHandler = (req, res) => {
                 userId: userId,
                 number: markedNumber,
                 cellPosition: cellPosition,
-                markedNumbers: lobby.markedNumbers, // Tüm oyuncuların işaretlediği numaraları yayınla
+                markedNumbers: lobby.markedNumbers, // Broadcast the numbers marked by all players // Translated
             });
             if (isBingo) {
-                websocketManager.broadcastBingoGameMessage(lobbyCode, { type: 'bingo', userId: userId }); // Bingo mesajını yayınla
+                websocketManager.broadcastBingoGameMessage(lobbyCode, { type: 'bingo', userId: userId }); // Broadcast the Bingo message // Translated
             }
         } else {
-            console.error("websocketManager tanımlı değil, WebSocket yayın çalışmayacak.");
+            console.error("websocketManager is not defined, WebSocket broadcast will not work."); // Translated
         }
 
-        res.status(200).json({ message: 'Sayı işaretlendi', isBingo: isBingo, markedNumber: markedNumber, cellPosition: cellPosition });
+        res.status(200).json({ message: 'Number marked', isBingo: isBingo, markedNumber: markedNumber, cellPosition: cellPosition }); // Translated
     });
 };
 
 const getGameHistoryHandler = async (req, res) => {
     try {
-        const userId = req.user.id; // Kullanıcı kimliğini doğrulanmış istekten al
+        const userId = req.user.id; // Get user ID from the authenticated request // Translated
         lobbyGameManager.getGameHistoryForUser(userId, (err, gameHistory) => {
             if (err) {
                 console.error('Failed to get game history:', err);
-                return res.status(500).json({ message: 'Oyun geçmişi alınamadı', error: err.message });
+                return res.status(500).json({ message: 'Could not retrieve game history', error: err.message }); // Translated
             }
             res.status(200).json(gameHistory);
         });
     } catch (error) {
         console.error('Error in getGameHistoryHandler:', error);
-        res.status(500).json({ message: 'Sunucu hatası', error: error.message });
+        res.status(500).json({ message: 'Server error', error: error.message }); // Translated
     }
 };
 const endGameHandler = (req, res) => {
     const userId = req.user.id;
     const websocketManager = req.app.get('WebsocketManager');
 
-    lobbyManager.getUserLobby(userId, (err, lobby) => { // Kullanıcının lobisini al
+    lobbyManager.getUserLobby(userId, (err, lobby) => { // Get the user's lobby // Translated
         if (err) {
             return res.status(400).json({ message: err.message });
         }
 
         if (!lobby) {
-            return res.status(404).json({ message: 'Kullanıcı bir lobide bulunmuyor' }); // Kullanıcı lobide değilse hata döndür
+            return res.status(404).json({ message: 'User is not in a lobby' }); // Translated // Return error if user is not in a lobby // Translated
         }
 
         if (lobby.ownerId !== userId) {
-            return res.status(403).json({ message: 'Sadece oda sahibi oyunu bitirebilir' });
+            return res.status(403).json({ message: 'Only the lobby owner can end the game' }); // Translated
         }
 
-        lobbyGameManager.endGame(lobby.code, userId, (err, updatedLobby) => { // lobby.code kullanılıyor
+        lobbyGameManager.endGame(lobby.code, userId, (err, updatedLobby) => { // Using lobby.code
             if (err) {
                 return res.status(400).json({ message: err.message });
             }
@@ -365,10 +367,10 @@ const endGameHandler = (req, res) => {
             if (websocketManager) {
                 websocketManager.broadcastBingoGameMessage(lobby.code, { type: 'game-ended' });
             } else {
-                console.error("websocketManager tanımlı değil, WebSocket yayın çalışmayacak.");
+                console.error("websocketManager is not defined, WebSocket broadcast will not work."); // Translated
             }
 
-            res.status(200).json({ message: 'Oyun başarıyla bitirildi', lobby: updatedLobby });
+            res.status(200).json({ message: 'Game ended successfully', lobby: updatedLobby }); // Translated
         });
     });
 };

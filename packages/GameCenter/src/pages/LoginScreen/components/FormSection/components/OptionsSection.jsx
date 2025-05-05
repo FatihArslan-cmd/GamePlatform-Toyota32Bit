@@ -1,9 +1,12 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, TouchableRipple, Surface, Checkbox } from 'react-native-paper';
-import { useFormContext } from '../../../context/FormContext'; 
-import { useTheme } from '../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Checkbox, Surface, Text, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useFormContext } from "../../../context/FormContext";
+
+const TABLET_DEVICE = isTablet();
 
 const OptionsSection = () => {
     const { rememberMe, setRememberMe, setIsForgotPassword } = useFormContext();
@@ -40,8 +43,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
-        padding: 10,
+        marginBottom: TABLET_DEVICE ? 20 : 8,
         backgroundColor: 'transparent',
     },
     checkboxContainer: {
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     },
     checkboxLabel: {
         color: '#fff',
-        fontSize: 14,
+        fontSize : TABLET_DEVICE ? 14 : 12,
         fontFamily: 'RussoOne-Regular',
         marginLeft: 8,
     },
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     },
     forgotPasswordText: {
         color: '#8a2be2',
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 14 : 12,
         textDecorationLine: 'underline',
         fontFamily: 'Orbitron-VariableFont_wght',
     },

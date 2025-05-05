@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import MaskedView from '@react-native-masked-view/masked-view';
-import LinearGradient from 'react-native-linear-gradient';
-import { Text } from 'react-native-paper';
+import LinearGradient from "react-native-linear-gradient";
+import MaskedView from "@react-native-masked-view/masked-view";
+import React, { memo } from "react";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
+import { isTablet } from "../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const GradientText = ({
     text = 'Colorful Text',
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        fontSize: 28,
+        fontSize: TABLET_DEVICE ? 28 : 20,
     },
    
 });

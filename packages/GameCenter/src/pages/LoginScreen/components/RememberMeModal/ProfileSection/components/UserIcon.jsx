@@ -1,41 +1,49 @@
-import React, { useRef, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Animated,TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { usePermissionsContext } from '../../../../context/PermissionContext'; 
+import Icon from "react-native-vector-icons/MaterialIcons";
+import React, { useCallback, useEffect, useRef } from "react";
+import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
+import { isTablet } from "../../../../../../utils/isTablet";
+import { usePermissionsContext } from "../../../../context/PermissionContext";
 
-const UserIcon = () => { 
+const TABLET_DEVICE = isTablet();
+
+const ICON_SIZE = TABLET_DEVICE ? 100 : 70;
+const BORDER_RADIUS = ICON_SIZE / 2;
+const SHINE_WIDTH = ICON_SIZE * 0.6;
+const SHINE_TRANSLATE_RANGE = ICON_SIZE * 1.5;
+
+const UserIcon = () => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const shineAnim = useRef(new Animated.Value(0)).current;
   const { setVisible: setModalVisible } = usePermissionsContext();
 
   const pulseAnimation = useCallback(() => {
-    Animated.sequence([
-      Animated.timing(scaleAnim, {
-        toValue: 1.1,
-        duration: 1500,
-        useNativeDriver: true,
-      }),
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 1500,
-        useNativeDriver: true,
-      }),
-    ]).start(() => pulseAnimation());
+     Animated.sequence([
+       Animated.timing(scaleAnim, {
+         toValue: 1.1,
+         duration: 1500,
+         useNativeDriver: true,
+       }),
+       Animated.timing(scaleAnim, {
+         toValue: 1,
+         duration: 1500,
+         useNativeDriver: true,
+       }),
+     ]).start(() => pulseAnimation());
   }, [scaleAnim]);
 
   const shineAnimation = useCallback(() => {
-    Animated.sequence([
-      Animated.timing(shineAnim, {
-        toValue: 1,
-        duration: 2000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(shineAnim, {
-        toValue: 0,
-        duration: 2000,
-        useNativeDriver: true,
-      }),
-    ]).start(() => shineAnimation());
+     Animated.sequence([
+       Animated.timing(shineAnim, {
+         toValue: 1,
+         duration: 2000,
+         useNativeDriver: true,
+       }),
+       Animated.timing(shineAnim, {
+         toValue: 0,
+         duration: 2000,
+         useNativeDriver: true,
+       }),
+     ]).start(() => shineAnimation());
   }, [shineAnim]);
 
   useEffect(() => {
@@ -50,13 +58,13 @@ const UserIcon = () => {
 
   const shineTranslate = shineAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [-150, 150],
+    outputRange: [-SHINE_TRANSLATE_RANGE, SHINE_TRANSLATE_RANGE],
   });
 
   return (
     <TouchableOpacity onPress={() => setModalVisible(true)}>
       <View style={styles.profileContainer}>
-        <View style={styles.iconContainer}>
+        <View style={[styles.iconContainerBase, { borderRadius: BORDER_RADIUS, width: ICON_SIZE, height: ICON_SIZE }]}>
 
           <Animated.View
             style={[
@@ -66,14 +74,18 @@ const UserIcon = () => {
               },
             ]}
           >
-             <Icon name="account-circle" size={100} color="#8a2be2" />
+             <Icon name="account-circle" size={ICON_SIZE} color="#8a2be2" />
           </Animated.View>
 
           <Animated.View
             style={[
-              styles.shine,
+              styles.shineBase,
               {
-                transform: [{ translateX: shineTranslate }],
+                width: SHINE_WIDTH,
+                transform: [
+                  { translateX: shineTranslate },
+                  { skewX: '-20deg' }
+                ],
               },
             ]}
           />
@@ -87,24 +99,23 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: 'column',
     alignItems: 'center',
+    marginVertical: 10,
   },
-  iconContainer: {
+  iconContainerBase: {
     position: 'relative',
     overflow: 'hidden',
-    borderRadius: 50,
   },
   userIconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
+    ...StyleSheet.absoluteFillObject,
   },
-  shine: {
+  shineBase: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    width: 60,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    transform: [{ skewX: '-20deg' }],
   },
 });
 

@@ -1,9 +1,9 @@
-import React from 'react';
-import ToastMessage from '../components/ToastMessage/Toast2';
-import { View } from 'react-native';
+import React from "react";
+import ToastMessage from "../components/ToastMessage/Toast";
+import { View } from "react-native";
 
-let toastRef; // ToastMessage ref'ini tutacak değişken
-let isToastVisible = false; // Toast'un görünür olup olmadığını takip eden değişken
+let toastRef; 
+let isToastVisible = false; 
 
 const ToastProvider = ({ children }) => {
   toastRef = React.useRef(null);
@@ -24,9 +24,7 @@ const ToastService = {
       toastRef.current.hideToast(() => { 
         toastRef.current.showToast(type, message, action); 
       });
-    } else {
-      console.warn("Toast ref henüz ayarlanmamış. Toast gösterilemedi.");
-    }
+    } 
   },
   hide: () => {
     if (toastRef && toastRef.current) {

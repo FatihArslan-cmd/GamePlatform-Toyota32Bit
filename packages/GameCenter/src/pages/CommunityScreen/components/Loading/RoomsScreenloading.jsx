@@ -1,7 +1,7 @@
-import React from 'react';
-import ContentLoader, { Rect } from 'react-content-loader/native';
-import { View, Dimensions } from 'react-native';
-import { useTheme } from '../../../../context/ThemeContext'; // Import useTheme
+import ContentLoader, { Rect } from "react-content-loader/native";
+import React from "react";
+import { Dimensions, View } from "react-native";
+import { useTheme } from "../../../../context/ThemeContext";
 
 export const RoomLoading = ({ props }) => {
   const windowWidth = Dimensions.get('window').width;
@@ -16,7 +16,7 @@ export const RoomLoading = ({ props }) => {
   const skeletonWidth = (CARD_WIDTH_CALC * 2) + itemSpacingHorizontal + (CARD_SPACING * 2);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', paddingTop: 20, backgroundColor: colors.background }}>
+    <View style={{ flex: 1, alignItems: 'center', backgroundColor: colors.background }}>
       <ContentLoader
         rtl
         speed={0.2}

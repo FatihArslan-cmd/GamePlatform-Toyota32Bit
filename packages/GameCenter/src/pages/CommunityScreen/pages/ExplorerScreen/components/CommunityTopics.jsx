@@ -1,10 +1,13 @@
-import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { Chip } from 'react-native-paper';
-import { topics } from './topics';
-import { useExplorer } from '../context/ExplorerContext';
-import { useTheme } from '../../../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StyleSheet } from "react-native";
+import { Chip } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useExplorer } from "../context/ExplorerContext";
+import { topics } from "./topics";
+
+const TABLET_DEVICE = isTablet();
 const CommunityTopics = ({ showAllButton }) => {
   const { selectedTopic, handleTopicSelect } = useExplorer();
   const { colors } = useTheme();
@@ -53,7 +56,7 @@ const CommunityTopics = ({ showAllButton }) => {
 const createStyles = (colors) => StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingTop: 60,
+    paddingTop: TABLET_DEVICE ? 60 : 30,
   },
   chip: {
     marginHorizontal: 4,
@@ -63,6 +66,7 @@ const createStyles = (colors) => StyleSheet.create({
   },
   chipText: {
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 16 : 10,
   },
   selectedChip: {
     backgroundColor: colors.primary,

@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { storage } from '../../utils/storage';
-import navigationService from './navigationService';
-import { ToastService } from '../../context/ToastService';
+import axios from "axios";
+import navigationService from "./navigationService";
+import { ToastService } from "../../context/ToastService";
+import { storage } from "../../utils/storage";
 
 let isRefreshing = false;
 let failedQueue = [];
 
 const api = axios.create({
-  baseURL: 'http://10.0.2.2:3000/api',
+  baseURL: 'http://192.168.0.101:3000/api',
   timeout: 5000,
 });
 

@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { Card, Text, IconButton } from 'react-native-paper';
-import { styles } from '../../styles';
-import FadeIn from '../../../../components/Animations/FadeInAnimation';
-import lobbyService from '../../service/service';
-import formatDate from '../../../../utils/FormatDate';
-import LoadingIndicator from '../../../../components/LoadingIndicator';
-import ErrorComponents from '../../../../components/ErrorComponents';
-import EmptyState from '../../../../components/EmptyState';
-import { useTheme } from '../../../../context/ThemeContext'; 
+import EmptyState from "../../../../components/EmptyState";
+import ErrorComponents from "../../../../components/ErrorComponents";
+import FadeIn from "../../../../components/Animations/FadeInAnimation";
+import LoadingIndicator from "../../../../components/LoadingIndicator";
+import React, { useEffect, useState } from "react";
+import formatDate from "../../../../utils/FormatDate";
+import lobbyService from "../../service/service";
+import { View } from "react-native";
+import { Card, IconButton, Text } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+import { styles } from "../../styles";
+
+const TABLET_DEVICE = isTablet();
 
 export default function HistoryTab() {
   const [gameHistory, setGameHistory] = useState([]);
@@ -77,11 +80,11 @@ function GameHistoryCard({ game }) {
         </View>
         <View style={styles.historyRight}>
           <View style={styles.historyInfoItem}>
-            <IconButton icon="trophy" size={20} iconColor={colors.primary} />
+            <IconButton icon="trophy" size={TABLET_DEVICE ? 20 :16} iconColor={colors.primary} />
             <Text style={[styles.scoreText, { color: colors.text }]}>{game.lobbyName}</Text> 
           </View>
           <View style={styles.historyInfoItem}>
-            <IconButton icon="clock" size={20} iconColor={colors.primary} /> 
+            <IconButton icon="clock" size={TABLET_DEVICE ? 20 :16} iconColor={colors.primary} /> 
             <Text style={[styles.durationText, { color: colors.subText }]}>{gameTime}</Text> 
           </View>
         </View>

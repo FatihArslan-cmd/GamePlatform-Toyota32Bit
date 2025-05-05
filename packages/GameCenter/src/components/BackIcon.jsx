@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { TouchableRipple } from 'react-native-paper';
+import Icon from "react-native-vector-icons/Ionicons";
+import React, { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+import { useTheme } from "../context/ThemeContext";
+import { isTablet } from "../utils/isTablet.js";
+
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { isTablet } from '../utils/isTablet.js';
-import { useTheme } from '../context/ThemeContext'; 
 
-const BackButton = ({ size, top = 24, left = 16, padding = 8 }) => {
+const BackButton = ({ size, top = 36, left = 16, padding = 8 }) => {
   const navigation = useNavigation();
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(-20);

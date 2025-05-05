@@ -1,12 +1,15 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { List, TouchableRipple } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/Ionicons';
-import BackButton from '../../../components/BackIcon';
-import { useTheme } from '../../../context/ThemeContext';
-import { useChat } from '../context/ChatContext';
-import {useTranslation} from 'react-i18next';
+import BackButton from "../../../components/BackIcon";
+import FastImage from "react-native-fast-image";
+import Icon from "react-native-vector-icons/Ionicons";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { List, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useChat } from "../context/ChatContext";
+
+const TABLET_DEVICE = isTablet();
 
 const ChatHeader = () => {
     const { friend } = useChat();
@@ -46,7 +49,7 @@ const ChatHeader = () => {
                     )}
                     right={() => (
                         <TouchableRipple style={styles.headerButton}>
-                            <Icon name="ellipsis-vertical" size={24} color="#555" />
+                            <Icon name="ellipsis-vertical" size={TABLET_DEVICE ? 24 : 18} color="#555" />
                         </TouchableRipple>
                     )}
                 />
@@ -70,12 +73,12 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: TABLET_DEVICE ? 18 : 14,
         fontFamily: 'Orbitron-ExtraBold',
         color: '#333',
     },
     headerSubtitle: {
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 14 : 12,
         fontFamily: 'Orbitron-ExtraBold',
     },
     avatarContainer: {
@@ -83,8 +86,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     avatar: {
-        width: 50,
-        height: 50,
+        width: TABLET_DEVICE ? 50 : 35,
+        height: TABLET_DEVICE ? 50 : 35,
         borderRadius: 22.5,
     },
     avatarPlaceholder: {

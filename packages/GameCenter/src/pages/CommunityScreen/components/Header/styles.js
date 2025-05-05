@@ -1,4 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
+
 
 const createStyles = (colors) => StyleSheet.create({ 
   appbar: {
@@ -23,8 +27,8 @@ const createStyles = (colors) => StyleSheet.create({
     alignItems: 'flex-end',
   },
   profileImageContainer: {
-    width: 50,
-    height: 50,
+    width: TABLET_DEVICE ? 50 : 35,
+    height: TABLET_DEVICE ? 50 : 35,
     borderRadius: 25,
     overflow: 'hidden',
     borderColor: colors.border,

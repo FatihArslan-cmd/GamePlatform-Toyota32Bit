@@ -1,13 +1,13 @@
-import React, { useState } from 'react'; 
-import { View, Text } from 'react-native';
-import { Button, Surface } from 'react-native-paper'; 
-import { styles } from '../../styles';
-import ActiveLobbiesContent from '../../../HomeScreen/components/Header/components/ActiveLobbiesContent';
-import lobbyService from '../../service/service';
-import { ToastService } from '../../../../context/ToastService';
-import { useTheme } from '../../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
-import { useNavigation } from '@react-navigation/native'; 
+import ActiveLobbiesContent from "../../../HomeScreen/components/Header/components/ActiveLobbiesContent";
+import React, { useState } from "react";
+import lobbyService from "../../service/service";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { Text, View } from "react-native";
+import { Button, Surface } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { ToastService } from "../../../../context/ToastService";
+import { styles } from "../../styles";
 
 export default function AboutTab({ explanation }) {
   const formattedAbout = Array.isArray(explanation) ? explanation : [explanation];

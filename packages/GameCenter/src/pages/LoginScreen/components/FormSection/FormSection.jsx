@@ -1,16 +1,16 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import InputField from './components/InputField';
-import OptionsSection from './components/OptionsSection';
-import ActionButtons from './components/ActionButtons';
-import ForgotPasswordSection from './components/ForgotPasswordSection';
-import CustomModal from '../../../../components/CustomModal';
-import PermissionsModalContent from '../RememberMeModal/ProfileSection/components/PermissionsModalContent';
-import LoadingFullScreen from '../../../../components/LoadingFullScreen';
-import { useFormContext } from '../../context/FormContext';
-import FadeIn from '../../../../components/Animations/FadeInAnimation';
-import { usePermissionsContext } from '../../context/PermissionContext';
-import { useTranslation } from 'react-i18next';
+import ActionButtons from "./components/ActionButtons";
+import CustomModal from "../../../../components/CustomModal";
+import FadeIn from "../../../../components/Animations/FadeInAnimation";
+import ForgotPasswordSection from "./components/ForgotPasswordSection";
+import InputField from "./components/InputField";
+import LoadingFullScreen from "../../../../components/LoadingFullScreen";
+import OptionsSection from "./components/OptionsSection";
+import PermissionsModalContent from "../RememberMeModal/ProfileSection/components/PermissionsModalContent";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { useFormContext } from "../../context/FormContext";
+import { usePermissionsContext } from "../../context/PermissionContext";
 
 const FormSection = () => {
     const { t } = useTranslation(); 
@@ -23,7 +23,6 @@ const FormSection = () => {
         showPassword,
         setShowPassword,
         isForgotPassword,
-        setIsForgotPassword,
         isLoading,
         modalVisible,
         modalType,

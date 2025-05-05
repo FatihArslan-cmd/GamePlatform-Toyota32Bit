@@ -1,15 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
-import Animated, { useAnimatedStyle, withTiming, FadeIn, Easing } from 'react-native-reanimated';
-import {useTranslation} from 'react-i18next';
+import Animated, { FadeIn, useAnimatedStyle } from "react-native-reanimated";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { isTablet } from "../../../../../utils/isTablet";
 
-const BlurOverlay = ({ isBlurred, blurRadiusValue, buttonOpacityValue, handleBecomeMemberPress }) => {
+const TABLET_DEVICE = isTablet();
+
+const BlurOverlay = ({ isBlurred, buttonOpacityValue, handleBecomeMemberPress }) => {
   const { t } = useTranslation();
-  const animatedBlurStyle = useAnimatedStyle(() => {
+
+  const animatedOverlayStyle = useAnimatedStyle(() => {
     return {
-      blurRadius: blurRadiusValue.value,
-      opacity: blurRadiusValue.value > 0 ? 1 : 0,
+      opacity: buttonOpacityValue.value,
     };
   });
 
@@ -21,16 +23,27 @@ const BlurOverlay = ({ isBlurred, blurRadiusValue, buttonOpacityValue, handleBec
 
   return (
     <>
-      <Animated.View style={[styles.blurContainer, animatedBlurStyle, StyleSheet.absoluteFillObject]} pointerEvents="none">
-        <BlurView
-          style={StyleSheet.absoluteFill}
-          blurType="light"
-          blurAmount={4}
-          reducedTransparencyFallbackColor="white"
+      <Animated.View
+        style={[
+          styles.overlayContainer,
+          animatedOverlayStyle,
+          StyleSheet.absoluteFillObject,
+          { pointerEvents: isBlurred ? 'auto' : 'none' }
+        ]}
+      >
+        <View
+          style={styles.overlay}
         />
       </Animated.View>
 
-      <Animated.View style={[styles.buttonContainer, animatedButtonStyle, StyleSheet.absoluteFillObject, { justifyContent: 'center', alignItems: 'center', pointerEvents: isBlurred ? 'auto' : 'none' }]}>
+      <Animated.View
+        style={[
+          styles.buttonContainer,
+          animatedButtonStyle,
+          StyleSheet.absoluteFillObject,
+          { justifyContent: 'center', alignItems: 'center', pointerEvents: isBlurred ? 'auto' : 'none' }
+        ]}
+      >
         <TouchableOpacity
           style={styles.becomeMemberButton}
           onPress={handleBecomeMemberPress}
@@ -46,10 +59,14 @@ const BlurOverlay = ({ isBlurred, blurRadiusValue, buttonOpacityValue, handleBec
 };
 
 const styles = StyleSheet.create({
-  blurContainer: {
+  overlayContainer: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: 8,
     overflow: 'hidden',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   buttonContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -58,15 +75,15 @@ const styles = StyleSheet.create({
   },
   becomeMemberButton: {
     backgroundColor: 'green',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: TABLET_DEVICE ? 20 : 15,
+    paddingVertical:  TABLET_DEVICE ? 10 : 10,
     borderRadius: 8,
     elevation: 5,
   },
   becomeMemberButtonText: {
     color: '#ffffff',
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 14,
   },
 });
 

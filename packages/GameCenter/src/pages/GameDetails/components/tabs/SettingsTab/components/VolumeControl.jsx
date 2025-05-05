@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { ProgressBar, Text } from "react-native-paper";
 import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 export const VolumeControl = ({ label, value, onChange }) => {
   const { colors } = useTheme(); 
@@ -39,10 +42,10 @@ export const VolumeControl = ({ label, value, onChange }) => {
 
 const createStyles = (colors) => StyleSheet.create({
   settingItem: {
-    marginBottom: 25,
+    marginBottom: TABLET_DEVICE ? 25 : 15,
   },
   settingLabel: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 12,
     color: colors.text,
@@ -57,13 +60,13 @@ const createStyles = (colors) => StyleSheet.create({
     marginTop: 8, 
   },
   volumeStep: {
-    width: 20, 
-    height: 20,
+    width: TABLET_DEVICE ? 20 : 10, 
+    height: TABLET_DEVICE ? 20 : 10,
     borderRadius: 10,
     opacity: 0.7,
   },
   volumePercentageText: {
-    fontSize: 12,
+    fontSize: TABLET_DEVICE ? 12 : 10,
     marginTop: 7,
     fontFamily: 'Orbitron-ExtraBold',
   },

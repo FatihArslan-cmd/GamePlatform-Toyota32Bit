@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Divider } from 'react-native-paper';
-import getFormattedDate from '../../../../../utils/getFormattedDate';
-import { useTheme } from '../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import getFormattedDate from "../../../../../utils/getFormattedDate";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Divider, Text } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const GameHeader = () => {
   const { colors } = useTheme();
@@ -28,13 +31,13 @@ const useStyles = (colors) => StyleSheet.create({
     paddingBottom: 8,
   },
   sectionTitle: {
-    fontSize: 28,
+    fontSize: TABLET_DEVICE ? 28 : 18,
     color: colors.text,
     letterSpacing: -0.5,
     fontFamily: 'Orbitron-ExtraBold',
   },
   dateText: {
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 14 : 12,
     color: colors.subText,
     marginTop: 4,
     fontFamily: 'Orbitron-VariableFont_wght',

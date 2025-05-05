@@ -1,9 +1,12 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { useCreateRoom } from '../context/CreateRoomContext';
-import { useTheme } from '../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { TextInput } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useCreateRoom } from "../context/CreateRoomContext";
+
+const TABLET_DEVICE = isTablet();
 
 const RoomNameInput = () => {
   const { roomName, setRoomName } = useCreateRoom();
@@ -18,7 +21,7 @@ const RoomNameInput = () => {
       onChangeText={setRoomName}
       style={[styles.input, {backgroundColor: colors.card}]}
       mode="outlined"
-      left={<TextInput.Icon icon="account-group" color={colors.primary} />}
+      left={<TextInput.Icon icon="account-group" size={TABLET_DEVICE ? 24 : 16} color={colors.primary} />}
       outlineColor={colors.border}
       activeOutlineColor={colors.primary}
       textColor={colors.text}

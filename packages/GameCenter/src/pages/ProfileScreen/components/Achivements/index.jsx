@@ -1,15 +1,18 @@
-import React, { useCallback, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { SegmentedButtons, Text } from 'react-native-paper';
+import AchievementCard from "./components/AchievementCard";
+import EmptyState from "../../../../components/EmptyState";
+import ErrorComponents from "../../../../components/ErrorComponents";
+import LevelProgressBar from "./components/LevelProgressBar";
+import OwnedAchievementCard from "./components/OwnedAchievementCard";
+import React, { useCallback, useMemo } from "react";
 import { FlashList } from "@shopify/flash-list";
-import AchievementCard from './components/AchievementCard';
-import OwnedAchievementCard from './components/OwnedAchievementCard';
-import ErrorComponents from '../../../../components/ErrorComponents';
-import EmptyState from '../../../../components/EmptyState';
-import LevelProgressBar from './components/LevelProgressBar';
-import { useAchievements } from './context/AchievementsContext';
-import { useTheme } from '../../../../context/ThemeContext'; 
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { SegmentedButtons } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+import { useAchievements } from "./context/AchievementsContext";
+
+const TABLET_DEVICE = isTablet();
 
 const AchievementsPage = () => {
     const { activeTab, setActiveTab, allAchievements, ownedAchievements, loading, error } = useAchievements();
@@ -91,6 +94,7 @@ const styles = StyleSheet.create({
     },
     buttonLabel: {
         fontFamily: 'Orbitron-ExtraBold',
+        fontSize: TABLET_DEVICE ? 14 : 10,
     }
 });
 

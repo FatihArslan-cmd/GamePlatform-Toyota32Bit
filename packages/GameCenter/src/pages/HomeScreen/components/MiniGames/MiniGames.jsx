@@ -1,13 +1,16 @@
-import React, { memo, useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
-import GameItem from './components/GameItem';
-import ScrollArrow from './components/ScrollArrow';
-import MyLoader from '../../../../components/SkeletonPlaceHolder/MiniGamesPlaceHolder';
-import GrandientText from '../../../../components/GrandientText';
-import ScrollIndicator from './components/ScrollIndicator';
-import { useTheme } from '../../../../context/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import GameItem from "./components/GameItem";
+import GrandientText from "../../../../components/GrandientText";
+import MyLoader from "../../../../components/SkeletonPlaceHolder/MiniGamesPlaceHolder";
+import React, { memo, useEffect, useRef, useState } from "react";
+import ScrollArrow from "./components/ScrollArrow";
+import ScrollIndicator from "./components/ScrollIndicator";
+import { FlashList } from "@shopify/flash-list";
+import { useTranslation } from "react-i18next";
+import { Animated, StyleSheet, View } from "react-native";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const MiniGamesBlock = memo(({ games }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +61,7 @@ const MiniGamesBlock = memo(({ games }) => {
             <GrandientText
                 text={t('homeScreen.miniGames')}
                 colors={colors.languageTextGradient}
-                textStyle={{ fontSize: 32, textAlign: 'center', color: colors.text }}
+                textStyle={{ fontSize: TABLET_DEVICE ? 32 : 20, textAlign: 'center', color: colors.text }}
                 gradientDirection="horizontal"
             />
             <ScrollIndicator scrollProgress={scrollProgress} />
@@ -89,7 +92,6 @@ const MiniGamesBlock = memo(({ games }) => {
                         />
                         {canScrollRight && <ScrollArrow direction="right" onPress={() => scroll('right')} />}
                     </View>
-                    <ScrollIndicator scrollProgress={scrollProgress} />
                 </>
             )}
         </View>
@@ -99,7 +101,7 @@ const MiniGamesBlock = memo(({ games }) => {
 const useStyles = (colors) => StyleSheet.create({
     wrapper: {
         backgroundColor: colors.background,
-        paddingVertical: 20,
+        paddingVertical: TABLET_DEVICE ? 20 : 5,
     },
     scrollWrapper: {
         flexDirection: 'row',
@@ -110,7 +112,7 @@ const useStyles = (colors) => StyleSheet.create({
     },
     column: {
         gap: 20,
-        marginHorizontal: 12, 
+        marginHorizontal: TABLET_DEVICE ? 12 : 8, 
     },
 });
 

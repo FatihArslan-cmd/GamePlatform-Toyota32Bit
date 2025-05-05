@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, IconButton, Avatar} from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import formatDate from '../../../../../utils/FormatDate';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { useTheme } from '../../../../../context/ThemeContext'; // Import useTheme
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import FastImage from "react-native-fast-image";
+import React, { useEffect, useState } from "react";
+import formatDate from "../../../../../utils/FormatDate";
+import { StyleSheet, View } from "react-native";
+import { Avatar, IconButton, Text } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet(); 
 
 const MessageItem = ({ message }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(message.initialLikes || 0);
-  const { colors } = useTheme(); // Use theme context
-  const styles = createStyles(colors); // Create styles with theme colors
+  const { colors } = useTheme(); 
+  const styles = createStyles(colors); 
 
   const handleLike = () => {
     setLiked(!liked);
@@ -30,11 +33,11 @@ const MessageItem = ({ message }) => {
   });
 
   return (
-    <Animated.View style={[styles.container, animatedStyle, { backgroundColor: colors.postBG }]}>
+    <Animated.View style={[styles.container, animatedStyle, { backgroundColor: colors.background }]}>
       <View style={styles.messageContent}>
         <View style={styles.headerContainer}>
           <Avatar.Image
-            size={50}
+            size={TABLET_DEVICE ? 50 : 40}
             source={{ uri: message.userAvatar || 'https://via.placeholder.com/50' }}
             style={styles.avatar}
           />
@@ -107,7 +110,7 @@ const MessageItem = ({ message }) => {
   );
 };
 
-const createStyles = (colors) => StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   line: {
     height: 1,
     
@@ -133,18 +136,18 @@ const createStyles = (colors) => StyleSheet.create({
   },
   username: {
     fontFamily:'Orbitron-ExtraBold',
-    // color: '#333', // Removed hardcoded color, using theme now
     marginRight: 8,
   },
   timestamp: {
-    // color: '#888', // Removed hardcoded color, using theme now
-    fontFamily:'Orbitron-ExtraBold'
+    fontFamily:'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 14 : 10,
+
+    
   },
   contentText: {
-    // color: '#333', // Removed hardcoded color, using theme now
     lineHeight: 20,
     marginVertical: 12,
-    fontSize: 20,
+    fontSize: TABLET_DEVICE ? 20 : 14,
     fontWeight:'600',
     fontFamily:'Orbitron-ExtragBold',
     paddingLeft: 62,
@@ -153,8 +156,8 @@ const createStyles = (colors) => StyleSheet.create({
     alignItems: 'center',
   },
   contentImage: {
-    width: 200,
-    height: 300,
+    width: TABLET_DEVICE ? 200 : 150,
+    height: TABLET_DEVICE ? 300 : 200,
     borderRadius: 8,
     marginBottom: 12,
   },
@@ -183,11 +186,9 @@ const createStyles = (colors) => StyleSheet.create({
     marginHorizontal: 0,
   },
   interactionText: {
-    // color: 'grey', // Removed hardcoded color, using theme now
     marginLeft: 4,
   },
   likedText: {
-    // color: 'red', // Removed hardcoded color, using theme now
   },
 });
 

@@ -1,15 +1,18 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
-import CustomModal from '../../../../../components/CustomModal';
-import InputField from '../../../../LoginScreen/components/FormSection/components/InputField';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Clipboard from '@react-native-clipboard/clipboard';
-import lobbyService from '../services/lobbyService';
-import { ToastService } from '../../../../../context/ToastService';
-import { useBingoWebSocket } from '../../../../../context/BingoGameWebsocket';
-import { useHeader } from '../context/HeaderContext';
-import { useTranslation } from 'react-i18next'; 
+import Clipboard from "@react-native-clipboard/clipboard";
+import CustomModal from "../../../../../components/CustomModal";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import InputField from "../../../../LoginScreen/components/FormSection/components/InputField";
+import React, { useCallback, useState } from "react";
+import lobbyService from "../services/lobbyService";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+import { useBingoWebSocket } from "../../../../../context/BingoGameWebsocket";
+import { ToastService } from "../../../../../context/ToastService";
+import { isTablet } from "../../../../../utils/isTablet";
+import { useHeader } from "../context/HeaderContext";
+
+const TABLET_DEVICE = isTablet();
 
 const JoinLobbyModal = () => {
     const [lobbyCode, setLobbyCode] = useState('');
@@ -76,11 +79,11 @@ const JoinLobbyModal = () => {
                     />
                     {lobbyCode.length > 0 && (
                         <TouchableRipple style={styles.clearButton} onPress={handleClearCode}>
-                            <Icon name="cancel" size={24} color="#fff" />
+                            <Icon name="cancel" size={TABLET_DEVICE ? 24 : 16} color="#fff" />
                         </TouchableRipple>
                     )}
                     <TouchableRipple style={styles.pasteButton} onPress={handlePaste}>
-                        <Icon name="content-paste" size={24} color="#fff" />
+                        <Icon name="content-paste" size={TABLET_DEVICE ? 24 : 16} color="#fff" />
                     </TouchableRipple>
                 </View>
 
@@ -94,7 +97,7 @@ const JoinLobbyModal = () => {
                     />
                      {lobbyPassword.length > 0 && (
                         <TouchableRipple style={styles.clearButton} onPress={handleClearPassword}>
-                            <Icon name="cancel" size={24} color="#fff" />
+                            <Icon name="cancel" size={TABLET_DEVICE ? 24 : 16} color="#fff" />
                         </TouchableRipple>
                     )}
                 </View>

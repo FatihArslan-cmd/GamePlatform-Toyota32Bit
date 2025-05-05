@@ -1,6 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from "react-native";
+import { isTablet } from "../../utils/isTablet";
 
 const { height, width } = Dimensions.get('window');
+const TABLET_DEVICE = isTablet();
 
 export const styles = StyleSheet.create({
     container: {
@@ -37,7 +39,8 @@ export const styles = StyleSheet.create({
         borderTopRightRadius: 50,
         elevation: 15,
       },
-      title: { fontSize: 28,
+      title: {
+         fontSize: TABLET_DEVICE ? 28 : 20,
         marginBottom: 24,
         textAlign: 'center',
         letterSpacing: 0.5,
@@ -45,12 +48,12 @@ export const styles = StyleSheet.create({
       },
       tabContainer: {
         flexDirection: 'row',
-        marginBottom: 20,
+        marginBottom: 10,
         justifyContent: 'space-between',
       },
       tabButton: {
         flex: 1,
-        marginHorizontal: 4,
+        marginHorizontal: TABLET_DEVICE ? 4 : 0,
         borderRadius: 20,
       },
       tabContent: {
@@ -96,9 +99,9 @@ export const styles = StyleSheet.create({
  
       modernInstructionText: {
         flex: 1,
-        padding: 16,
-        fontSize: 16,
-        lineHeight: 24,
+        padding: TABLET_DEVICE ? 16 : 8,
+        fontSize: TABLET_DEVICE ? 16 : 11,
+        lineHeight: TABLET_DEVICE ? 24 : 18,
         color: '#333333',
         fontFamily: 'Orbitron-VariableFont_wght',
       },
@@ -156,10 +159,10 @@ export const styles = StyleSheet.create({
       },
    
       buttonContent: {
-        height: 48,
+        height: TABLET_DEVICE ? 48 : 36,
       },
       buttonLabel: {
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 12,
         letterSpacing: 1,
         fontFamily: 'Orbitron-ExtraBold',
       },
@@ -169,10 +172,10 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         alignSelf: 'center',
         position: 'absolute',
-        bottom: 0,
+        bottom: -15,
         left: 0,
         right: 0,
-        margin: 16,
+        margin: 0,
       },
       instructionNumber: {
         width: 28,
@@ -192,16 +195,16 @@ export const styles = StyleSheet.create({
         color: '#1a1a1a',
         fontFamily: 'Orbitron-ExtraBold',
       },
-      // Lobbies styles
       lobbiesContainer: {
         marginBottom: 20,
-        
       },
       createLobbyButton: {
         marginBottom: 16,
         backgroundColor: '#4a148c',
         borderRadius: 20,
-      },
+        width: '90%',  // Set width to 90%
+        alignSelf: 'center',  // Center the button horizontally
+    },
       lobbyCard: {
         marginBottom: 12,
         elevation: 2,
@@ -215,7 +218,6 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 12,
         fontFamily: 'Orbitron-VariableFont_wght',
-
       },
       lobbyName: {
         fontSize: 18,
@@ -229,7 +231,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 12,
       },
-    // ... (previous code remains the same until styles)
     badgeContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -248,7 +249,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-        // Continuing styles
         lobbyInfoItem: {
           flexDirection: 'row',
           alignItems: 'center',
@@ -287,12 +287,12 @@ export const styles = StyleSheet.create({
           alignItems: 'center',
       },
       resultText: {
-          fontSize: 18,
+          fontSize: TABLET_DEVICE ? 18 : 14,
           fontFamily: 'Orbitron-ExtraBold',
           marginBottom: 4,
       },
       dateText: {
-          fontSize: 14,
+          fontSize: TABLET_DEVICE ? 14 : 12,
           color: '#666',
           fontFamily: 'Orbitron-VariableFont_wght',
       },
@@ -302,12 +302,12 @@ export const styles = StyleSheet.create({
           marginLeft: 16,
       },
       scoreText: {
-          fontSize: 16,
+          fontSize: TABLET_DEVICE ? 16 : 14,
           color: '#4a148c',
           fontFamily: 'Orbitron-ExtraBold',
       },
       durationText: {
-          fontSize: 14,
+          fontSize: TABLET_DEVICE ? 14 : 12,
           color: '#666',
           fontFamily: 'Orbitron-VariableFont_wght',
       },

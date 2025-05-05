@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Card } from 'react-native-paper';
-import { useSharedValue, withTiming, Easing } from 'react-native-reanimated';
-import { becomeSupporter } from '../../../services/roomApi';
-import RoomCardContent from './RoomCardContent'; // Import RoomCardContent
-import BlurOverlay from './BlurOverlay'; // Import BlurOverlay
-import { ToastService } from '../../../../../context/ToastService';
-import {useTranslation} from 'react-i18next';
+import BlurOverlay from "./BlurOverlay";
+import React, { useState } from "react";
+import RoomCardContent from "./RoomCardContent";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Card } from "react-native-paper";
+import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
+import { ToastService } from "../../../../../context/ToastService";
+import { becomeSupporter } from "../../../services/roomApi";
 
 const RoomCard = ({ room }) => {
   const [isBlurred, setIsBlurred] = useState(false);
@@ -29,9 +29,13 @@ const RoomCard = ({ room }) => {
     try {
       await becomeSupporter(room.id);
       setIsBlurred(false);
+      buttonOpacity.value = withTiming(0, { duration: 300, easing: Easing.ease });
+      blurRadius.value = withTiming(0, { duration: 300, easing: Easing.ease });
       ToastService.show('success', t('communityScreen.You have become a supporter of this room.'));
     } catch (error) {
       setIsBlurred(false);
+      buttonOpacity.value = withTiming(0, { duration: 300, easing: Easing.ease });
+      blurRadius.value = withTiming(0, { duration: 300, easing: Easing.ease });
       ToastService.show('error', error.message || t('communityScreen.Failed to become a supporter of this room.'));
     }
   };
@@ -46,12 +50,14 @@ const RoomCard = ({ room }) => {
         <RoomCardContent room={room} />
       </Card>
 
-      <BlurOverlay
-        isBlurred={isBlurred}
-        blurRadiusValue={blurRadius}
-        buttonOpacityValue={buttonOpacity}
-        handleBecomeMemberPress={handleBecomeMemberPress}
-      />
+      {isBlurred && (
+        <BlurOverlay
+          isBlurred={isBlurred}
+          blurRadiusValue={blurRadius}
+          buttonOpacityValue={buttonOpacity}
+          handleBecomeMemberPress={handleBecomeMemberPress}
+        />
+      )}
 
     </TouchableOpacity>
   );
@@ -61,6 +67,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     margin: 8,
     borderRadius: 8,
+    overflow: 'hidden',
   },
   card: {
     elevation: 4,

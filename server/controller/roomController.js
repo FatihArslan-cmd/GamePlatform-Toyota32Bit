@@ -7,24 +7,24 @@ const createRoomHandler = (req, res) => {
     const { name, topic, imageUrl } = req.body;
 
     if (!name) {
-        return res.status(400).json({ message: 'Oda adı gereklidir' });
+        return res.status(400).json({ message: 'Room name is required' });
     }
 
     if (!topic) {
-        return res.status(400).json({ message: 'Oda konusu (topic) gereklidir' });
+        return res.status(400).json({ message: 'Room topic is required' });
     }
 
    if (!isValidTopic(topic)) {
-        return res.status(400).json({ message: 'Geçersiz oda konusu. Lütfen şu konulardan birini seçin: ' + topics.join(', ') });
+        return res.status(400).json({ message: 'Invalid room topic. Please select one of the following topics: ' + topics.join(', ') });
     }
 
 
     if (!imageUrl) {
-        return res.status(400).json({ message: 'Oda resmi (imageUrl) gereklidir' });
+        return res.status(400).json({ message: 'Room image URL is required' });
     }
 
     if (!isURL(imageUrl)) {
-        return res.status(400).json({ message: 'Geçersiz resim URL\'si' });
+        return res.status(400).json({ message: 'Invalid image URL' });
     }
 
     const room = createRoom(name, req.user.id, topic, imageUrl);
@@ -35,7 +35,7 @@ const getRoomHandler = (req, res) => {
     const { roomId } = req.params;
     const room = getRoom(roomId);
     if (!room) {
-        return res.status(404).json({ message: 'Oda bulunamadı' });
+        return res.status(404).json({ message: 'Room not found' });
     }
     res.json(room);
 };
@@ -68,9 +68,9 @@ const joinRoomHandler = (req, res) => {
     const { roomId } = req.params;
     const userId = req.user.id;
     if (joinRoom(roomId, userId, req.session)) {
-        res.json({ message: 'Odaya katıldınız' });
+        res.json({ message: 'Joined room successfully' });
     } else {
-        res.status(404).json({ message: 'Oda bulunamadı veya zaten katıldınız' });
+        res.status(404).json({ message: 'Room not found or you have already joined' });
     }
 };
 
@@ -79,9 +79,9 @@ const leaveRoomHandler = (req, res) => {
     const userId = req.user.id;
 
     if(leaveRoom(roomId, userId, req.session)){
-        res.json({ message: 'Odadan ayrıldınız' });
+        res.json({ message: 'Left room successfully' });
     } else {
-        res.status(404).json({ message: 'Oda bulunamadı' });
+        res.status(404).json({ message: 'Room not found or you are not in this room' });
     }
 };
 
@@ -89,17 +89,17 @@ const deleteRoomHandler = (req, res) => {
     const { roomId } = req.params;
     const room = getRoom(roomId);
     if (!room) {
-        return res.status(404).json({ message: 'Oda bulunamadı' });
+        return res.status(404).json({ message: 'Room not found' });
     }
     if (room.creatorId !== req.user.id) {
-        return res.status(403).json({ message: 'Bu odayı silme yetkiniz yok' });
+        return res.status(403).json({ message: 'You do not have permission to delete this room' });
     }
 
     if(deleteRoom(roomId)){
-        res.json({ message: 'Oda silindi' });
+        res.json({ message: 'Room deleted successfully' });
     }
     else {
-        res.status(404).json({ message: 'Oda bulunamadı' });
+        res.status(404).json({ message: 'Room not found' });
     }
 };
 
@@ -110,12 +110,12 @@ const becomeSupporterHandler = (req, res) => {
     const result = becomeSupporter(roomId, userId);
 
     if(result === true){
-        res.json({message: 'Supporter oldunuz'});
+        res.json({message: 'Became a supporter'});
     } else if(result === null){
-        res.status(400).json({message: 'Zaten supportersiniz'});
+        res.status(400).json({message: 'You are already a supporter'});
     }
     else {
-        res.status(404).json({message: 'Oda bulunamadı'});
+        res.status(404).json({message: 'Room not found'});
     }
 }
 
@@ -123,9 +123,9 @@ const leaveSupporterHandler = (req, res) => {
     const { roomId } = req.params;
     const userId = req.user.id;
     if(leaveSupporter(roomId, userId)){
-        res.json({message: 'Supporterlıktan ayrıldınız'});
+        res.json({message: 'Left supporter role'});
     } else {
-        res.status(404).json({message: 'Oda bulunamadı'});
+        res.status(404).json({message: 'Room not found or you are not a supporter'});
     }
 }
 
@@ -139,7 +139,7 @@ module.exports = {
     deleteRoomHandler,
     becomeSupporterHandler,
     leaveSupporterHandler,
-    getRoomsByMeHandler, // Export new handler
-    getRoomsNotByMeHandler, // Export new handler
-    getRoomsBySupporterHandler // Export new handler
+    getRoomsByMeHandler,
+    getRoomsNotByMeHandler,
+    getRoomsBySupporterHandler
 };

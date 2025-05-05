@@ -1,9 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import formatDate from '../../../../../../utils/FormatDate';
-import { useTheme } from '../../../../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import formatDate from "../../../../../../utils/FormatDate";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, View } from "react-native";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
+
 const LobbyDetails = ({ lobby }) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -12,17 +16,17 @@ const LobbyDetails = ({ lobby }) => {
     <View style={styles.lobbyDetails}>
       <View style={styles.typeBadgeContainer}>
         <View style={styles.typeBadge}>
-          <Icon name="tag" size={16} color={colors.text} /> 
+          <Icon name="tag" size={TABLET_DEVICE ? 16 : 12} color={colors.text} /> 
           <Text style={[styles.lobbyType, { color: colors.text }]}>{lobby.lobbyType.toUpperCase()}</Text> 
         </View>
         {lobby.lobbyType === 'Event' && (
           <View style={styles.eventDateContainer}>
             <View style={styles.dateItem}>
-              <Icon name="calendar-start" size={16} color={colors.info} /> 
+              <Icon name="calendar-start" size={TABLET_DEVICE ? 16 : 12} color={colors.info} /> 
               <Text style={[styles.dateText, { color: colors.text }]}>{formatDate(lobby.startDate, true)}</Text> 
             </View>
             <View style={styles.dateItem}>
-              <Icon name="calendar-end" size={16} color={colors.error} /> 
+              <Icon name="calendar-end" size={TABLET_DEVICE ? 16 : 12} color={colors.error} /> 
               <Text style={[styles.dateText, { color: colors.text }]}>{formatDate(lobby.endDate, true)}</Text> 
             </View>
           </View>
@@ -31,7 +35,7 @@ const LobbyDetails = ({ lobby }) => {
 
       <View style={styles.detailItem}>
         <View style={styles.detailHeader}>
-          <Icon name="crown" size={20} color={colors.warning} /> 
+          <Icon name="crown" size={TABLET_DEVICE ? 20 : 16} color={colors.warning} /> 
           <Text style={[styles.detailLabel, { color: colors.text }]}>
             {t('homeScreen.owner')}
           </Text>
@@ -40,7 +44,7 @@ const LobbyDetails = ({ lobby }) => {
       </View>
       <View style={styles.detailItem}>
         <View style={styles.detailHeader}>
-          <Icon name="account-group" size={20} color={colors.primary} /> 
+          <Icon name="account-group"size={TABLET_DEVICE ? 20 : 16} color={colors.primary} /> 
           <Text style={[styles.detailLabel, { color: colors.text }]}>
             {t('homeScreen.players')}
           </Text>
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
     lobbyType: {
         marginLeft: 5,
         fontFamily: 'Orbitron-VariableFont_wght',
+        fontSize: TABLET_DEVICE ? 16 : 12,
     },
     eventDateContainer: {
         marginTop: 5,
@@ -97,6 +102,7 @@ const styles = StyleSheet.create({
     detailLabel: {
         marginLeft: 5,
         fontFamily: 'Orbitron-VariableFont_wght',
+        fontSize: TABLET_DEVICE ? 16 : 10,
     },
 });
 

@@ -1,10 +1,13 @@
-import React, { useRef } from 'react';
-import { StyleSheet } from 'react-native';
-import { TextInput, IconButton, Tooltip } from 'react-native-paper';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { useTheme } from '../../../../context/ThemeContext';
-import { useHeader } from './context/HeaderContext'; 
-import { useTranslation } from 'react-i18next';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { IconButton, TextInput, Tooltip } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+import { useHeader } from "./context/HeaderContext";
+
+const TABLET_DEVICE = isTablet(); 
 
 const SearchBar = () => { 
   const searchBarWidth = useSharedValue(0);
@@ -40,7 +43,7 @@ const SearchBar = () => {
           <IconButton
             icon="arrow-left"
             iconColor={colors.text}
-            size={24}
+            size={TABLET_DEVICE ? 24 : 18}
             onPress={handleCloseSearch}
             style={styles.backButton}
           />
@@ -65,6 +68,7 @@ const SearchBar = () => {
         <Tooltip title='Search' >
           <IconButton
             icon="magnify"
+            size={TABLET_DEVICE ? 24 : 18}
             onPress={handleSearchPress}
             iconColor={colors.text}
           />

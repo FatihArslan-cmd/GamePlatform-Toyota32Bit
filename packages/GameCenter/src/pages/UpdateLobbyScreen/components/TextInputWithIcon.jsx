@@ -1,8 +1,11 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TextInput, Text } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../../context/ThemeContext'; 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { Text, TextInput } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const TextInputWithIcon = ({ label, value, onChangeText, placeholder, iconName, keyboardType }) => {
   const { colors } = useTheme(); 
@@ -31,12 +34,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 8,
   },
   input: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
   },
 });
 

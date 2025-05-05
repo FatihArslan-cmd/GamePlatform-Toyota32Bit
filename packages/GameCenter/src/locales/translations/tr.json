@@ -137,6 +137,7 @@
     "friendAddedSuccessfully!": "Arkadaş başarıyla eklendi!"
   },
  "personalMessagePage": {
+    "title": "Davetler",
     "noActiveInvites": "Şu anda aktif bir davetiniz bulunmuyor.",
     "accept": "Kabul Et",
     "decline": "Reddet",
@@ -342,20 +343,24 @@
         }
       },
 
-      "bingoGame":{
-        "joinedTheLobby": "lobiye katıldı",
-        "leftTheLobby": "lobiden ayrıldı",
-        "chinko":"satır çinkosunu yaptı",
-        "players":"Oyuncular",
-        "noMessages":"Henüz mesaj yok",
-        "logoutTitle":"Çıkış Yap",
-        "logoutDescription":"Çıkış yapmak istediğinizden emin misiniz?",
-        "logout":"Çıkış Yap",
-        "cancel":"İptal",
-        "resultScreenButton": "Yeni bir oyun başlat",
-        "scoreBoard": "Skor Tablosu",
-        "point": "Puan",
-        "winner": "Kazanan",
-        "gameEnded":"Oyun oda sahibi tarafından sonlanırıldı anasayfaya aktarıldınız."
-      }
+ "bingoGame":{
+    "joinedTheLobby": "lobiye katıldı",
+    "leftTheLobby": "lobiden ayrıldı",
+    "chinko":"satır çinkosunu yaptı",
+    "players":"Oyuncular",
+    "noMessages":"Henüz mesaj yok",
+    "logoutTitle":"Çıkış Yap",
+    "logoutDescription":"Çıkış yapmak istediğinizden emin misiniz?",
+    "logout":"Çıkış Yap",
+    "cancel":"İptal",
+    "resultScreenButton": "Yeni bir oyun başlat",
+    "scoreBoard": "Skor Tablosu",
+    "point": "Puan",
+    "winner": "Kazanan",
+    "gameEnded":"Oyun oda sahibi tarafından sonlanırıldı anasayfaya aktarıldınız.",
+    "drawAllNumbersButtonLabel": "Tüm sayıları çek",
+    "drawAllNumbersModalTitle": "Tüm Sayıları Çek",
+    "drawAllNumbersModalText": "Kalan tüm sayıları hemen çekmek istediğinizden emin misiniz?",
+    "drawAllNumbersModalConfirm": "Çek"
+}
 }

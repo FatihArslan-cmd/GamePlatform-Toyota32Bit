@@ -1,13 +1,16 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Button, Divider, Text } from 'react-native-paper';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Button, Divider, Text } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+
 import Animated, {
   useAnimatedStyle,
   withTiming
 } from 'react-native-reanimated';
-import { useTheme } from '../../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
 
+const TABLET_DEVICE = isTablet();
 const { width } = Dimensions.get('window');
 const BUTTON_WIDTH = (width - 50) / 2;
 const INDICATOR_WIDTH = BUTTON_WIDTH * 0.6;
@@ -19,7 +22,8 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
 
   const buttonTextStyle = {
     fontFamily: 'Orbitron-ExtraBold',
-    color: colors.text, 
+    color: colors.text,
+    fontSize: TABLET_DEVICE ? 16 : 11,
   };
 
   const getButtonStyle = (index) => {
@@ -36,7 +40,7 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
           translateX: withTiming(
             currentPageIndex === 0
               ? 16 + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2
-              : 16 + BUTTON_WIDTH + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2,
+              : 28 + BUTTON_WIDTH + (BUTTON_WIDTH - INDICATOR_WIDTH) / 2,
             { duration: 300 }
           )
         }
@@ -75,11 +79,11 @@ const Buttons = ({ goToHome, goToExplorer, currentPageIndex }) => {
   );
 };
 
-const createStyles = (colors) => StyleSheet.create({ 
+const createStyles = () => StyleSheet.create({ 
   buttonContainer: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 16,
+    marginTop: TABLET_DEVICE ? 16 : 5,
     justifyContent: 'space-around',
     paddingHorizontal: 16,
   },

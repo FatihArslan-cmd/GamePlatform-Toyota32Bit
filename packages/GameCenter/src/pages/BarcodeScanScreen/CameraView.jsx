@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
-import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import ActionButtons from "./ActionButtons";
+import React, { useEffect, useState } from "react";
 import ScannerOverlay from "./ScannerOverlay";
-import ActionButtons from './ActionButtons';
-import { storage } from '../../utils/storage';
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { StyleSheet, View } from "react-native";
+import { Camera, useCameraDevice, useCodeScanner } from "react-native-vision-camera";
+import { storage } from "../../utils/storage";
 
 const CameraView = () => {
   const [isScanning, setIsScanning] = useState(true);
@@ -16,7 +16,7 @@ const CameraView = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const { onBarcodeSuccess, onBarcodeScanned } = route.params; 
+  const { onBarcodeSuccess, onBarcodeScanned } = route.params;
 
   useEffect(() => {
     const fetchQrCode = async () => {
@@ -32,17 +32,18 @@ const CameraView = () => {
   const codeScanner = useCodeScanner({
     codeTypes: ['code-128', 'qr'],
     onCodeScanned: (codes) => {
-      if (codes.length > 0) {
+      if (codes.length > 0 && isScanning) {
         setIsScanning(false);
+
         const { value } = codes[0];
-          
+
           if (storedQrCode && value === storedQrCode) {
-            onBarcodeSuccess(); 
+            onBarcodeSuccess();
           }  else {
             if (onBarcodeScanned && typeof onBarcodeScanned === 'function') {
-               onBarcodeScanned(value); 
+               onBarcodeScanned(value);
             }
-           
+
           }
       }
     },

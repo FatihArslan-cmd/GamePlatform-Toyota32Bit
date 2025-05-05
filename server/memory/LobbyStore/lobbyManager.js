@@ -215,13 +215,11 @@ const lobbyManager = {
                         let invitations = session.lobbyInvitations;
                         const initialInvitationCount = invitations.length;
                         invitations = invitations.filter(invite => invite.lobbyCode !== deletedLobbyCode); // Silinen lobiye ait davetleri filtrele
-                        if (invitations.length !== initialInvitationCount) { // Eğer davetler silindiyse oturumu güncelle
+                        if (invitations.length !== initialInvitationCount) {
                             session.lobbyInvitations = invitations;
-                            sessionStore.set(sessionId, session, (err) => { // Oturumu güncelle
+                            sessionStore.set(sessionId, session, (err) => { 
                                 if (err) {
                                     console.error('Error updating session after lobby deletion:', err);
-                                    // Oturum güncelleme hatasını burada nasıl yöneteceğinize karar verin.
-                                    // Belki hatayı callback'e döndürmek veya sadece loglamak istersiniz.
                                 } else {
                                     updatedSessions++;
                                 }
@@ -230,9 +228,9 @@ const lobbyManager = {
                     }
                 }
                 console.log(`Lobby ${lobby.lobbyName} and related invitations cleaned up from ${updatedSessions} user sessions.`);
-                lobbyManager.saveLobbiesToSession(lobbies, (err) => { // Güncellenmiş lobi listesini kaydet
+                lobbyManager.saveLobbiesToSession(lobbies, (err) => { 
                     if (err) return callback(err);
-                    callback(null, true); // Başarılı silme durumunda true dönüyoruz
+                    callback(null, true); 
                 });
             });
         });
@@ -361,7 +359,7 @@ const lobbyManager = {
             }
 
             const now = Date.now();
-            const timeoutDuration = 2 * 60 * 60 * 1; 
+            const timeoutDuration = 2 * 10; 
 
             let updated = false;
             Object.keys(lobbies).forEach(ownerId => {

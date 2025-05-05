@@ -1,16 +1,19 @@
-import React, { useContext } from 'react';
-import { View, Image, ScrollView } from 'react-native';
-import { Avatar, Card, Text, TextInput, TouchableRipple } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UserContext } from '../../../../../context/UserContext';
-import { useTheme } from '../../../../../context/ThemeContext';
-import styles from '../styles/createPostStyles';
-import {useTranslation} from 'react-i18next'; // Import useTranslation
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React, { useContext } from "react";
+import styles from "../styles/createPostStyles";
+import { useTranslation } from "react-i18next";
+import { Image, ScrollView, View } from "react-native";
+import { Avatar, Card, Text, TextInput, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
+import { UserContext } from "../../../../../context/UserContext";
+import { isTablet } from "../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) => {
   const { user } = useContext(UserContext);
   const { colors } = useTheme();
-  const { t } = useTranslation(); // Use useTranslation hook
+  const { t } = useTranslation(); 
 
   const handleRemoveImage = () => {
     setSelectedImage(null);
@@ -20,7 +23,7 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
       <View style={styles.postArea}>
         <View style={styles.userSection}>
-          <Avatar.Image size={60} source={{ uri: user.profilePhoto }} style={styles.avatar}     resizeMode="contain" />
+          <Avatar.Image size={TABLET_DEVICE ? 60 : 40} source={{ uri: user.profilePhoto }} style={styles.avatar}     resizeMode="contain" />
           <TouchableRipple
             style={styles.dropdownButton}
             borderless={true}
@@ -31,7 +34,7 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
               <Text style={[styles.dropdownText, { color: 'black' }]}>
                 {t('communityScreen.everyone')}
               </Text>
-              <Icon name="chevron-down" size={24} color={colors.primary} />
+              <Icon name="chevron-down" size={TABLET_DEVICE ? 24 : 18} color={colors.primary} />
             </>
           </TouchableRipple>
         </View>

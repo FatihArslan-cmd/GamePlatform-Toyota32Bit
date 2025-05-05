@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet,TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { storage } from '../../../../../../utils/storage';
-import { useTheme } from '../../../../../../context/ThemeContext';
+import Icon from "react-native-vector-icons/MaterialIcons";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+import { storage } from "../../../../../../utils/storage";
+
+const TABLET_DEVICE = isTablet();
 
 const PermissionsIcon = ({ handlePermissionAction }) => {
   const [permissions, setPermissions] = useState({
@@ -46,7 +49,7 @@ const PermissionsIcon = ({ handlePermissionAction }) => {
 
         }}
       >
-        <Icon name={iconMap[key].name} size={80} color={colors.primary} /> 
+        <Icon name={iconMap[key].name} size={TABLET_DEVICE ? 80 : 60} color={colors.primary} /> 
       </TouchableOpacity>
     ));
 };

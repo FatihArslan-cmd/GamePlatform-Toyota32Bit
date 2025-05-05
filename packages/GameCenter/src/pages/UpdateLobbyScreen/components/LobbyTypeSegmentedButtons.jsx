@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { SegmentedButtons, Text } from 'react-native-paper';
-import { useLobbyUpdate } from '../context/LobbyUpdateContext';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { SegmentedButtons, Text } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useLobbyUpdate } from "../context/LobbyUpdateContext";
+
+const TABLET_DEVICE = isTablet(); 
 
 const LobbyTypeSegmentedButtons = () => {
   const { lobbyType, setLobbyType } = useLobbyUpdate();
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     marginBottom: 8,
   },
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
   },
   segmentedButtonLabel: {
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 16 : 10,
   },
 });
 

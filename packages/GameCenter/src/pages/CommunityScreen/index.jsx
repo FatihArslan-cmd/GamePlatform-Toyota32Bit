@@ -1,17 +1,20 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import Buttons from "./components/Buttons/Buttons";
+import ExplorerScreen from "./pages/ExplorerScreen/ExplorerScreen";
+import Header from "./components/Header/Header";
+import MakePost from "./components/Buttons/MakePost";
+import PagerView from "react-native-pager-view";
+import React, { useRef, useState } from "react";
+import RoomsScreen from "./pages/RoomsScreen/RoomsScreen";
+import useCommunityScreenAnimations from "./hooks/useCommunityScreenAnimations";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
+import { isTablet } from "../../utils/isTablet";
+
 import Animated, {
 } from 'react-native-reanimated';
-import PagerView from 'react-native-pager-view';
-import Header from './components/Header/Header';
-import RoomsScreen from './pages/RoomsScreen/RoomsScreen';
-import Buttons from './components/Buttons/Buttons';
-import ExplorerScreen from './pages/ExplorerScreen/ExplorerScreen';
-import useCommunityScreenAnimations from './hooks/useCommunityScreenAnimations';
-import MakePost from './components/Buttons/MakePost';
-import { useTheme } from '../../context/ThemeContext';
 
 const AnimatedScrollView = Animated.createAnimatedComponent(Animated.ScrollView);
+const TABLET_DEVICE = isTablet();
 
 const CommunityScreen = () => {
   const pagerRef = useRef(null);
@@ -87,7 +90,7 @@ const CommunityScreen = () => {
   );
 };
 
-const createStyles = (colors) => StyleSheet.create({ 
+const createStyles = () => StyleSheet.create({ 
   safeArea: {
     flex: 1,
   },
@@ -101,7 +104,7 @@ const createStyles = (colors) => StyleSheet.create({
   },
   buttonsBar: {
     position: 'absolute',
-    top: 80,
+    top: TABLET_DEVICE ? 80 : 90,
     left: 0,
     right: 0,
     zIndex: 1,
@@ -109,7 +112,7 @@ const createStyles = (colors) => StyleSheet.create({
   },
   pagerView: {
     flex: 1,
-    marginTop: 80,
+    marginTop: TABLET_DEVICE ? 80 : 90,
   },
 });
 

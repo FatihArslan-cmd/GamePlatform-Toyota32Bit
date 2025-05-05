@@ -137,6 +137,7 @@
     "friendAddedSuccessfully!": "Friend added successfully!"
   },
   "personalMessagePage": {
+    "title": "Invites",
     "noActiveInvites": "You have no active invites at the moment.",
     "accept": "Accept",
     "decline": "Decline",
@@ -350,6 +351,10 @@
     "scoreBoard": "Scoreboard",
     "point": "Point",
     "winner": "Winner",
-    "gameEnded": "Game ended by room owner, you are redirected to the homepage."
+    "gameEnded": "Game ended by room owner, you are redirected to the homepage.",
+    "drawAllNumbersButtonLabel": "Draw all numbers",
+    "drawAllNumbersModalTitle": "Draw All Numbers",
+    "drawAllNumbersModalText": "Are you sure you want to draw all numbers?",
+    "drawAllNumbersModalConfirm": "Draw All"
   }
 }

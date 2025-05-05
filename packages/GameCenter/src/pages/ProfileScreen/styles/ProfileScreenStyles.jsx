@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const styles = StyleSheet.create({
     container: {
@@ -9,17 +12,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 10,
         paddingBottom: 10,
     },
     topBarIcon: {
         margin: 0
-    },
-    title: {
-        fontSize: 28,
-        alignSelf: "center",
-        paddingLeft: 10,
-        fontFamily: 'Orbitron-ExtraBold'
     },
     profileSection: {
         alignItems: 'center',
@@ -30,14 +26,14 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     profileImage: {
-        width: 200,
-        height: 200,
+        width: TABLET_DEVICE ? 200 : 125,
+        height: TABLET_DEVICE ? 200 : 125,
         borderRadius: 100,
     },
     userNameText: {
-        fontSize: 42,
+        fontSize: TABLET_DEVICE ? 42 : 24,
         fontFamily: 'Orbitron-ExtraBold',
-        marginTop: 20,
+        marginTop: TABLET_DEVICE ? 20 : 5,
     },
     cameraIconContainer: {
         position: 'absolute',

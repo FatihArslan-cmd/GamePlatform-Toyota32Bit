@@ -1,9 +1,9 @@
-import React, { createContext, useState, useRef, useCallback ,useContext, useEffect} from 'react';
-import { getToken } from '../shared/states/api';
-import { ToastService } from './ToastService';
-import { storage } from '../utils/storage';
-import {useTranslation} from 'react-i18next';
-import { Vibration } from 'react-native';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Vibration } from "react-native";
+import { getToken } from "../shared/states/api";
+import { storage } from "../utils/storage";
+import { ToastService } from "./ToastService";
 
 export const BingoWebSocketContext = createContext();
 
@@ -24,8 +24,8 @@ export const BingoWebSocketProvider = ({ children }) => {
         }
         tokenRef.current = token;
 
-        const wsURL = `ws://10.0.2.2:3000/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
-
+        const wsURL = `ws://192.168.0.101:3000/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
+        
         setConnectionError(null);
         setIsConnected(false);
         setMessages([]);
@@ -48,13 +48,14 @@ export const BingoWebSocketProvider = ({ children }) => {
                 
                 if (messageData.type === 'user-connected') {
                     const username = messageData.username || messageData.userName || 'Kullanıcı';
+                    Vibration.vibrate(100); 
                     ToastService.show('success', `${username} ${t('bingoGame.joinedTheLobby')}`);
                 } else if (messageData.type === 'user-disconnected') {
                     const username = messageData.username || messageData.userName || 'Kullanıcı';
+                    Vibration.vibrate(100); 
                     ToastService.show('info', `${username} ${t('bingoGame.leftTheLobby')}`);
                 } else if (messageData.type === 'game-started') {
                     Vibration.vibrate(300); 
-                    console.log("Vibration triggered for game start.");
                 }
             } catch (error) {
                 setMessages((prevMessages) => [
@@ -65,7 +66,6 @@ export const BingoWebSocketProvider = ({ children }) => {
         };
         
         wsRef.current.onerror = (error) => {
-            console.error("WebSocket hatası:", error);
             setIsConnected(false);
             setConnectionError(error);
             wsRef.current = null;
@@ -130,8 +130,5 @@ export const BingoWebSocketProvider = ({ children }) => {
 
 export const useBingoWebSocket = () => {
     const context = useContext(BingoWebSocketContext);
-    if (!context) {
-        throw new Error("useWebSocket must be used within a BingoWebSocketProvider");
-    }
     return context;
 };

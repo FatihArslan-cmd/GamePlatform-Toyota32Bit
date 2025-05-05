@@ -1,10 +1,13 @@
-import React from 'react';
-import { Linking,StyleSheet } from 'react-native';
-import { Card, List,Snackbar,Text} from 'react-native-paper';
-import GrandientText from '../../../components/GrandientText';
-import LogoutButton from './LogOutButton';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import GrandientText from "../../../components/GrandientText";
+import LogoutButton from "./LogOutButton";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Linking, StyleSheet } from "react-native";
+import { Card, List, Snackbar, Text } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const AboutSection = () => {
     const [visible, setVisible] = React.useState(false);
@@ -20,12 +23,12 @@ const AboutSection = () => {
      <GrandientText
             text={t('settingsScreen.aboutSection.title')}
             colors={colors.languageTextGradient}
-            textStyle={{ fontSize: 22, color: colors.text }}
+            textStyle={{  fontSize: TABLET_DEVICE ? 22 : 18 , color: colors.text }}
             gradientDirection="horizontal"
           />
 
         <List.Item
-        titleStyle={[styles.titleStyle, { color: colors.text }]}
+          titleStyle={[styles.titleStyle, { color: colors.text }]}
           title={t('settingsScreen.aboutSection.appVersion')} 
           onPress={onToggleSnackBar}
           descriptionStyle={[styles.descriptionStyle, { color: colors.subText }]}
@@ -73,9 +76,12 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     fontFamily: 'Orbitron-ExtraBold',
+    fontSize: TABLET_DEVICE ? 18 : 12
   },
   descriptionStyle: {
     fontFamily: 'Orbitron-VariableFont_wght',
+    fontSize: TABLET_DEVICE ? 16 : 10
+
   }
 });
 

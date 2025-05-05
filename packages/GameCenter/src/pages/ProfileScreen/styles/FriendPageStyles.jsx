@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const styles = StyleSheet.create({
      container: {
@@ -27,14 +30,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     inviteButton: {
-        padding: 10,
+        padding: TABLET_DEVICE ? 10 : 5,
         borderRadius: 8,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 20,
     },
     inviteButtonText: {
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 8,
     },
     friendsList: {
         flex: 1,

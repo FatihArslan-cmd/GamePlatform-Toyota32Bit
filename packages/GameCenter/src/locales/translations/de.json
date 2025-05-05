@@ -137,6 +137,7 @@
     "friendAddedSuccessfully!": "Freund erfolgreich hinzugefügt!"
   },
   "personalMessagePage": {
+    "title": "Invites",
     "noActiveInvites": "Du hast momentan keine aktiven Einladungen.",
     "accept": "Annehmen",
     "decline": "Ablehnen",
@@ -350,6 +351,10 @@
     "scoreBoard": "Anzeigetafel",
     "point": "Punkt",
     "winner": "Gewinner",
-    "gameEnded": "Spiel vom Raumbesitzer beendet, du wirst zur Startseite weitergeleitet."
+    "gameEnded": "Spiel vom Raumbesitzer beendet, du wirst zur Startseite weitergeleitet.",
+    "drawAllNumbersButtonLabel": "Alle Zahlen ziehen",
+    "drawAllNumbersModalTitle": "Alle Zahlen ziehen",
+    "drawAllNumbersModalText": "Bist du sicher, dass du alle Zahlen ziehen möchtest?",
+    "drawAllNumbersModalConfirm": "Alle Zahlen"
   }
 }

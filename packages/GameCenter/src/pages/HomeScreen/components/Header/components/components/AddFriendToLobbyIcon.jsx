@@ -1,8 +1,11 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '../../../../../../context/ThemeContext'; 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { isTablet } from "../../../../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
   const { colors } = useTheme(); 
@@ -16,7 +19,7 @@ const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
         <View style={styles.buttonContent}>
           <Icon
             name={leftAction.iconName}
-            size={26}
+            size={TABLET_DEVICE ? 26 : 22}
             color={colors.success} 
           />
         </View>
@@ -28,7 +31,7 @@ const AddFriendToLobbyIcon = ({ leftAction, rightAction }) => {
         <View style={styles.buttonContent}>
           <Icon
             name={rightAction.iconName}
-            size={26}
+            size={TABLET_DEVICE ? 26 : 22}
             color={colors.info} 
           />
         </View>

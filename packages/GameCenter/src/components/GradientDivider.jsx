@@ -1,6 +1,9 @@
-import React, { memo, useMemo } from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from '../context/ThemeContext'; 
+import LinearGradient from "react-native-linear-gradient";
+import React, { memo, useMemo } from "react";
+import { useTheme } from "../context/ThemeContext";
+import { isTablet } from "../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const GradientDivider = ({ colorProps, horizontalMargin, height }) => {
   const { resolvedTheme, colors } = useTheme(); 
@@ -19,9 +22,9 @@ const GradientDivider = ({ colorProps, horizontalMargin, height }) => {
 
   const dividerStyle = useMemo(() => ({
     marginHorizontal: horizontalMargin ?? '20%',
-    height: height ?? 4,
+    height: height ?? (TABLET_DEVICE ? 4 : 2),
     borderRadius: 2,
-    marginVertical: 10,
+    marginVertical: TABLET_DEVICE ? 10 : 5,
   }), [horizontalMargin, height]);
 
   return (

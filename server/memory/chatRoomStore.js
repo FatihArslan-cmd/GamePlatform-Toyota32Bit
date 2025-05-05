@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const users = require('../utils/users');
 
-const rooms = new Map(); // Map<roomId, { id: string, name: string, creatorId: string, supporters: Set<userId>, topic: string, imageUrl: string, createdAt: Date }>
+const rooms = new Map(); 
 
 const topics = [
     "⚽ Sports",
@@ -18,7 +18,7 @@ const topics = [
 
 function createRoom(name, creatorId, topic, imageUrl) {
     const roomId = crypto.randomUUID();
-    const createdAt = new Date(); // Capture the creation timestamp
+    const createdAt = new Date(); 
     const newRoom = { id: roomId, name, creatorId, supporters: new Set([creatorId]), topic, imageUrl, createdAt }; // Odayı kuran kişi direkt supporter olarak ekleniyor.
     rooms.set(roomId, newRoom);
     return newRoom;
@@ -30,26 +30,24 @@ function getRoom(roomId) {
         return null;
     }
 
-    // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
     const supportersWithUsernames = Array.from(room.supporters).map(userId => {
         const username = Object.keys(users).find(key => users[key].id === userId);
         return {
             id: userId,
-            username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+            username: username || 'Unknown User'
         };
     });
 
     const roomWithSupporters = {
         ...room,
         supporters: supportersWithUsernames,
-        supporterCount: room.supporters.size // Add the supporter count
+        supporterCount: room.supporters.size 
     };
     return roomWithSupporters;
 }
 
 function getAllRooms() {
     return Array.from(rooms.values()).map(room => {
-      // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
       const supportersWithUsernames = Array.from(room.supporters).map(userId => {
           const username = Object.keys(users).find(key => users[key].id === userId);
           return {
@@ -66,12 +64,10 @@ function getAllRooms() {
     });
 }
 
-// Yeni fonksiyon: Kullanıcının yarattığı odaları getir
 function getRoomsByCreator(creatorId) {
     return Array.from(rooms.values())
         .filter(room => room.creatorId === creatorId)
         .map(room => {
-            // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
             const supportersWithUsernames = Array.from(room.supporters).map(userId => {
                 const username = Object.keys(users).find(key => users[key].id === userId);
                 return {
@@ -88,13 +84,10 @@ function getRoomsByCreator(creatorId) {
         });
 }
 
-// Yeni fonksiyon: Kullanıcının yaratmadığı odaları getir
-// Düzenleme: Kullanıcının supporter olmadıgı odaları getirir
 function getRoomsNotByCreator(userId) { // Function name remains same as requested, but parameter name changed to userId for clarity
     return Array.from(rooms.values())
         .filter(room => !room.supporters.has(userId)) // Changed filter condition to check if userId is NOT a supporter
         .map(room => {
-            // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
             const supportersWithUsernames = Array.from(room.supporters).map(supporterId => { // Renamed userId to supporterId for clarity in map
                 const username = Object.keys(users).find(key => users[key].id === supporterId);
                 return {
@@ -111,12 +104,10 @@ function getRoomsNotByCreator(userId) { // Function name remains same as request
         });
 }
 
-// Yeni fonksiyon: Kullanıcının supporter olduğu odaları getir
 function getRoomsBySupporter(userId) {
     return Array.from(rooms.values())
         .filter(room => room.supporters.has(userId))
         .map(room => {
-            // Supporter'ları ID ve kullanıcı adıyla birlikte döndür
             const supportersWithUsernames = Array.from(room.supporters).map(supporterId => {
                 const username = Object.keys(users).find(key => users[key].id === supporterId);
                 return {

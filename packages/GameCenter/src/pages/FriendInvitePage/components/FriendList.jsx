@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { List, Avatar, Button } from 'react-native-paper';
-import { useFriendInvite } from '../context/FriendInviteContext'; 
-import { useTheme } from '../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Avatar, Button, List } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
+import { useFriendInvite } from "../context/FriendInviteContext";
+
+const TABLET_DEVICE = isTablet();
 
 const FriendList = () => {
     const { colors } = useTheme(); 
@@ -20,7 +23,7 @@ const FriendList = () => {
                     titleStyle={styles.username}
                     left={() => (
                         <Avatar.Image
-                            size={70}
+                            size={TABLET_DEVICE ? 70 : 50}
                             source={{ uri: item.profilePhoto }}
                             style={styles.profileImageListItem}
                         />
@@ -59,7 +62,7 @@ const createStyles = (themeColors) => StyleSheet.create({
         marginRight: 15,
     },
     username: {
-        fontSize: 22,
+        fontSize: TABLET_DEVICE ? 20 : 16,
         fontFamily: 'Orbitron-ExtraBold',
         color: themeColors.text, 
     },
@@ -72,7 +75,7 @@ const createStyles = (themeColors) => StyleSheet.create({
     inviteButtonTextPaper: {
         color: themeColors.text, 
         fontFamily: 'Orbitron-ExtraBold',
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 14 : 12,
     },
 });
 

@@ -1,8 +1,11 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
-import { useTranslation } from 'react-i18next';
+import FastImage from "react-native-fast-image";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const LogoSection = () => {
   const { t } = useTranslation();
@@ -11,10 +14,11 @@ const LogoSection = () => {
     <View style={styles.logoContainer}>
       <FastImage
         source={require('../../../locales/shape_1136298.png')}
-        style={[styles.logoImage]}
+        style={styles.logoImage}
+        resizeMode={FastImage.resizeMode.contain}
       />
       <Text style={styles.subtitleText}>
-        {t('loginScreen.title')} 
+        {t('loginScreen.title')}
       </Text>
     </View>
   );
@@ -23,18 +27,19 @@ const LogoSection = () => {
 const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: TABLET_DEVICE ? 40 : 25,
   },
   logoImage: {
-    width: 150,
-    height: 150,
+    width: TABLET_DEVICE ? 150 : 100,
+    height: TABLET_DEVICE ? 150 : 100,
   },
   subtitleText: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 14,
     color: '#8a2be2',
     fontFamily: 'Orbitron-ExtraBold',
-    marginTop: 30,
-    letterSpacing: 3,
+    marginTop: TABLET_DEVICE ? 30 : 20,
+    letterSpacing: TABLET_DEVICE ? 3 : 2,
+    textAlign: 'center',
   },
 });
 

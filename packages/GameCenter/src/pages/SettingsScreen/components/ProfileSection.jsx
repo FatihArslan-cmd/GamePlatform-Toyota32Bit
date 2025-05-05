@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, StyleSheet,Image } from 'react-native';
-import { Card, TouchableRipple } from 'react-native-paper';
-import { useUser } from '../../../context/UserContext';
-import GrandientText from '../../../components/GrandientText';
-import LogoutButton from './LogOutButton';
-import { useTheme } from '../../../context/ThemeContext';
+import GrandientText from "../../../components/GrandientText";
+import LogoutButton from "./LogOutButton";
+import React from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { Card, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { useUser } from "../../../context/UserContext";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const ProfileSection = () => {
   const { user } = useUser();
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: TABLET_DEVICE ? 16 : 10,
     borderRadius: 16,
   },
   card: {
@@ -57,8 +60,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: 8,
-    width: 75,
-    height: 75,
+    width: TABLET_DEVICE ? 75 : 50,
+    height: TABLET_DEVICE ? 75 : 50,
   },
   userInfo: {
     flex: 1,
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   usernameText: {
-    fontSize: 26,
+    fontSize: TABLET_DEVICE ? 26 : 18,
     includeFontPadding: false,
   },
 });

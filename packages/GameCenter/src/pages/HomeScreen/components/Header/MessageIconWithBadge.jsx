@@ -1,15 +1,18 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { IconButton, Text } from 'react-native-paper';
-import { useFocusEffect } from '@react-navigation/native';
-import lobbyService from './services/lobbyService';
-import { useTheme } from '../../../../context/ThemeContext';
-import { useHeader } from './context/HeaderContext'; // Import the context hook
+import React, { useCallback, useState } from "react";
+import lobbyService from "./services/lobbyService";
+import { useFocusEffect } from "@react-navigation/native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { IconButton, Text } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+import { useHeader } from "./context/HeaderContext";
+
+const TABLET_DEVICE = isTablet(); 
 
 const MessageIconWithBadge = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const { colors } = useTheme(); 
-  const { navigateToPersonalMessagePage} = useHeader(); // Get context values and functions
+  const { navigateToPersonalMessagePage} = useHeader();
 
   const fetchInvitationCount = useCallback(async () => {
     try {
@@ -41,7 +44,7 @@ const MessageIconWithBadge = () => {
       <IconButton
         icon="bell-outline"
         iconColor={colors.text}
-        size={24}
+        size={TABLET_DEVICE ? 24 : 18}
         style={{margin: 0, opacity: 0.8}}
       />
       {unreadCount > 0 && (
@@ -67,8 +70,8 @@ const styles = StyleSheet.create({
     top: -2,
     backgroundColor: '#FF3B30', 
     borderRadius: 12,
-    minWidth: 20,
-    height: 20,
+    minWidth: TABLET_DEVICE ? 20 : 15,
+    height: TABLET_DEVICE ? 20 : 15,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 4,
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: '#FFFFFF', 
-    fontSize: 12,
+    fontSize: TABLET_DEVICE ? 12 : 8,
     fontFamily: 'Orbitron-ExtraBold',
   },
 });

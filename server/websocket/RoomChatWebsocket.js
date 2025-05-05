@@ -1,4 +1,3 @@
-// Backend (RoomChatWebsocketHandler.js) - UPDATED
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { getRoom } = require('../memory/chatRoomStore');

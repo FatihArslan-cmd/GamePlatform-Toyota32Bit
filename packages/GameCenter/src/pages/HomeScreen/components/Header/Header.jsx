@@ -1,17 +1,20 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Appbar } from 'react-native-paper';
-import GradientText from '../../../../components/GrandientText';
-import SearchBar from './SearchBar';
-import MenuComponent from './MenuComponent';
-import CreateLobbyModal from '../CreateLobbyModal/CreateLobbyModal';
-import BottomSheet from '../../../../components/BottomSheet';
-import ActiveLobbiesContent from './components/ActiveLobbiesContent';
-import JoinLobbyModal from './components/JoinLobbyModal';
-import MessageIconWithBadge from './MessageIconWithBadge';
-import AddFriendToLobbyIcon from './components/components/AddFriendToLobbyIcon';
-import { useTheme } from '../../../../context/ThemeContext';
-import { HeaderProvider, useHeader } from './context/HeaderContext';
+import ActiveLobbiesContent from "./components/ActiveLobbiesContent";
+import AddFriendToLobbyIcon from "./components/components/AddFriendToLobbyIcon";
+import BottomSheet from "../../../../components/BottomSheet";
+import CreateLobbyModal from "../CreateLobbyModal/CreateLobbyModal";
+import GradientText from "../../../../components/GrandientText";
+import JoinLobbyModal from "./components/JoinLobbyModal";
+import MenuComponent from "./MenuComponent";
+import MessageIconWithBadge from "./MessageIconWithBadge";
+import React from "react";
+import SearchBar from "./SearchBar";
+import { StyleSheet, View } from "react-native";
+import { Appbar } from "react-native-paper";
+import { useTheme } from "../../../../context/ThemeContext";
+import { isTablet } from "../../../../utils/isTablet";
+import { HeaderProvider, useHeader } from "./context/HeaderContext";
+
+const TABLET_DEVICE = isTablet(); 
 
 const HeaderContent = () => {
   const { colors } = useTheme();
@@ -33,7 +36,7 @@ const HeaderContent = () => {
           <GradientText
             text="Game Center"
             colors={colors.gameCenterText}
-            textStyle={{ fontSize: 28 }}
+            textStyle={{ fontSize: TABLET_DEVICE ? 28 : 20 }}
             gradientDirection="horizontal"
           />
           <View style={styles.rightActions}>

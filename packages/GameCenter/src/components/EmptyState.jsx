@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import LottieView from 'lottie-react-native';
-import { Text } from 'react-native-paper';
-
-import emptyStateAnimation from '../locales/lottie/EmptyState.json';
+import LottieView from "lottie-react-native";
+import React, { useEffect } from "react";
+import emptyStateAnimation from "../locales/lottie/EmptyState.json";
+import { StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
+import { isTablet } from "../utils/isTablet";
 
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
+
+const TABLET_DEVICE = isTablet();
 
 const EmptyStateComponent = React.memo(({ message, textColor = 'black' }) => { 
   const fadeAnim = useSharedValue(0);
@@ -49,16 +51,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   lottieAnimation: {
-    width: 250,
-    height: 250,
+    width: TABLET_DEVICE ? 250 : 150,
+    height: TABLET_DEVICE ? 250 : 150,
   },
   textStyle:{
-    fontSize:18,
+    fontSize: TABLET_DEVICE ? 18 : 12,
     marginTop:20,
     fontFamily: 'Orbitron-ExtraBold',
   }
 });
 
-// React.memo ile sarmalanmış componenti export ediyoruz
 const EmptyState = EmptyStateComponent;
 export default EmptyState;

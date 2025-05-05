@@ -1,11 +1,13 @@
-import React from 'react';
-import {  StyleSheet, TouchableOpacity} from 'react-native';
-import { Card, List } from 'react-native-paper';
-import GrandientText from '../../../components/GrandientText';
-import { ToastService } from '../../../context/ToastService';
-import GradientDivider from '../../../components/GradientDivider';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import GrandientText from "../../../components/GrandientText";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Card, List } from "react-native-paper";
+import { useTheme } from "../../../context/ThemeContext";
+import { ToastService } from "../../../context/ToastService";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 const NotificationSection = () => {
   const [pushEnabled, setPushEnabled] = React.useState(true);
@@ -40,7 +42,7 @@ const NotificationSection = () => {
         <GrandientText
           text={t('settingsScreen.notificationSection.title')} 
           colors={colors.languageTextGradient}
-          textStyle={{ fontSize: 22, color: colors.text }}
+          textStyle={{ fontSize: TABLET_DEVICE ? 22 : 18, color: colors.text }}
           gradientDirection="horizontal"
         />
         <TouchableOpacity onPress={handlePushToggle} style={styles.listItemContainer}>
@@ -91,19 +93,18 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: 16,
     marginHorizontal: 16,
-    marginVertical: 8,
   },
   titleStyle: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12
   },
   descriptionStyle: {
     fontFamily: 'Orbitron-VariableFont_wght',
-    fontSize: 12,
+    fontSize: TABLET_DEVICE ? 12 : 10,
   },
   rightTextStyle: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 12 : 10,
   },
 });
 
