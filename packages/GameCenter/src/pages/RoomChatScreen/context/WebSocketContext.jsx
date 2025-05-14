@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ToastService } from "../../../context/ToastService";
 import { getToken } from "../../../shared/states/api";
+import { baseURL } from "../../../utils/baseUrl";
 
 const WebSocketContext = createContext();
 
@@ -16,7 +17,7 @@ const WebSocketProvider = ({ children, roomId }) => {
             return;
         }
 
-        const websocketURL = `ws://192.168.0.101:3000/roomchat?roomId=${roomId}`;
+        const websocketURL = `ws://${baseURL}/roomchat?roomId=${roomId}`;
         ws.current = new WebSocket(websocketURL);
 
         ws.current.onopen = () => {

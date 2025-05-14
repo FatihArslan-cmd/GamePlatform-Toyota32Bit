@@ -1,4 +1,7 @@
 import { StyleSheet } from "react-native";
+import { isTablet } from "../../../utils/isTablet";
+
+const TABLET_DEVICE = isTablet();
 
 export const pageStyles = (colors) => StyleSheet.create({
   safeArea: {
@@ -20,11 +23,11 @@ export const invitationCardStyles = (colors) => StyleSheet.create({
     marginBottom: 16,
     borderRadius: 20,
     backgroundColor: colors.card,
-    marginTop: 75,
+    marginTop: TABLET_DEVICE ? 75 : 20,
   },
   inviterAvatar: {
-    width: 75,
-    height: 75,
+    width: TABLET_DEVICE ? 75 : 50,
+    height: TABLET_DEVICE ? 75 : 50,
     borderRadius: 100,
     marginVertical: 10,
   },
@@ -45,14 +48,14 @@ export const invitationCardStyles = (colors) => StyleSheet.create({
     alignItems: 'center',
   },
   inviteMessage: {
-    fontSize: 16,
+    fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     color: colors.text,
     marginBottom: 4,
     textAlign: 'center'
   },
   timestamp: {
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 14 : 10,
     textAlign: 'center',
     fontFamily: 'Orbitron-VariableFont_wght',
     opacity: 0.7,
@@ -78,7 +81,7 @@ export const invitationCardStyles = (colors) => StyleSheet.create({
   },
   buttonLabel: {
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: 14,
+    fontSize: TABLET_DEVICE ? 14 : 10,
     letterSpacing: 0.5,
     color: colors.text,
   },

@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import { useTranslation } from "react-i18next";
 import { Vibration } from "react-native";
 import { getToken } from "../shared/states/api";
+import { baseURL } from "../utils/baseUrl";
 import { storage } from "../utils/storage";
 import { ToastService } from "./ToastService";
 
@@ -24,7 +25,7 @@ export const BingoWebSocketProvider = ({ children }) => {
         }
         tokenRef.current = token;
 
-        const wsURL = `ws://192.168.0.101:3000/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
+        const wsURL = `ws://${baseURL}/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
         
         setConnectionError(null);
         setIsConnected(false);
