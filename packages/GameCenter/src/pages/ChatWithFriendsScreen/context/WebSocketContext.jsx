@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { ToastService } from "../../../context/ToastService";
 import { getToken } from "../../../shared/states/api";
+import { baseURL } from "../../../utils/baseUrl";
 
 const WebSocketContext = createContext(null);
 
@@ -28,7 +29,7 @@ export const WebSocketProvider = ({ children }) => {
 
         updateState({ connectionStatus: 'connecting' });
         
-        const ws = new WebSocket('ws://192.168.0.101:3000/friendchat');
+        const ws = new WebSocket(`ws://${baseURL}/friendchat`);
         socket.current = ws;
         const accessToken = getToken();
 

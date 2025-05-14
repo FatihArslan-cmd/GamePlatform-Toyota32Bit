@@ -18,9 +18,7 @@ import {
   checkInitialNotification,
 } from "./utils/Firebase/notificationHandlers.js";
 
-if (__DEV__) {
-  LogBox.ignoreAllLogs();
-}
+
 const App = () => {
 
 /*

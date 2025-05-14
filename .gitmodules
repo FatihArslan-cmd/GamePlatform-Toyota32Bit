@@ -1,0 +1,3 @@
+[submodule "packages/FallPanic"]
+	path = packages/FallPanic
+	url = https://github.com/FatihArslan-cmd/Fall-Panic

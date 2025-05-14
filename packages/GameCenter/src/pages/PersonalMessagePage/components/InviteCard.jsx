@@ -4,8 +4,11 @@ import { Image, View } from "react-native";
 import { Button, Card, Surface, Text } from "react-native-paper";
 import { useTheme } from "../../../context/ThemeContext";
 import { getTimeAgo } from "../../../utils/getTimeAgo";
+import { isTablet } from "../../../utils/isTablet";
 import { useLobbyInvite } from "../context/LobbyInviteContext";
 import { invitationCardStyles } from "../styles/InvitationsPageStyles";
+
+const TABLET_DEVICE = isTablet();
 
 const InviteCard = ({ invite }) => { 
   const { colors } = useTheme();

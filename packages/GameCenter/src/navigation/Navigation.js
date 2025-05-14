@@ -65,7 +65,7 @@ export default function Navigation() {
     <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
       <NavigationContainer  ref={navigationService.navigationRef}>
         <Stack.Navigator
-          initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Intro') : 'Intro'}
+          initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
           screenOptions={{
             headerShown: false,
           }}
