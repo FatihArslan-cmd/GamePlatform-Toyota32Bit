@@ -85,7 +85,7 @@ EMAIL_PASS=your_email_password
 To get a local copy up and running, follow these simple steps.
 
 ### <a id="installation"></a>⚙️ Installation
-
+It is recommended to install the project in a directory close to the system root (e.g., C:\GamePlatform on Windows) to avoid potential issues with long file paths, especially on Windows.
 1. Clone the repository:
     ```bash
     git clone https://github.com/FatihArslan-cmd/GamePlatform-Toyota32Bit.git
@@ -115,6 +115,8 @@ To get a local copy up and running, follow these simple steps.
 
 <hr>
 
+<a id="troubleshooting"></a>🚨 Troubleshooting
+react-native-reanimated Errors: If you encounter build errors or runtime issues specifically mentioning react-native-reanimated, try stopping the bundler (if it's running) and running the start command (yarn gamecenter) again. This can sometimes resolve caching or linking issues.
 
 ## <a id="contributing"></a>🤝 Contributing
 
