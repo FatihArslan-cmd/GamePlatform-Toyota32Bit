@@ -16,8 +16,8 @@ const ChatHeader = () => {
     const { colors } = useTheme();
     const { t } = useTranslation();
 
-    const getStatusText = () => friend.isOnline ? t('chatWithFriends.online') : t('chatWithFriends.online');
-    const getStatusColor = () => friend.isOnline ? 'green' : 'green';
+    const getStatusText = () => friend.isOnline ? t('chatWithFriends.online') : t('chatWithFriends.offline');
+    const getStatusColor = () => friend.isOnline ? 'green' : 'red';
 
 
     return (

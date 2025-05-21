@@ -12,17 +12,20 @@
       "de": "Bingo ist ein Glücksspiel, bei dem jeder Spieler Zahlen auf Karten mit den Zahlen abgleicht, die der Spielhost zufällig zieht, und die ausgewählten Zahlen mit Kacheln markiert."
     },
     "imageSource": "unnamed.png",
-    "backgroundColors": ["#4a148c", "#7c43bd", "#9b6bf5"]
+    "backgroundColors": ["#4a148c", "#7c43bd", "#9b6bf5"],
+    "textColor": "#4a148c"
   },
   {
-    "gameName": { "en": "Adventure Quest", "tr": "Macera Görevi", "de": "Abenteuerquest" },
+    "gameName": { "en": "Fall Panic", "tr": "Fall Panic", "de": "Fall Panic" },
     "instructions": {
       "en": "Embark on an epic Adventure Quest! Discover treasures and overcome obstacles.",
       "tr": "Efsanevi bir macera yolculuğuna çıkın! Hazineleri keşfedin ve engelleri aşın.",
       "de": "Begeben Sie sich auf eine epische Abenteuerreise! Entdecken Sie Schätze und überwinden Sie Hindernisse."
     },
-    "imageSource": "adventureQuestImage.png",
-    "backgroundColors": ["#007BFF", "#66A7FF", "#B3D4FF"]
+    "about": "Fall Panic is a game where players must navigate through various challenges and obstacles to reach the end goal. Players can collect items and power-ups along the way to enhance their abilities.",
+    "imageSource": "Fall-Horizantal.png",
+    "backgroundColors": ["#f28d0e", "#f28d0e", "#f28d0e"],
+    "textColor": "#d73901"
   },
   {
     "gameName": { "en": "Space Explorers", "tr": "Uzay Kaşifleri", "de": "Weltraumforscher" },
@@ -31,7 +34,9 @@
       "tr": "Uzay Kaşifleri ile yıldızlara yolculuk yapın! Yeni dünyaları keşfedin.",
       "de": "Reisen Sie zu den Sternen in Weltraumforscher! Entdecken Sie neue Welten."
     },
+    "about": "Space Explorers is a thrilling game where players embark on a journey through the cosmos, discovering new planets and overcoming challenges.",
     "imageSource": "spaceExplorersImage.png",
-    "backgroundColors": ["#222222", "#434343", "#6B6B6B"]
+    "backgroundColors": ["#00B694", "#00B694", "#00B694"],
+    "textColor": "#00B694"
   }
 ]

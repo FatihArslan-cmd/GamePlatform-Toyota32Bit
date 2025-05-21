@@ -1,11 +1,11 @@
-import React from 'react';
-import { useRoute } from '@react-navigation/native';
-import GameDetailsLayout from './components/GameDetailsLayout';
-import { GameDetailsProvider } from './context/GameDetailsContext';
+import GameDetailsLayout from "./components/GameDetailsLayout";
+import React from "react";
+import { useRoute } from "@react-navigation/native";
+import { GameDetailsProvider } from "./context/GameDetailsContext";
 
 export default function GameDetails() {
   const route = useRoute();
-  const { gameName, explanation, imageSource,backgroundColors } = route.params;
+  const { gameName,explanation, imageSource,backgroundColors,textColor,about } = route.params;
 
   return (
     <GameDetailsProvider>
@@ -14,6 +14,8 @@ export default function GameDetails() {
         explanation={explanation}
         imageSource={imageSource}
         backgroundColors={backgroundColors}
+        textColor={textColor}
+        about={about}
       />
     </GameDetailsProvider>
   );

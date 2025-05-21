@@ -25,7 +25,7 @@ const ScrollArrow = ({ direction, onPress }) => {
   );
 };
 
-const useStyles = (colors) => StyleSheet.create({
+const useStyles = () => StyleSheet.create({
   arrow: {
     position: 'absolute',
     zIndex: 1,

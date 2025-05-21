@@ -9,7 +9,7 @@ import { styles } from "../styles";
 
 const TABLET_DEVICE = isTablet();
 
-export default function TabNavigation({ explanation }) {
+export default function TabNavigation({ explanation,textColor }) {
   const { activeTab, setActiveTab } = useGameDetails();
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ export default function TabNavigation({ explanation }) {
           fontSize: FontSize // Font boyutu eklendi
         }}
         icon="information"
-        theme={{ colors: { primary: colors.gameDetailsButton, text: colors.text, onSurface: colors.text } }}
+        theme={{ colors: { primary: textColor, text: colors.text, onSurface: colors.text } }}
       >
         {t('gameDetailsScreen.start')}
       </Button>

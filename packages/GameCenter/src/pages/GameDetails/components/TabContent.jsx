@@ -1,14 +1,14 @@
-import React from 'react';
-import { View} from 'react-native';
-import { useGameDetails } from '../context/GameDetailsContext';
-import AboutTab from './tabs/AboutTab';
-import LobbiesTab from './tabs/LobbiesTab';
-import HistoryTab from './tabs/HistoryTab';
-import SettingsTab from './tabs/SettingsTab/SettingsTab';
-import { styles } from '../styles';
-import { useTheme } from '../../../context/ThemeContext'; // Import useTheme
+import AboutTab from "./tabs/AboutTab";
+import HistoryTab from "./tabs/HistoryTab";
+import LobbiesTab from "./tabs/LobbiesTab";
+import React from "react";
+import SettingsTab from "./tabs/SettingsTab/SettingsTab";
+import { View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
+import { useGameDetails } from "../context/GameDetailsContext";
+import { styles } from "../styles";
 
-export default function TabContent({ explanation }) {
+export default function TabContent({ explanation,textColor ,about}) {
   const { activeTab } = useGameDetails();
   const { colors } = useTheme();
 
@@ -17,7 +17,7 @@ export default function TabContent({ explanation }) {
 
     switch (activeTab) {
       case 'about':
-        return <AboutTab explanation={explanation} />;
+        return <AboutTab explanation={explanation} textColor={textColor} about={about} />;
       case 'lobbies':
         return shouldRenderTabs ? <LobbiesTab /> : null;
       case 'history':

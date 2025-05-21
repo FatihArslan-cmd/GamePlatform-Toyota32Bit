@@ -9,16 +9,16 @@ import { useTheme } from "../../../../context/ThemeContext";
 import { ToastService } from "../../../../context/ToastService";
 import { styles } from "../../styles";
 
-export default function AboutTab({ explanation }) {
-  const formattedAbout = Array.isArray(explanation) ? explanation : [explanation];
+export default function AboutTab({ explanation, textColor , about}) {
+  const formattedExplanation = Array.isArray(explanation) ? explanation : [explanation];
   const { colors } = useTheme();
   const [isStartingGame, setIsStartingGame] = useState(false);
   const { t } = useTranslation();
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   const handleStartGame = async () => {
     if (!explanation) {
-      navigation.navigate('Settings');
+      navigation.navigate('FallPanicScreen');
       return;
     }
 
@@ -41,9 +41,18 @@ export default function AboutTab({ explanation }) {
 
   return (
     <View style={[styles.aboutContainer, { paddingBottom: 80 }]}>
-      {explanation ? ( 
+
+      {about ? (
+        <Surface style={[styles.modernInstructionItem, { backgroundColor: colors.card, marginBottom: 20 }]} elevation={2}>
+           <Text style={[styles.modernInstructionText, { color: colors.text }]}>
+             {about}
+           </Text>
+        </Surface>
+      ) : null}
+
+      {explanation ? (
         <View style={styles.instructionWrapper}>
-          {formattedAbout.map((item, index) => (
+          {formattedExplanation.map((item, index) => (
             <Surface key={index} style={[styles.modernInstructionItem,{backgroundColor:colors.card}]} elevation={2}>
               <Text style={[styles.modernInstructionText,{color:colors.text}]}>{item}</Text>
             </Surface>
@@ -58,7 +67,7 @@ export default function AboutTab({ explanation }) {
        <Button
         mode="contained"
         onPress={handleStartGame}
-        style={styles.startGameButton}
+        style={[styles.startGameButton, { backgroundColor: textColor }]}
         contentStyle={styles.buttonContent}
         labelStyle={styles.buttonLabel}
         icon="gamepad-variant"
