@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
       },
       title: {
          fontSize: TABLET_DEVICE ? 28 : 20,
-        marginBottom: 24,
+        marginBottom: 8,
         textAlign: 'center',
         letterSpacing: 0.5,
         fontFamily: 'Orbitron-ExtraBold'
@@ -84,26 +84,25 @@ export const styles = StyleSheet.create({
         padding: 16,
         marginBottom: 24,
       },
-      modernInstructionItem: {
+    modernInstructionItem: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 16,
-        borderRadius: 15,
+        borderRadius: 33,
         overflow: 'hidden',
+        borderWidth: 1,
       },
       instructionNumberContainer: {
         padding: 16,
         justifyContent: 'center',
         alignItems: 'center',
       },
- 
       modernInstructionText: {
         flex: 1,
         padding: TABLET_DEVICE ? 16 : 8,
         fontSize: TABLET_DEVICE ? 16 : 11,
-        lineHeight: TABLET_DEVICE ? 24 : 18,
-        color: '#333333',
-        fontFamily: 'Orbitron-VariableFont_wght',
+        lineHeight: TABLET_DEVICE ? 32 : 24,
+        fontFamily: 'Orbitron-ExtraBold',
       },
       modernLobbyCard: {
         marginHorizontal: 16,

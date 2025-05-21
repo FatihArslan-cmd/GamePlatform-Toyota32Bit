@@ -26,7 +26,7 @@ const FromTheCreator = () => {
 
   const buttonColorSets = [
     ['#FF6F61', '#FFD700'],
-    ['#6A5ACD', '#ADD8E6'],
+    ['#d73901', '#d73901'],
     ['#3CB371', '#90EE90'],
     ['#DA70D6', '#FFB6C1'],
     ['#FFA07A', '#FA8072'],
@@ -59,6 +59,8 @@ const FromTheCreator = () => {
                 buttonText={t('homeScreen.exploreNow')}
                 buttonColors={buttonColorSets[index % buttonColorSets.length]}
                 backgroundColors={game.backgroundColors}
+                textColor={game.textColor}
+                about={game.about}
               />
             </View>
           ))}

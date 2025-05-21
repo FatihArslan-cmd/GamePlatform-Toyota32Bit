@@ -45,7 +45,8 @@ const GameItem = memo(({ item }) => {
         gameName:item.name,
         about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
         imageSource : {uri: item.image_background},
-        backgroundColors: ["#007BFF", "#66A7FF", "#B3D4FF"]
+        backgroundColors: ["black", "black", "black"],
+        textColor:"black"
       });
     }}>
       <AnimatedSurface style={[styles.surface, animatedStyle]} elevation={4} >

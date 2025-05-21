@@ -1,14 +1,15 @@
 import AdvancedPagerView from "../pages/IntroScreen/components/AdvancedPagerView.jsx";
 import BarcodeScan from "../pages/BarcodeScanScreen/BarcodeScan.jsx";
+import BingoScreen from "../pages/GameScreen/BingoScreen";
 import BootSplash from "react-native-bootsplash";
 import ChatScreen from "../pages/ChatWithFriendsScreen/pages/ChatScreen.jsx";
 import ChatWithFriendsScreen from "../pages/ChatWithFriendsScreen/index.jsx";
 import CountDownSplashScreen from "../pages/GameScreen/CountDownSplashScreen.jsx";
 import CreatePostScreen from "../pages/CommunityScreen/pages/CreatePostScreen/index.jsx";
 import CreateRoomScreen from "../pages/CommunityScreen/pages/CreateRoomScreen/CreateRoomScreen.js";
+import FallPanicScreen from "../pages/GameScreen/FallPanicScreen.jsx";
 import FriendInvite from "../pages/FriendInvitePage/index.jsx";
 import GameDetails from "../pages/GameDetails/GameDetails.jsx";
-import GameScreen from "../pages/GameScreen/index.jsx";
 import LoadingFullScreen from "../components/LoadingFullScreen.jsx";
 import LoginScreen from "../pages/LoginScreen/index.jsx";
 import PersonalMessagePage from "../pages/PersonalMessagePage/index.jsx";
@@ -65,7 +66,7 @@ export default function Navigation() {
     <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
       <NavigationContainer  ref={navigationService.navigationRef}>
         <Stack.Navigator
-          initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
+          initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Intro') : 'Intro'}
           screenOptions={{
             headerShown: false,
           }}
@@ -121,6 +122,13 @@ export default function Navigation() {
               animation: 'fade',
             }}
           />   
+                 <Stack.Screen
+            name="FallPanicScreen"
+            component={FallPanicScreen}
+            options={{
+              animation: 'slide_from_right',
+            }}
+          />  
           <Stack.Screen
             name="CreateRoom"
             component={CreateRoomScreen}
@@ -135,8 +143,8 @@ export default function Navigation() {
               animation: 'slide_from_bottom', 
             }}
           />
-        <Stack.Screen name="GameScreen"
-         component={GameScreen}
+        <Stack.Screen name="BingoScreen"
+         component={BingoScreen}
             options={{
               animation: 'fade',
             }}

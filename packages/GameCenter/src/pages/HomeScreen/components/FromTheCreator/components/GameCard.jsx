@@ -8,7 +8,7 @@ import { isTablet } from "../../../../../utils/isTablet";
 
 const TABLET_DEVICE = isTablet();
 
-const GameCard = ({ gameName, instructions, explanation, imageSource, buttonText, onButtonPress, buttonColors, backgroundColors }) => {
+const GameCard = ({ gameName,textColor,about, instructions, explanation, imageSource, buttonText, onButtonPress, buttonColors, backgroundColors }) => {
   const navigation = useNavigation();
 
   const defaultButtonColors = ['#4A00E0', '#FF8C00'];
@@ -17,12 +17,10 @@ const GameCard = ({ gameName, instructions, explanation, imageSource, buttonText
   return (
     <Card style={styles.card}>
       <FastImage style={styles.imageBackground} source={imageSource}>
-        {/* Top part overlay removed */}
       </FastImage>
 
       <View style={styles.cardContentContainer}>
         <FastImage style={styles.contentBackgroundImage} source={imageSource} />
-        {/* Arka plana daha çok kaplı gri opaklık katmanı eklendi */}
         <View style={styles.greyOverlay} />
 
         <View style={styles.cardContent}>
@@ -40,7 +38,9 @@ const GameCard = ({ gameName, instructions, explanation, imageSource, buttonText
                   imageSource,
                   buttonText,
                   onButtonPress,
-                  backgroundColors
+                  backgroundColors,
+                  textColor,
+                  about
                 });
               }}
             >

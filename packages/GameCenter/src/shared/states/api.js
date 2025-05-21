@@ -8,8 +8,8 @@ let isRefreshing = false;
 let failedQueue = [];
 
 const api = axios.create({
-  baseURL: `http://${baseURL}/api`,
-  timeout: 5000,
+ baseURL: `http://${baseURL}/api`,
+   timeout: 5000,
 });
 
 api.interceptors.request.use(
