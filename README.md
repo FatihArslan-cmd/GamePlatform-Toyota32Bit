@@ -28,7 +28,7 @@
 
 This project was developed using a monorepo structure with Lerna. GamePlatform is built with React Native and includes submodules such as the game Tombala (Bingo).
 
-GamePlatform is a gaming platform that currently includes one game: Tombala. To get started, launch the server and log into the app. You can create or join a lobby, add friends using a barcode or code, and exchange private messages via WebSocket. Group messaging is also supported.
+GamePlatform is a gaming platform that currently includes 2 games: Tombala. To get started, launch the server and log into the app. You can create or join a lobby, add friends using a barcode or code, and exchange private messages via WebSocket. Group messaging is also supported.
 
 Once a lobby is created, the host can start the game, and all players will be navigated to the game screen. The first player to get Bingo wins the game.
 
@@ -98,6 +98,7 @@ It is recommended to install the project in a directory close to the system root
     ```bash
     cd packages
     git clone https://github.com/FatihArslan-cmd/Bingo.git
+    git clone https://github.com/FatihArslan-cmd/Fall-Panic.git
     ```
 4. Return to the root directory and install dependencies:
     ```bash
@@ -106,6 +107,7 @@ It is recommended to install the project in a directory close to the system root
 5. Start Server:
     ```bash
     cd server
+    npm install
     node .\server.js
     ```
 6. Start the project:
@@ -137,7 +139,6 @@ To contribute:
 
   "@notifee/react-native": "^9.1.8",  
   "@react-native-clipboard/clipboard": "^1.15.0",  
-  "@react-native-community/blur": "^4.4.1",  
   "@react-native-community/datetimepicker": "^8.2.0",  
   "@react-native-community/netinfo": "^6.0.6",  
   "@react-native-firebase/app": "^21.7.2",  
@@ -149,7 +150,8 @@ To contribute:
   "@shopify/flash-list": "^1.7.2",  
   "@shopify/react-native-skia": "^1.7.6",  
   "axios": "^1.7.9",  
-  "bingo": "file:../Bingo",  
+  "bingo": "file:../Bingo",
+  "fall-panic": "file:../Fall-Panic",
   "i18next": "^24.2.3",  
   "lottie-react-native": "^7.1.0",  
   "react": "18.3.1",  
@@ -164,7 +166,7 @@ To contribute:
   "react-native-mmkv": "^3.2.0",  
   "react-native-pager-view": "^6.6.1",  
   "react-native-paper": "^5.12.5",  
-  "react-native-qrcode-skia": "^0.3.1",  
+  "react-native-qrcode-svg": "^6.3.14",  
   "react-native-reanimated": "^3.16.6",  
   "react-native-safe-area-context": "^5.0.0",  
   "react-native-screens": "^4.4.0",  
