@@ -37,6 +37,8 @@ The backend is developed using Express.js and handles real-time communication us
 🔗 Check out the Tombala (Bingo) game on GitHub:
 <a href="https://github.com/FatihArslan-cmd/Bingo" target="_blank">Tombala GitHub Repository</a>
 
+🔗 Check out the Fall Panic game on GitHub:
+<a href="https://github.com/FatihArslan-cmd/Fall-Panic#" target="_blank">Fall Panic GitHub Repository</a>
 For the full experience, download and try out the app!
 <hr>
 
