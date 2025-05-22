@@ -5,7 +5,7 @@ const config = {
   watchFolders: [
     path.resolve(__dirname, '../../node_modules'),
     path.resolve(__dirname, '../Bingo'),
-    path.resolve(__dirname, '../FallPanic'),
+    path.resolve(__dirname, '../Fall-Panic'),
   ],
   resolver: {
     extraNodeModules: {
