@@ -2,6 +2,8 @@ const generateTombalaCard = require('../../utils/generateTombalaCard');
 const lobbyManager = require('./lobbyManager');
 const { sessionStore } = require('../../config/sessionConfig');
 const COLORS = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#33FFF3', '#FF8C33', '#8C33FF', '#33A1FF'];
+const { sendNotificationToUser } = require('../../controller/notificationController');
+
 
 const lobbyGameManager = {
     startGame: (lobbyCode, callback) => {
@@ -12,6 +14,13 @@ const lobbyGameManager = {
             if (!lobby) {
                 return callback(new Error('Lobby not found'));
             }
+            if (!lobby.members.some(member => member.id === lobby.ownerId)) {
+                 return callback(new Error('Lobby owner is not in the lobby'));
+            }
+             if (lobby.ownerId !== lobby.members.find(member => member.id === lobby.ownerId).id) {
+                 return callback(new Error('You must be the lobby owner to start the game'));
+             }
+
             if (lobby.gameStarted) {
                 return callback(new Error('Game has already started'));
             }
@@ -36,6 +45,32 @@ const lobbyGameManager = {
 
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
+
+                 const notificationTitle = "Game Started!";
+                 const notificationBody = `The game has started in "${lobby.lobbyName || lobby.code}". Let's play! 🎉`;
+
+                 const notificationData = {
+                      type: 'game_started',
+                      lobbyCode: lobby.code,
+                      lobbyName: lobby.lobbyName || '',
+                      gameName: lobby.gameName || '',
+                 };
+
+                 lobby.members.forEach(member => {
+                      if (member.id !== lobby.ownerId) {
+                           sendNotificationToUser({
+                               targetUserId: member.id,
+                               title: notificationTitle,
+                               body: notificationBody,
+                               data: notificationData,
+                               sourceInfo: 'game_started',
+                           })
+                           .then(response => {})
+                           .catch(notificationError => {});
+                      }
+                 });
+
+
                 callback(null, lobby);
             });
         });
@@ -244,7 +279,7 @@ const lobbyGameManager = {
 
 
                 lobbyGameManager.recordGameHistory(lobbyCode, lobbies, 'Won Bingo', (historyErr) => {
-                    if (historyErr) console.error("Game history saving error:", historyErr);
+                    if (historyErr) {}
                     lobby.gameStarted = false;
                     lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
                         if (saveErr) return callback(saveErr);
@@ -364,7 +399,6 @@ const lobbyGameManager = {
         lobby.members.forEach(member => {
             sessionStore.get(member.id, (err, userSession) => {
                 if (err) {
-                    console.error(`Session error getting user ${member.id} for game history:`, err);
                     return;
                 }
                 const gameHistory = userSession?.gameHistory || [];
@@ -384,9 +418,7 @@ const lobbyGameManager = {
                     result: result
                 });
                 sessionStore.set(member.id, { ...userSession, gameHistory: gameHistory }, (setErr) => {
-                    if (setErr) {
-                        console.error(`Session error saving game history for user ${member.id}:`, setErr);
-                    }
+                    if (setErr) {}
                 });
             });
         });
@@ -418,7 +450,7 @@ endGame: (lobbyCode, userId, callback) => {
             }
 
             lobbyGameManager.recordGameHistory(lobbyCode, lobbies, 'Game Ended', (historyErr) => {
-                if (historyErr) console.error("Game history saving error:", historyErr);
+                if (historyErr) {}
                 lobby.gameStarted = false;
                 lobbyManager.saveLobbiesToSession(lobbies, (saveErr) => {
                     if (saveErr) return callback(saveErr);
