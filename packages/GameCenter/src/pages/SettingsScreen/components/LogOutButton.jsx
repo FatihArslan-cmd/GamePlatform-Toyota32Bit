@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { List } from "react-native-paper";
 import { useTheme } from "../../../context/ThemeContext";
 import { UserContext } from "../../../context/UserContext";
+import { removeFcmTokenFromServer } from "../../../utils/Firebase/notificationApi";
 import { isTablet } from "../../../utils/isTablet";
 
 const TABLET_DEVICE = isTablet();
@@ -19,6 +20,7 @@ const LogoutButton = ({ showText = true, showChevron = true }) => {
 
   const handleLogout = () => {
     logoutUser();
+    removeFcmTokenFromServer();
     navigation.reset({
       index: 0,
       routes: [{ name: 'Login' }],

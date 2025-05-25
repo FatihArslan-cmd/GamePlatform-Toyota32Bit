@@ -8,7 +8,6 @@ import ThemeSection from "./components/ThemeSection";
 import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Surface } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AnimatedSection } from "../../components/Animations/EnteringPageAnimation";
 import { useTheme } from "../../context/ThemeContext";
 import { isTablet } from "../../utils/isTablet";
@@ -16,7 +15,6 @@ import { isTablet } from "../../utils/isTablet";
 const TABLET_DEVICE = isTablet();
 
 const SettingsScreen = () => {
-  const insets = useSafeAreaInsets();
   const { theme, colors } = useTheme();
 
   useEffect(() => {

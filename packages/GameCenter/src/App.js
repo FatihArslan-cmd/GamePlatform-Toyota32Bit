@@ -23,7 +23,7 @@ if (__DEV__) {
 }
 const App = () => {
 
-/*
+
   useEffect(() => {
     createDefaultChannel();
     requestUserPermission();
@@ -31,7 +31,7 @@ const App = () => {
     setupBackgroundNotifications();
     checkInitialNotification();
   }, []);
-*/
+
 
   return (
     <BingoWebSocketProvider>
