@@ -1,6 +1,8 @@
 const { sessionStore } = require('../../config/sessionConfig');
-const lobbyManager = require('./lobbyManager'); 
+const lobbyManager = require('./lobbyManager');
 const { getUserDetails } = require('../../utils/getUserDetails');
+const { sendNotificationToUser } = require('../../controller/notificationController');
+
 
 const lobbyInvitationManager = {
     sendLobbyInvite: (inviterUserId, invitedUserId, lobbyCode, callback) => {
@@ -15,27 +17,63 @@ const lobbyInvitationManager = {
                 return callback(new Error('Lobby code does not match inviter\'s current lobby'));
             }
 
+            const inviterDetails = getUserDetails(inviterUserId);
+            if (!inviterDetails) {
+                 console.error(`Inviter user details not found for ID: ${inviterUserId}`);
+                 return callback(new Error('Inviter user details not found.'));
+            }
+            const inviterUsername = inviterDetails.username;
+            const inviterProfilePhoto = inviterDetails.profilePhoto;
+
 
             sessionStore.get(invitedUserId, (err, invitedUserSession) => {
                 if (err) return callback(err);
 
                 const invitations = invitedUserSession?.lobbyInvitations || [];
-                if (invitations.some(invite => invite.lobbyCode === lobbyCode && invite.inviterUserId === inviterUserId)) {
-                    return callback(new Error('Invitation already sent to this user for this lobby'));
+                 if (invitations.some(invite => invite.lobbyCode === lobbyCode && invite.inviterUserId === inviterUserId && invite.status === 'pending')) {
+                    return callback(new Error('Pending invitation already sent to this user for this lobby'));
                 }
 
                 const newInvitation = {
                     lobbyCode: lobbyCode,
                     inviterUserId: inviterUserId,
-                    inviterUsername: getUserDetails(inviterUserId).username, 
+                    inviterUsername: inviterUsername,
                     timestamp: Date.now(),
                     status: 'pending',
                 };
                 invitations.push(newInvitation);
 
                 sessionStore.set(invitedUserId, { ...invitedUserSession, lobbyInvitations: invitations }, (err) => {
-                    if (err) return callback(err);
-                    callback(null, newInvitation);
+                    if (err) {
+                        console.error('Error saving invitation to session store:', err);
+                        return callback(err);
+                    }
+                    const notificationTitle = "Lobby Invitation";
+                    const notificationBody = `${inviterUsername} invited you to the lobby "${inviterLobby.lobbyName || lobbyCode}"! 🎉`;
+                    const notificationData = {
+                         type: 'lobby_invite',
+                         lobbyCode: lobbyCode,
+                         inviterUserId: inviterUserId.toString(),
+                         inviterUsername: inviterUsername,
+                         inviterProfilePhoto: inviterProfilePhoto || '',
+                         lobbyName: inviterLobby.lobbyName || '',
+                    };
+
+                    sendNotificationToUser({
+                        targetUserId: invitedUserId,
+                        title: notificationTitle,
+                        body: notificationBody,
+                        data: notificationData,
+                        sourceInfo: 'lobby_invite',
+                    })
+                    .then(response => {
+                        console.log(`Notification sent successfully to user ID ${invitedUserId} for lobby ${lobbyCode}:`, response);
+                         callback(null, newInvitation);
+                    })
+                    .catch(notificationError => {
+                        console.error(`Failed to send notification to user ID ${invitedUserId} for lobby ${lobbyCode}:`, notificationError);
+                         callback(null, newInvitation);
+                    });
                 });
             });
         });
@@ -47,20 +85,21 @@ const lobbyInvitationManager = {
             const invitations = userSession?.lobbyInvitations || [];
             const pendingInvitations = invitations.filter(invite => invite.status === 'pending');
 
-            lobbyManager.getLobbiesFromSession((err, lobbies) => { // Lobbies'i buradan alıyoruz
+            lobbyManager.getLobbiesFromSession((err, lobbies) => {
                 if (err) return callback(err);
 
                 const enrichedInvitations = pendingInvitations.map(invite => {
                     const lobby = Object.values(lobbies).find(l => l.code === invite.lobbyCode);
-                    const inviterDetails = getUserDetails(invite.inviterUserId); // Get inviter details
+                    const inviterDetails = getUserDetails(invite.inviterUserId);
 
-                    const enrichedInvite = { ...invite, lobbyName: lobby?.lobbyName }; // lobbyName'i ekliyoruz
+                    const enrichedInvite = { ...invite, lobbyName: lobby?.lobbyName };
 
                     if (inviterDetails) {
-                        enrichedInvite.inviterProfilePhoto = inviterDetails.profilePhoto; // Add inviter's profile photo
+                        enrichedInvite.inviterProfilePhoto = inviterDetails.profilePhoto;
                     } else {
-                        enrichedInvite.inviterProfilePhoto = null; // or some default if user not found
+                        enrichedInvite.inviterProfilePhoto = null;
                     }
+
                     return enrichedInvite;
                 });
                 callback(null, enrichedInvitations);
@@ -68,7 +107,7 @@ const lobbyInvitationManager = {
         });
     },
 
-    acceptLobbyInvite: (userId, lobbyCode, callback) => {
+     acceptLobbyInvite: (userId, lobbyCode, callback) => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) return callback(err);
 
@@ -86,26 +125,40 @@ const lobbyInvitationManager = {
                     return callback(new Error('No pending invitation found for this lobby'));
                 }
 
-                const invitation = invitations[invitationIndex];
-                invitations[invitationIndex].status = 'accepted'; // Davet durumunu 'accepted' olarak güncelle
+                invitations[invitationIndex].status = 'accepted';
 
-                lobbyManager.joinLobby(userId, lobbyCode, { isInvite: true }, (joinErr, joinedLobby) => { // isInvite true olarak ayarlandı
+                lobbyManager.joinLobby(userId, lobbyCode, { isInvite: true }, (joinErr, joinedLobby) => {
                     if (joinErr) {
-                        return callback(joinErr); // joinLobby hatasını callback'e ilet
+                        return callback(joinErr);
                     }
 
-                    // Invitation temizleme işlemi buraya taşındı
-                    userSession.lobbyInvitations = invitations.filter(
-                        invite => !(invite.lobbyCode === lobbyCode && invite.status === 'pending')
-                    );
-                    sessionStore.set(userId, userSession, (setErr) => {
-                        if (setErr) {
-                            console.error('Session error updating invitations:', setErr);
-                            // Session güncelleme hatası durumunda ne yapılacağına karar verin.
-                        } else {
-                            console.log(`Pending invitations for lobby ${lobbyCode} removed for user ${userId} after joining.`);
+                    sessionStore.get(userId, (getSessionErr, userSession) => {
+                        if (getSessionErr) {
+                            console.error('Session error getting user session for invite acceptance:', getSessionErr);
+                            return callback(null, joinedLobby);
                         }
-                        callback(null, joinedLobby); // Başarılı katılım ve davet güncellemesi sonrası lobiyi döndür
+
+                        let invitations = userSession?.lobbyInvitations || [];
+                        const invitationIndex = invitations.findIndex(invite => invite.lobbyCode === lobbyCode && invite.status === 'pending');
+
+                        if (invitationIndex !== -1) {
+                            invitations[invitationIndex].status = 'accepted';
+                            userSession.lobbyInvitations = invitations.filter(
+                                invite => !(invite.lobbyCode === lobbyCode && invite.status === 'pending')
+                            );
+
+                            sessionStore.set(userId, userSession, (setErr) => {
+                                if (setErr) {
+                                    console.error('Session error updating invitations after acceptance:', setErr);
+                                } else {
+                                    console.log(`Invitation for lobby ${lobbyCode} marked as accepted and removed from pending for user ${userId}.`);
+                                }
+                                callback(null, joinedLobby);
+                            });
+                        } else {
+                            console.warn(`No pending invitation found to mark as accepted for user ${userId}, lobby ${lobbyCode}. User still joined.`);
+                            callback(null, joinedLobby);
+                        }
                     });
                 });
             });

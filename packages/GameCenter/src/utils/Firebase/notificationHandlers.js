@@ -46,7 +46,28 @@ export const setupForegroundNotifications = () => {
     console.log("Foreground notification received:", remoteMessage);
 
     if (remoteMessage) {
+      const displayedNotifications = await notifee.getDisplayedNotifications();
+      const notificationLimit = 3;
+
+      console.log("Current displayed notifications count:", displayedNotifications.length);
+
+      if (displayedNotifications.length >= notificationLimit) {
+        console.log("Notification limit reached. Checking for oldest notification...");
+        displayedNotifications.sort((a, b) => a.timeStamp - b.timeStamp);
+        const oldestNotificationId = displayedNotifications[0].id;
+        console.log("Oldest notification ID to cancel:", oldestNotificationId);
+        try {
+            await notifee.cancelNotification(oldestNotificationId);
+            console.log(`Notification with ID ${oldestNotificationId} cancelled.`);
+        } catch (error) {
+            console.error(`Failed to cancel notification with ID ${oldestNotificationId}:`, error);
+        }
+      }
+
+      const notificationId = remoteMessage.messageId || `${Date.now()}`;
+
       await notifee.displayNotification({
+        id: notificationId,
         title: remoteMessage.notification?.title || "New Notification",
         body: remoteMessage.notification?.body || "Tap to view",
         android: {
@@ -59,6 +80,8 @@ export const setupForegroundNotifications = () => {
           sound: "lumos_sound_effect",
         },
       });
+
+      console.log(`New notification displayed with ID: ${notificationId}`);
     }
   });
 };
@@ -83,4 +106,5 @@ export const createDefaultChannel = async () => {
     importance: AndroidImportance.HIGH,
     sound: "lumos_sound_effect",
   });
+  console.log("Default channel created/ensured.");
 };

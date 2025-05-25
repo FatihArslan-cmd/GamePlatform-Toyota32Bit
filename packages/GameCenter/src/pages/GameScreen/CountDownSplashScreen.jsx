@@ -88,7 +88,7 @@ const CountDownSplashScreen = ({ onComplete }) => {
       ]).start(() => {
         if (onComplete) onComplete();
         setTimeout(() => {
-          navigation.navigate('GameScreen');
+          navigation.navigate('BingoScreen');
         }, 500); 
       });
       setCount(0);

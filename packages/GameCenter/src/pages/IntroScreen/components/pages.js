@@ -1,4 +1,3 @@
-
 const pages = [
   {
       image: require('../../../locales/icon.png'), 
@@ -12,8 +11,8 @@ const pages = [
     subtitle: 'Play fun bingo games and win amazing prizes.',
   },
   {
-    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxQgM-3JqmZFZCUo00flP3F-8PR7h2eCs2xQ&s',
-    title: 'Other Games',
+    image: require('../../../locales/gameImages/FallPanicThumbnail.png'),
+    title: 'Fall Panic',
     subtitle: 'Discover a variety of games for every taste.',
   },
   {

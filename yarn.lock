@@ -2450,11 +2450,6 @@
   resolved "https://registry.npmjs.org/@react-native-clipboard/clipboard/-/clipboard-1.15.0.tgz"
   integrity sha512-YDMC3E956jn9zE11uKGcQDKS1SO9q72iNHxZyrKY5y9XYwZcA9vo3Xk74+zRnf7cM48drDO0s9lyAPUlOvyhrw==
 
-"@react-native-community/blur@^4.4.1":
-  version "4.4.1"
-  resolved "https://registry.npmjs.org/@react-native-community/blur/-/blur-4.4.1.tgz"
-  integrity sha512-XBSsRiYxE/MOEln2ayunShfJtWztHwUxLFcSL20o+HNNRnuUDv+GXkF6FmM2zE8ZUfrnhQ/zeTqvnuDPGw6O8A==
-
 "@react-native-community/cli-clean@15.0.1":
   version "15.0.1"
   resolved "https://registry.npmjs.org/@react-native-community/cli-clean/-/cli-clean-15.0.1.tgz"
@@ -3842,8 +3837,10 @@ bin-links@^4.0.4:
 "bingo@file:packages/Bingo":
   version "0.1.0"
   dependencies:
+    "@shopify/flash-list" "^1.7.2"
     react "18.3.1"
     react-native "0.76.5"
+    react-native-vector-icons "^10.2.0"
 
 bl@^4.0.3, bl@^4.1.0:
   version "4.1.0"
@@ -5309,6 +5306,12 @@ external-editor@^3.0.3:
     chardet "^0.7.0"
     iconv-lite "^0.4.24"
     tmp "^0.0.33"
+
+"fall-panic@file:packages/Fall-Panic":
+  version "0.1.0"
+  dependencies:
+    react "18.3.1"
+    react-native "0.76.5"
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
@@ -8852,7 +8855,7 @@ pure-rand@^6.0.0:
   resolved "https://registry.npmjs.org/pure-rand/-/pure-rand-6.1.0.tgz"
   integrity sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==
 
-qrcode@^1.5.3, qrcode@^1.5.4:
+qrcode@^1.5.4:
   version "1.5.4"
   resolved "https://registry.npmjs.org/qrcode/-/qrcode-1.5.4.tgz"
   integrity sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==
@@ -9018,13 +9021,6 @@ react-native-paper@^5.12.5:
     color "^3.1.2"
     use-latest-callback "^0.1.5"
 
-react-native-qrcode-skia@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/react-native-qrcode-skia/-/react-native-qrcode-skia-0.3.1.tgz"
-  integrity sha512-bD97s78PkYhwf0rMSORd+GWLEaXu7nB7rqNBwKBVRBFt3PtjXCMIMTI/9rzbCoxanDNofVrleVwP8vWrAnMpaQ==
-  dependencies:
-    qrcode "^1.5.3"
-
 react-native-qrcode-svg@^6.3.14:
   version "6.3.14"
   resolved "https://registry.npmjs.org/react-native-qrcode-svg/-/react-native-qrcode-svg-6.3.14.tgz"
@@ -9063,13 +9059,6 @@ react-native-screens@^4.4.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
-
-react-native-sensors@^7.3.6:
-  version "7.3.6"
-  resolved "https://registry.npmjs.org/react-native-sensors/-/react-native-sensors-7.3.6.tgz"
-  integrity sha512-h3ispHU6BqhVsMMBIMfJWdwoqHNoSae1wv2RNl2hVOoV1rbFuSbQluQsuZirva6uRDaZVeVwaE5th3HIf+9ykQ==
-  dependencies:
-    rxjs ">= 6"
 
 react-native-sound@^0.11.2:
   version "0.11.2"
@@ -9484,7 +9473,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-"rxjs@>= 6", rxjs@^7.5.5:
+rxjs@^7.5.5:
   version "7.8.1"
   resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.1.tgz"
   integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==

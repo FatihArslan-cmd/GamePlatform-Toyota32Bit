@@ -1,6 +1,7 @@
 import axios from "axios";
 import navigationService from "./navigationService";
 import { ToastService } from "../../context/ToastService";
+import { saveFcmTokenToServer } from "../../utils/Firebase/notificationApi";
 import { baseURL } from "../../utils/baseUrl";
 import { storage } from "../../utils/storage";
 
@@ -107,7 +108,7 @@ export const login = async (username, password) => {
 
     saveToken(accessToken);
     saveRefreshToken(refreshToken);
-
+    await saveFcmTokenToServer(username);
     const userData = {
       username,
       profilePhoto,

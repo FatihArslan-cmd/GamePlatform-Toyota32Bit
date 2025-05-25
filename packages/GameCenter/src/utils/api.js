@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { storage } from './storage';
+import axios from "axios";
+import { storage } from "./storage";
 
 export const fetchAndStoreGames = async () => {
     try {
@@ -46,8 +46,5 @@ export const clearGamesFromStorage = () => {
 export const deleteIfExists = (key) => {
     if (storage.contains(key)) { 
       storage.delete(key); 
-      console.log(`"${key}" başarıyla silindi.`);
-    } else {
-      console.log(`"${key}" anahtarı bulunamadı.`);
     }
   };

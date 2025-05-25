@@ -1,15 +1,15 @@
 const { sessionStore } = require('../../config/sessionConfig');
-const { getUserDetails } = require('../../utils/getUserDetails'); // Import getUserDetails from usersUtil
+const { getUserDetails } = require('../../utils/getUserDetails');
+const { sendNotificationToUser } = require('../../controller/notificationController');
 
 
 const lobbyManager = {
     getLobbiesFromSession: (callback) => {
         sessionStore.get('lobbies', (err, lobbiesData) => {
             if (err) {
-                console.error('Session error getting lobbies:', err);
                 return callback(err);
             }
-            const lobbies = lobbiesData || {}; // Oturumda lobi yoksa boş obje dön
+            const lobbies = lobbiesData || {};
             callback(null, lobbies);
         });
     },
@@ -17,7 +17,6 @@ const lobbyManager = {
     saveLobbiesToSession: (lobbies, callback) => {
         sessionStore.set('lobbies', lobbies, (err) => {
             if (err) {
-                console.error('Session error saving lobbies:', err);
                 return callback(err);
             }
             callback(null);
@@ -49,7 +48,7 @@ const lobbyManager = {
                 const start = new Date(startDate);
                 const end = new Date(endDate);
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // Saat, dakika, saniye ve milisaniyeyi sıfırla, sadece tarihi karşılaştır
+                today.setHours(0, 0, 0, 0);
 
                 if (start > end) {
                     return callback(new Error('Start date cannot be after end date'));
@@ -76,8 +75,8 @@ const lobbyManager = {
                 startDate: lobbyType === 'Event' ? startDate : null,
                 endDate: lobbyType === 'Event' ? endDate : null,
                 lastOwnerLeave: null,
-                timeout: null, // Timeout session store'da tutulmamalı, gerekirse uygulama içinde yönetilmeli
-                hasPassword: hasPassword, // Yeni alan eklendi
+                timeout: null,
+                hasPassword: hasPassword,
                 gameStarted: false
             };
 
@@ -114,8 +113,7 @@ const lobbyManager = {
                 return callback(new Error('You are blocked from joining this lobby.'));
             }
 
-            // Şifre kontrolünü sadece davet değilse yap
-            if (!isInvite && lobby.hasPassword && lobby.password !== password) { // hasPassword kontrolü eklendi
+            if (!isInvite && lobby.hasPassword && lobby.password !== password) {
                 return callback(new Error('Invalid password'));
             }
 
@@ -135,12 +133,44 @@ const lobbyManager = {
                 }
             }
 
-            lobby.members.push(getUserDetails(userId));
-            lobbies[lobby.ownerId] = lobby;
+            const joiningUserDetails = getUserDetails(userId);
+             if (!joiningUserDetails) {
+                 return callback(new Error('Could not get joining user details'));
+             }
 
+            lobby.members.push(joiningUserDetails);
+            lobbies[lobby.ownerId] = lobby;
 
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
+
+                const notificationTitle = "Lobby Update";
+                const notificationBody = `${joiningUserDetails.username} has joined the lobby. 👋`;
+
+                const notificationData = {
+                     type: 'user_joined_lobby',
+                     lobbyCode: lobby.code,
+                     joinedUserId: userId.toString(),
+                     joinedUsername: joiningUserDetails.username,
+                     joinedUserProfilePhoto: joiningUserDetails.profilePhoto || '',
+                     lobbyName: lobby.lobbyName || '',
+                };
+
+
+                lobby.members.forEach(member => {
+                    if (member.id !== userId) {
+                         sendNotificationToUser({
+                             targetUserId: member.id,
+                             title: notificationTitle,
+                             body: notificationBody,
+                             data: notificationData,
+                             sourceInfo: 'user_joined_lobby',
+                         })
+                         .then(response => {})
+                         .catch(notificationError => {});
+                    }
+                });
+
                 callback(null, lobby);
             });
 
@@ -158,23 +188,29 @@ const lobbyManager = {
                 return callback(new Error('User is not in any lobby'));
             }
 
-            userLobby.members = userLobby.members.filter(member => member.id !== userId); // Üyeyi ID'ye göre filtrele
+            userLobby.members = userLobby.members.filter(member => member.id !== userId);
 
-            if (userLobby.ownerId === userId) {
+            let lobbyDeleted = false;
+            let isOwnerLeaving = userLobby.ownerId === userId;
+
+            if (isOwnerLeaving) {
                 if (userLobby.lobbyType === 'Event') {
-                    console.log(`Owner left, but lobby is event type and will remain active until ${userLobby.endDate}`);
                 } else {
-                    userLobby.lastOwnerLeave = Date.now(); // Zaman damgasını ekle
+                    userLobby.lastOwnerLeave = Date.now();
                 }
-                if (userLobby.members.length === 0) { // Eğer sahibi ayrıldıktan sonra lobi boşsa sil
+                if (userLobby.members.length === 0) {
                     delete lobbies[userId];
+                    lobbyDeleted = true;
                 }
             }
-            if (userLobby.members.length === 0 && userLobby.ownerId !== userId) { // Eğer üye ayrıldıktan sonra lobi boşsa sil ve sahibi değilse
+            if (userLobby.members.length === 0 && !isOwnerLeaving) {
                 const ownerId = Object.keys(lobbies).find(key => lobbies[key].code === userLobby.code);
-                if (ownerId) delete lobbies[ownerId];
-            } else {
-                lobbies[userLobby.ownerId] = userLobby; // Lobby sahibi ID'si ile güncelliyoruz
+                if (ownerId) {
+                    delete lobbies[ownerId];
+                    lobbyDeleted = true;
+                }
+            } else if (!lobbyDeleted) {
+                lobbies[userLobby.ownerId] = userLobby;
             }
 
 
@@ -185,56 +221,85 @@ const lobbyManager = {
         });
     },
 
-    deleteLobby: (userId, callback) => {
+
+     deleteLobby: (userId, callback) => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) return callback(err);
 
-            if (!lobbies[userId]) {
+            const lobbyToDelete = lobbies[userId];
+
+            if (!lobbyToDelete) {
                 return callback(new Error('User does not own any lobby'));
             }
 
-            const lobby = lobbies[userId];
-            if (lobby.ownerId !== userId) {
+            if (lobbyToDelete.ownerId !== userId) {
                 return callback(new Error('Only the lobby owner can delete the lobby'));
             }
 
-            const deletedLobbyCode = lobby.code; // Silinen lobinin kodunu al
+             const deletedLobbyCode = lobbyToDelete.code;
+             const deletedLbyName = lobbyToDelete.lobbyName || deletedLobbyCode;
+             const ownerUsername = getUserDetails(userId)?.username || 'Owner';
 
-            delete lobbies[userId]; // Lobiyi sil
+             const membersBeforeDelete = [...lobbyToDelete.members];
 
-            sessionStore.all((err, sessions) => { // Tüm oturumları al
+
+            delete lobbies[userId];
+
+            sessionStore.all((err, sessions) => {
                 if (err) {
-                    console.error('Error getting all sessions:', err);
-                    return callback(err); // Oturumları alırken hata olursa callback ile hatayı döndür
                 }
 
                 let updatedSessions = 0;
                 for (const sessionId in sessions) {
                     const session = sessions[sessionId];
-                    if (session && session.lobbyInvitations) { // Oturumda lobbyInvitations varsa
+                    if (session && session.lobbyInvitations) {
                         let invitations = session.lobbyInvitations;
                         const initialInvitationCount = invitations.length;
-                        invitations = invitations.filter(invite => invite.lobbyCode !== deletedLobbyCode); // Silinen lobiye ait davetleri filtrele
+                        invitations = invitations.filter(invite => invite.lobbyCode !== deletedLobbyCode);
                         if (invitations.length !== initialInvitationCount) {
                             session.lobbyInvitations = invitations;
-                            sessionStore.set(sessionId, session, (err) => { 
-                                if (err) {
-                                    console.error('Error updating session after lobby deletion:', err);
-                                } else {
-                                    updatedSessions++;
-                                }
+                            sessionStore.set(sessionId, session, (err) => {
+                                if (err) {} else { updatedSessions++; }
                             });
                         }
                     }
                 }
-                console.log(`Lobby ${lobby.lobbyName} and related invitations cleaned up from ${updatedSessions} user sessions.`);
-                lobbyManager.saveLobbiesToSession(lobbies, (err) => { 
+
+
+                const notificationTitle = "Lobby Deleted";
+                const notificationBody = `The lobby "${deletedLbyName}" has been deleted by the owner ${ownerUsername}.`;
+
+                const notificationData = {
+                    type: 'lobby_deleted_by_owner',
+                    lobbyCode: deletedLobbyCode,
+                    deletedByUserId: userId.toString(),
+                    deletedByUsername: ownerUsername,
+                    lobbyName: deletedLbyName,
+                };
+
+                membersBeforeDelete.forEach(member => {
+                    if (member.id !== userId) {
+                        sendNotificationToUser({
+                            targetUserId: member.id,
+                            title: notificationTitle,
+                            body: notificationBody,
+                            data: notificationData,
+                            sourceInfo: 'lobby_deleted_by_owner',
+                        })
+                        .then(response => {})
+                        .catch(notificationError => {});
+                    }
+                });
+
+
+                lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                     if (err) return callback(err);
-                    callback(null, true); 
+                    callback(null, true);
                 });
             });
         });
     },
+
 
     updateLobby: (userId, updates, callback) => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
@@ -259,7 +324,7 @@ const lobbyManager = {
                 lobby.endDate = null;
             }
 
-            if (updates.lobbyType === 'Event' || lobby.lobbyType === 'Event') { // Check if updating to event or already an event
+            if (updates.lobbyType === 'Event' || lobby.lobbyType === 'Event') {
                 const startDate = updates.startDate || lobby.startDate;
                 const endDate = updates.endDate || lobby.endDate;
 
@@ -287,7 +352,12 @@ const lobbyManager = {
                 if (lobby.members.length >= lobby.maxCapacity) {
                     return callback(new Error('Lobby is full'));
                 }
-                lobby.members.push(getUserDetails(parsedUserId));
+                const addedMemberDetails = getUserDetails(parsedUserId);
+                 if (!addedMemberDetails) {
+                     return callback(new Error('Could not get details for user to add'));
+                 }
+                 lobby.members.push(addedMemberDetails);
+                 delete updates.addMember;
             }
 
             if (updates.removeMember) {
@@ -295,7 +365,13 @@ const lobbyManager = {
                 if (parsedUserId === lobby.ownerId) {
                     return callback(new Error('Lobby owner cannot kick themselves'));
                 }
-                lobby.members = lobby.members.filter(member => member.id !== parsedUserId);
+                const memberToRemoveIndex = lobby.members.findIndex(member => member.id === parsedUserId);
+                if (memberToRemoveIndex > -1) {
+                    lobby.members = lobby.members.filter(member => member.id !== parsedUserId);
+                } else {
+                    return callback(new Error('Member not found in lobby'));
+                }
+                 delete updates.removeMember;
             }
 
             if (updates.blockMember) {
@@ -303,20 +379,25 @@ const lobbyManager = {
                 if (parsedBlockUserId === lobby.ownerId) {
                     return callback(new Error('Lobby owner cannot block themselves'));
                 }
-                if (lobby.members.some(member => member.id === parsedBlockUserId)) {
-                    lobby.members = lobby.members.filter(member => member.id !== parsedBlockUserId);
-                }
+                const memberToBlockIndex = lobby.members.findIndex(member => member.id === parsedBlockUserId);
+                 if (memberToBlockIndex > -1) {
+                     lobby.members = lobby.members.filter(member => member.id !== parsedBlockUserId);
+                 }
                 if (!lobby.blockedMembers.includes(parsedBlockUserId)) {
                     lobby.blockedMembers.push(parsedBlockUserId);
                 }
+                 delete updates.blockMember;
             }
 
             if (updates.unblockMember) {
-                lobby.blockedMembers = lobby.blockedMembers.filter(memberId => memberId !== parseInt(updates.unblockMember));
+                 const parsedUnblockUserId = parseInt(updates.unblockMember);
+                lobby.blockedMembers = lobby.blockedMembers.filter(memberId => memberId !== parsedUnblockUserId);
+                 delete updates.unblockMember;
             }
 
             Object.assign(lobby, updates);
             lobbies[userId] = lobby;
+
             lobbyManager.saveLobbiesToSession(lobbies, (err) => {
                 if (err) return callback(err);
                 callback(null, lobby);
@@ -329,11 +410,11 @@ const lobbyManager = {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) return callback(err);
             const lobbiesArray = Object.values(lobbies).map((lobby) => {
-                const { password, ...sanitizedLobby } = lobby; // password'u çıkarıyoruz, hasPassword kalıyor
+                const { password, ...sanitizedLobby } = lobby;
                 return {
                     ...sanitizedLobby,
-                    members: lobby.members, // Üye listesi zaten detaylarla zenginleştirilmiş durumda
-                    bingoCards: lobby.bingoCards // bingoCards'ı da ekliyoruz
+                    members: lobby.members,
+                    bingoCards: lobby.bingoCards
                 };
             });
             callback(null, lobbiesArray);
@@ -348,63 +429,111 @@ const lobbyManager = {
                 lobby.members.some(member => member.id === userId)
             );
 
-            callback(null, userLobby || null); 
+            callback(null, userLobby || null);
         });
     },
 
-    cleanupInactiveLobbies: () => { 
+    cleanupInactiveLobbies: () => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) {
-                return console.error('Error cleaning up inactive lobbies:', err);
+                return;
             }
 
             const now = Date.now();
-            const timeoutDuration = 2 * 10; 
+            const timeoutDuration = 2 * 10 * 1000;
 
             let updated = false;
+            const lobbiesToDelete = [];
             Object.keys(lobbies).forEach(ownerId => {
                 const lobby = lobbies[ownerId];
-                if (lobby.lobbyType === 'Normal' && lobby.lastOwnerLeave) { 
-                    if (now - lobby.lastOwnerLeave >= timeoutDuration) { 
-                        delete lobbies[ownerId];
-                        updated = true;
-                        console.log(`Normal lobby ${lobby.lobbyName} owned by ${ownerId} has been deleted due to inactivity timeout.`);
+                 if (lobby.lobbyType === 'Normal' && lobby.lastOwnerLeave) {
+                    if (now - lobby.lastOwnerLeave >= timeoutDuration) {
+                         lobbiesToDelete.push({ ownerId: ownerId, lobby: lobby });
+                         updated = true;
                     }
                 }
             });
 
+             lobbiesToDelete.forEach(({ ownerId, lobby }) => {
+
+                  const notificationTitle = "Lobby Deleted (Inactive)";
+                  const notificationBody = `The lobby "${lobby.lobbyName || lobby.code}" has been deleted due to inactivity.`;
+                  const notificationData = {
+                      type: 'lobby_deleted_inactive',
+                      lobbyCode: lobby.code,
+                      lobbyName: lobby.lobbyName || '',
+                  };
+
+                  lobby.members.forEach(member => {
+                       sendNotificationToUser({
+                           targetUserId: member.id,
+                           title: notificationTitle,
+                           body: notificationBody,
+                           data: notificationData,
+                           sourceInfo: 'lobby_deleted_inactive',
+                       })
+                       .then(response => {})
+                       .catch(notificationError => {});
+                  });
+
+                  delete lobbies[ownerId];
+             });
+
+
             if (updated) {
                 lobbyManager.saveLobbiesToSession(lobbies, (err) => {
-                    if (err) {
-                        console.error('Error saving lobbies after inactive cleanup:', err);
-                    }
+                    if (err) {}
                 });
             }
         });
     },
 
-    cleanupEventLobbies: () => { 
+    cleanupEventLobbies: () => {
         lobbyManager.getLobbiesFromSession((err, lobbies) => {
             if (err) {
-                return console.error('Error cleaning up event lobbies:', err);
+                return;
             }
 
             let updated = false;
+             const eventLobbiesToDelete = [];
             const now = Date.now();
             Object.keys(lobbies).forEach(ownerId => {
                 const lobby = lobbies[ownerId];
                 if (lobby.lobbyType === 'Event' && new Date(lobby.endDate).getTime() <= now) {
-                    delete lobbies[ownerId];
+                     eventLobbiesToDelete.push({ ownerId: ownerId, lobby: lobby });
                     updated = true;
-                    console.log(`Event lobby ${lobby.lobbyName} owned by ${ownerId} has been deleted due to end date.`);
                 }
             });
 
+             eventLobbiesToDelete.forEach(({ ownerId, lobby }) => {
+
+                 const notificationTitle = "Event Lobby Ended";
+                 const notificationBody = `The event lobby "${lobby.lobbyName || lobby.code}" has ended and is now closed.`;
+                 const notificationData = {
+                     type: 'lobby_deleted_event_ended',
+                     lobbyCode: lobby.code,
+                     lobbyName: lobby.lobbyName || '',
+                 };
+
+                 lobby.members.forEach(member => {
+                      sendNotificationToUser({
+                          targetUserId: member.id,
+                          title: notificationTitle,
+                          body: notificationBody,
+                          data: notificationData,
+                          sourceInfo: 'lobby_deleted_event_ended',
+                      })
+                      .then(response => {})
+                      .catch(notificationError => {});
+                 });
+
+                delete lobbies[ownerId];
+             });
+
+
             if (updated) {
                 lobbyManager.saveLobbiesToSession(lobbies, (err) => {
-                    if (err) {
-                        console.error('Error saving lobbies after cleanup:', err);
-                    }
+                    if (err) {}
                 });
             }
         });

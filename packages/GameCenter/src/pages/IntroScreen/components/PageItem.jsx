@@ -15,7 +15,6 @@ const PageItem = ({ page, scaleAnim, translateAnim, navigation }) => (
         style={styles.backgroundImage}
         resizeMode={FastImage.resizeMode.cover}
       />
-      {/* Replaced BlurView with a simple View for a dark overlay */}
       <View
         style={styles.backgroundOverlay}
       />
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
   },
-  // New style for the overlay, replacing the blur style
   backgroundOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.4)', // Keeps the dark, semi-transparent overlay
