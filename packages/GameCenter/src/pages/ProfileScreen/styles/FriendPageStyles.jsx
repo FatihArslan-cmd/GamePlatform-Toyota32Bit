@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     inviteButton: {
         padding: TABLET_DEVICE ? 10 : 5,
-        borderRadius: 8,
+        borderRadius: 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 20,
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     friendCard: {
-        backgroundColor: '#ffffff10',
         padding: 15,
         marginVertical: 5,
     },

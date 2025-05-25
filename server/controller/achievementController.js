@@ -40,17 +40,14 @@ const updateAchievement = (req, res) => {
         return res.status(404).json({message: 'Achievement not found.'});
     }
 
-    // Session'da kullanıcıya ait başarımları al veya yeni bir obje oluştur
     req.session.achievements = req.session.achievements || {};
     req.session.achievements[userId] = req.session.achievements[userId] || [];
 
 
-    // Eğer başarıma zaten sahipse, bir şey yapma
     if (req.session.achievements[userId].some(a => a.id === achievementId)) {
       return res.status(200).json({ message: "User already has this achievement.", achievement });
     }
 
-    // Başarımı session'a ekle
     req.session.achievements[userId].push({ id: achievementId, timestamp: new Date() });
 
     res.status(200).json({ message: 'Achievement updated successfully.', achievement});

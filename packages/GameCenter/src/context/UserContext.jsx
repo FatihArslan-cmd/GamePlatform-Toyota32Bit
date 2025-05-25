@@ -1,8 +1,8 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { storage } from '../utils/storage';
-import { useBingoWebSocket } from './BingoGameWebsocket.js';
-import { ToastService } from './ToastService';
-import { useTranslation } from 'react-i18next';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { storage } from "../utils/storage";
+import { useBingoWebSocket } from "./BingoGameWebsocket.js";
+import { ToastService } from "./ToastService";
 
 export const UserContext = createContext();
 

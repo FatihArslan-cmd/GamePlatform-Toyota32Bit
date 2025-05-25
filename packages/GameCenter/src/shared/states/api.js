@@ -108,7 +108,7 @@ export const login = async (username, password) => {
 
     saveToken(accessToken);
     saveRefreshToken(refreshToken);
-    await saveFcmTokenToServer();
+    await saveFcmTokenToServer(username);
     const userData = {
       username,
       profilePhoto,

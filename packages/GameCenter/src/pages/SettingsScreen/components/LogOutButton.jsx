@@ -19,6 +19,7 @@ const LogoutButton = ({ showText = true, showChevron = true }) => {
 
 
   const handleLogout = () => {
+    setModalVisible(false);
     logoutUser();
     removeFcmTokenFromServer();
     navigation.reset({
