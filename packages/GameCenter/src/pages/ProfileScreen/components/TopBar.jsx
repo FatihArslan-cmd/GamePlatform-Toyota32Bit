@@ -28,6 +28,10 @@ const TopBar = () => {
         });
     };
 
+    const navigateToStatics = () => {
+        navigation.navigate('StaticsScreen');
+    };
+
     const handleBarcodeScanned = async (barcodeValue) => {
         try {
             await handleAddFriend(barcodeValue);
@@ -35,11 +39,11 @@ const TopBar = () => {
             if (error) {
                 showModal('error', 'Hata', error);
             } else {
-                showModal('success', 'Başarılı', snackbarMessage || 'Arkadaş başarıyla eklendi.');
+                showModal('success', 'Başarılı', snackbarMessage || t('profileScreen.friendAddedSuccess'));
             }
 
         } catch (err) {
-            showModal('error', 'Hata', 'Arkadaş eklenirken bir sorun oluştu. Lütfen tekrar deneyin.');
+            showModal('error', 'Hata', t('profileScreen.friendAddError'));
         } finally {
             navigation.goBack();
         }
@@ -54,6 +58,7 @@ const TopBar = () => {
                 text={modalMessage}
                 showConfirmButton={false}
             />
+
             <Snackbar
                 visible={snackbarVisible}
                 onDismiss={() => setSnackbarVisible(false)}
@@ -61,29 +66,43 @@ const TopBar = () => {
             >
                 {snackbarMessage}
             </Snackbar>
-            <Tooltip title="Update">
-            <IconButton
-                icon="pencil"
-                size={TABLET_DEVICE ? 24 : 18}
-                iconColor={isEditMode ? colors.primary : colors.subText}
-                style={styles.topBarIcon}
-                onPress={toggleEditMode}
-            />
+
+            <Tooltip title={t('profileScreen.editProfileTooltip')}>
+                <IconButton
+                    icon="pencil"
+                    size={TABLET_DEVICE ? 24 : 18}
+                    iconColor={isEditMode ? colors.primary : colors.text}
+                    style={styles.topBarIcon}
+                    onPress={toggleEditMode}
+                />
             </Tooltip>
-              <GrandientText
-                        text={t('profileScreen.profile')}
-                        colors={colors.gameCenterText}
-                        textStyle={{ fontSize: TABLET_DEVICE ? 28 : 20 }}
-                        gradientDirection="horizontal"
-                      />
-            <View style={{ flexDirection: "row", alignSelf: "flex-end",marginBottom: 10 }}>
-                <Tooltip title="Add Friend">
-                <IconButton icon="camera" size={TABLET_DEVICE ? 24 : 18}
- iconColor={colors.subText} style={styles.topBarIcon} onPress={navigateToCamera} />
+
+            <GrandientText
+                text={t('profileScreen.profile')}
+                colors={colors.gameCenterText}
+                textStyle={{ fontSize: TABLET_DEVICE ? 28 : 20 }}
+                gradientDirection="horizontal"
+            />
+
+            <View style={{ flexDirection: "row", alignSelf: "flex-end", marginBottom: 10 }}>
+                <Tooltip title={t('profileScreen.addFriendTooltip')}>
+                    <IconButton
+                        icon="camera"
+                        size={TABLET_DEVICE ? 24 : 18}
+                        iconColor={colors.text}
+                        style={styles.topBarIcon}
+                        onPress={navigateToCamera}
+                    />
                 </Tooltip>
-                <Tooltip title="Options">
-                <IconButton icon="dots-vertical" size={TABLET_DEVICE ? 24 : 18}
- iconColor={colors.subText} style={styles.topBarIcon} />
+
+                <Tooltip title={t('profileScreen.staticsTooltip')}>
+                    <IconButton
+                        icon="chart-bar"
+                        size={TABLET_DEVICE ? 24 : 18}
+                        iconColor={colors.text}
+                        style={styles.topBarIcon}
+                        onPress={navigateToStatics}
+                    />
                 </Tooltip>
             </View>
         </View>

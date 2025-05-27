@@ -1,9 +1,6 @@
 import React, { memo } from "react";
 import { TextInput } from "react-native-paper";
 import { useTheme } from "../../../../../context/ThemeContext";
-import { isTablet } from "../../../../../utils/isTablet";
-
-const TABLET_DEVICE = isTablet(); // Check if the device is a tablet
 
 const InputField = memo(({
   label,

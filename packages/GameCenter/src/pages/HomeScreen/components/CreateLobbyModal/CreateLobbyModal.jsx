@@ -4,7 +4,7 @@ import GameSelector from "./components/GameSelector";
 import InvitationLink from "./components/InvitationLink";
 import LobbyTypeSelector from "./components/LobbyTypeSelector";
 import PasswordInput from "./components/PasswordInput";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";

@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import RoomChatScreen from "../pages/RoomChatScreen/index.jsx";
 import RoomsScreen from "../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.jsx";
 import SettingScreen from "../pages/SettingsScreen/index.jsx";
+import StaticsScreen from "../pages/StaticsScreen/StaticsScreen.jsx";
 import TabNavigator from "./TabBarNavigator.jsx";
 import UpdateLobbyScreen from "../pages/UpdateLobbyScreen/UpdateLobbyScreen.jsx";
 import navigationService from "../shared/states/navigationService.js";
@@ -187,6 +188,12 @@ export default function Navigation() {
          />
            <Stack.Screen name="CountDownSplashScreen"
          component={CountDownSplashScreen}  
+          options={{
+              animation: 'simple_push',
+            }}
+         />
+         <Stack.Screen name="StaticsScreen"
+         component={StaticsScreen}  
           options={{
               animation: 'simple_push',
             }}

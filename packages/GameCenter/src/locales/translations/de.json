@@ -356,5 +356,23 @@
     "drawAllNumbersModalTitle": "Alle Zahlen ziehen",
     "drawAllNumbersModalText": "Bist du sicher, dass du alle Zahlen ziehen möchtest?",
     "drawAllNumbersModalConfirm": "Alle Zahlen"
+  },
+  "StaticsScreen": {
+    "title": "Statistiken",
+    "summaryStatics": "Zusammenfassende Statistiken",
+    "totalDays": "Gesamte Tage",
+    "totalTime": "Gesamte Zeit",
+    "average": "Durchschnitt",
+    "longest": "Längste",
+    "last7DaysActivity": "Aktivität der letzten 7 Tage",
+    "daily": "Täglich",
+    "m":"Min.",
+    "min": "Minute",
+    "dailyDetails": "Tägliche Details",
+    "noGameData": "Keine Spieldaten gefunden.",
+    "noGameDataDescription": "Sie können Ihre Statistiken verfolgen, indem Sie Spiele spielen.",
+    "playYourFirstGame": "Spielen Sie Ihr erstes Spiel und kommen Sie zurück!",
+    "startPlayingBingo": "Bingo spielen starten",
+    "refresh": "Aktualisieren"    
   }
 }

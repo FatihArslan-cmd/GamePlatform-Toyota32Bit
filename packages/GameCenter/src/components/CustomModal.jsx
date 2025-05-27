@@ -22,7 +22,7 @@ const CustomModal = memo(({
   const { height } = Dimensions.get('window');
   const { colors } = useTheme();
   const { t } = useTranslation();
-
+  
   const handleDismiss = useCallback(() => {
     Animated.parallel([
       Animated.timing(slideAnim, {

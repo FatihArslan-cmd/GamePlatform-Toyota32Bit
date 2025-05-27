@@ -356,5 +356,23 @@
     "drawAllNumbersModalTitle": "Draw All Numbers",
     "drawAllNumbersModalText": "Are you sure you want to draw all numbers?",
     "drawAllNumbersModalConfirm": "Draw All"
+  },
+  "StaticsScreen": {
+    "title": "Statistics",
+    "summaryStatics": "Summary Statistics",
+    "totalDays": "Total Days",
+    "totalTime": "Total Time",
+    "average": "Average",
+    "longest": "Longest",
+    "last7DaysActivity": "Last 7 Days Activity",
+    "daily": "Daily",
+    "m":"min",
+    "min": "minute",
+    "dailyDetails": "Daily Details",
+    "noGameData": "No game data found.",
+    "noGameDataDescription": "You can track your statistics by starting to play games.",
+    "playYourFirstGame": "Play your first game and come back!",
+    "startPlayingBingo": "Start Playing Bingo",
+    "refresh": "Refresh"    
   }
 }

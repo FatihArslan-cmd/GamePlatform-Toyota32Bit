@@ -1,8 +1,8 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TextInput, Text, Switch } from 'react-native-paper';
-import { useTheme } from '../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Switch, Text, TextInput } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
 
 const PasswordInput = ({
   password,

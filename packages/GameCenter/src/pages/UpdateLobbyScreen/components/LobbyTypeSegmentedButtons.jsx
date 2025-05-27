@@ -15,7 +15,7 @@ const LobbyTypeSegmentedButtons = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: colors.text }]}>{t('updateLobbyScreen.lobbyTypeLabel')}</Text> {/* Translated "Lobby Type" */}
+      <Text style={[styles.label, { color: colors.text }]}>{t('updateLobbyScreen.lobbyTypeLabel')}</Text>
       <SegmentedButtons
         value={lobbyType}
         onValueChange={setLobbyType}

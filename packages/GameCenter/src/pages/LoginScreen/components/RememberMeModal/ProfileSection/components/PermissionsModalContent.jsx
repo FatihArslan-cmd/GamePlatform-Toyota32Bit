@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Title } from 'react-native-paper';
-import PermissionItem from './PermissionItem';
-import { storage } from '../../../../../../utils/storage';
-import { useTheme } from '../../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import PermissionItem from "./PermissionItem";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Title } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { storage } from "../../../../../../utils/storage";
 
 const PermissionsModalContent = () => {
   const [permissions, setPermissions] = useState({
@@ -44,7 +44,7 @@ const PermissionsModalContent = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Title style={[styles.title, { color: colors.text }]}>{t('permissionsModal.title')}</Title> {/* Translate "Permissions" */}
+      <Title style={[styles.title, { color: colors.text }]}>{t('permissionsModal.title')}</Title>
 
       <PermissionItem
         title={t('permissionsModal.biometric')} 

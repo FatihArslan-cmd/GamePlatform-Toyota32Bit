@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { Text, IconButton } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useTheme } from '../../../../../context/ThemeContext'; 
+import DateTimePicker from "@react-native-community/datetimepicker";
+import React, { useCallback, useEffect, useState } from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import { IconButton, Text } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
 
 const CustomDateTimeSelector = ({ onDateTimeChange, initialStartDate, initialEndDate }) => {
   const [startDate, setStartDate] = useState(initialStartDate || new Date());
@@ -73,11 +73,11 @@ const CustomDateTimeSelector = ({ onDateTimeChange, initialStartDate, initialEnd
       <View style={styles.selectors}>
         <View style={styles.dateSelector}>
           <Text style={styles.selectedText}>{formatDate(startDate)}</Text>
-          <IconButton icon="calendar" onPress={() => openPicker('start', 'date')} iconColor={colors.text} /> {/* Themed icon color */}
+          <IconButton icon="calendar" onPress={() => openPicker('start', 'date')} iconColor={colors.text} /> 
         </View>
         <View style={styles.timeSelector}>
           <Text style={styles.selectedText}>{formatTime(startDate)}</Text>
-          <IconButton icon="clock-outline" onPress={() => openPicker('start', 'time')} iconColor={colors.text} /> {/* Themed icon color */}
+          <IconButton icon="clock-outline" onPress={() => openPicker('start', 'time')} iconColor={colors.text} />
         </View>
       </View>
 
@@ -85,11 +85,11 @@ const CustomDateTimeSelector = ({ onDateTimeChange, initialStartDate, initialEnd
       <View style={styles.selectors}>
         <View style={styles.dateSelector}>
           <Text style={styles.selectedText}>{formatDate(endDate)}</Text>
-          <IconButton icon="calendar" onPress={() => openPicker('end', 'date')} iconColor={colors.text} /> {/* Themed icon color */}
+          <IconButton icon="calendar" onPress={() => openPicker('end', 'date')} iconColor={colors.text} /> 
         </View>
         <View style={styles.timeSelector}>
           <Text style={styles.selectedText}>{formatTime(endDate)}</Text>
-          <IconButton icon="clock-outline" onPress={() => openPicker('end', 'time')} iconColor={colors.text} /> {/* Themed icon color */}
+          <IconButton icon="clock-outline" onPress={() => openPicker('end', 'time')} iconColor={colors.text} /> 
         </View>
       </View>
 

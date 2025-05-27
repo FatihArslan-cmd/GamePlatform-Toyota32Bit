@@ -362,5 +362,23 @@
     "drawAllNumbersModalTitle": "Tüm Sayıları Çek",
     "drawAllNumbersModalText": "Kalan tüm sayıları hemen çekmek istediğinizden emin misiniz?",
     "drawAllNumbersModalConfirm": "Çek"
-}
+},
+"StaticsScreen": {
+    "title": "İstatistikler",
+    "summaryStatics": "Özet İstatistikler",
+    "totalDays": "Toplam Gün",
+    "totalTime": "Toplam Süre",
+    "average": "Ortalama",
+    "longest": "En Uzun",
+    "last7DaysActivity": "Son 7 Günlük Aktivite",
+    "daily": "Günlük",
+    "m":"dk",
+    "min": "dakika",
+    "dailyDetails": "Günlük Detaylar",
+    "noGameData": "Oynanan oyun verisi bulunamadı.",
+    "noGameDataDescription": "Oyun oynamaya başlayarak istatistiklerinizi takip edebilirsiniz.",
+    "playYourFirstGame": "İlk oyununuzu oynayın ve geri gelin!",
+    "startPlayingBingo": "Bingo Oynamaya Başla",
+    "refresh": "Yenile"    
+  }
 }
