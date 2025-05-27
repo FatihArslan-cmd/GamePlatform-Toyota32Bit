@@ -39,8 +39,8 @@ const App = () => {
         <UserProvider>
           <ThemeProvider>
             <PaperProvider theme={theme}>
-,                <Navigation />
-,            </PaperProvider>
+               <Navigation />
+            </PaperProvider>
           </ThemeProvider>
         </UserProvider>
       </ToastProvider>

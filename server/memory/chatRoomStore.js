@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const users = require('../utils/users');
 
-const rooms = new Map(); 
+const rooms = new Map();
 
 const topics = [
     "⚽ Sports",
@@ -18,8 +18,8 @@ const topics = [
 
 function createRoom(name, creatorId, topic, imageUrl) {
     const roomId = crypto.randomUUID();
-    const createdAt = new Date(); 
-    const newRoom = { id: roomId, name, creatorId, supporters: new Set([creatorId]), topic, imageUrl, createdAt }; // Odayı kuran kişi direkt supporter olarak ekleniyor.
+    const createdAt = new Date();
+    const newRoom = { id: roomId, name, creatorId, supporters: new Set([creatorId]), topic, imageUrl, createdAt };
     rooms.set(roomId, newRoom);
     return newRoom;
 }
@@ -41,7 +41,7 @@ function getRoom(roomId) {
     const roomWithSupporters = {
         ...room,
         supporters: supportersWithUsernames,
-        supporterCount: room.supporters.size 
+        supporterCount: room.supporters.size
     };
     return roomWithSupporters;
 }
@@ -52,14 +52,14 @@ function getAllRooms() {
           const username = Object.keys(users).find(key => users[key].id === userId);
           return {
               id: userId,
-              username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+              username: username || 'Unknown User'
           };
       });
 
       return {
         ...room,
         supporters: supportersWithUsernames,
-        supporterCount: room.supporters.size  //Add the supporter count
+        supporterCount: room.supporters.size
       };
     });
 }
@@ -72,34 +72,34 @@ function getRoomsByCreator(creatorId) {
                 const username = Object.keys(users).find(key => users[key].id === userId);
                 return {
                     id: userId,
-                    username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+                    username: username || 'Unknown User'
                 };
             });
 
             return {
                 ...room,
                 supporters: supportersWithUsernames,
-                supporterCount: room.supporters.size  //Add the supporter count
+                supporterCount: room.supporters.size
             };
         });
 }
 
-function getRoomsNotByCreator(userId) { // Function name remains same as requested, but parameter name changed to userId for clarity
+function getRoomsNotByCreator(userId) {
     return Array.from(rooms.values())
-        .filter(room => !room.supporters.has(userId)) // Changed filter condition to check if userId is NOT a supporter
+        .filter(room => !room.supporters.has(userId))
         .map(room => {
-            const supportersWithUsernames = Array.from(room.supporters).map(supporterId => { // Renamed userId to supporterId for clarity in map
+            const supportersWithUsernames = Array.from(room.supporters).map(supporterId => {
                 const username = Object.keys(users).find(key => users[key].id === supporterId);
                 return {
                     id: supporterId,
-                    username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+                    username: username || 'Unknown User'
                 };
             });
 
             return {
                 ...room,
                 supporters: supportersWithUsernames,
-                supporterCount: room.supporters.size  //Add the supporter count
+                supporterCount: room.supporters.size
             };
         });
 }
@@ -112,14 +112,14 @@ function getRoomsBySupporter(userId) {
                 const username = Object.keys(users).find(key => users[key].id === supporterId);
                 return {
                     id: supporterId,
-                    username: username || 'Unknown User' // Kullanıcı adı bulunamazsa 'Bilinmeyen Kullanıcı' yaz
+                    username: username || 'Unknown User'
                 };
             });
 
             return {
                 ...room,
                 supporters: supportersWithUsernames,
-                supporterCount: room.supporters.size  //Add the supporter count
+                supporterCount: room.supporters.size
             };
         });
 }
@@ -135,11 +135,11 @@ function joinRoom(roomId, userId, session) {
 
     const room = rooms.get(roomId);
     if (!room) {
-        return false; // Oda bulunamadı.
+        return false;
     }
 
     if (!room.supporters.has(userId)) {
-        return false; // Kullanıcı supporter değil.
+        return false;
     }
 
 
@@ -206,9 +206,9 @@ module.exports = {
     deleteRoom,
     becomeSupporter,
     leaveSupporter,
-    topics,  // Expose the topics array
+    topics,
     isValidTopic,
-    getRoomsByCreator, // Export new function
-    getRoomsNotByCreator, // Export new function
-    getRoomsBySupporter // Export new function
+    getRoomsByCreator,
+    getRoomsNotByCreator,
+    getRoomsBySupporter
 };

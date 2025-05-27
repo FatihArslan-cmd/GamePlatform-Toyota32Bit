@@ -159,14 +159,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   closeButton: {
-    borderColor: '#8a2be2',
+    borderColor: '#3340D6',
     borderRadius: 30,
     borderWidth: 2,
     flex: 1,
     marginRight: 10,
   },
   closeButtonLabel: {
-    color: '#8a2be2',
+    color: '#3340D6',
     fontSize: TABLET_DEVICE ? 16 : 12,
     fontFamily: 'Orbitron-ExtraBold',
     letterSpacing: 1,

@@ -11,7 +11,7 @@ import { StyleSheet, View } from "react-native";
 import { useTheme } from "../../../../context/ThemeContext";
 import { isTablet } from "../../../../utils/isTablet";
 
-const TABLET_DEVICE = isTablet(); 
+const TABLET_DEVICE = isTablet();
 
 const FromTheCreator = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,23 +32,35 @@ const FromTheCreator = () => {
     ['#FFA07A', '#FA8072'],
   ];
 
+  const textGradientColorSets = buttonColorSets;
+
   const handlePageScroll = (event) => {
     setActiveIndex(event.nativeEvent.position);
   };
+
+  const currentTextGradientColors = textGradientColorSets[activeIndex % textGradientColorSets.length];
 
   return (
     <View style={themedStyles.container}>
       <GrandientText
         text={t('homeScreen.fromTheCreator')}
-        colors={colors.themeTextGradient}
+        colors={currentTextGradientColors}
         textStyle={{ fontSize: TABLET_DEVICE ? 32 : 20 }}
         gradientDirection="horizontal"
         width={400}
       />
-      <GradientDivider />
+      <GradientDivider
+        colorProps={currentTextGradientColors}
+        height={3}
+      />
 
       <View style={themedStyles.pagerContainer}>
-        <PagerView style={themedStyles.pagerView} initialPage={0} orientation="horizontal" onPageSelected={handlePageScroll}>
+        <PagerView
+          style={themedStyles.pagerView}
+          initialPage={0}
+          orientation="horizontal"
+          onPageSelected={handlePageScroll}
+        >
           {gameData.map((game, index) => (
             <View key={index} style={themedStyles.page}>
               <GameCard

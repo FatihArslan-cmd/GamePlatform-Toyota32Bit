@@ -31,7 +31,7 @@ const CreateButton = () => {
 const styles = StyleSheet.create({
   createButton: {
     borderRadius: 10,
-    backgroundColor: '#007bff',
+    backgroundColor: '#3340D6',
   },
   createButtonContent: {
     height: TABLET_DEVICE ? 50 : 35,

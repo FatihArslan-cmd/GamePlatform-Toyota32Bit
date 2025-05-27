@@ -1,8 +1,8 @@
 const { createMessage, getMessages, deleteMessage } = require('../memory/postMessageStore');
 const { v4: uuidv4 } = require('uuid');
-const users = require('../utils/users'); // Assuming this is where user details are stored
+const users = require('../utils/users');
 
-const createMessageHandler = async (req, res) => { // Make handler async
+const createMessageHandler = async (req, res) => {
     try {
         const { content, contentImage } = req.body;
 
@@ -15,9 +15,8 @@ const createMessageHandler = async (req, res) => { // Make handler async
         let usernameFound = null;
         let userProfile = null;
 
-        // Find the user details based on userId
         for (const username in users) {
-            if (users[username] && users[username].id === userId) { // Added null/undefined check
+            if (users[username] && users[username].id === userId) {
                 usernameFound = username;
                 userProfile = users[username];
                 break;
@@ -25,7 +24,6 @@ const createMessageHandler = async (req, res) => { // Make handler async
         }
 
         if (!usernameFound || !userProfile) {
-            // Assuming 'User not found' is already English, keep it.
             return res.status(404).json({ message: 'User not found' });
         }
 
@@ -36,29 +34,28 @@ const createMessageHandler = async (req, res) => { // Make handler async
             timePosted: new Date().toISOString(),
             content,
             contentImage,
-            initialLikes: 0, // Assuming these are starting values
+            initialLikes: 0,
             commentCount: 0,
             shareCount: 0
         };
 
-        // Pass req to createMessage so it can access req.user.id (if needed internally for validation/ownership)
-        const createdMessage = await createMessage(req, newMessage); // Await the promise
+        const createdMessage = await createMessage(req, newMessage);
         res.status(201).json(createdMessage);
     } catch (error) {
-        res.status(500).json({ message: 'An error occurred while creating the message', error: error.message, backendMessage: error.message }); // Include backend error message for debugging
+        res.status(500).json({ message: 'An error occurred while creating the message', error: error.message, backendMessage: error.message });
     }
 };
 
-const getMessageHandler = async (req, res) => { // Make handler async
+const getMessageHandler = async (req, res) => {
     try {
-        const messages = await getMessages(req); // Await the promise
+        const messages = await getMessages(req);
         res.status(200).json(messages);
     } catch (error) {
-        res.status(500).json({ message: 'An error occurred while fetching messages', error: error.message, backendMessage: error.message }); // Include backend error message for debugging
+        res.status(500).json({ message: 'An error occurred while fetching messages', error: error.message, backendMessage: error.message });
     }
 };
 
-const deleteMessageHandler = async (req, res) => { // Make handler async
+const deleteMessageHandler = async (req, res) => {
     try {
         const messageIdToDelete = req.params.id;
 
@@ -66,8 +63,7 @@ const deleteMessageHandler = async (req, res) => { // Make handler async
             return res.status(400).json({ message: 'Message ID is required.' });
         }
 
-        // Pass req to deleteMessage so it can access req.user.id (for authorization checks)
-        const isDeleted = await deleteMessage(req, messageIdToDelete); // Await the promise
+        const isDeleted = await deleteMessage(req, messageIdToDelete);
 
         if (isDeleted) {
             res.status(200).json({ message: 'Message deleted successfully.' });
@@ -75,7 +71,7 @@ const deleteMessageHandler = async (req, res) => { // Make handler async
             res.status(404).json({ message: 'Message not found or could not be deleted.' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'An error occurred while deleting the message', error: error.message, backendMessage: error.message }); // Include backend error message for debugging
+        res.status(500).json({ message: 'An error occurred while deleting the message', error: error.message, backendMessage: error.message });
     }
 };
 

@@ -1,8 +1,8 @@
-require('dotenv').config(); // Load environment variables if not already loaded
+require('dotenv').config();
 
 const createMailOptions = (email, username, verificationCode) => {
   return {
-    from: `"🎮 Game Center Security" <${process.env.EMAIL_USER}>`, // Use env var for from email
+    from: `"🎮 Game Center Security" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: '🔐 Password Reset Request - Game Center',
     html: `
@@ -24,7 +24,6 @@ const createMailOptions = (email, username, verificationCode) => {
             </p>
           </div>
 
-          <!-- Main Content -->
           <div style="padding: 40px 30px;">
             <p style="color: #2D3748; font-size: 16px; line-height: 1.6;">
               Hello <strong style="color: #FF6B6B;">${username}</strong>,
@@ -33,7 +32,6 @@ const createMailOptions = (email, username, verificationCode) => {
               We received a request to reset the password for your Game Center account. To proceed with the password reset, please use the verification code below:
             </p>
 
-            <!-- Verification Code Box -->
             <div style="margin: 30px 0; padding: 30px; background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%); border-radius: 15px; text-align: center;">
               <div style="font-family: 'Courier New', monospace; font-size: 32px; letter-spacing: 8px; color: #E53E3E; font-weight: bold; text-shadow: 1px 1px 1px rgba(0,0,0,0.1);">
                 ${verificationCode}
@@ -43,7 +41,6 @@ const createMailOptions = (email, username, verificationCode) => {
               </p>
             </div>
 
-            <!-- Steps -->
             <div style="background-color: #F7FAFC; padding: 20px; border-radius: 10px; margin: 20px 0;">
               <h3 style="color: #2D3748; margin: 0 0 15px; font-size: 18px;">Next Steps:</h3>
               <ol style="color: #4A5568; margin: 0; padding-left: 20px;">
@@ -53,7 +50,6 @@ const createMailOptions = (email, username, verificationCode) => {
               </ol>
             </div>
 
-            <!-- Security Notice -->
             <div style="background-color: #FFF5F5; border-left: 4px solid #FC8181; padding: 15px; margin: 20px 0; border-radius: 5px;">
               <p style="color: #822727; margin: 0; font-size: 14px;">
                 🔒 If you didn't request this password reset, please secure your account immediately by:
@@ -65,7 +61,6 @@ const createMailOptions = (email, username, verificationCode) => {
               </ul>
             </div>
 
-            <!-- Contact Support -->
             <div style="margin-top: 30px; text-align: center;">
               <p style="color: #4A5568; font-size: 14px;">
                 Need help? Contact our support team
@@ -75,7 +70,6 @@ const createMailOptions = (email, username, verificationCode) => {
               </a>
             </div>
 
-            <!-- Footer -->
             <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #E2E8F0;">
               <p style="color: #718096; font-size: 14px; line-height: 1.6; margin: 0;">
                 For your security, this link will expire in 5 minutes. If you need a new password reset code, you can request one on the login page.
@@ -96,7 +90,6 @@ const createMailOptions = (email, username, verificationCode) => {
               </div>
             </div>
 
-            <!-- Copyright -->
             <div style="text-align: center; margin-top: 30px;">
               <p style="color: #A0AEC0; font-size: 12px; margin: 0;">
                 © 2025 Game Center. All rights reserved.

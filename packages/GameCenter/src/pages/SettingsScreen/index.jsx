@@ -22,7 +22,7 @@ const SettingsScreen = () => {
   }, [colors.card, theme]);
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar backgroundColor={colors.card} barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
       <Surface style={[styles.container, {  backgroundColor: colors.background }]}>
         <Header />
@@ -31,23 +31,23 @@ const SettingsScreen = () => {
           <View style={styles.content}>
 
             <AnimatedSection index={0}>
-              <ProfileSection />
+              <ProfileSection index={0} />
             </AnimatedSection>
 
             <AnimatedSection index={1}>
-              <ThemeSection />
+              <ThemeSection index={1} />
             </AnimatedSection>
 
             <AnimatedSection index={2}>
-              <LanguageSection />
+              <LanguageSection index={2} />
             </AnimatedSection>
 
             <AnimatedSection index={3}>
-              <NotificationSection />
+              <NotificationSection index={3} />
             </AnimatedSection>
 
             <AnimatedSection index={4}>
-              <AboutSection />
+              <AboutSection index={4} />
             </AnimatedSection>
           </View>
         </ScrollView>
@@ -61,13 +61,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  fixedHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex:20
-  },
   scrollView: {
     flex: 1,
   },
@@ -75,9 +68,9 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   content: {
-    flex: 1,
     gap: TABLET_DEVICE ? 16 : 8,
-    padding: TABLET_DEVICE ? 16 : 2,
+    paddingHorizontal: TABLET_DEVICE ? 16 : 8,
+    paddingVertical: 8,
   },
 });
 

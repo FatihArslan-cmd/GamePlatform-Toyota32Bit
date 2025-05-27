@@ -18,7 +18,6 @@ export const BingoWebSocketProvider = ({ children }) => {
     const { t } = useTranslation();
 
     const connectWebSocket = useCallback(async (lobbyCode) => {
-
         const token = getToken();
         if (!token) {
             return;
@@ -36,23 +35,22 @@ export const BingoWebSocketProvider = ({ children }) => {
         storage.set('bingoLobbyCode', lobbyCode);
 
         wsRef.current.onopen = () => {
-            console.log("WebSocket bağlantısı açıldı.");
             setIsConnected(true);
-            sendMessage({ type: 'system', message: 'Bağlantı kuruldu' });
+            sendMessage({ type: 'system', message: 'Connection established' });
         };
 
         wsRef.current.onmessage = (event) => {
             try {
                 const messageData = JSON.parse(event.data);
                 setMessages((prevMessages) => [...prevMessages, messageData]);
-                console.log("WebSocket mesajı alındı:", messageData);
+                console.log("WebSocket message received:", messageData);
                 
                 if (messageData.type === 'user-connected') {
-                    const username = messageData.username || messageData.userName || 'Kullanıcı';
+                    const username = messageData.username || messageData.userName || 'User';
                     Vibration.vibrate(100); 
                     ToastService.show('success', `${username} ${t('bingoGame.joinedTheLobby')}`);
                 } else if (messageData.type === 'user-disconnected') {
-                    const username = messageData.username || messageData.userName || 'Kullanıcı';
+                    const username = messageData.username || messageData.userName || 'User';
                     Vibration.vibrate(100); 
                     ToastService.show('info', `${username} ${t('bingoGame.leftTheLobby')}`);
                 } else if (messageData.type === 'game-started') {
@@ -61,7 +59,7 @@ export const BingoWebSocketProvider = ({ children }) => {
             } catch (error) {
                 setMessages((prevMessages) => [
                     ...prevMessages, 
-                    { type: 'error', message: 'Mesaj işlenirken hata oluştu', rawData: event.data }
+                    { type: 'error', message: 'Error processing message', rawData: event.data }
                 ]);
             }
         };
@@ -77,7 +75,7 @@ export const BingoWebSocketProvider = ({ children }) => {
             setIsConnected(false);
             wsRef.current = null;
             storage.delete('bingoLobbyCode');
-            setMessages((prevMessages) => [...prevMessages, { type: 'system', message: 'Bağlantı kapatıldı.' }]);
+            setMessages((prevMessages) => [...prevMessages, { type: 'system', message: 'Connection closed.' }]);
         };
     }, [sendMessage, t]);
 
@@ -86,7 +84,7 @@ export const BingoWebSocketProvider = ({ children }) => {
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             const messageString = JSON.stringify(message);
             wsRef.current.send(messageString);
-            console.log("WebSocket mesajı gönderildi:", messageString);
+            console.log("WebSocket message sent:", messageString);
         }
     }, []);
 
@@ -95,7 +93,7 @@ export const BingoWebSocketProvider = ({ children }) => {
             wsRef.current.close();
             clearMessages();
             storage.delete('bingoLobbyCode');
-            console.log("WebSocket bağlantısı manuel olarak kapatıldı.");
+            console.log("WebSocket connection manually closed.");
         }
     }, [clearMessages]);
 
