@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: TABLET_DEVICE ? 18 : 13,
-          fontFamily: 'Orbitron-ExtraBold',
     color: '#000',
     minHeight: 100,
     backgroundColor: 'white',
