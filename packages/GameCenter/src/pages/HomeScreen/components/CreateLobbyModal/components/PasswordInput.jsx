@@ -11,16 +11,15 @@ const PasswordInput = ({
   onToggleVisibility,
   hasPassword,
   onPasswordToggle,
-  t // Receive t function as prop
+  t
 }) => {
   const { colors } = useTheme();
-  // const { t } = useTranslation(); // No need to use hook here, it's passed as prop
 
   return (
     <View style={styles.container}>
       <View style={styles.passwordSwitchContainer}>
         <Text variant="bodyMedium" style={[styles.passwordSwitchText, { color: colors.text }]}>
-          {t('createLobbyModal.passwordInput.hasPassword')} {/* Translated text */}
+          {t('createLobbyModal.passwordInput.hasPassword')}
         </Text>
         <Switch
           value={hasPassword}

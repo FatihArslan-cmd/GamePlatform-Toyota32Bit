@@ -49,7 +49,7 @@ export default function LobbiesTab() {
                 icon="plus-circle"
                 onPress={() => setLobbyModalVisible(true)}
                 style={[styles.createLobbyButton, { backgroundColor: colors.gameDetailsButton }]}
-                labelStyle={{ fontSize: TABLET_DEVICE ? 14 : 10 }}
+                labelStyle={{ fontSize: TABLET_DEVICE ? 14 : 10,fontFamily: 'Orbitron-ExtraBold' }}
 
             >
                 {t('gameDetailsScreen.createLobby')}

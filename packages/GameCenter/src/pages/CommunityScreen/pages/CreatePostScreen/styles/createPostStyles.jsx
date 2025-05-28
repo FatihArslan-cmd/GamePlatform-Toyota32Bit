@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: TABLET_DEVICE ? 18 : 13,
+          fontFamily: 'Orbitron-ExtraBold',
     color: '#000',
     minHeight: 100,
     backgroundColor: 'white',
@@ -73,7 +74,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropdownText: {
-    fontSize: TABLET_DEVICE ? 14 : 11
+    fontSize: TABLET_DEVICE ? 14 : 11,
+    fontFamily: 'Orbitron-ExtraBold',
   },
   postMediaContainer: {
     marginTop: 10,

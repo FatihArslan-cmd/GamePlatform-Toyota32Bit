@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white', 
+    fontFamily: 'Orbitron-ExtraBold',
   },
 });
 
