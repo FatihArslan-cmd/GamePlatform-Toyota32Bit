@@ -205,8 +205,8 @@
 },
 
   "friendInvitePage":{
-    "emptyState1":"Arkadaşları davet etmeden önce bir lobiye katılın.",
-    "emptyState2":"Arkadaşları davet etmeden önce bir lobiye katılın.",
+    "emptyState1":"Önce bir arkadaş edin.",
+    "emptyState2":"Önce bir arkadaş edin.",
     "invite":"Davet Et",
     "lobbyInfoTitle": "Lobi Bilgisi",
     "availableSpotsText": "kişilik boş yer var!",

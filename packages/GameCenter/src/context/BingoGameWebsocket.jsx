@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import navigationService from "../shared/states/navigationService";
 import { useTranslation } from "react-i18next";
 import { Vibration } from "react-native";
 import { getToken } from "../shared/states/api";
@@ -24,7 +25,7 @@ export const BingoWebSocketProvider = ({ children }) => {
         }
         tokenRef.current = token;
 
-        const wsURL = `ws://${baseURL}/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;        
+        const wsURL = `ws://${baseURL}/bingoGame?lobbyCode=${lobbyCode}&token=${token}`;
 
         setConnectionError(null);
         setIsConnected(false);
@@ -36,37 +37,41 @@ export const BingoWebSocketProvider = ({ children }) => {
 
         wsRef.current.onopen = () => {
             setIsConnected(true);
-            sendMessage({ type: 'system', message: 'Connection established' });
         };
 
         wsRef.current.onmessage = (event) => {
             try {
                 const messageData = JSON.parse(event.data);
                 setMessages((prevMessages) => [...prevMessages, messageData]);
-                console.log("WebSocket message received:", messageData);
-                
-                if (messageData.type === 'user-connected') {
+                if (messageData.type === 'game-data') {
+                    if (messageData.gameData && messageData.gameData.gameStarted) {
+                        navigationService.navigate('BingoScreen');
+                    }
+                } else if (messageData.type === 'user-connected') {
                     const username = messageData.username || messageData.userName || 'User';
-                    Vibration.vibrate(100); 
+                    Vibration.vibrate(100);
                     ToastService.show('success', `${username} ${t('bingoGame.joinedTheLobby')}`);
                 } else if (messageData.type === 'user-disconnected') {
                     const username = messageData.username || messageData.userName || 'User';
-                    Vibration.vibrate(100); 
+                    Vibration.vibrate(100);
                     ToastService.show('info', `${username} ${t('bingoGame.leftTheLobby')}`);
                 } else if (messageData.type === 'game-started') {
-                    Vibration.vibrate(300); 
+                    Vibration.vibrate(300);
                 }
             } catch (error) {
                 setMessages((prevMessages) => [
-                    ...prevMessages, 
+                    ...prevMessages,
                     { type: 'error', message: 'Error processing message', rawData: event.data }
                 ]);
             }
         };
-        
+
         wsRef.current.onerror = (error) => {
             setIsConnected(false);
             setConnectionError(error);
+            if (wsRef.current) {
+                 wsRef.current.close();
+            }
             wsRef.current = null;
             storage.delete('bingoLobbyCode');
         };
@@ -77,14 +82,12 @@ export const BingoWebSocketProvider = ({ children }) => {
             storage.delete('bingoLobbyCode');
             setMessages((prevMessages) => [...prevMessages, { type: 'system', message: 'Connection closed.' }]);
         };
-    }, [sendMessage, t]);
-
+    }, [t]);
 
     const sendMessage = useCallback((message) => {
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             const messageString = JSON.stringify(message);
             wsRef.current.send(messageString);
-            console.log("WebSocket message sent:", messageString);
         }
     }, []);
 
@@ -93,13 +96,11 @@ export const BingoWebSocketProvider = ({ children }) => {
             wsRef.current.close();
             clearMessages();
             storage.delete('bingoLobbyCode');
-            console.log("WebSocket connection manually closed.");
         }
-    }, [clearMessages]);
+    }, []);
 
     const clearMessages = useCallback(() => {
         setMessages([]);
-        console.log("WebSocket messages cleared.");
     }, []);
 
     useEffect(() => {
@@ -117,7 +118,7 @@ export const BingoWebSocketProvider = ({ children }) => {
         sendMessage,
         closeWebSocket,
         connectWebSocket,
-        clearMessages
+        clearMessages,
     };
 
     return (
@@ -129,5 +130,8 @@ export const BingoWebSocketProvider = ({ children }) => {
 
 export const useBingoWebSocket = () => {
     const context = useContext(BingoWebSocketContext);
+     if (context === undefined) {
+        throw new Error('useBingoWebSocket must be used within a BingoWebSocketProvider');
+    }
     return context;
 };

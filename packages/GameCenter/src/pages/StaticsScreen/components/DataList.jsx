@@ -69,7 +69,9 @@ const DataList = ({ data }) => {
     };
 
     return (
-        <Card style={[styles.container, { backgroundColor: colors.card }]} elevation={3}>
+        <Card style={[styles.container, { backgroundColor: colors.card }]} elevation={1}                         onPress={() => {}}
+         onPress={() => {}}
+     >
             <Card.Content>
                 <View style={styles.header}>
                     <Title style={[styles.title, { color: colors.text }]}>{t('StaticsScreen.dailyDetails')}</Title>

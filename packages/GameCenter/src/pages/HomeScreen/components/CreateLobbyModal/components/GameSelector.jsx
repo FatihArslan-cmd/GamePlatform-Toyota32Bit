@@ -6,6 +6,7 @@ import { useTheme } from "../../../../../context/ThemeContext";
 import { isTablet } from "../../../../../utils/isTablet";
 
 const TABLET_DEVICE = isTablet();
+const CUSTOM_FONT_FAMILY = 'Orbitron-ExtraBold';
 
 const GameSelector = ({
     gameName,
@@ -14,7 +15,7 @@ const GameSelector = ({
     onGameNameChange,
     onLobbyNameChange,
     onMaxCapacityChange,
-    t 
+    t
 }) => {
     const [pressedScale] = useState(new Animated.Value(1));
     const games = ['Bingo', 'Chess', 'Poker', 'Checkers', 'Monopoly', 'Scrabble', 'Clue', 'Risk', 'Catan', 'Ticket to Ride'];
@@ -44,62 +45,80 @@ const GameSelector = ({
                     fadingEdgeLength={50}
                 >
                     {games.map((game, index) => (
-                        <TouchableOpacity
+                        <Animated.View
                             key={index}
-                            onPressIn={handlePressIn}
-                            onPressOut={handlePressOut}
-                            style={[
-                                styles.gameButton,
-                                { backgroundColor: colors.primary },
-                                gameName === game && styles.gameButtonSelected,
-                            ]}
-                            onPress={() => onGameNameChange(game)}
+                            style={{
+                                transform: [{ scale: gameName === game ? 1 : pressedScale }],
+                                marginRight: 12,
+                            }}
                         >
-                            <Text style={[
-                                styles.gameButtonText,
-                                { color: colors.card },
-                                gameName === game && styles.gameButtonTextSelected,
-                            ]}>
-                                {game}
-                            </Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPressIn={handlePressIn}
+                                onPressOut={handlePressOut}
+                                style={[
+                                    styles.gameButton,
+                                    { backgroundColor: gameName === game ? colors.primary : colors.card },
+                                    gameName === game && styles.gameButtonSelected,
+                                ]}
+                                onPress={() => onGameNameChange(game)}
+                            >
+                                <Text style={[
+                                    styles.gameButtonText,
+                                    { color: gameName === game ? colors.card : colors.text },
+                                    gameName === game && styles.gameButtonTextSelected,
+                                ]}>
+                                    {game}
+                                </Text>
+                            </TouchableOpacity>
+                        </Animated.View>
                     ))}
                 </ScrollView>
             </View>
 
             <TextInput
                 label={
-                    <Text style={{ color: colors.text }}>{t('createLobbyModal.gameSelector.lobbyName')}</Text> 
+                    <Text style={{ color: colors.text, fontFamily: CUSTOM_FONT_FAMILY }}>
+                        {t('createLobbyModal.gameSelector.lobbyName')}
+                    </Text>
                 }
                 mode="outlined"
                 value={lobbyName}
-                placeholder={t('createLobbyModal.gameSelector.lobbyNamePlaceholder')} 
+                placeholder={t('createLobbyModal.gameSelector.lobbyNamePlaceholder')}
                 left={<TextInput.Icon icon="home" color={colors.primary} />}
-                style={[styles.input, { backgroundColor: colors.card }]}
+                style={[styles.inputContainer, { backgroundColor: colors.card }]}
                 onChangeText={onLobbyNameChange}
                 outlineColor={colors.border}
                 activeOutlineColor={colors.primary}
                 textColor={colors.text}
                 placeholderTextColor={colors.subText}
+                contentStyle={{
+                    fontFamily: CUSTOM_FONT_FAMILY,
+                    color: colors.text,
+                }}
             />
 
             <TextInput
                 label={
-                    <Text style={{ color: colors.text }}>{t('createLobbyModal.gameSelector.maxCapacity')}</Text> 
+                    <Text style={{ color: colors.text, fontFamily: CUSTOM_FONT_FAMILY }}>
+                        {t('createLobbyModal.gameSelector.maxCapacity')}
+                    </Text>
                 }
                 mode="outlined"
                 value={maxCapacity}
-                placeholder={t('createLobbyModal.gameSelector.maxCapacityPlaceholder')} 
+                placeholder={t('createLobbyModal.gameSelector.maxCapacityPlaceholder')}
                 keyboardType="numeric"
                 left={<TextInput.Icon icon="account-group" color={colors.primary} />}
                 right={<TextInput.Icon icon="information" color={colors.primary} />}
-                style={[styles.input, { backgroundColor: colors.card }]}
+                style={[styles.inputContainer, { backgroundColor: colors.card }]}
                 onChangeText={onMaxCapacityChange}
                 outlineColor={colors.border}
                 activeOutlineColor={colors.primary}
                 textColor={colors.text}
                 placeholderTextColor={colors.subText}
-                
+                 contentStyle={{
+                    fontFamily: CUSTOM_FONT_FAMILY,
+                    color: colors.text,
+                }}
             />
         </View>
     );
@@ -107,11 +126,9 @@ const GameSelector = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
     },
-    input: {
+    inputContainer: {
         marginBottom: 16,
-        backgroundColor: 'white',
         elevation: 2,
         shadowColor: '#000',
         shadowOffset: {
@@ -131,8 +148,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         fontSize: TABLET_DEVICE ? 18 : 12,
         fontWeight: '600',
-        color: '#8a2be2',
-        fontFamily: 'Orbitron-ExtraBold',
+        fontFamily: CUSTOM_FONT_FAMILY,
     },
     scrollViewContent: {
         paddingHorizontal: 4,
@@ -142,8 +158,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 12,
         borderRadius: 25,
-        backgroundColor: '#fff',
-        marginRight: 12,
         elevation: 2,
         shadowColor: '#000',
         shadowOffset: {
@@ -152,18 +166,19 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.1,
         shadowRadius: 3,
+        minWidth: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     gameButtonSelected: {
-        backgroundColor: '#8a2be2',
-        borderColor: '#8a2be2',
+        borderColor: 'transparent',
+        borderWidth: 2,
     },
     gameButtonText: {
         fontSize: TABLET_DEVICE ? 16 : 12,
-        color: '#333',
-        fontFamily: 'Orbitron-ExtraBold',
+        fontFamily: CUSTOM_FONT_FAMILY,
     },
     gameButtonTextSelected: {
-        color: '#fff',
     },
 });
 

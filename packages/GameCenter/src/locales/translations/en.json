@@ -203,8 +203,8 @@
     "getReady": "Get Ready!"
   },
   "friendInvitePage": {
-    "emptyState1": "Join a lobby before inviting friends.",
-    "emptyState2": "Join a lobby before inviting friends.",
+    "emptyState1": "Add friends to invite them to your lobby.",
+    "emptyState2": "Add friends to invite them to your lobby.",
     "invite": "Invite",
     "lobbyInfoTitle": "Lobby Info",
     "availableSpotsText": "available spots!",

@@ -24,13 +24,13 @@ const StatsCards = ({ stats }) => {
         },
         {
             title: t('StaticsScreen.totalTime'),
-            value: `${stats.totalTime} ${t('StaticsScreen.min')}`, 
+            value: `${stats.totalTime} ${t('StaticsScreen.min')}`,
             icon: "clock-outline",
             color: "#4CAF50",
         },
         {
             title: t('StaticsScreen.average'),
-            value: `${stats.averageTime} ${t('StaticsScreen.min')}`, 
+            value: `${stats.averageTime} ${t('StaticsScreen.min')}`,
             icon: "trending-up",
             color: "#FF9800",
         },
@@ -56,6 +56,7 @@ const StatsCards = ({ stats }) => {
                             styles.statCard,
                             { backgroundColor: colors.card }
                         ]}
+                        onPress={() => {}}
                     >
                         <Card.Content style={styles.cardContent}>
                             <Avatar.Icon

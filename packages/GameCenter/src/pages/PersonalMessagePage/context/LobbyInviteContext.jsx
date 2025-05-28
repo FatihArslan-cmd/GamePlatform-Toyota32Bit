@@ -1,8 +1,8 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import lobbyService from '../service/service';
-import { ToastService } from '../../../context/ToastService';
-import { useBingoWebSocket } from '../../../context/BingoGameWebsocket.js';
-import { useTranslation } from 'react-i18next';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import lobbyService from "../service/service";
+import { useTranslation } from "react-i18next";
+import { useBingoWebSocket } from "../../../context/BingoGameWebsocket.jsx";
+import { ToastService } from "../../../context/ToastService";
 
 const LobbyInviteContext = createContext();
 

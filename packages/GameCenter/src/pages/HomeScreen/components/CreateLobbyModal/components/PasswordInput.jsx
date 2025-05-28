@@ -1,8 +1,9 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { Switch, Text, TextInput } from "react-native-paper";
 import { useTheme } from "../../../../../context/ThemeContext";
+
+const CUSTOM_FONT_FAMILY = 'Orbitron-ExtraBold';
 
 const PasswordInput = ({
   password,
@@ -31,24 +32,31 @@ const PasswordInput = ({
 
       {hasPassword && (
         <TextInput
-        label={
-          <Text style={{ color: colors.text }}>{t('createLobbyModal.passwordInput.password')}</Text> 
-        }
-          mode="outlined"
-          value={password}
-          onChangeText={onPasswordChange}
-          secureTextEntry={!isPasswordVisible}
-          left={<TextInput.Icon icon="lock" color={colors.primary} />}
-          right={
-            <TextInput.Icon
-              icon={isPasswordVisible ? "eye-off" : "eye"}
-              onPress={onToggleVisibility}
-              iconColor={colors.text}
-            />
-          }
-          style={[styles.input, { backgroundColor: colors.card }]}
-          outlineStyle={{ borderColor: colors.border }}
-          textColor={colors.text}
+            label={
+                <Text style={{ color: colors.text, fontFamily: CUSTOM_FONT_FAMILY }}>
+                    {t('createLobbyModal.passwordInput.password')}
+                </Text>
+            }
+            mode="outlined"
+            value={password}
+            onChangeText={onPasswordChange}
+            secureTextEntry={!isPasswordVisible}
+            left={<TextInput.Icon icon="lock" color={colors.primary} />}
+            right={
+                <TextInput.Icon
+                icon={isPasswordVisible ? "eye-off" : "eye"}
+                onPress={onToggleVisibility}
+                iconColor={colors.text}
+                />
+            }
+            style={[styles.inputContainer, { backgroundColor: colors.card }]}
+            outlineStyle={{ borderColor: colors.border }}
+            textColor={colors.text}
+            placeholderTextColor={colors.subText}
+            contentStyle={{
+                fontFamily: CUSTOM_FONT_FAMILY,
+                color: colors.text,
+            }}
         />
       )}
     </View>
@@ -67,9 +75,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   passwordSwitchText: {
-    fontFamily: 'Orbitron-ExtraBold',
+    fontFamily: CUSTOM_FONT_FAMILY,
   },
-  input: {
+  inputContainer: {
     marginTop: 8,
   },
 });

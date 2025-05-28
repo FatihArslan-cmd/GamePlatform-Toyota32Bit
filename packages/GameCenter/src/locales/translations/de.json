@@ -203,8 +203,8 @@
     "getReady": "Mach dich bereit!"
   },
   "friendInvitePage": {
-    "emptyState1": "Trete einer Lobby bei, bevor du Freunde einlädst.",
-    "emptyState2": "Trete einer Lobby bei, bevor du Freunde einlädst.",
+    "emptyState1": "Du hast noch keine Freunde",
+    "emptyState2": "Du hast noch keine Freunde",
     "invite": "Einladen",
     "lobbyInfoTitle": "Lobby-Info",
     "availableSpotsText": "freie Plätze!",

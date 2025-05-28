@@ -62,7 +62,7 @@ const StaticsScreen = () => {
             >
                  <View style={styles.scrollContentWrapper}>
                     {isLoading ? (
-                        <LoadingIndicator/>
+                       <></>
                     ) : (
                         isEmpty ? (
                             <EmptyState />

@@ -4,7 +4,7 @@ import Navigation from "./navigation/Navigation.js";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
 import { PaperProvider } from "react-native-paper";
-import { BingoWebSocketProvider } from "./context/BingoGameWebsocket.js";
+import { BingoWebSocketProvider } from "./context/BingoGameWebsocket.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { ToastProvider } from "./context/ToastService.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
