@@ -26,9 +26,9 @@
 
 ## <a id="about-the-project"></a>📘 About The Project.
 
-This project was developed using a monorepo structure with Lerna. GamePlatform is built with React Native and includes submodules such as the game Tombala (Bingo).
+This project was developed using a monorepo structure with Lerna. GamePlatform is built with React Native and includes submodules such as the game Tombala (Bingo) , Fall Panic.
 
-GamePlatform is a gaming platform that currently includes 2 games: Tombala. To get started, launch the server and log into the app. You can create or join a lobby, add friends using a barcode or code, and exchange private messages via WebSocket. Group messaging is also supported.
+GamePlatform is a gaming platform that currently includes 2 games: Tombala. To get started, launch the server and log into the app. You can create or join a lobby, add friends using a barcode or code, and exchange private messages via WebSocket. Group messaging is also supported. Firebase cloud messaging integrated. It has been used in various places.
 
 Once a lobby is created, the host can start the game, and all players will be navigated to the game screen. The first player to get Bingo wins the game.
 
@@ -39,11 +39,10 @@ The backend is developed using Express.js and handles real-time communication us
 
 🔗 Check out the Fall Panic game on GitHub:
 <a href="https://github.com/FatihArslan-cmd/Fall-Panic#" target="_blank">Fall Panic GitHub Repository</a>
-For the full experience, download and try out the app!
 <hr>
 
 <br/>
-## <a id="screenshots">📷 Screenshots</a>
+## <a id="screenshots"></a>📷 Screenshots
 <br/>
 
 <img src="https://github.com/user-attachments/assets/643bbab3-393d-403d-ac91-5505f519cb44" width="300" alt="Screenshot 1"/>
@@ -65,10 +64,8 @@ For the full experience, download and try out the app!
 
 Ensure you have the following software installed:
 - [Node.js](https://nodejs.org/) (v22.14.0) 🟢
-- npm (v10.2.4 or later) or Yarn 🧶
-
-This project was bootstrapped with [Create React Native App](https://github.com/expo/create-react-native-app?tab=readme-ov-file).
-
+- Npm (v10.2.4 or later) or Yarn
+- Jdk 17.0.12
 
 ## <a id="env"></a>📄 Environment Configuration
 
@@ -79,6 +76,7 @@ SESSION_SECRET=your_session_secret_here
 HMAC_SECRET=your_hmac_secret_here
 REFRESH_SECRET_KEY=your_refresh_secret_key_here
 
+//If you dont want to use reset password no need to change it
 EMAIL_USER=your_email@example.com
 EMAIL_PASS=your_email_password
   ```
@@ -96,7 +94,7 @@ It is recommended to install the project in a directory close to the system root
     ```bash
     cd GamePlatform-Toyota32Bit
     ```
-3. Navigate to the packages directory and clone the Bingo submodule:
+3. Navigate to the packages directory and clone the Bingo and Fall Panic submodule:
     ```bash
     cd packages
     git clone https://github.com/FatihArslan-cmd/Bingo.git
@@ -106,13 +104,16 @@ It is recommended to install the project in a directory close to the system root
     ```bash
     yarn install
     ```
-5. Start Server:
+5. Go to `packages\GameCenter\src\utils\baseUrl.js`. Change `export const baseURL`. If testing on a **physical device**, set it to `"x.x.x.x:3000"` (replace x.x.x.x with your local IP); otherwise, 
+ set it to `"10.0.2.2:3000"`.
+
+6. Start Server:
     ```bash
     cd server
     npm install
     node .\server.js
     ```
-6. Start the project:
+7. Start the project (First build may take a while):
     ```bash
     yarn gamecenter
     ```
