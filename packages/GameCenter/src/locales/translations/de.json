@@ -162,6 +162,7 @@
     "activeLobbies": "Aktive Lobbys",
     "joinLobby": "Lobby beitreten",
     "options": "Optionen",
+    "lobbyCreated": "Lobby erfolgreich erstellt!",
     "emailError": "E-Mail-Client konnte nicht geöffnet werden",
     "fromTheCreator": "Besondere Spiele",
     "exploreNow": "Jetzt erkunden",
@@ -353,6 +354,7 @@
     "winner": "Gewinner",
     "gameEnded": "Spiel vom Raumbesitzer beendet, du wirst zur Startseite weitergeleitet.",
     "drawAllNumbersButtonLabel": "Alle Zahlen ziehen",
+    "navigateback":"You are redirected to the Game.",
     "drawAllNumbersModalTitle": "Alle Zahlen ziehen",
     "drawAllNumbersModalText": "Bist du sicher, dass du alle Zahlen ziehen möchtest?",
     "drawAllNumbersModalConfirm": "Alle Zahlen"

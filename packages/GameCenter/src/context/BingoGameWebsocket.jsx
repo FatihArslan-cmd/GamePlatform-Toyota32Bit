@@ -46,11 +46,11 @@ export const BingoWebSocketProvider = ({ children }) => {
                 if (messageData.type === 'game-data') {
                     if (messageData.gameData && messageData.gameData.gameStarted) {
                         navigationService.navigate('BingoScreen');
+                        ToastService.show('info', `${username} ${t('bingoGame.navigateback')}`);
                     }
                 } else if (messageData.type === 'user-connected') {
                     const username = messageData.username || messageData.userName || 'User';
                     Vibration.vibrate(100);
-                    ToastService.show('success', `${username} ${t('bingoGame.joinedTheLobby')}`);
                 } else if (messageData.type === 'user-disconnected') {
                     const username = messageData.username || messageData.userName || 'User';
                     Vibration.vibrate(100);

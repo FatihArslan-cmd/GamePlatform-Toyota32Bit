@@ -55,7 +55,7 @@ const CommunityTopics = ({ showAllButton }) => {
 const createStyles = (colors) => StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingTop: TABLET_DEVICE ? 60 : 30,
+    paddingTop: TABLET_DEVICE ? 20 : 10,
   },
   chip: {
     marginHorizontal: 4,

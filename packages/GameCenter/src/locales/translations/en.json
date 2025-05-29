@@ -158,6 +158,7 @@
     "searchPlaceholder": "Search Game",
     "settings": "Settings",
     "helpAndDisplay": "Help & Display",
+    "lobbyCreated": "Lobby created successfully!",
     "createLobby": "Create Lobby",
     "activeLobbies": "Active Lobbies",
     "joinLobby": "Join Lobby",
@@ -355,7 +356,9 @@
     "drawAllNumbersButtonLabel": "Draw all numbers",
     "drawAllNumbersModalTitle": "Draw All Numbers",
     "drawAllNumbersModalText": "Are you sure you want to draw all numbers?",
-    "drawAllNumbersModalConfirm": "Draw All"
+    "drawAllNumbersModalConfirm": "Draw All",
+    "navigateback":"You are redirected to the Game.",
+    "numbers": "Numbers"
   },
   "StaticsScreen": {
     "title": "Statistics",

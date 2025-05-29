@@ -77,6 +77,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
             connectWebSocket(data.lobby.code);
             setCode(`${data.lobby.code}`);
             setIsCodeGenerated(true);
+            ToastService.show("success", t('homeScreen.lobbyCreated'));
         } catch (error) {
             ToastService.show("error", error.message);
         }

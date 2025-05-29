@@ -33,9 +33,6 @@ const RoomNameInput = () => {
       value={roomName}
       onChangeText={setRoomName}
       style={{ backgroundColor: colors.card }}
-      contentStyle={{ 
-        fontFamily: 'Orbitron-ExtraBold',
-      }}
       mode="outlined"
       left={<TextInput.Icon icon="account-group" size={TABLET_DEVICE ? 24 : 16} color={colors.primary} />}
       right={renderClearIcon()}
@@ -48,9 +45,18 @@ const RoomNameInput = () => {
           primary: colors.primary,
           background: colors.card,
           text: colors.text,
-          placeholder: colors.subText,
+          placeholder: colors.subText, 
           onSurface: colors.text,
           onSurfaceDisabled: colors.subText
+        },
+        fonts: {
+          regular: {
+            fontFamily: 'Orbitron-ExtraBold',
+          },
+          medium: {
+             fontFamily: 'Orbitron-ExtraBold',
+             fontWeight: 'normal', 
+          }
         },
       }}
     />

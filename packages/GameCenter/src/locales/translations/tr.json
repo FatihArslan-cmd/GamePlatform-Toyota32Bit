@@ -160,6 +160,7 @@
   "settings": "Ayarlar",
   "helpAndDisplay": "Yardım ve Görüntüleme",
   "createLobby": "Lobi Oluştur",
+  "lobbyCreated": "Lobi başarıyla oluşturuldu!",
   "activeLobbies": "Aktif Lobiler",
   "joinLobby": "Lobiye Katıl",
   "options": "Seçenekler",
@@ -361,7 +362,9 @@
     "drawAllNumbersButtonLabel": "Tüm sayıları çek",
     "drawAllNumbersModalTitle": "Tüm Sayıları Çek",
     "drawAllNumbersModalText": "Kalan tüm sayıları hemen çekmek istediğinizden emin misiniz?",
-    "drawAllNumbersModalConfirm": "Çek"
+    "drawAllNumbersModalConfirm": "Çek",
+    "navigateback":"Tekrar oyuna yönlendiriliyorsunuz.",
+    "numbers": "Sayılar"
 },
 "StaticsScreen": {
     "title": "İstatistikler",
