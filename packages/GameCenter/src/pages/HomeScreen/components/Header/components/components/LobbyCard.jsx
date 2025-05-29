@@ -1,18 +1,18 @@
-import React , {useContext, useState, useCallback} from 'react';
-import { StyleSheet} from 'react-native';
-import { Card } from 'react-native-paper';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { ToastService } from '../../../../../../context/ToastService';
-import { UserContext } from '../../../../../../context/UserContext';
-import CustomModal from '../../../../../../components/CustomModal';
-import useLobbyActions from '../hooks/useLobbyActions';
-import LobbyCardHeaderActions from './LobbyCardHeaderActions';
-import LobbyCardContent from './LobbyCardContent';
-import PlayerModalContent from './PlayerModalContent';
-import { useTheme } from '../../../../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next';
+import Clipboard from "@react-native-clipboard/clipboard";
+import CustomModal from "../../../../../../components/CustomModal";
+import LobbyCardContent from "./LobbyCardContent";
+import LobbyCardHeaderActions from "./LobbyCardHeaderActions";
+import PlayerModalContent from "./PlayerModalContent";
+import React , { useCallback, useContext, useState } from "react";
+import useLobbyActions from "../hooks/useLobbyActions";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { Card } from "react-native-paper";
+import { useTheme } from "../../../../../../context/ThemeContext";
+import { ToastService } from "../../../../../../context/ToastService";
+import { UserContext } from "../../../../../../context/UserContext";
 
-const LobbyCard = ({ lobby, onLobbyAction }) => {
+const LobbyCard = ({ lobby, onLobbyAction,closeBottomSheet }) => {
   const { user } = useContext(UserContext);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [leaveModalVisible, setLeaveModalVisible] = useState(false);
@@ -86,6 +86,7 @@ const LobbyCard = ({ lobby, onLobbyAction }) => {
         lobbyCode={currentLobby.code}
         ownerUsername={currentLobby.ownerUsername}
         setDeleteModalVisible={setDeleteModalVisible}
+        closeBottomSheet={closeBottomSheet}
       />
 
       <Card.Content>

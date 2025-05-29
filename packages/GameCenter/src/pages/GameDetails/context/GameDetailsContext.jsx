@@ -29,7 +29,6 @@ export function GameDetailsProvider({ children }) {
   });
 
   useEffect(() => {
-    console.log("Game settings changed:", gameSettings);
     try {
         storage.set('gameSettings', JSON.stringify(gameSettings));
     } catch (error) {

@@ -23,8 +23,6 @@ const HeaderContent = () => {
     closeLobbyModal,
     isBottomSheetVisible,
     closeBottomSheet,
-    navigateToFriendInvite,
-    navigateToUpdateLobby,
   } = useHeader(); 
 
   return (
@@ -58,21 +56,7 @@ const HeaderContent = () => {
         title="Active Lobbies"
         height="50%"
       >
-        <AddFriendToLobbyIcon
-        leftAction={{
-          onPress: () => {
-            navigateToFriendInvite();
-          },
-          iconName: 'account-plus',
-        }}
-          rightAction={{
-            onPress: () => {
-              navigateToUpdateLobby();
-            },
-            iconName: 'update',
-          }}
-        />
-        <ActiveLobbiesContent />
+        <ActiveLobbiesContent closeBottomSheet={closeBottomSheet} />
       </BottomSheet>
       <JoinLobbyModal/>
     </>

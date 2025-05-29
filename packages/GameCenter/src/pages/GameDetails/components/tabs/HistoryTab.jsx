@@ -61,7 +61,7 @@ export default function HistoryTab() {
 }
 
 function GameHistoryCard({ game }) {
-  const isWon = game.result === 'Bingo Kazandı';
+  const isWon = game.result === 'Won Bingo';
   const gameDate = formatDate(game.gameEndTime);
   const gameTime = formatDate(game.gameEndTime, true).split(' ')[1]; 
   const { colors } = useTheme(); 

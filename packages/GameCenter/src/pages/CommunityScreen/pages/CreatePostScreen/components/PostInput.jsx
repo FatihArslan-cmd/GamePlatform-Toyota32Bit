@@ -13,7 +13,7 @@ const TABLET_DEVICE = isTablet();
 const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) => {
   const { user } = useContext(UserContext);
   const { colors } = useTheme();
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
   const handleRemoveImage = () => {
     setSelectedImage(null);
@@ -41,8 +41,14 @@ const PostInput = ({ selectedImage, setSelectedImage, postText, setPostText }) =
 
         <Card.Content style={styles.inputArea}>
           <TextInput
-            style={[styles.input, { color: colors.text }]}
-            placeholder={t('communityScreen.whatsHappening')} 
+            contentStyle={[
+                styles.input,
+                {
+      fontFamily: 'Orbitron-ExtraBold',
+                    color: colors.text
+                }
+            ]}
+            placeholder={t('communityScreen.whatsHappening')}
             placeholderTextColor={colors.subText}
             multiline
             autoFocus={true}

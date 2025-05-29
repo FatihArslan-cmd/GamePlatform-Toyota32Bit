@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import RoomChatScreen from "../pages/RoomChatScreen/index.jsx";
 import RoomsScreen from "../pages/CommunityScreen/pages/RoomsScreen/RoomsScreen.jsx";
 import SettingScreen from "../pages/SettingsScreen/index.jsx";
+import StaticsScreen from "../pages/StaticsScreen/StaticsScreen.jsx";
 import TabNavigator from "./TabBarNavigator.jsx";
 import UpdateLobbyScreen from "../pages/UpdateLobbyScreen/UpdateLobbyScreen.jsx";
 import navigationService from "../shared/states/navigationService.js";
@@ -45,7 +46,7 @@ export default function Navigation() {
           }).start();
         });
       }, 175);
-      
+
       const hasSeenIntro = storage.getBoolean('hasSeenIntro');
       const token = storage.getString('token');
 
@@ -58,13 +59,19 @@ export default function Navigation() {
     initializeApp();
   }, []);
 
+
   if (isIntroSeen === null) {
     return <LoadingFullScreen />;
   }
-  
+
   return (
     <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
-      <NavigationContainer  ref={navigationService.navigationRef}>
+      <NavigationContainer
+         ref={navigationService.navigationRef}
+         onReady={() => { 
+             navigationService.setReady();
+         }}
+      >
         <Stack.Navigator
           initialRouteName={isIntroSeen ? (isLoggedIn ? 'Tabs' : 'Login') : 'Intro'}
           screenOptions={{
@@ -83,7 +90,7 @@ export default function Navigation() {
               },
             }}
           />
-          
+
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
             name="Tabs"
@@ -92,7 +99,7 @@ export default function Navigation() {
               animation: 'fade',
             }}
           />
-      
+
              <Stack.Screen
             name="BarcodeScan"
             component={BarcodeScan}
@@ -100,7 +107,7 @@ export default function Navigation() {
               animation: 'fade',
             }}
           />
-          
+
           <Stack.Screen
             name="Settings"
             component={SettingScreen}
@@ -121,26 +128,26 @@ export default function Navigation() {
             options={{
               animation: 'fade',
             }}
-          />   
+          />
                  <Stack.Screen
             name="FallPanicScreen"
             component={FallPanicScreen}
             options={{
               animation: 'slide_from_right',
             }}
-          />  
+          />
           <Stack.Screen
             name="CreateRoom"
             component={CreateRoomScreen}
             options={{
-              animation: 'slide_from_bottom', 
+              animation: 'slide_from_bottom',
             }}
           />
              <Stack.Screen
             name="CreatePost"
             component={CreatePostScreen}
             options={{
-              animation: 'slide_from_bottom', 
+              animation: 'slide_from_bottom',
             }}
           />
         <Stack.Screen name="BingoScreen"
@@ -150,43 +157,49 @@ export default function Navigation() {
             }}
          />
           <Stack.Screen name="FriendInvitePage"
-         component={FriendInvite}  
+         component={FriendInvite}
           options={{
               animation: 'fade',
             }}
          />
                <Stack.Screen name="PersonalMessagePage"
-         component={PersonalMessagePage}  
+         component={PersonalMessagePage}
           options={{
               animation: 'fade',
             }}
          />
          <Stack.Screen name="ChatWithFriendsScreen"
-         component={ChatWithFriendsScreen}  
+         component={ChatWithFriendsScreen}
           options={{
               animation: 'fade',
             }}
          />
                <Stack.Screen name="ChatScreen"
-         component={ChatScreen}  
+         component={ChatScreen}
           options={{
               animation: 'fade',
             }}
          />
           <Stack.Screen name="RoomChatScreen"
-         component={RoomChatScreen}  
+         component={RoomChatScreen}
           options={{
               animation: 'fade',
             }}
          />
           <Stack.Screen name="UpdateLobbyScreen"
-         component={UpdateLobbyScreen}  
+         component={UpdateLobbyScreen}
           options={{
               animation: 'simple_push',
             }}
          />
            <Stack.Screen name="CountDownSplashScreen"
-         component={CountDownSplashScreen}  
+         component={CountDownSplashScreen}
+          options={{
+              animation: 'simple_push',
+            }}
+         />
+         <Stack.Screen name="StaticsScreen"
+         component={StaticsScreen}
           options={{
               animation: 'simple_push',
             }}

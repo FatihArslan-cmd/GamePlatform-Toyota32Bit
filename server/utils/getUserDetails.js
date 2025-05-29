@@ -1,4 +1,4 @@
-const users = require('./users'); // users objesini import et (adjust path if needed)
+const users = require('./users');
 
 const getUserDetails = (userId) => {
     for (const username in users) {
@@ -10,7 +10,7 @@ const getUserDetails = (userId) => {
             };
         }
     }
-    return null; // Kullanıcı bulunamazsa null dön
+    return null; 
 };
 
 module.exports = {

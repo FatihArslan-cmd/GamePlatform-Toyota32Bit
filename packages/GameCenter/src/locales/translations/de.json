@@ -162,6 +162,7 @@
     "activeLobbies": "Aktive Lobbys",
     "joinLobby": "Lobby beitreten",
     "options": "Optionen",
+    "lobbyCreated": "Lobby erfolgreich erstellt!",
     "emailError": "E-Mail-Client konnte nicht geöffnet werden",
     "fromTheCreator": "Besondere Spiele",
     "exploreNow": "Jetzt erkunden",
@@ -203,8 +204,8 @@
     "getReady": "Mach dich bereit!"
   },
   "friendInvitePage": {
-    "emptyState1": "Trete einer Lobby bei, bevor du Freunde einlädst.",
-    "emptyState2": "Trete einer Lobby bei, bevor du Freunde einlädst.",
+    "emptyState1": "Du hast noch keine Freunde",
+    "emptyState2": "Du hast noch keine Freunde",
     "invite": "Einladen",
     "lobbyInfoTitle": "Lobby-Info",
     "availableSpotsText": "freie Plätze!",
@@ -353,8 +354,27 @@
     "winner": "Gewinner",
     "gameEnded": "Spiel vom Raumbesitzer beendet, du wirst zur Startseite weitergeleitet.",
     "drawAllNumbersButtonLabel": "Alle Zahlen ziehen",
+    "navigateback":"You are redirected to the Game.",
     "drawAllNumbersModalTitle": "Alle Zahlen ziehen",
     "drawAllNumbersModalText": "Bist du sicher, dass du alle Zahlen ziehen möchtest?",
     "drawAllNumbersModalConfirm": "Alle Zahlen"
+  },
+  "StaticsScreen": {
+    "title": "Statistiken",
+    "summaryStatics": "Zusammenfassende Statistiken",
+    "totalDays": "Gesamte Tage",
+    "totalTime": "Gesamte Zeit",
+    "average": "Durchschnitt",
+    "longest": "Längste",
+    "last7DaysActivity": "Aktivität der letzten 7 Tage",
+    "daily": "Täglich",
+    "m":"Min.",
+    "min": "Minute",
+    "dailyDetails": "Tägliche Details",
+    "noGameData": "Keine Spieldaten gefunden.",
+    "noGameDataDescription": "Sie können Ihre Statistiken verfolgen, indem Sie Spiele spielen.",
+    "playYourFirstGame": "Spielen Sie Ihr erstes Spiel und kommen Sie zurück!",
+    "startPlayingBingo": "Bingo spielen starten",
+    "refresh": "Aktualisieren"    
   }
 }

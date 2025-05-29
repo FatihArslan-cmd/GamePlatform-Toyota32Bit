@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { createContext, useContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const HeaderContext = createContext();
 
@@ -21,15 +21,7 @@ export const HeaderProvider = ({ children }) => {
   const openJoinLobbyModal = () => setJoinLobbyModalVisible(true);
   const closeJoinLobbyModal = () => setJoinLobbyModalVisible(false);
 
-  const navigateToFriendInvite = () => {
-    navigation.navigate('FriendInvitePage');
-    closeBottomSheet();
-  };
-  
-  const navigateToUpdateLobby = () => {
-    navigation.navigate('UpdateLobbyScreen');
-    closeBottomSheet();
-  };
+
   const navigateToPersonalMessagePage = () => {
     navigation.navigate('PersonalMessagePage');
   };
@@ -54,8 +46,6 @@ export const HeaderProvider = ({ children }) => {
     closeLobbyModal,
     openJoinLobbyModal,
     closeJoinLobbyModal,
-    navigateToFriendInvite,
-    navigateToUpdateLobby,
     navigateToPersonalMessagePage
   };
 

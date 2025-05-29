@@ -1,9 +1,6 @@
 import React, { memo } from "react";
 import { TextInput } from "react-native-paper";
 import { useTheme } from "../../../../../context/ThemeContext";
-import { isTablet } from "../../../../../utils/isTablet";
-
-const TABLET_DEVICE = isTablet(); // Check if the device is a tablet
 
 const InputField = memo(({
   label,
@@ -17,10 +14,32 @@ const InputField = memo(({
   textColor,
   isFormSectionInput,
 }) => {
-  const { colors } = useTheme(); 
+  const { colors } = useTheme();
 
   const primaryColor = isFormSectionInput ? '#8a2be2' : colors.primary;
   const placeholderColor = isFormSectionInput ? '#8a2be2' : colors.primary;
+
+  const renderRightIcon = () => {
+    if (value && value.length > 0) {
+      return (
+        <TextInput.Icon
+          icon="close" 
+          onPress={() => onChangeText('')} 
+          color={primaryColor}
+        />
+      );
+    }
+    else if (rightIcon) {
+      return (
+        <TextInput.Icon
+          icon={rightIcon}
+          onPress={onRightIconPress}
+          color={primaryColor}
+        />
+      );
+    }
+    return null;
+  };
 
 
   return (
@@ -32,21 +51,13 @@ const InputField = memo(({
       secureTextEntry={secureTextEntry}
       style={style}
       contentStyle={{ fontFamily: "Orbitron-ExtraBold" }}
-      left={<TextInput.Icon icon={leftIcon} color={primaryColor} />}
-      right={
-        rightIcon && (
-          <TextInput.Icon
-            icon={rightIcon}
-            onPress={onRightIconPress}
-            color={primaryColor}
-          />
-        )
-      }
+      left={leftIcon ? <TextInput.Icon icon={leftIcon} color={primaryColor} /> : null}
+      right={renderRightIcon()}
       theme={{
         colors: {
-          primary: primaryColor, 
-          placeholder: placeholderColor, 
-          text: textColor || colors.text, 
+          primary: primaryColor,
+          placeholder: placeholderColor,
+          text: textColor || colors.text,
         },
         fonts: {
           regular: { fontFamily: "Orbitron-ExtraBold" }

@@ -1,17 +1,19 @@
+import AddFriendToLobbyIcon from "./AddFriendToLobbyIcon";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React, { useContext } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { useTheme } from "../../../../../../context/ThemeContext";
 import { UserContext } from "../../../../../../context/UserContext";
+import { NavigationService } from "../../../../../../shared/states/NavigationService";
 import { isTablet } from "../../../../../../utils/isTablet";
 
 const TABLET_DEVICE = isTablet();
 
-const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, ownerUsername, setDeleteModalVisible }) => {
+const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard,closeBottomSheet, lobbyCode, ownerUsername, setDeleteModalVisible }) => {
  const { user } = useContext(UserContext);
  const { colors } = useTheme(); 
- 
+
     return (
     <View style={styles.cardHeaderActions}>
       <TouchableOpacity
@@ -24,14 +26,18 @@ const LobbyCardHeaderActions = ({ copyLobbyCodeToClipboard, lobbyCode, ownerUser
       <View style={styles.headerIcons}>
         {user && user.username === ownerUsername ? (
           <>
-
-            <TouchableRipple onPress={() => setDeleteModalVisible(true)}>
-              <Icon
-                name="close"
-                size={TABLET_DEVICE ? 24 :16}
-                color={colors.error}
-                style={styles.iconButton}
-              />
+            <AddFriendToLobbyIcon closeBottomSheet={closeBottomSheet}/>
+            <TouchableRipple 
+              onPress={() => setDeleteModalVisible(true)}
+              style={styles.closeButton}
+            >
+              <View style={styles.closeButtonContent}>
+                <Icon
+                  name="close"
+                  size={TABLET_DEVICE ? 24 :16}
+                  color={colors.error}
+                />
+              </View>
             </TouchableRipple>
           </>
         ) : null}
@@ -58,9 +64,18 @@ const styles = StyleSheet.create({
   },
   headerIcons: {
     flexDirection: 'row',
+    alignItems: 'center', 
   },
-  iconButton: {
-    marginLeft: 10,
+  closeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  closeButtonContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: TABLET_DEVICE ? 32 : 28,
+    height: TABLET_DEVICE ? 32 : 28,
   },
 });
 

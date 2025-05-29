@@ -78,11 +78,11 @@ const TabNavigator = () => {
           component={HomeScreen}
           options={{
             tabBarIcon: ({ ref }) => (
-              <Lottie
+              <LottieIcon
                 ref={ref}
-                loop={false}
-                source={getLottieSource('homeIcon')}
-                style={[styles.icon, { tintColor: colors.text }]}
+                iconName="homeIcon"
+                theme={theme}
+                colors={colors}
               />
             ),
           }}
@@ -92,11 +92,11 @@ const TabNavigator = () => {
           component={CommunityScreen}
           options={{
             tabBarIcon: ({ ref }) => (
-              <Lottie
+              <LottieIcon
                 ref={ref}
-                loop={false}
-                source={getLottieSource('ChatIcon')}
-                style={[styles.icon, { tintColor: colors.text }]}
+                iconName="ChatIcon"
+                theme={theme}
+                colors={colors}
               />
             ),
           }}
@@ -106,11 +106,11 @@ const TabNavigator = () => {
           component={ProfileScreen}
           options={{
             tabBarIcon: ({ ref }) => (
-              <Lottie
+              <LottieIcon
                 ref={ref}
-                loop={false}
-                source={getLottieSource('Profileicon')}
-                style={[styles.icon, { tintColor: colors.text }]}
+                iconName="Profileicon"
+                theme={theme}
+                colors={colors}
               />
             ),
           }}
@@ -120,13 +120,37 @@ const TabNavigator = () => {
   );
 };
 
+const LottieIcon = React.memo(React.forwardRef(({ iconName, theme, colors }, ref) => {
+  const [key, setKey] = React.useState(0);
+  
+  const source = useMemo(() => {
+    const themeSuffix = theme === 'dark' ? 'dark' : 'light';
+    const sourceName = `${iconName}-${themeSuffix}`;
+    return lottieSources[sourceName] || lottieSources['homeIcon-light'];
+  }, [iconName, theme]);
+
+  useEffect(() => {
+    setKey(prev => prev + 1);
+  }, [theme]);
+
+  return (
+    <Lottie
+      key={key} 
+      ref={ref}
+      loop={false}
+      source={source}
+      style={[styles.icon, { tintColor: colors.text }]}
+    />
+  );
+}));
+
 const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, descriptors }) => {
   const reducer = (state, action) => {
     return [...state, { x: action.x, index: action.index }];
   };
 
   const [layout, dispatch] = useReducer(reducer, []);
-  const { colors } = useTheme();
+  const { colors, theme } = useTheme();
 
   const handleLayout = useCallback((event, index) => {
     dispatch({ x: event.nativeEvent.layout.x, index });
@@ -165,10 +189,11 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
             options={options}
             onLayout={(e) => handleLayout(e, index)}
             onPress={() => navigation.navigate(route.name)}
+            theme={theme} 
           />
         );
       }),
-    [routes, activeIndex, descriptors, navigation, handleLayout]
+    [routes, activeIndex, descriptors, navigation, handleLayout, theme] 
   );
 
   return (
@@ -189,15 +214,24 @@ const AnimatedTabBar = ({ state: { index: activeIndex, routes }, navigation, des
   );
 };
 
-const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
+const TabBarComponent = React.memo(({ active, options, onLayout, onPress, theme }) => {
   const ref = useRef(null);
-  const { colors, theme } = useTheme();
+  const { colors } = useTheme();
+  const [componentKey, setComponentKey] = React.useState(0);
+
+  useEffect(() => {
+    setComponentKey(prev => prev + 1);
+  }, [theme]);
 
   useEffect(() => {
     if (active && ref?.current) {
-      ref.current.play();
+      const timer = setTimeout(() => {
+        ref.current?.play();
+      }, 100);
+      
+      return () => clearTimeout(timer);
     }
-  }, [active]);
+  }, [active, componentKey]);
 
   const animatedComponentCircleStyles = useAnimatedStyle(() => ({
     transform: [{ scale: withTiming(active ? 1 : 0, { duration: 500 }) }],
@@ -219,7 +253,14 @@ const TabBarComponent = React.memo(({ active, options, onLayout, onPress }) => {
         style={[styles.componentCircle, animatedComponentCircleStyles]}
       />
       <Animated.View style={[styles.iconContainer, animatedIconContainerStyles]}>
-        {options.tabBarIcon ? options.tabBarIcon({ ref, source: getLottieSourceForComponent(options.name) }) : <Text>?</Text>}
+        {options.tabBarIcon ? 
+          options.tabBarIcon({ 
+            ref, 
+            source: getLottieSourceForComponent(options.name),
+            key: componentKey // Key prop'unu geç
+          }) : 
+          <Text>?</Text>
+        }
       </Animated.View>
     </Pressable>
   );

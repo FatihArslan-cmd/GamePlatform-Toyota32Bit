@@ -11,7 +11,7 @@ import { isTablet } from "../../../../../utils/isTablet";
 
 const TABLET_DEVICE = isTablet();
 
-const ActiveLobbiesContent = ({ showNoLobby = true }) => {
+const ActiveLobbiesContent = ({ showNoLobby = true , closeBottomSheet}) => {
   const [userLobby, setUserLobby] = useState(null);
   const [loading, setLoading] = useState(true);
   const { colors } = useTheme();
@@ -50,7 +50,7 @@ const ActiveLobbiesContent = ({ showNoLobby = true }) => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {userLobby ? (
         <FadeIn>
-          <LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} />
+          <LobbyCard lobby={userLobby} onLobbyAction={handleLobbyUpdate} closeBottomSheet={closeBottomSheet} />
           </FadeIn>
       ) : (
         showNoLobby ?

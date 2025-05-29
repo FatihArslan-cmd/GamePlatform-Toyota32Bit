@@ -26,7 +26,7 @@ const LobbyUpdateButton = () => {
       icon={({ size }) => <Icon name="check" size={size} color={colors.card} />}
     >
       <Text style={[styles.updateButtonText, { color: colors.card }]}>
-        {loading ? t('updateLobbyScreen.updatingButton') : t('updateLobbyScreen.updateLobbyButton')} {/* Translated "Updating..." and "Update Lobby" */}
+        {loading ? t('updateLobbyScreen.updatingButton') : t('updateLobbyScreen.updateLobbyButton')}
       </Text>
     </Button>
   );

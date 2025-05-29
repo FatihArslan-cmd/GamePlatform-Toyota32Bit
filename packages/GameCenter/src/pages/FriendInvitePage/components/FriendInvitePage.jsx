@@ -1,14 +1,15 @@
-import React from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
-import Header from '../Header/Header';
-import EmptyState from '../../../components/EmptyState';
-import FadeIn from '../../../components/Animations/FadeInAnimation';
-import LoadingIndicator from '../../../components/LoadingIndicator';
-import FriendList from './FriendList';
-import LobbyInfo from './LobbyInfo';
-import { useFriendInvite } from '../context/FriendInviteContext';
-import { useTheme } from '../../../context/ThemeContext'; 
-import {useTranslation} from 'react-i18next';
+import EmptyState from "../../../components/EmptyState";
+import FadeIn from "../../../components/Animations/FadeInAnimation";
+import FriendList from "./FriendList";
+import Header from "../Header/Header";
+import LoadingIndicator from "../../../components/LoadingIndicator";
+import LobbyInfo from "./LobbyInfo";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ImageBackground, StyleSheet, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
+import { useFriendInvite } from "../context/FriendInviteContext";
+
 const FriendInvitePage = () => {
     const {
         friends,
@@ -40,7 +41,7 @@ const FriendInvitePage = () => {
                 style={styles.backgroundImage}
             >
                 <Header />
-                <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}> {/* Apply theme background color */}
+                <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}>
                     <View style={styles.centerContainer}>
                         <EmptyState message={t('friendInvitePage.emptyState1')} />
                     </View>
@@ -56,7 +57,7 @@ const FriendInvitePage = () => {
                 style={styles.backgroundImage}
             >
                 <Header />
-                <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}> {/* Apply theme background color */}
+                <View style={[styles.container, { backgroundColor: colors.blurredImageBackground }]}>
                     <View style={styles.centerContainer}>
                         <EmptyState textColor={colors.text} message={t('friendInvitePage.emptyState2')} />
                     </View>

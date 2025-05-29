@@ -158,6 +158,7 @@
     "searchPlaceholder": "Search Game",
     "settings": "Settings",
     "helpAndDisplay": "Help & Display",
+    "lobbyCreated": "Lobby created successfully!",
     "createLobby": "Create Lobby",
     "activeLobbies": "Active Lobbies",
     "joinLobby": "Join Lobby",
@@ -203,8 +204,8 @@
     "getReady": "Get Ready!"
   },
   "friendInvitePage": {
-    "emptyState1": "Join a lobby before inviting friends.",
-    "emptyState2": "Join a lobby before inviting friends.",
+    "emptyState1": "Add friends to invite them to your lobby.",
+    "emptyState2": "Add friends to invite them to your lobby.",
     "invite": "Invite",
     "lobbyInfoTitle": "Lobby Info",
     "availableSpotsText": "available spots!",
@@ -355,6 +356,26 @@
     "drawAllNumbersButtonLabel": "Draw all numbers",
     "drawAllNumbersModalTitle": "Draw All Numbers",
     "drawAllNumbersModalText": "Are you sure you want to draw all numbers?",
-    "drawAllNumbersModalConfirm": "Draw All"
+    "drawAllNumbersModalConfirm": "Draw All",
+    "navigateback":"You are redirected to the Game.",
+    "numbers": "Numbers"
+  },
+  "StaticsScreen": {
+    "title": "Statistics",
+    "summaryStatics": "Summary Statistics",
+    "totalDays": "Total Days",
+    "totalTime": "Total Time",
+    "average": "Average",
+    "longest": "Longest",
+    "last7DaysActivity": "Last 7 Days Activity",
+    "daily": "Daily",
+    "m":"min",
+    "min": "minute",
+    "dailyDetails": "Daily Details",
+    "noGameData": "No game data found.",
+    "noGameDataDescription": "You can track your statistics by starting to play games.",
+    "playYourFirstGame": "Play your first game and come back!",
+    "startPlayingBingo": "Start Playing Bingo",
+    "refresh": "Refresh"    
   }
 }

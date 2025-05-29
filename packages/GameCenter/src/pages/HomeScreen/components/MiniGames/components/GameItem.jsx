@@ -43,7 +43,6 @@ const GameItem = memo(({ item }) => {
     <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}   onPress={() => {
       navigation.navigate('GameDetails', {
         gameName:item.name,
-        about:"Bingo is a fun and simple game! Mark the numbers on your card as they are called out. Be the first to complete a row, column, or diagonal and shout 'Bingo!' to win!",
         imageSource : {uri: item.image_background},
         backgroundColors: ["black", "black", "black"],
         textColor:"black"

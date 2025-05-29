@@ -26,15 +26,14 @@ const generateFriendCode = (req, res) => {
 
         requestCounts.generateFriendCode.push(now);
 
-        // Önceki kodları silme mekanizması
         for (const code in friendCodes) {
             if (friendCodes[code].userId === userId) {
-                delete friendCodes[code]; // Kullanıcının önceki kodunu sil
+                delete friendCodes[code];
             }
         }
 
         const code = crypto.randomBytes(4).toString('hex');
-        const expiresAt = Date.now() + 5 * 60 * 1000; // Kodun geçerlilik süresi (5 dakika)
+        const expiresAt = Date.now() + 5 * 60 * 1000;
         friendCodes[code] = { userId, expiresAt };
 
         sessionStore.set(userId, { ...session, requestCounts }, (err) => {
@@ -67,7 +66,7 @@ const addFriend = (req, res) => {
         if (!codeData) return res.status(404).json({ message: 'Invalid friend code' })
 
         if (codeData.expiresAt < Date.now()) {
-            delete friendCodes[friendCode]; // Süresi dolmuş kodu temizle
+            delete friendCodes[friendCode];
             return res.status(410).json({ message: 'Friend code expired.' });
         }
 

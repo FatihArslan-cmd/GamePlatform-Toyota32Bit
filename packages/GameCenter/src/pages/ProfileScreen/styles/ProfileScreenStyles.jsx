@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     topBarIcon: {
-        margin: 0
+        margin: 0,
+        opacity: 0.7
     },
     profileSection: {
         alignItems: 'center',

@@ -4,7 +4,7 @@ import GameSelector from "./components/GameSelector";
 import InvitationLink from "./components/InvitationLink";
 import LobbyTypeSelector from "./components/LobbyTypeSelector";
 import PasswordInput from "./components/PasswordInput";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
@@ -77,6 +77,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
             connectWebSocket(data.lobby.code);
             setCode(`${data.lobby.code}`);
             setIsCodeGenerated(true);
+            ToastService.show("success", t('homeScreen.lobbyCreated'));
         } catch (error) {
             ToastService.show("error", error.message);
         }

@@ -1,14 +1,14 @@
-import React from 'react';
-import { View, StatusBar } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import TopBar from './components/TopBar';
-import ProfileSection from './components/ProfileSection';
-import styles from './styles/ProfileScreenStyles';
-import Buttons from './components/Buttons';
-import { ProfileContextProvider } from './context/ProfileContext';
-import { ButtonsContextProvider } from './components/context/ButtonsContext';
-import { AchievementsContextProvider } from './components/Achivements/context/AchievementsContext';
-import { useTheme } from '../../context/ThemeContext'; 
+import Buttons from "./components/Buttons";
+import ProfileSection from "./components/ProfileSection";
+import React from "react";
+import TopBar from "./components/TopBar";
+import styles from "./styles/ProfileScreenStyles";
+import { StatusBar, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../context/ThemeContext";
+import { AchievementsContextProvider } from "./components/Achivements/context/AchievementsContext";
+import { ButtonsContextProvider } from "./components/context/ButtonsContext";
+import { ProfileContextProvider } from "./context/ProfileContext";
 
 const ProfileScreen = () => {
     const { colors } = useTheme(); 

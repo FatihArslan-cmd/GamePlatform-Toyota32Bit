@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     fontSize: TABLET_DEVICE ? 14 : 11,
   },
   buttonText: {
-    color: 'white', 
+    color: 'white',
+        fontFamily: 'Orbitron-ExtraBold',
+ 
   },
 });
 

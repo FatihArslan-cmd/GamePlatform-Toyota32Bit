@@ -14,7 +14,7 @@ export const GameDetailsImageEnterAnimation = () => {
   const contentOpacity = useSharedValue(0);
 
   useEffect(() => {
-    const targetOffsetY = TABLET_DEVICE ? 250 : 135;
+    const targetOffsetY = TABLET_DEVICE ? 200 : 135;
     const targetTranslateY = -height / 2 + targetOffsetY;
 
     translateY.value = withTiming(targetTranslateY, {
