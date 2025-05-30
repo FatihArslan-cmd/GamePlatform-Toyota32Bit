@@ -39,7 +39,7 @@ export default function GameDetailsLayout({ gameName, explanation, imageSource, 
             <Title style={[styles.title, {color: textColor}]}>{gameName}</Title>
             <GradientDivider colorProps={[textColor, textColor]} />
             <TabNavigation explanation={explanation} textColor={textColor} />
-            <TabContent explanation={explanation} textColor={textColorValue} about={about} />
+            <TabContent gameName={gameName} explanation={explanation} textColor={textColorValue} about={about} />
           </Surface>
         </Animated.View>
       </LinearGradient>

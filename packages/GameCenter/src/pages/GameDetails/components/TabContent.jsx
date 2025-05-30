@@ -8,7 +8,7 @@ import { useTheme } from "../../../context/ThemeContext";
 import { useGameDetails } from "../context/GameDetailsContext";
 import { styles } from "../styles";
 
-export default function TabContent({ explanation,textColor ,about}) {
+export default function TabContent({ explanation,textColor ,about,gameName}) {
   const { activeTab } = useGameDetails();
   const { colors } = useTheme();
 
@@ -17,7 +17,7 @@ export default function TabContent({ explanation,textColor ,about}) {
 
     switch (activeTab) {
       case 'about':
-        return <AboutTab explanation={explanation} textColor={textColor} about={about} />;
+        return <AboutTab gameName={gameName} explanation={explanation} textColor={textColor} about={about} />;
       case 'lobbies':
         return shouldRenderTabs ? <LobbiesTab /> : null;
       case 'history':
