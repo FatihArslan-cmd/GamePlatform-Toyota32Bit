@@ -12,7 +12,7 @@ export const HeaderProvider = ({ children }) => {
   const [joinLobbyModalVisible, setJoinLobbyModalVisible] = useState(false);
   const navigation = useNavigation();
 
-  const openMenu = () => setTimeout(() => setMenuVisible(true), 100);
+ const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
   const openBottomSheet = () => setIsBottomSheetVisible(true);
   const closeBottomSheet = () => setIsBottomSheetVisible(false);

@@ -5,7 +5,7 @@ import LoadingIndicator from "../../../../components/LoadingIndicator";
 import React, { useCallback, useEffect, useState } from "react";
 import lobbyService from "../../service/service";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useTheme } from "../../../../context/ThemeContext";
 import { isTablet } from "../../../../utils/isTablet";
@@ -23,43 +23,54 @@ export default function LobbiesTab() {
     const { t } = useTranslation();
 
     const fetchLobbies = useCallback(async () => {
-        setLoading(true);
         setError(null);
 
         try {
             const response = await lobbyService.getLobbies();
             setLobbies(response);
-            console.log(response);
+            console.log("Fetched lobbies:", response);
         } catch (error) {
-            setError('Failed to load lobbies');
+            setError(t('gameDetailsScreen.errorLoadingLobbies') || 'Failed to load lobbies');
             console.error('Error fetching lobbies:', error);
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         fetchLobbies();
     }, [fetchLobbies]);
 
+    const showInitialLoading = loading && lobbies.length === 0 && !error;
+
     return (
-        <ScrollView style={styles.lobbiesContainer}>
+        <ScrollView
+            style={styles.lobbiesContainer}
+            refreshControl={
+                <RefreshControl
+                    refreshing={loading}
+                    onRefresh={fetchLobbies}
+                    tintColor={colors.text}
+                    titleColor={colors.text}
+                />
+            }
+        >
             <Button
                 mode="contained"
                 icon="plus-circle"
                 onPress={() => setLobbyModalVisible(true)}
                 style={[styles.createLobbyButton, { backgroundColor: colors.gameDetailsButton }]}
-                labelStyle={{ fontSize: TABLET_DEVICE ? 14 : 10,fontFamily: 'Orbitron-ExtraBold' }}
-
+                labelStyle={{ fontSize: TABLET_DEVICE ? 14 : 10, fontFamily: 'Orbitron-ExtraBold' }}
             >
                 {t('gameDetailsScreen.createLobby')}
             </Button>
-            {loading ? (
-                    <LoadingIndicator  />
-            ) : error ? (
+
+            {error ? (
                 <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>{error}</Text>
+                    <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
                 </View>
+            ) : showInitialLoading ? (
+                <LoadingIndicator />
             ) : lobbies.length === 0 ? (
                 <FadeIn>
                     <EmptyState textColor={colors.text} message={t('gameDetailsScreen.noLobbyToJoin')} />

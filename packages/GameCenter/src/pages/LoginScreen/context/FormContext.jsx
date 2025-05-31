@@ -1,14 +1,15 @@
-import React, { createContext, useState, useContext } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { login } from '../../../shared/states/api.js';
-import { deleteIfExists } from '../../../utils/api';
-import { ToastService } from '../../../context/ToastService';
-import useModal from '../../../hooks/useModal';
-import { sendVerificationCode } from '../service/sendVerificationCode';
-import { Linking } from 'react-native';
+import React, { createContext, useContext, useState } from "react";
+import useModal from "../../../hooks/useModal";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { Linking } from "react-native";
+import { ToastService } from "../../../context/ToastService";
+import { UserContext } from "../../../context/UserContext";
+import { login } from "../../../shared/states/api.js";
+import { deleteIfExists } from "../../../utils/api";
+import { sendVerificationCode } from "../service/sendVerificationCode";
+
 import{ fetchAndStoreGames }from '../../../utils/api.js';
-import { UserContext } from '../../../context/UserContext';
-import { useTranslation } from 'react-i18next';
 
 const FormContext = createContext();
 
