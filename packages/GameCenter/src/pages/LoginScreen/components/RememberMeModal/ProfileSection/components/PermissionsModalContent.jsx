@@ -61,14 +61,6 @@ const PermissionsModalContent = () => {
         onToggle={() => handlePermissionChange('nfc')}
         permission="nfc"
       />
-
-      <PermissionItem
-        title={t('permissionsModal.barcode')} 
-        icon="barcode-scan"
-        isChecked={permissions.barcode}
-        onToggle={() => handlePermissionChange('barcode')}
-        permission="barcode"
-      />
     </View>
   );
 };

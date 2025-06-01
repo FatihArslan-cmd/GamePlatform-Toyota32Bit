@@ -19,7 +19,7 @@ const JoinLobbyModal = () => {
     const [lobbyPassword, setLobbyPassword] = useState('');
     const { connectWebSocket } = useBingoWebSocket();
     const { joinLobbyModalVisible, closeJoinLobbyModal } = useHeader();
-    const { t } = useTranslation(); 
+    const { t } = useTranslation();
 
     const handleJoinLobby = useCallback(async () => {
         try {
@@ -31,10 +31,9 @@ const JoinLobbyModal = () => {
 
         } catch (error) {
             console.error('Error joining lobby:', error);
-            if (error?.response?.data?.message) { // Use optional chaining for safety
-                ToastService.show('error', error.response.data.message); // Display backend error message directly - consider i18n for backend messages if needed
-            }
-            else {
+            if (error?.response?.data?.message) {
+                ToastService.show('error', error.response.data.message);
+            } else {
                 ToastService.show('error', t('homeScreen.joinLobbyFailToast'));
             }
         }
@@ -50,14 +49,6 @@ const JoinLobbyModal = () => {
             ToastService.show('error', t('homeScreen.joinLobbyClipboardFailToast'));
         }
     }, [t]);
-
-    const handleClearCode = useCallback(() => {
-        setLobbyCode('');
-    }, []);
-
-    const handleClearPassword = useCallback(() => {
-        setLobbyPassword('');
-    }, []);
 
     return (
         <CustomModal
@@ -76,12 +67,8 @@ const JoinLobbyModal = () => {
                         value={lobbyCode}
                         onChangeText={setLobbyCode}
                         style={styles.input}
+                        leftIcon="key"
                     />
-                    {lobbyCode.length > 0 && (
-                        <TouchableRipple style={styles.clearButton} onPress={handleClearCode}>
-                            <Icon name="cancel" size={TABLET_DEVICE ? 24 : 16} color="#fff" />
-                        </TouchableRipple>
-                    )}
                     <TouchableRipple style={styles.pasteButton} onPress={handlePaste}>
                         <Icon name="content-paste" size={TABLET_DEVICE ? 24 : 16} color="#fff" />
                     </TouchableRipple>
@@ -94,12 +81,8 @@ const JoinLobbyModal = () => {
                         onChangeText={setLobbyPassword}
                         secureTextEntry
                         style={styles.input}
+                        leftIcon="lock"
                     />
-                     {lobbyPassword.length > 0 && (
-                        <TouchableRipple style={styles.clearButton} onPress={handleClearPassword}>
-                            <Icon name="cancel" size={TABLET_DEVICE ? 24 : 16} color="#fff" />
-                        </TouchableRipple>
-                    )}
                 </View>
             </View>
         </CustomModal>
@@ -124,12 +107,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: 'transparent',
         color: '#fff',
-        flex: 1,
-    },
-    clearButton: {
-        padding: 10,
-        marginLeft: 8,
-        borderRadius: 5,
+        flex: 1, 
     },
     pasteButton: {
         padding: 10,

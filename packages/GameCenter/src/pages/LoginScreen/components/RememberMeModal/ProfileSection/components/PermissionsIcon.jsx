@@ -32,7 +32,6 @@ const PermissionsIcon = ({ handlePermissionAction }) => {
   }, []);
 
   const iconMap = {
-    barcode: { name: 'qr-code-scanner', type: 'barcode' },
     biometric: { name: 'fingerprint', type: 'biometric' },
     nfc: { name: 'nfc', type: 'nfc' },
   };

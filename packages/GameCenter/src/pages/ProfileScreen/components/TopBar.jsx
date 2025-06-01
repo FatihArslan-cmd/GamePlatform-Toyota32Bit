@@ -36,12 +36,6 @@ const TopBar = () => {
         try {
             await handleAddFriend(barcodeValue);
 
-            if (error) {
-                showModal('error', 'Hata', error);
-            } else {
-                showModal('success', 'Başarılı', snackbarMessage || t('profileScreen.friendAddedSuccess'));
-            }
-
         } catch (err) {
             showModal('error', 'Hata', t('profileScreen.friendAddError'));
         } finally {
