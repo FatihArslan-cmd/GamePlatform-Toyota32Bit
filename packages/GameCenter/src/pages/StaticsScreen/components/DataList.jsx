@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
 
 import {
     Card,
@@ -14,7 +15,7 @@ import {
     Text
 } from "react-native-paper";
 
-
+const TABLET_DEVICE = isTablet();
 
 const DataList = ({ data }) => {
     const { colors } = useTheme();
@@ -68,6 +69,11 @@ const DataList = ({ data }) => {
         };
     };
 
+    const getAvatarSize = () => TABLET_DEVICE ? 44 : 36;
+    const getAvatarMarginRight = () => TABLET_DEVICE ? 8 : 6;
+    const getDividerMarginLeft = () => (TABLET_DEVICE ? 4 : 4) + getAvatarSize() + getAvatarMarginRight();
+
+
     return (
         <Card style={[styles.container, { backgroundColor: colors.card }]} elevation={1}                         onPress={() => {}}
          onPress={() => {}}
@@ -80,7 +86,7 @@ const DataList = ({ data }) => {
                             styles.totalBadge,
                             { backgroundColor: colors.primary }
                         ]}
-                        size={24}
+                        size={TABLET_DEVICE ? 24 : 20}
                     >
                         {data.length}
                     </Badge>
@@ -99,10 +105,13 @@ const DataList = ({ data }) => {
                                         <Avatar.Icon
                                             {...props}
                                             icon={durationInfo.icon}
-                                            size={44}
+                                            size={getAvatarSize()}
                                             style={[
                                                 styles.listAvatar,
-                                                { backgroundColor: durationInfo.backgroundColor + '20' }
+                                                {
+                                                    backgroundColor: durationInfo.backgroundColor + '20',
+                                                    marginRight: getAvatarMarginRight()
+                                                }
                                             ]}
                                             color={durationInfo.color}
                                         />
@@ -129,7 +138,10 @@ const DataList = ({ data }) => {
                                     style={styles.listItem}
                                 />
                                 {index < displayData.length - 1 && (
-                                    <Divider style={styles.divider} />
+                                    <Divider style={[
+                                        styles.divider,
+                                        { marginLeft: getDividerMarginLeft() }
+                                    ]} />
                                 )}
                             </View>
                         );
@@ -148,8 +160,8 @@ const DataList = ({ data }) => {
                             outlineColor={colors.primary}
                         >
                             {showAll
-                                ? "Show Less" 
-                                : `Show ${data.length - 8} More` 
+                                ? "Show Less"
+                                : `Show ${data.length - 8} More`
                             }
                         </Button>
                     </View>
@@ -161,18 +173,18 @@ const DataList = ({ data }) => {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 16,
+        margin: TABLET_DEVICE ? 16 : 12,
         borderRadius: 12,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: TABLET_DEVICE ? 16 : 12,
     },
     title: {
-        fontSize: 20,
-              fontFamily: 'Orbitron-ExtraBold',
+        fontSize: TABLET_DEVICE ? 20 : 18,
+        fontFamily: 'Orbitron-ExtraBold',
 
     },
     totalBadge: {
@@ -183,20 +195,20 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     listItem: {
-        paddingVertical: 8,
-        paddingHorizontal: 4,
+        paddingVertical: TABLET_DEVICE ? 8 : 6,
+        paddingHorizontal: TABLET_DEVICE ? 4 : 2,
     },
     listAvatar: {
-        marginRight: 8,
+
     },
     rightContent: {
         alignItems: 'flex-end',
         justifyContent: 'center',
-        paddingRight: 8,
+        paddingRight: TABLET_DEVICE ? 8 : 4,
     },
     durationText: {
-        fontSize: 18,
-      fontFamily: 'Orbitron-ExtraBold',
+        fontSize: TABLET_DEVICE ? 18 : 16,
+        fontFamily: 'Orbitron-ExtraBold',
         marginBottom: 4,
     },
     levelBadge: {
@@ -205,29 +217,30 @@ const styles = StyleSheet.create({
     },
     levelBadgeText: {
         fontSize: 10,
-      fontFamily: 'Orbitron-ExtraBold',
+        fontFamily: 'Orbitron-ExtraBold',
     },
     listTitle: {
-      fontFamily: 'Orbitron-ExtraBold',
-        fontSize: 16,
+        fontFamily: 'Orbitron-ExtraBold',
+        fontSize: TABLET_DEVICE ? 16 : 14,
     },
     listDescription: {
-        fontSize: 12,
+        fontSize: TABLET_DEVICE ? 12 : 10,
         marginTop: 2,
     },
     divider: {
-        marginLeft: 60,
-        marginRight: 16,
+
+        marginRight: TABLET_DEVICE ? 16 : 12,
+        height: 1,
     },
     buttonContainer: {
-        marginTop: 16,
+        marginTop: TABLET_DEVICE ? 16 : 12,
         alignItems: 'center',
     },
     toggleButton: {
         borderRadius: 8,
     },
     buttonContent: {
-        paddingVertical: 4,
+        paddingVertical: TABLET_DEVICE ? 4 : 2,
     },
 });
 

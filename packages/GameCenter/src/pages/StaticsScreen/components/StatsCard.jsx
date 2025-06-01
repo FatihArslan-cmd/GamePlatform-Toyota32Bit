@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
 
 import {
     Card,
@@ -10,6 +11,7 @@ import {
     Avatar
 } from "react-native-paper";
 
+const TABLET_DEVICE = isTablet();
 
 const StatsCards = ({ stats }) => {
     const { colors } = useTheme();
@@ -60,7 +62,7 @@ const StatsCards = ({ stats }) => {
                     >
                         <Card.Content style={styles.cardContent}>
                             <Avatar.Icon
-                                size={48}
+                                size={TABLET_DEVICE ? 48 : 40}
                                 icon={stat.icon}
                                 style={[
                                     styles.avatar,
@@ -90,11 +92,11 @@ const StatsCards = ({ stats }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
+        padding: TABLET_DEVICE ? 16 : 10,
     },
     sectionTitle: {
-        marginBottom: 16,
-        fontSize: 22,
+        marginBottom: TABLET_DEVICE ? 16 : 12,
+        fontSize: TABLET_DEVICE ? 22 : 18,
         fontFamily: 'Orbitron-ExtraBold',
     },
     gridContainer: {
@@ -104,26 +106,26 @@ const styles = StyleSheet.create({
     },
     statCard: {
         width: '48%',
-        marginBottom: 12,
-        borderRadius: 12,
+        marginBottom: TABLET_DEVICE ? 12 : 8,
+        borderRadius: TABLET_DEVICE ? 12 : 8,
     },
     cardContent: {
         alignItems: 'center',
-        paddingVertical: 20,
-        paddingHorizontal: 16,
+        paddingVertical: TABLET_DEVICE ? 20 : 16,
+        paddingHorizontal: TABLET_DEVICE ? 16 : 12,
     },
     avatar: {
-        marginBottom: 12,
+        marginBottom: TABLET_DEVICE ? 12 : 8,
     },
     statValue: {
-        fontSize: 24,
+        fontSize: TABLET_DEVICE ? 24 : 20,
         fontFamily: 'Orbitron-ExtraBold',
         marginBottom: 4,
         textAlign: 'center',
     },
     statTitle: {
         textAlign: 'center',
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 14 : 12,
         fontFamily: 'Orbitron-ExtraBold',
     },
 });

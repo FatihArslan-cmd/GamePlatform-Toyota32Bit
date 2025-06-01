@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
 
 import {
     Card,
@@ -10,6 +11,8 @@ import {
     Text,
     Chip
 } from "react-native-paper";
+
+const TABLET_DEVICE = isTablet();
 
 const DailyChart = ({ data }) => {
     const { colors, resolvedTheme } = useTheme();
@@ -110,17 +113,17 @@ const DailyChart = ({ data }) => {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 16,
+        margin: TABLET_DEVICE ? 16 : 12,
         borderRadius: 12,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: TABLET_DEVICE ? 20 : 16,
     },
     title: {
-        fontSize: 20,
+        fontSize: TABLET_DEVICE ? 20 : 18,
         fontFamily: 'Orbitron-ExtraBold',
         flexShrink: 1,
         marginRight: 8,
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
     },
     barRow: {
-        marginBottom: 16,
+        marginBottom: TABLET_DEVICE ? 16 : 12,
         alignItems: 'center',
     },
     barContainer: {
@@ -147,10 +150,10 @@ const styles = StyleSheet.create({
     },
     barBackground: {
         flex: 1,
-        height: 16,
+        height: TABLET_DEVICE ? 16 : 14,
         backgroundColor: '#E5E5E5',
         borderRadius: 8,
-        marginRight: 12,
+        marginRight: TABLET_DEVICE ? 12 : 8,
         overflow: 'hidden',
     },
     gradientBar: {
@@ -158,18 +161,18 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     durationChip: {
-        height: 28,
-        minWidth: 50,
+        height: TABLET_DEVICE ? 28 : 24,
+        minWidth: TABLET_DEVICE ? 50 : 45,
         justifyContent: 'center',
     },
     chipText: {
-        fontSize: 12,
+        fontSize: TABLET_DEVICE ? 12 : 10,
         fontFamily: 'Orbitron-ExtraBold',
         textAlign: 'center',
     },
     dayLabel: {
         fontFamily: 'Orbitron-ExtraBold',
-        fontSize: 14,
+        fontSize: TABLET_DEVICE ? 14 : 12,
         textAlign: 'center',
         marginTop: 2,
     },

@@ -77,7 +77,6 @@ function BingoGameWebsocket(ws, request) {
                          if (lobby.ownerId === userId) {
                             lobbyGameManager.drawNumber(lobbyCode, userId, (drawErr, updatedLobby, drawnNumber, isLastNumber) => {
                                 if (drawErr) {
-                                    // Passing secondsRemaining from the error object
                                     ws.send(JSON.stringify({ type: 'error', message: drawErr.message, secondsRemaining: drawErr.secondsRemaining }));
                                     return;
                                 }
@@ -100,7 +99,6 @@ function BingoGameWebsocket(ws, request) {
                         }
                         lobbyGameManager.markNumberOnCard(lobbyCode, userId, numberToMark, (markErr, updatedLobby, isBingo, markedNumber, cellPosition, scores, rowCompleted, completedRowNumbers, playerStats) => {
                             if (markErr) {
-                                // These error messages come from lobbyGameManager, already translated in the previous step
                                 ws.send(JSON.stringify({ type: 'error', message: markErr.message }));
                                 return;
                             }
@@ -161,14 +159,12 @@ function BingoGameWebsocket(ws, request) {
 
                     } else if (parsedMessage.type === 'end-game') {
                          if (lobby.ownerId === userId) {
-                             lobbyGameManager.endGame(lobbyCode, userId, (endGameErr, updatedLobby) => { // Removed finalScores from callback as it's not returned by endGame function
+                             lobbyGameManager.endGame(lobbyCode, userId, (endGameErr, updatedLobby) => { 
                                 if (endGameErr) {
                                     ws.send(JSON.stringify({ type: 'error', message: endGameErr.message }));
                                     return;
                                 }
-                                // Re-fetch player stats after game ends to include final scores if needed, or rely on previous broadcasts
-                                // For simplicity, just broadcast game-ended state
-                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'game-ended' }); // Removed scores here too
+                                BingoGameWebsocket.broadcast(lobbyCode, { type: 'game-ended' }); 
                             });
                         } else {
                             ws.send(JSON.stringify({ type: 'error', message: 'Only the lobby owner can end the game.' }));
