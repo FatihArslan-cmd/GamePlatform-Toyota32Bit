@@ -47,7 +47,7 @@ export default function GameDetailsLayout({ gameName, explanation, imageSource, 
         visible={lobbyModalVisible}
         onDismiss={() => setLobbyModalVisible(false)}
         height="50%"
-        routeGameName={gameName}
+        preselectedGame={gameName}
       />
     </View>
   );

@@ -15,10 +15,10 @@ import { createLobby } from "./service/service";
 
 const TABLET_DEVICE = isTablet();
 
-const CreateLobbyModal = ({ visible, onDismiss }) => {
+const CreateLobbyModal = ({ visible, onDismiss, preselectedGame }) => {
     const [lobbyType, setLobbyType] = useState('Normal');
     const [lobbyName, setLobbyName] = useState('');
-    const [gameName, setGameName] = useState('');
+    const [gameName, setGameName] = useState(preselectedGame || '');
     const [maxCapacity, setMaxCapacity] = useState('');
     const [password, setPassword] = useState('');
     const [code, setCode] = useState('');
@@ -81,7 +81,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         } catch (error) {
             ToastService.show("error", error.message);
         }
-    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate, t, connectWebSocket]);
+    }, [lobbyName, lobbyType, gameName, password, maxCapacity, hasPassword, startDate, endDate, t, connectWebSocket, code]);
 
     const resetLobby = useCallback(() => {
         setLobbyType('Normal');
@@ -89,13 +89,13 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
         setMaxCapacity('');
         setCode('');
         setError('');
-        setGameName('');
+        setGameName(preselectedGame || '');
         setLobbyName('');
         setIsCodeGenerated(false);
         setHasPassword(false);
         setStartDate(new Date());
         setEndDate(new Date());
-    }, []);
+    }, [preselectedGame]);
 
     const handleDismiss = useCallback(() => {
         resetLobby();
@@ -143,6 +143,7 @@ const CreateLobbyModal = ({ visible, onDismiss }) => {
                             onLobbyNameChange={setLobbyName}
                             onMaxCapacityChange={setMaxCapacity}
                             t={t}
+                            defaultGameName={preselectedGame}
                         />
                     <PasswordInput
                       password={password}

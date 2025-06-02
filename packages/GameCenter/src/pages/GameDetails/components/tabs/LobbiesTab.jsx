@@ -14,7 +14,7 @@ import { styles } from "../../styles";
 
 const TABLET_DEVICE = isTablet();
 
-export default function LobbiesTab() {
+export default function LobbiesTab({ gameName }) {
     const { setLobbyModalVisible } = useGameDetails();
     const [lobbies, setLobbies] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -22,20 +22,21 @@ export default function LobbiesTab() {
     const { colors } = useTheme();
     const { t } = useTranslation();
 
+    const gameNameForFetch = gameName === 'Tombala' ? 'Bingo' : gameName;
+
     const fetchLobbies = useCallback(async () => {
         setError(null);
-
+        setLoading(true);
         try {
             const response = await lobbyService.getLobbies();
-            setLobbies(response);
-            console.log("Fetched lobbies:", response);
+            const filteredLobbies = response.filter(lobby => lobby.gameName === gameNameForFetch);
+            setLobbies(filteredLobbies);
         } catch (error) {
             setError(t('gameDetailsScreen.errorLoadingLobbies') || 'Failed to load lobbies');
-            console.error('Error fetching lobbies:', error);
         } finally {
             setLoading(false);
         }
-    }, [t]);
+    }, [gameNameForFetch, t]);
 
     useEffect(() => {
         fetchLobbies();

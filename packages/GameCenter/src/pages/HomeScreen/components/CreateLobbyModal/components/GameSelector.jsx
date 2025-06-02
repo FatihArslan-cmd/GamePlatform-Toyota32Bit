@@ -15,7 +15,8 @@ const GameSelector = ({
     onGameNameChange,
     onLobbyNameChange,
     onMaxCapacityChange,
-    t
+    t,
+    defaultGameName
 }) => {
     const [pressedScale] = useState(new Animated.Value(1));
     const games = ['Bingo', 'Chess', 'Poker', 'Checkers', 'Monopoly', 'Scrabble', 'Clue', 'Risk', 'Catan', 'Ticket to Ride'];
@@ -37,43 +38,45 @@ const GameSelector = ({
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
-            <View style={[styles.gameSelectorContainer, { backgroundColor: 'transparent' }]}>
-                <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.scrollViewContent}
-                    fadingEdgeLength={50}
-                >
-                    {games.map((game, index) => (
-                        <Animated.View
-                            key={index}
-                            style={{
-                                transform: [{ scale: gameName === game ? 1 : pressedScale }],
-                                marginRight: 12,
-                            }}
-                        >
-                            <TouchableOpacity
-                                onPressIn={handlePressIn}
-                                onPressOut={handlePressOut}
-                                style={[
-                                    styles.gameButton,
-                                    { backgroundColor: gameName === game ? colors.primary : colors.card },
-                                    gameName === game && styles.gameButtonSelected,
-                                ]}
-                                onPress={() => onGameNameChange(game)}
+            {!defaultGameName && (
+                <View style={[styles.gameSelectorContainer, { backgroundColor: 'transparent' }]}>
+                    <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.scrollViewContent}
+                        fadingEdgeLength={50}
+                    >
+                        {games.map((game, index) => (
+                            <Animated.View
+                                key={index}
+                                style={{
+                                    transform: [{ scale: gameName === game ? 1 : pressedScale }],
+                                    marginRight: 12,
+                                }}
                             >
-                                <Text style={[
-                                    styles.gameButtonText,
-                                    { color: gameName === game ? colors.card : colors.text },
-                                    gameName === game && styles.gameButtonTextSelected,
-                                ]}>
-                                    {game}
-                                </Text>
-                            </TouchableOpacity>
-                        </Animated.View>
-                    ))}
-                </ScrollView>
-            </View>
+                                <TouchableOpacity
+                                    onPressIn={handlePressIn}
+                                    onPressOut={handlePressOut}
+                                    style={[
+                                        styles.gameButton,
+                                        { backgroundColor: gameName === game ? colors.primary : colors.card },
+                                        gameName === game && styles.gameButtonSelected,
+                                    ]}
+                                    onPress={() => onGameNameChange(game)}
+                                >
+                                    <Text style={[
+                                        styles.gameButtonText,
+                                        { color: gameName === game ? colors.card : colors.text },
+                                        gameName === game && styles.gameButtonTextSelected,
+                                    ]}>
+                                        {game}
+                                    </Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
 
             <TextInput
                 label={

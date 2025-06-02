@@ -19,7 +19,7 @@ export default function TabContent({ explanation,textColor ,about,gameName}) {
       case 'about':
         return <AboutTab gameName={gameName} explanation={explanation} textColor={textColor} about={about} />;
       case 'lobbies':
-        return shouldRenderTabs ? <LobbiesTab /> : null;
+        return shouldRenderTabs ? <LobbiesTab gameName={gameName} /> : null;
       case 'history':
         return shouldRenderTabs ? <HistoryTab /> : null;
       case 'settings':
