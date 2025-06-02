@@ -73,7 +73,7 @@ const createStyles = (themeColors) => StyleSheet.create({
         backgroundColor: themeColors.primary, 
     },
     inviteButtonTextPaper: {
-        color: themeColors.text, 
+        color: 'white', 
         fontFamily: 'Orbitron-ExtraBold',
         fontSize: TABLET_DEVICE ? 14 : 12,
     },

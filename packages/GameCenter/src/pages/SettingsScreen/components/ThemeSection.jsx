@@ -74,7 +74,7 @@ const ThemeSection = ({ index }) => {
           onPress={handlePress}
           titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: canInteract ? colors.text : colors.subText, fontSize: TABLET_DEVICE ? 18 : 12 }}
           title={t('settingsScreen.themeSection.chooseTheme')}
-          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText }}
+          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText,fontSize: TABLET_DEVICE ? 14 : 12 }}
           description={t(`settingsScreen.themeSection.${theme}ModeDescription`)}
           left={props => <List.Icon {...props} color={canInteract ? colors.primary : colors.subText} icon="palette" />}
           right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />}

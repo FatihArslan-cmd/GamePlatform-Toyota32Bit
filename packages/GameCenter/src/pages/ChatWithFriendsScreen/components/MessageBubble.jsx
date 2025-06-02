@@ -1,6 +1,6 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Surface, Text } from 'react-native-paper';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Surface, Text } from "react-native-paper";
 
 const MessageBubble = ({ message, isCurrentUserMessage }) => {
 
@@ -45,16 +45,22 @@ const styles = StyleSheet.create({
     currentUserMessageText: {
         color: '#333', 
         fontSize: 16,
+        fontFamily: 'Orbitron-ExtraBold',
+
     },
     friendMessageText: {
         color: '#333',
         fontSize: 16,
+        fontFamily: 'Orbitron-ExtraBold',
+
     },
     timestampText: {
         fontSize: 12,
         color: '#777', 
         alignSelf: 'flex-end',
         marginTop: 2,
+        fontFamily: 'Orbitron-ExtraBold',
+
     },
 });
 

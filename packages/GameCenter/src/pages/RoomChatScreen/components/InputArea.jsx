@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '../../../context/ThemeContext';
-import { useTranslation } from 'react-i18next'; 
+import Icon from "react-native-vector-icons/Ionicons";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const InputArea = ({ newMessageText, setNewMessageText, sendMessage }) => {
     const { colors } = useTheme();

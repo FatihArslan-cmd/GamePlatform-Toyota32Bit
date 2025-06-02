@@ -29,7 +29,6 @@ const CameraView = () => {
            onBarcodeScanned(value);
         }
                 navigation.goBack();
-
       }
     },
   });

@@ -7,10 +7,8 @@ import { View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { useTheme } from "../../../../context/ThemeContext";
 
-// Header/Header.js
-
 const Header = () => {
-  const { colors } = useTheme(); // Use the useTheme hook
+  const { colors } = useTheme(); 
   return (
     <Appbar.Header style={[styles.appbar, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
       <View style={styles.leftContainer}>

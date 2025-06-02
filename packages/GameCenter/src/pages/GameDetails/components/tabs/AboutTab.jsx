@@ -7,7 +7,10 @@ import { Text, View } from "react-native";
 import { Button, Surface } from "react-native-paper";
 import { useTheme } from "../../../../context/ThemeContext";
 import { ToastService } from "../../../../context/ToastService";
+import { isTablet } from "../../../../utils/isTablet";
 import { styles } from "../../styles";
+
+const TABLET_DEVICE = isTablet();
 
 export default function AboutTab({ explanation, textColor , about, gameName}) {
   const formattedExplanation = Array.isArray(explanation) ? explanation : [explanation];
@@ -47,7 +50,7 @@ export default function AboutTab({ explanation, textColor , about, gameName}) {
   };
 
   return (
-    <View style={[styles.aboutContainer, { paddingBottom: 80 }]}>
+    <View style={[styles.aboutContainer, { paddingBottom: TABLET_DEVICE ? 80 : 40 }]}>
 
       {about ? (
         <Surface style={[styles.modernInstructionItem, { backgroundColor: colors.card, marginBottom: 20 }]} elevation={2}>

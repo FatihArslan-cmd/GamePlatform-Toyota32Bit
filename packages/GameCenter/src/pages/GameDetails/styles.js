@@ -81,8 +81,8 @@ export const styles = StyleSheet.create({
       },
 
       instructionWrapper: {
-        padding: 16,
-        marginBottom: 24,
+        padding: 0,
+        marginBottom: TABLET_DEVICE ? 24 : 0,
       },
     modernInstructionItem: {
         flexDirection: 'row',
