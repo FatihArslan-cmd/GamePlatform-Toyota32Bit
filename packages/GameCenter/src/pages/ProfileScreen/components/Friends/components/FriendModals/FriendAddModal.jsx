@@ -59,6 +59,7 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible })
                             color={colors.primary}
                         />
                     }
+                    renderToHardwareTextureAndroid={true}
                 />
             </View>
         </CustomModal>

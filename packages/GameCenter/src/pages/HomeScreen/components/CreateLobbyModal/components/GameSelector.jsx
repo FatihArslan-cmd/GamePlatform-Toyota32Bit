@@ -98,6 +98,7 @@ const GameSelector = ({
                     fontFamily: CUSTOM_FONT_FAMILY,
                     color: colors.text,
                 }}
+                renderToHardwareTextureAndroid={true}
             />
 
             <TextInput
@@ -122,6 +123,7 @@ const GameSelector = ({
                     fontFamily: CUSTOM_FONT_FAMILY,
                     color: colors.text,
                 }}
+                renderToHardwareTextureAndroid={true}
             />
         </View>
     );

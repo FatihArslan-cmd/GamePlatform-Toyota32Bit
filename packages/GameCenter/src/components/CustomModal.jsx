@@ -125,7 +125,7 @@ const CustomModal = memo(({
 
 const styles = StyleSheet.create({
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Add a semi-transparent dark background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContainer: {
     marginHorizontal: 20,

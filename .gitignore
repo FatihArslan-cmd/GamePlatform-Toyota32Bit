@@ -4,5 +4,4 @@ yarn.lock
 lerna-debug.log
 .yarn-cache/
 .vscode/
-server/firebase/gamecenter-a93db-firebase-adminsdk-fbsvc-f31bd00abd.json
 .idea

@@ -18,7 +18,7 @@ const login = (req, res) => {
 
       const user = users[username]; 
       if (!user || user.password !== password) {
-        return res.status(401).json({ message: 'Invalid username or password' });
+        return res.status(400).json({ message: 'Invalid username or password' });
       }
 
       const userId = user.id;

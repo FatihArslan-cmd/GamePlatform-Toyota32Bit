@@ -6,7 +6,7 @@ import { Linking } from "react-native";
 import { ToastService } from "../../../context/ToastService";
 import { UserContext } from "../../../context/UserContext";
 import { login } from "../../../shared/states/api.js";
-import { deleteIfExists } from "../../../utils/api";
+import { deleteIfExists } from "../../../utils/api.js";
 import { sendVerificationCode } from "../service/sendVerificationCode";
 
 import{ fetchAndStoreGames }from '../../../utils/api.js';
@@ -53,7 +53,7 @@ export const FormProvider = ({ children }) => {
                 deleteIfExists('QrCode');
             }
         } catch (error) {
-            showModal('error', t('formContextMessages.loginErrorTitle'), error.message || t('formContextMessages.loginErrorMessage')); 
+            showModal('error', t('formContextMessages.loginErrorTitle')); 
         }
     };
 
@@ -64,8 +64,8 @@ export const FormProvider = ({ children }) => {
             loginUser(data.data);
             await handlePostLoginActions();
             setIsLoading(false);
-        } catch (error) {
-            showModal('error', t('formContextMessages.loginErrorTitle'), error.message || t('formContextMessages.loginErrorMessage')); 
+        } catch (errorResponse) {
+            showModal('error', t('formContextMessages.loginErrorTitle'), errorResponse.message || t('formContextMessages.loginErrorMessage')); 
             setIsLoading(false);
         }
     };
