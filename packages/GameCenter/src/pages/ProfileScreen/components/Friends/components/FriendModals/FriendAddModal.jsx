@@ -22,9 +22,9 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible })
     return (
         <CustomModal
             visible={visible}
-            onDismiss={() => { 
+            onDismiss={() => {
                 onDismiss();
-                setFriendCode(''); 
+                setFriendCode('');
             }}
             title={t('friendAddModal.title')}
             showConfirmButton={true}
@@ -36,7 +36,7 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible })
                     label={t('friendAddModal.friendCodeLabel')}
                     value={friendCode}
                     onChangeText={setFriendCode}
-                    mode="flat" 
+                    mode="flat"
                     style={{
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         marginHorizontal: 10,
@@ -48,16 +48,25 @@ const FriendAddModal = ({ visible, onDismiss, onAddFriend, setAddModalVisible })
                             placeholder: colors.text,
                             text: colors.text,
                         },
-                         fonts: { regular: { fontFamily: 'Orbitron-ExtraBold' } }, 
+                         fonts: { regular: { fontFamily: 'Orbitron-ExtraBold' } },
                     }}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    keyboardType="default" 
+                    keyboardType="default"
                     left={
                         <TextInput.Icon
                             icon="magnify"
                             color={colors.primary}
                         />
+                    }
+                    right={
+                        friendCode && friendCode.length > 0 ? (
+                            <TextInput.Icon
+                                icon="close"
+                                color={colors.text}
+                                onPress={() => setFriendCode('')}
+                            />
+                        ) : null
                     }
                     renderToHardwareTextureAndroid={true}
                 />

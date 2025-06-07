@@ -88,6 +88,15 @@ const GameSelector = ({
                 value={lobbyName}
                 placeholder={t('createLobbyModal.gameSelector.lobbyNamePlaceholder')}
                 left={<TextInput.Icon icon="home" color={colors.primary} />}
+                right={
+                    lobbyName && lobbyName.length > 0 ? (
+                        <TextInput.Icon
+                            icon="close"
+                            color={colors.text}
+                            onPress={() => onLobbyNameChange('')}
+                        />
+                    ) : null
+                }
                 style={[styles.inputContainer, { backgroundColor: colors.card }]}
                 onChangeText={onLobbyNameChange}
                 outlineColor={colors.border}
@@ -112,7 +121,20 @@ const GameSelector = ({
                 placeholder={t('createLobbyModal.gameSelector.maxCapacityPlaceholder')}
                 keyboardType="numeric"
                 left={<TextInput.Icon icon="account-group" color={colors.primary} />}
-                right={<TextInput.Icon icon="information" color={colors.primary} />}
+                right={
+                     maxCapacity && maxCapacity.length > 0 ? (
+                        <TextInput.Icon
+                            icon="close"
+                            color={colors.text}
+                            onPress={() => onMaxCapacityChange('')}
+                        />
+                    ) : (
+                         <TextInput.Icon
+                             icon="information"
+                             color={colors.primary}
+                         />
+                     )
+                }
                 style={[styles.inputContainer, { backgroundColor: colors.card }]}
                 onChangeText={onMaxCapacityChange}
                 outlineColor={colors.border}

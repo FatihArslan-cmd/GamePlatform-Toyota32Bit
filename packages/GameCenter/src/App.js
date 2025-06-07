@@ -1,5 +1,4 @@
 import "./context/i18n";
-import ConnectivityListener from "./context/ConnectivityListener.jsx";
 import Navigation from "./navigation/Navigation.js";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
@@ -22,7 +21,6 @@ if (__DEV__) {
   LogBox.ignoreAllLogs();
 }
 const App = () => {
-
 
   useEffect(() => {
     createDefaultChannel();

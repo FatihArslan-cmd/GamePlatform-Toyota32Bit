@@ -13,14 +13,21 @@ import { useGameDetails } from "../context/GameDetailsContext";
 import { styles } from "../styles";
 import { GameDetailsImageEnterAnimation } from "./Animation/GameDetailsImageEnterAnimation";
 
-export default function GameDetailsLayout({ gameName, explanation, imageSource, backgroundColors,textColor,about }) {
+export default function GameDetailsLayout({ gameName, explanation, imageSource, backgroundColors, textColor, about }) {
   const { lobbyModalVisible, setLobbyModalVisible } = useGameDetails();
-  const { animatedImageStyle, animatedContentStyle } = GameDetailsImageEnterAnimation(); 
-  const { colors } = useTheme(); 
+  const { animatedImageStyle, animatedContentStyle } = GameDetailsImageEnterAnimation();
+  const { colors, resolvedTheme } = useTheme();
+
   const defaultBackgroundColors = ['#4a148c', '#7c43bd', '#9b6bf5'];
-  const gradientColors = backgroundColors || defaultBackgroundColors; 
+  const gradientColors = backgroundColors || defaultBackgroundColors;
   const defaultTextColor = colors.text;
   const textColorValue = textColor || defaultTextColor;
+
+  const titleDisplayColor =
+    (resolvedTheme === 'dark' && textColor && (textColor.toLowerCase() === 'black' || textColor === '#000' || textColor === '#000000'))
+      ? 'white'
+      : (textColor !== undefined ? textColor : colors.text);
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -35,10 +42,10 @@ export default function GameDetailsLayout({ gameName, explanation, imageSource, 
         />
 
         <Animated.View style={[styles.contentWrapper, animatedContentStyle]}>
-          <Surface style={[styles.infoContainer,{ backgroundColor: colors.background }]}>
-            <Title style={[styles.title, {color: textColor}]}>{gameName}</Title>
-            <GradientDivider colorProps={[textColor, textColor]} />
-            <TabNavigation explanation={explanation} textColor={textColor} />
+          <Surface style={[styles.infoContainer, { backgroundColor: colors.background }]}>
+            <Title style={[styles.title, { color: titleDisplayColor }]}>{gameName}</Title>
+            <GradientDivider colorProps={[textColorValue, textColorValue]} />
+            <TabNavigation explanation={explanation} textColor={textColorValue} />
             <TabContent gameName={gameName} explanation={explanation} textColor={textColorValue} about={about} />
           </Surface>
         </Animated.View>
