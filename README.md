@@ -84,6 +84,13 @@ EMAIL_PASS=your_email_password
 
 To get a local copy up and running, follow these simple steps.
 
+I have used two devices in Android Studio:
+
+Medium Phone (API 36)
+Medium Tablet (API 36)
+
+with NDK enabled.
+
 ### <a id="installation"></a>⚙️ Installation
 It is recommended to install the project in a directory close to the system root (e.g., C:\GamePlatform on Windows) to avoid potential issues with long file paths, especially on Windows.
 1. Clone the repository:
