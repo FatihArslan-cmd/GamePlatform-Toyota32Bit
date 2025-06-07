@@ -3,10 +3,13 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Linking, StyleSheet } from "react-native";
 import { Appbar, Divider, Menu, Tooltip } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../../../../context/ThemeContext";
 import { ToastService } from "../../../../context/ToastService";
 import { isTablet } from "../../../../utils/isTablet";
 import { useHeader } from "./context/HeaderContext";
+
+// MenuComponent.js
 
 const TABLET_DEVICE = isTablet();
 
@@ -15,6 +18,7 @@ const MenuComponent = () => {
   const { colors } = useTheme();
   const { closeMenu, openLobbyModal, openBottomSheet, openJoinLobbyModal, menuVisible, openMenu } = useHeader();
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   const handleHelpAndDisplay = () => {
     closeMenu();
@@ -34,6 +38,7 @@ const MenuComponent = () => {
       visible={menuVisible}
       onDismiss={closeMenu}
       mode="elevated"
+      statusBarHeight={insets.top}
       anchor={
         <Tooltip title={t('homeScreen.options')}>
           <Appbar.Action icon="dots-vertical" size={TABLET_DEVICE ? 24 : 18} onPress={openMenu} color={colors.text} />
@@ -50,7 +55,7 @@ const MenuComponent = () => {
         title={t('homeScreen.settings')}
         titleStyle={[styles.menuItemText, { color: colors.text }]}
       />
-      <Divider style={styles.divider} /> 
+      <Divider style={styles.divider} />
       <Menu.Item
         style={styles.menuItemContainer}
         onPress={handleHelpAndDisplay}
@@ -97,16 +102,16 @@ const styles = StyleSheet.create({
   },
   menuItemContainer: {
     minHeight: 38,
-    paddingVertical: 4, 
-    justifyContent: 'center', 
+    paddingVertical: 4,
+    justifyContent: 'center',
   },
   menuItemText: {
     color: 'black',
     fontFamily: 'Orbitron-ExtraBold',
-    fontSize: TABLET_DEVICE ? 13 : 12, 
+    fontSize: TABLET_DEVICE ? 13 : 12,
   },
   divider: {
-    marginVertical: 2, 
+    marginVertical: 2,
   },
 });
 

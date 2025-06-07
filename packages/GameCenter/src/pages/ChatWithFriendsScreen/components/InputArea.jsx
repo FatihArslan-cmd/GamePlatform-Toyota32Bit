@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '../../../context/ThemeContext';
-import { useChat } from '../context/ChatContext'; 
+import Icon from "react-native-vector-icons/Ionicons";
+import React from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
+import { useChat } from "../context/ChatContext";
 
 const InputArea = () => {
     const { colors } = useTheme();
@@ -21,7 +21,8 @@ const InputArea = () => {
                 style={[styles.input, {
                     borderColor: colors.border,
                     backgroundColor: colors.background,
-                    color: colors.text
+                    color: colors.text,
+                    fontFamily: 'Orbitron-ExtraBold', 
                 }]}
                 placeholder="Type a message..."
                 placeholderTextColor={colors.subText}
@@ -39,7 +40,6 @@ const InputArea = () => {
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     inputArea: {

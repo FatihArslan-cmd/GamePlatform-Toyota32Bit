@@ -3,7 +3,7 @@ import ProfileSection from "./components/ProfileSection";
 import React from "react";
 import TopBar from "./components/TopBar";
 import styles from "./styles/ProfileScreenStyles";
-import { StatusBar, View } from "react-native";
+import { StatusBar } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "../../context/ThemeContext";
 import { AchievementsContextProvider } from "./components/Achivements/context/AchievementsContext";

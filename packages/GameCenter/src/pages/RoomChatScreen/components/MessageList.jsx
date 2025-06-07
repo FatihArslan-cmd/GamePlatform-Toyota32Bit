@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import formatDate from '../../../utils/FormatDate';
-import { useTheme } from '../../../context/ThemeContext';
+import FastImage from "react-native-fast-image";
+import React from "react";
+import formatDate from "../../../utils/FormatDate";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const MessageList = ({ messages, userId, messageListRef }) => {
     const { colors } = useTheme();

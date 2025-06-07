@@ -1,9 +1,9 @@
-import React, {  useCallback } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { useCameraPermission } from 'react-native-vision-camera';
-import { useFocusEffect } from '@react-navigation/native';
-import CameraView from './CameraView';
+import CameraView from "./CameraView";
 import PermissionHandler from "./PermissionHandler";
+import React, { useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { useCameraPermission } from "react-native-vision-camera";
 
 const BarcodeScan = () => {
   const { hasPermission, requestPermission } = useCameraPermission();

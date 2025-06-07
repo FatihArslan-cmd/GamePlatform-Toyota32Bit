@@ -1,9 +1,9 @@
-import { useAnimatedStyle, interpolate} from 'react-native-reanimated';
+import { interpolate, useAnimatedStyle } from "react-native-reanimated";
 
 const useHeaderScrollAnimation = (scrollY, appBarHeight, config = {}) => {
-  const { scrollDistance = 100, inputRangeStart = 0 } = config; // Varsayılan değerler
+  const { scrollDistance = 100, inputRangeStart = 0 } = config;
   const headerAnimatedStyle = useAnimatedStyle(() => {
-    const inputRange = [inputRangeStart, inputRangeStart + scrollDistance]; // Genel hale getirildi
+    const inputRange = [inputRangeStart, inputRangeStart + scrollDistance];
     const outputRange = [appBarHeight.value, 0];
 
     const translateY = interpolate(

@@ -4,30 +4,18 @@ import ScannerOverlay from "./ScannerOverlay";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { Camera, useCameraDevice, useCodeScanner } from "react-native-vision-camera";
-import { storage } from "../../utils/storage";
 
 const CameraView = () => {
   const [isScanning, setIsScanning] = useState(true);
   const [flashMode, setFlashMode] = useState(false);
   const [cameraPosition, setCameraPosition] = useState('back');
   const [zoomLevel, setZoomLevel] = useState(1);
-  const [storedQrCode, setStoredQrCode] = useState(null);
+
   const device = useCameraDevice(cameraPosition);
   const navigation = useNavigation();
   const route = useRoute();
 
   const { onBarcodeSuccess, onBarcodeScanned } = route.params;
-
-  useEffect(() => {
-    const fetchQrCode = async () => {
-        if(storage.contains('qrCode')) {
-      const qrCode = await storage.get('qrCode');
-      setStoredQrCode(qrCode);
-    }
-    };
-
-    fetchQrCode();
-  }, []);
 
   const codeScanner = useCodeScanner({
     codeTypes: ['code-128', 'qr'],
@@ -37,14 +25,10 @@ const CameraView = () => {
 
         const { value } = codes[0];
 
-          if (storedQrCode && value === storedQrCode) {
-            onBarcodeSuccess();
-          }  else {
-            if (onBarcodeScanned && typeof onBarcodeScanned === 'function') {
-               onBarcodeScanned(value);
-            }
-
-          }
+        if (onBarcodeScanned && typeof onBarcodeScanned === 'function') {
+           onBarcodeScanned(value);
+        }
+                navigation.goBack();
       }
     },
   });
@@ -62,14 +46,18 @@ const CameraView = () => {
   };
 
   const zoomIn = () => {
-    if (zoomLevel < 3) {
-      setZoomLevel((prevZoom) => prevZoom + 0.1);
+    if (device?.maxZoom && zoomLevel < device.maxZoom) {
+      setZoomLevel((prevZoom) => Math.min(prevZoom + 0.1, device.maxZoom));
+    } else if (zoomLevel < 3) {
+       setZoomLevel((prevZoom) => prevZoom + 0.1);
     }
   };
 
   const zoomOut = () => {
-    if (zoomLevel > 1) {
-      setZoomLevel((prevZoom) => prevZoom - 0.1);
+    if (device?.minZoom && zoomLevel > device.minZoom) {
+       setZoomLevel((prevZoom) => Math.max(prevZoom - 0.1, device.minZoom));
+    } else if (zoomLevel > 1) {
+       setZoomLevel((prevZoom) => prevZoom - 0.1);
     }
   };
 
@@ -85,7 +73,6 @@ const CameraView = () => {
         style={StyleSheet.absoluteFill}
         device={device}
         isActive={true}
-        frameProcessorFps={2}
         torch={flashMode ? 'on' : 'off'}
         zoom={zoomLevel}
         codeScanner={isScanning ? codeScanner : undefined}
@@ -111,6 +98,8 @@ const styles = StyleSheet.create({
     noDeviceContainer: {
         flex: 1,
         backgroundColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });
 

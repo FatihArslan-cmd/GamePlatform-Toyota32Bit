@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Appearance } from 'react-native';
-import { storage } from '../utils/storage.js';
-import { lightColors, darkColors } from '../utils/colors.js'; 
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Appearance } from "react-native";
+import { darkColors, lightColors } from "../utils/colors.js";
+import { storage } from "../utils/storage.js";
 
 const ThemeContext = createContext({});
 
@@ -24,7 +24,7 @@ export const ThemeProvider = ({ children }) => {
   }, [theme]);
 
   useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+    const subscription = Appearance.addChangeListener(() => {
       if (theme === 'system') {
         setTheme('system');
       }

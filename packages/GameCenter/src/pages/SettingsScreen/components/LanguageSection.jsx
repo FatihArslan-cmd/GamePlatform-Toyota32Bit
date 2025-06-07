@@ -84,7 +84,7 @@ const LanguageSection = ({ index }) => {
           onPress={handlePress}
           titleStyle={{ fontFamily: 'Orbitron-ExtraBold', color: canInteract ? colors.text : colors.subText ,fontSize: TABLET_DEVICE ? 19 : 14 }}
           title={t('settingsScreen.langSection.chooseLang')}
-          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText,fontSize: TABLET_DEVICE ? 18 : 12 }}
+          descriptionStyle={{ fontFamily: 'Orbitron-VariableFont_wght', color: colors.subText,fontSize: TABLET_DEVICE ? 14 : 12 }}
           description={`${i18n.language} (${getLanguageCodeDisplay(i18n.language)})`}
           left={props => <List.Icon {...props} color={canInteract ? colors.primary : colors.subText} icon="translate" />}
           right={props => <List.Icon {...props} color={colors.subText} icon={expanded ? "chevron-up" : "chevron-down"} />}

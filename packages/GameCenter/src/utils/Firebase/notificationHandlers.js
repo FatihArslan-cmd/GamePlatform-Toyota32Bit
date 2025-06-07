@@ -1,6 +1,7 @@
 import notifee, { AndroidImportance } from "@notifee/react-native";
 import { getApp } from "@react-native-firebase/app";
 import { PermissionsAndroid, Platform } from "react-native";
+import { storage } from "../storage";
 
 import {
   getMessaging,
@@ -11,6 +12,9 @@ import {
   requestPermission,
   getToken,
 } from "@react-native-firebase/messaging";
+
+
+const PUSH_NOTIFICATIONS_STORAGE_KEY = 'isPushNotificationsEnabled';
 
 const messaging = getMessaging(getApp());
 
@@ -30,37 +34,35 @@ export const requestUserPermission = async () => {
     authStatus === AuthorizationStatus.PROVISIONAL;
 
   if (enabled) {
-    console.log("Notification permission granted");
     await getFCMToken();
   }
 };
 
 export const getFCMToken = async () => {
   const token = await getToken(messaging);
-  console.log("FCM Token:", token);
   return token;
 };
 
 export const setupForegroundNotifications = () => {
   return onMessage(messaging, async (remoteMessage) => {
-    console.log("Foreground notification received:", remoteMessage);
+    const isPushEnabled = storage.getBoolean(PUSH_NOTIFICATIONS_STORAGE_KEY);
+
+    if (isPushEnabled === false) {
+      return;
+    }
+
 
     if (remoteMessage) {
       const displayedNotifications = await notifee.getDisplayedNotifications();
       const notificationLimit = 3;
 
-      console.log("Current displayed notifications count:", displayedNotifications.length);
 
       if (displayedNotifications.length >= notificationLimit) {
-        console.log("Notification limit reached. Checking for oldest notification...");
         displayedNotifications.sort((a, b) => a.timeStamp - b.timeStamp);
         const oldestNotificationId = displayedNotifications[0].id;
-        console.log("Oldest notification ID to cancel:", oldestNotificationId);
         try {
             await notifee.cancelNotification(oldestNotificationId);
-            console.log(`Notification with ID ${oldestNotificationId} cancelled.`);
         } catch (error) {
-            console.error(`Failed to cancel notification with ID ${oldestNotificationId}:`, error);
         }
       }
 
@@ -80,22 +82,23 @@ export const setupForegroundNotifications = () => {
           sound: "lumos_sound_effect",
         },
       });
-
-      console.log(`New notification displayed with ID: ${notificationId}`);
     }
   });
 };
 
 export const setupBackgroundNotifications = () => {
   setBackgroundMessageHandler(messaging, async (remoteMessage) => {
-    console.log("Background notification received:", remoteMessage);
+    const isPushEnabled = storage.getBoolean(PUSH_NOTIFICATIONS_STORAGE_KEY);
+
+    if (isPushEnabled === false) {
+       return;
+    }
   });
 };
 
 export const checkInitialNotification = async () => {
   const remoteMessage = await getInitialNotification(messaging);
   if (remoteMessage) {
-    console.log("App opened via notification:", remoteMessage);
   }
 };
 
@@ -106,5 +109,4 @@ export const createDefaultChannel = async () => {
     importance: AndroidImportance.HIGH,
     sound: "lumos_sound_effect",
   });
-  console.log("Default channel created/ensured.");
 };

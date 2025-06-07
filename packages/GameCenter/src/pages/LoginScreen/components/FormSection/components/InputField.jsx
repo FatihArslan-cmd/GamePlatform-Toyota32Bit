@@ -63,6 +63,8 @@ const InputField = memo(({
           regular: { fontFamily: "Orbitron-ExtraBold" }
         }
       }}
+      renderToHardwareTextureAndroid={true}
+
     />
   );
 });

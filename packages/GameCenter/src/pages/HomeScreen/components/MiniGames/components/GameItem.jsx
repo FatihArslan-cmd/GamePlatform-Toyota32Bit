@@ -5,6 +5,7 @@ import React, { memo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Card, Surface } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
 import { isTablet } from "../../../../../utils/isTablet";
 
 import Animated, {

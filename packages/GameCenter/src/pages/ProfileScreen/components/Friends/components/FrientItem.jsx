@@ -1,16 +1,17 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Card, TouchableRipple } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import FastImage from 'react-native-fast-image';
-import styles from '../../../styles/FriendPageStyles';
-import { useTheme } from '../../../../../context/ThemeContext';
+import FastImage from "react-native-fast-image";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import styles from "../../../styles/FriendPageStyles";
+import { Text, View } from "react-native";
+import { Card, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../../../../../context/ThemeContext";
 
 const FriendItem = ({ item, onPress }) => {
     const { colors } = useTheme();
+
     return (
-        <TouchableRipple onPress={onPress}>
-            <Card style={styles.friendCard}>
+        <TouchableRipple onPress={onPress} rippleColor={colors.ripple}>
+            <Card style={[styles.friendCard, { backgroundColor: colors.card }]}>
                 <View style={styles.friendCardContent}>
                     {item.profilePhoto ? (
                         <FastImage
@@ -24,7 +25,6 @@ const FriendItem = ({ item, onPress }) => {
                     <Text style={[styles.friendName, { color: colors.text }]}>{item.username}</Text>
                 </View>
             </Card>
-
         </TouchableRipple>
     );
 };

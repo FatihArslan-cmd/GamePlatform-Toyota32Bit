@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "../../../context/ThemeContext";
+import { isTablet } from "../../../utils/isTablet";
 
 import {
     Card,
@@ -13,6 +14,7 @@ import {
     Divider
 } from "react-native-paper";
 
+const TABLET_DEVICE = isTablet();
 
 const EmptyState = () => {
     const { colors } = useTheme();
@@ -37,7 +39,7 @@ const EmptyState = () => {
             >
                 <Card.Content style={styles.cardContent}>
                     <Avatar.Icon
-                        size={80}
+                        size={TABLET_DEVICE ? 80 : 54}
                         icon="chart-line"
                         style={[
                             styles.mainIcon,
@@ -123,12 +125,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
+        padding: TABLET_DEVICE ? 20 : 10,
     },
     card: {
         borderRadius: 16,
         overflow: 'hidden',
-        width: '100%',
+        width: TABLET_DEVICE ? '100%' : '80%',
         maxWidth: 500,
     },
     cardContent: {
@@ -141,13 +143,13 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         marginBottom: 12,
-        fontSize: 24,
+        fontSize: TABLET_DEVICE ? 24 : 20,  
         fontFamily: 'Orbitron-ExtraBold',
     },
     description: {
         textAlign: 'center',
         marginBottom: 24,
-        fontSize: 16,
+        fontSize: TABLET_DEVICE ? 16 : 14,
         lineHeight: 24,
         paddingHorizontal: 16,
         fontFamily: 'Orbitron-ExtraBold',

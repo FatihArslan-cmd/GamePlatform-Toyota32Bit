@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     friendCard: {
         padding: 15,
         marginVertical: 5,
+        borderRadius: 20,
     },
     friendName: {
         fontSize: 18,

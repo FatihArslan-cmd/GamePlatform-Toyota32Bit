@@ -35,8 +35,12 @@ const JoinableLobbyCard = ({ lobby, onLobbyJoined }) => {
     try {
       if (currentLobby.hasPassword) {
         await lobbyService.joinLobby(currentLobby.code, password);
+              ToastService.show('success', t('homeScreen.joinLobbySuccessToast'));
+
       } else {
         await lobbyService.joinLobby(currentLobby.code);
+              ToastService.show('success', t('homeScreen.joinLobbySuccessToast'));
+
       }
       connectWebSocket(currentLobby.code);
 

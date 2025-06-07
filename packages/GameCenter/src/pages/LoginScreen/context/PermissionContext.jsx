@@ -13,7 +13,7 @@ export const PermissionsProvider = ({ children }) => {
   const [activePermission, setActivePermission] = useState(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const [permissions, setPermissions] = useState({ barcode: false, biometric: false, nfc: false });
+  const [permissions, setPermissions] = useState({ biometric: false, nfc: false });
   const [appIsLoading, setAppIsLoading] = useState(false);
   const [hasPermissions, setHasPermissions] = useState(false);
   const { loginUser } = useContext(UserContext);
@@ -111,27 +111,6 @@ export const PermissionsProvider = ({ children }) => {
     }
   };
 
-  const handleBarcode = async () => {
-    try {
-        dismissModalAndReset();
-
-        const hasQr = storage.contains('qrCode');
-        const navigateTo = hasQr ? 'BarcodeScan' : 'QRCode';
-
-        navigation.navigate(navigateTo, {
-            onBarcodeSuccess: async () => {
-                console.log('Barcode successful. Proceeding to loading...');
-                await handleLoading();
-            },
-        });
-
-    } catch (error) {
-        console.error('Error during Barcode operation:', error);
-        dismissModalAndReset();
-    }
-  };
-
-
   const handlePermissionAction = async (permissionType) => {
     try {
         setActivePermission(permissionType);
@@ -142,9 +121,6 @@ export const PermissionsProvider = ({ children }) => {
                 break;
             case 'nfc':
                 await handleNfc();
-                break;
-            case 'barcode':
-                handleBarcode();
                 break;
             default:
                 dismissModalAndReset();

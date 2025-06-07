@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   postButton: {
     borderRadius: 20,
-    backgroundColor: '#1DA1F2',
+    backgroundColor: '#3340D6',
   },
   postButtonLabel: {
     color: 'white',

@@ -7,9 +7,12 @@ import { Text, View } from "react-native";
 import { Button, Surface } from "react-native-paper";
 import { useTheme } from "../../../../context/ThemeContext";
 import { ToastService } from "../../../../context/ToastService";
+import { isTablet } from "../../../../utils/isTablet";
 import { styles } from "../../styles";
 
-export default function AboutTab({ explanation, textColor , about}) {
+const TABLET_DEVICE = isTablet();
+
+export default function AboutTab({ explanation, textColor , about, gameName}) {
   const formattedExplanation = Array.isArray(explanation) ? explanation : [explanation];
   const { colors } = useTheme();
   const [isStartingGame, setIsStartingGame] = useState(false);
@@ -17,9 +20,16 @@ export default function AboutTab({ explanation, textColor , about}) {
   const navigation = useNavigation();
 
   const handleStartGame = async () => {
+    const localizedGameName = t(gameName);
+
     if (!explanation) {
-      navigation.navigate('FallPanicScreen');
-      return;
+      if (localizedGameName !== "Fall Panic") {
+        ToastService.show("warning", "This game has not been added");
+        return;
+      } else {
+         navigation.navigate('FallPanicScreen');
+         return;
+      }
     }
 
     if (isStartingGame) {
@@ -31,7 +41,7 @@ export default function AboutTab({ explanation, textColor , about}) {
     } catch (error) {
       let errorMessage = t('gameDetailsScreen.Failed to start the game. Please try again.');
       if (error instanceof Error) {
-        errorMessage = error.message;
+         errorMessage = error.message;
       }
       ToastService.show("error", errorMessage);
     } finally {
@@ -40,7 +50,7 @@ export default function AboutTab({ explanation, textColor , about}) {
   };
 
   return (
-    <View style={[styles.aboutContainer, { paddingBottom: 80 }]}>
+    <View style={[styles.aboutContainer, { paddingBottom: TABLET_DEVICE ? 80 : 40 }]}>
 
       {about ? (
         <Surface style={[styles.modernInstructionItem, { backgroundColor: colors.card, marginBottom: 20 }]} elevation={2}>

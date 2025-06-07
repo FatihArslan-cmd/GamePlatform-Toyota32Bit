@@ -57,6 +57,7 @@ const PasswordInput = ({
                 fontFamily: CUSTOM_FONT_FAMILY,
                 color: colors.text,
             }}
+            renderToHardwareTextureAndroid={true}
         />
       )}
     </View>
