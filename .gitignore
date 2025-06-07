@@ -5,3 +5,4 @@ lerna-debug.log
 .yarn-cache/
 .vscode/
 .idea
+server/firebase/*.json
