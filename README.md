@@ -114,13 +114,25 @@ It is recommended to install the project in a directory close to the system root
 5. Go to `packages\GameCenter\src\utils\baseUrl.js`. Change `export const baseURL`. If testing on a **physical device**, set it to `"x.x.x.x:3000"` (replace x.x.x.x with your local IP); otherwise, 
  set it to `"10.0.2.2:3000"`.
 
-6. Start Server:
+6. To enable push notifications (Not mandatory):
+
+Go to Firebase Console and select your project.
+Navigate to Project Settings > Service Accounts.
+Click “Generate new private key” to download the JSON file.
+Move the downloaded file into the server/firebase directory.
+
+Open server/firebase/firebaseAdmin.js and update the const serviceAccount path to point to the JSON file you just added. Example:
+```bash
+const serviceAccount = require("./your-firebase-adminsdk-file.json");
+```
+
+7. Start Server:
     ```bash
     cd server
     npm install
     node .\server.js
     ```
-7. Start the project (First build may take a while):
+8. Start the project (First build may take a while):
     ```bash
     yarn gamecenter
     ```
