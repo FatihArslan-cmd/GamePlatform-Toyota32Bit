@@ -116,14 +116,14 @@ It is recommended to install the project in a directory close to the system root
 
 6. To enable push notifications (Not mandatory):
 
-Go to Firebase Console and select your project.
-Navigate to Project Settings > Service Accounts.
-Click “Generate new private key” to download the JSON file.
-Move the downloaded file into the server/firebase directory.
+ Go to Firebase Console and select your project.
+ Navigate to Project Settings > Service Accounts.
+ Click “Generate new private key” to download the JSON file.
+ Move the downloaded file into the server/firebase directory.
 
-Open server/firebase/firebaseAdmin.js and update the const serviceAccount path to point to the JSON file you just added. Example:
+ Open server/firebase/firebaseAdmin.js and update the const serviceAccount path to point to the JSON file you just added. Example:
 ```bash
-const serviceAccount = require("./your-firebase-adminsdk-file.json");
+ const serviceAccount = require("./your-firebase-adminsdk-file.json");
 ```
 
 7. Start Server:
