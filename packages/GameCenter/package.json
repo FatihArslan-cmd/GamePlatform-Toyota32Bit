@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "main": "index.js",
+  "description": "React Native mobile application for GamePlatform - Main client app providing access to multiplayer games, lobby management, and real-time chat functionality",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
