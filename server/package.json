@@ -8,7 +8,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Express.js backend server for GamePlatform - Handles real-time multiplayer game communication, lobby management, user authentication, and WebSocket connections",
   "dependencies": {
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",

@@ -1,6 +1,7 @@
 {
   "name": "root",
   "private": true,
+  "description": "GamePlatform monorepo - A React Native gaming platform featuring Tombala (Bingo) and Fall Panic games with real-time multiplayer functionality",
   "scripts": {
     "gamecenter": "cd packages/GameCenter && npx react-native run-android --port=8081"
   },
